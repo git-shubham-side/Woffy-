@@ -1,0 +1,27 @@
+{
+  "name": "woffy",
+  "version": "1.0.0",
+  "description": "a small project for dog care",
+  "keywords": [
+    "paw",
+    "woffy",
+    "dog",
+    "care",
+    "dogCare"
+  ],
+  "homepage": "https://github.com/git-shubham-side/Woffy-A-Dog-Care-Project#readme",
+  "bugs": {
+    "url": "https://github.com/git-shubham-side/Woffy-A-Dog-Care-Project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/git-shubham-side/Woffy-A-Dog-Care-Project.git"
+  },
+  "license": "ISC",
+  "author": "Shubham Rathod - Jimmy",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
