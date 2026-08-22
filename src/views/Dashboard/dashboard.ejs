@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Woofy Premium Pet Care</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Dashboard/dashboard.css" />
+    <!-- Lucide Icons Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="dashboard-body">
+    <!-- Top Navigation -->
+    <header class="dashboard-nav">
+      <div class="nav-container">
+        <a href="/" class="logo">Woofy.</a>
+        <div class="nav-actions">
+          <a href="/pet-profile" class="pet-profile-btn">
+            <span class="avatar"><i data-lucide="paw-print"></i></span>
+            <span>My Pets</span>
+          </a>
+          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <!-- SECTION 1: Welcome & Add Pet (Image on Right) -->
+      <section class="split-section">
+        <div class="split-content">
+          <div class="welcome-text">
+            <h1>
+              Welcome back, <%= typeof userName !== 'undefined' ? userName :
+              'Pet Parent' %>!
+            </h1>
+            <p>Let's make sure your furry friend is healthy and happy today.</p>
+          </div>
+
+          <div class="add-pet-banner">
+            <div class="banner-content">
+              <h3>Start by adding your pet</h3>
+              <p>
+                Create a profile for your pet to track their health, grooming,
+                and medical records.
+              </p>
+            </div>
+            <a
+              href="/add-pet"
+              class="btn btn-primary"
+              style="display: flex; align-items: center; gap: 8px"
+            >
+              <i data-lucide="plus" style="width: 18px; height: 18px"></i> Add
+              New Pet
+            </a>
+          </div>
+        </div>
+
+        <div class="split-image square-image">
+          <!-- Indian street dog bonding with human -->
+          <img
+            src="https://www.annaroseheaton.com/uploads/4/7/0/2/47021893/anna-rose-heaton-professional-dog-photographer-east-midlands3_orig.jpg"
+            alt="Pet parent playing with Indian Indie dog"
+          />
+        </div>
+      </section>
+
+      <!-- SECTION 2: Records Dashboard (Image on Left, Cards on Right) -->
+      <section class="split-section reverse-layout">
+        <div class="split-image tall-image">
+          <!-- Professional Vet Checkup -->
+          <img
+            src="https://media.istockphoto.com/id/462435907/photo/puppy-and-kitten.jpg?s=612x612&w=0&k=20&c=ERmnTnx1ecWH5fEe1ngzgf5czngJFWk6m2CNDEzxOQ4="
+            alt="Veterinarian examining a dog professionally"
+          />
+        </div>
+
+        <div class="split-content">
+          <h2 class="section-title">Health & Care Records</h2>
+          <div class="grid-cards two-cols-grid">
+            <a href="/records/weight" class="dash-card">
+              <div class="card-icon"><i data-lucide="scale"></i></div>
+              <div class="card-info">
+                <h3>Weight</h3>
+                <p>Track growth</p>
+              </div>
+            </a>
+            <a href="/records/medical" class="dash-card">
+              <div class="card-icon"><i data-lucide="stethoscope"></i></div>
+              <div class="card-info">
+                <h3>Medical</h3>
+                <p>Past surgeries</p>
+              </div>
+            </a>
+            <a href="/records/medicine" class="dash-card">
+              <div class="card-icon"><i data-lucide="pill"></i></div>
+              <div class="card-info">
+                <h3>Medicine</h3>
+                <p>Treatments</p>
+              </div>
+            </a>
+            <a href="/records/vet" class="dash-card">
+              <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
+              <div class="card-info">
+                <h3>Vet History</h3>
+                <p>Prescriptions</p>
+              </div>
+            </a>
+            <a href="/records/grooming" class="dash-card">
+              <div class="card-icon"><i data-lucide="scissors"></i></div>
+              <div class="card-info">
+                <h3>Grooming</h3>
+                <p>Spa & cuts</p>
+              </div>
+            </a>
+            <a href="/records/bath" class="dash-card">
+              <div class="card-icon"><i data-lucide="droplets"></i></div>
+              <div class="card-info">
+                <h3>Bath</h3>
+                <p>Wash schedule</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: City Services (Cards on Left, Image on Right) -->
+      <section class="split-section">
+        <div class="split-content">
+          <h2 class="section-title">City Services</h2>
+          <div class="service-list">
+            <a href="/services/hospitals" class="dash-card service-card">
+              <div class="card-icon"><i data-lucide="hospital"></i></div>
+              <div class="card-info">
+                <h3>Find Best Hospitals</h3>
+                <p>
+                  Locate top-rated vet clinics and 24/7 animal hospitals in your
+                  city.
+                </p>
+              </div>
+            </a>
+            <a href="/services/rescue" class="dash-card service-card">
+              <div class="card-icon"><i data-lucide="truck"></i></div>
+              <div class="card-info">
+                <h3>Animal Rescue Services</h3>
+                <p>
+                  Emergency contacts for animal rescue and shelters near you.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="split-image square-image">
+          <!-- Beautiful Indian Pariah Rescue Dog -->
+          <img
+            src="https://content.jdmagicbox.com/v2/comp/bangalore/p4/080pxx80.xx80.131024174625.x6p4/catalogue/charlies-animal-rescue-centre-yelahanka-bangalore-animal-welfare-organisations-1xe2c7ipd1.jpg"
+            alt="Indian Pariah rescue dog portrait"
+          />
+        </div>
+      </section>
+
+      <!-- SECTION 4: Shop Section (Full Width, No big image here to keep it clean) -->
+      <section class="dashboard-section shop-section">
+        <div class="section-header-flex">
+          <h2 class="section-title">Recommended Products</h2>
+          <a href="/shop" class="view-more-link">View all products &rarr;</a>
+        </div>
+
+        <div class="grid-cards three-cols">
+          <div class="product-card">
+            <div class="product-img placeholder-img">Premium Food</div>
+            <div class="product-details">
+              <h4>Organic Dog Kibble</h4>
+              <p class="price">₹1,200</p>
+              <button class="btn btn-secondary btn-sm btn-block">
+                Buy Now
+              </button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img placeholder-img">Toy</div>
+            <div class="product-details">
+              <h4>Tough Chew Toy</h4>
+              <p class="price">₹450</p>
+              <button class="btn btn-secondary btn-sm btn-block">
+                Buy Now
+              </button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-img placeholder-img">Shampoo</div>
+            <div class="product-details">
+              <h4>Oatmeal Pet Shampoo</h4>
+              <p class="price">₹600</p>
+              <button class="btn btn-secondary btn-sm btn-block">
+                Buy Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container">
+        <p>Woofy PetCare. Premium Pet Management.</p>
+      </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

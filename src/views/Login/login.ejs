@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in to Woofy | Premium Pet Care</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Login/login.css" />
+  </head>
+  <body>
+    <div class="login-layout">
+      <!-- Left Side: Branding & Image -->
+      <div class="login-brand">
+        <div class="brand-content">
+          <a href="index.html" class="logo">Woofy.</a>
+          <h2>Welcome back to the pack.</h2>
+          <p>
+            Manage your pet's appointments, track walks, and access premium care
+            all in one place.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side: Login Form -->
+      <div class="login-form-container">
+        <div class="form-wrapper">
+          <div class="form-header">
+            <h2>Sign in</h2>
+            <p>Please enter your details to continue.</p>
+          </div>
+
+          <form id="loginForm" method="POST" action="/api/login">
+            <div class="input-group">
+              <label for="email">Email address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="name@example.com"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="password">Password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button type="button" id="togglePassword" class="toggle-btn">
+                  Show
+                </button>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <label class="remember-me">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <a href="/api/forget-pass" class="forgot-link"
+                >Forgot password?</a
+              >
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Sign in
+            </button>
+          </form>
+
+          <div class="form-footer">
+            <p>
+              Don't have an account? <a href="/api/signup">Sign up for free</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/Login/login.js"></script>
+  </body>
+</html>

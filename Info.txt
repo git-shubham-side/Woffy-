@@ -1,0 +1,2 @@
+1. /api/terms -- implement the terms & COnditions on the signup page 
+2. /api/forget-pass  --- implement forget pass route-- via login

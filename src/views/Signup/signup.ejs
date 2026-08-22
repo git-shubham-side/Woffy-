@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create an Account | Woofy</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Signup/signup.css" />
+  </head>
+  <body>
+    <div class="signup-layout">
+      <!-- Left Side: Registration Form -->
+      <div class="signup-form-container">
+        <div class="form-wrapper">
+          <div class="form-header">
+            <h2>Join the Woofy family</h2>
+            <p>
+              Set up your account to start booking premium care for your pet.
+            </p>
+          </div>
+
+          <form id="signupForm" method="POST" action="/api/login">
+            <!-- Form Row for Side-by-Side inputs on desktop -->
+            <div class="form-row">
+              <div class="input-group">
+                <label for="fullName">Full name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="John Doe"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <label for="petName"
+                  >Pet's name <span class="optional">(Optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="petName"
+                  name="petName"
+                  placeholder="e.g. Max"
+                />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="email">Email address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="name@example.com"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="password">Create password</label>
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="At least 8 characters"
+                  required
+                />
+                <button type="button" id="togglePassword" class="toggle-btn">
+                  Show
+                </button>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <label class="terms-checkbox">
+                <input type="checkbox" required />
+                <span
+                  >I agree to the <a href="#">Terms of Service</a> and
+                  <a href="/api/terms">Privacy Policy</a>.</span
+                >
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Create account
+            </button>
+          </form>
+
+          <div class="form-footer">
+            <p>Already have an account? <a href="/api/login">Log in here</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Branding & Image (Flipped from login for variation) -->
+      <div class="signup-brand">
+        <div class="brand-content">
+          <a href="index.html" class="logo">Woofy.</a>
+          <h2>
+            Peace of mind for you. <br />
+            Pure joy for them.
+          </h2>
+          <p>
+            Join thousands of pet parents who trust Woofy for uncompromising,
+            professional pet care.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/Signup/signup.js"></script>
+  </body>
+</html>
