@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Profile | Woofy</title>
+    <link rel="stylesheet" href="/Profile/profile.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header id="navbar">
+      <div class="container nav-container">
+        <div class="logo">Woofy.</div>
+        <nav class="nav-links">
+          <a href="/api/dashboard">Home</a>
+          <a href="/api/create-pet-profile">Create Profile</a>
+          <a href="/Landing/profile.html">My Pet</a>
+        </nav>
+        <a href="/api/signup" class="btn btn-primary">Sign Up</a>
+      </div>
+    </header>
+
+    <section class="profile-page">
+      <div class="container" id="profileContainer">
+        <div class="profile-card reveal">
+          <div class="profile-banner">
+            <div class="profile-avatar-fallback">B</div>
+            <div>
+              <h2>Bruno</h2>
+              <p>Labrador • Owned by Shubham Rathod</p>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="label"><i data-lucide="paw-print"></i> Species</div>
+                <div class="value">Dog</div>
+              </div>
+              <div class="info-item">
+                <div class="label"><i data-lucide="calendar"></i> Age</div>
+                <div class="value">2 yrs</div>
+              </div>
+              <div class="info-item">
+                <div class="label"><i data-lucide="scale"></i> Weight</div>
+                <div class="value">18 kg</div>
+              </div>
+              <div class="info-item">
+                <div class="label">
+                  <i data-lucide="venetian-mask"></i> Gender
+                </div>
+                <div class="value">Male</div>
+              </div>
+              <div class="info-item">
+                <div class="label">
+                  <i data-lucide="syringe"></i> Vaccinated
+                </div>
+                <div class="value">Yes</div>
+              </div>
+              <div class="info-item">
+                <div class="label"><i data-lucide="user"></i> Owner</div>
+                <div class="value">Shubham Rathod</div>
+              </div>
+              <div class="info-item full">
+                <div class="label">
+                  <i data-lucide="notebook-pen"></i> Notes
+                </div>
+                <div class="value notes">No additional notes.</div>
+              </div>
+            </div>
+            <a
+              href="/Create-Profile/create-profile.html"
+              class="btn btn-secondary"
+              >Edit Profile</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h2>Woofy.</h2>
+          <p>Premium PetCare.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Created By
+            <b>
+              <a
+                class="linkedin"
+                href="https://linkedin.com/in/shubham-rathod-tech"
+              >
+                Shubham Rathod - Jimmy
+              </a>
+            </b>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="/Profile/profile.js"></script>
+  </body>
+</html>

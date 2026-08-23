@@ -120,16 +120,15 @@ body.dashboard-body {
   padding: 3rem 1.5rem;
 }
 
-/* --- NEW: SPLIT LAYOUT FOR IMAGES & CONTENT --- */
+/* --- SPLIT LAYOUT FOR IMAGES & CONTENT --- */
 .split-section {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr; /* Content gets slightly more space */
+  grid-template-columns: 1.2fr 0.8fr;
   gap: 3rem;
   align-items: stretch;
-  margin-bottom: 5rem; /* Breathing room between sections */
+  margin-bottom: 5rem;
 }
 
-/* Reverse layout for Records Section (Image Left, Content Right) */
 .split-section.reverse-layout {
   grid-template-columns: 0.7fr 1.3fr;
 }
@@ -265,6 +264,9 @@ body.dashboard-body {
   padding: 0.75rem;
   border-radius: var(--border-radius);
 }
+.card-info {
+  flex: 1;
+}
 .card-info h3 {
   font-size: 1rem;
   color: var(--primary-color);
@@ -273,8 +275,34 @@ body.dashboard-body {
 .card-info p {
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin: 0;
+  margin: 0 0 0.9rem;
   line-height: 1.4;
+}
+
+/* Start Tracking CTA inside records cards */
+.card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.card-cta svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card-cta:hover {
+  color: var(--primary-color);
+}
+
+.card-cta:hover svg {
+  transform: translateX(3px);
 }
 
 .service-card .card-icon {
@@ -334,16 +362,16 @@ body.dashboard-body {
 @media (max-width: 992px) {
   .split-section,
   .split-section.reverse-layout {
-    grid-template-columns: 1fr; /* Stack vertically on tablets and mobile */
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
   .split-section.reverse-layout .split-image {
-    grid-row: 1; /* Keep image on top when stacked */
+    grid-row: 1;
   }
   .tall-image,
   .square-image {
     aspect-ratio: 16 / 9;
-  } /* Makes images horizontal banners on mobile to save vertical space */
+  }
 }
 @media (max-width: 600px) {
   .two-cols-grid {

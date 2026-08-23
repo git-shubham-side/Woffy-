@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Pet Profile | Woofy</title>
+    <link rel="stylesheet" href="/Create-Profile/create-profile.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header id="navbar">
+      <div class="container nav-container">
+        <div class="logo">Woofy.</div>
+        <nav class="nav-links">
+          <a href="/api/dashboard">Home</a>
+
+          <a href="/api/pet-profiles">My Pets</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="profile-page">
+      <div class="container">
+        <form class="form-card reveal" id="petForm">
+          <h2>Create Your Pet Profile</h2>
+          <p>Apne pet ki basic details bharo, profile turant ban jayega.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="petName">Pet Name</label>
+              <input
+                type="text"
+                id="petName"
+                required
+                placeholder="e.g. Bruno"
+              />
+            </div>
+            <div class="form-group">
+              <label for="ownerName">Owner Name</label>
+              <input
+                type="text"
+                id="ownerName"
+                required
+                placeholder="e.g. Shubham Rathod"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="species">Species</label>
+              <select id="species" required>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="breed">Breed</label>
+              <input type="text" id="breed" placeholder="e.g. Labrador" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="age">Age (years)</label>
+              <input
+                type="number"
+                id="age"
+                min="0"
+                step="0.1"
+                placeholder="e.g. 2"
+              />
+            </div>
+            <div class="form-group">
+              <label for="weight">Weight (kg)</label>
+              <input
+                type="number"
+                id="weight"
+                min="0"
+                step="0.1"
+                placeholder="e.g. 18"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="vaccinated">Vaccinated</label>
+              <select id="vaccinated">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="photoUrl">Photo URL (optional)</label>
+            <input type="url" id="photoUrl" placeholder="https://..." />
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <textarea
+              id="notes"
+              placeholder="Allergies, favorite food, behaviour notes, etc."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h2>Woofy.</h2>
+          <p>Premium PetCare.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Created By
+            <b>
+              <a
+                class="linkedin"
+                href="https://linkedin.com/in/shubham-rathod-tech"
+              >
+                Shubham Rathod - Jimmy
+              </a>
+            </b>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="/Create-Profile/create-profile.js"></script>
+  </body>
+</html>

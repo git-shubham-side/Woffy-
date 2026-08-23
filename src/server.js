@@ -26,6 +26,10 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK", uptime: process.uptime() });
 });
 
+app.get("/test", (req, res) => {
+  res.render("My-Pets/my-pets");
+});
+
 // Routes
 
 //Signup
@@ -48,6 +52,22 @@ app.post("/api/login", (req, res) => {
 
 app.get("/api/dashboard", (req, res) => {
   res.render("Dashboard/dashboard");
+});
+
+// ------------ Pet Profile Creation ---------------||
+app.get("/api/create-pet-profile", (req, res) => {
+  res.render("Profile-Creation/create-profile");
+});
+
+//------------ View Profile Route ------------||
+
+app.get("/api/pet-profile", (req, res) => {
+  res.render("Pet-Profile/Profile");
+});
+
+//-----------Show User Pet Profiles ---------||
+app.get("/api/pet-profiles", (req, res) => {
+  res.render("My-Pets/my-pets");
 });
 
 // 404 handler

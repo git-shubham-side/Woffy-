@@ -18,7 +18,7 @@
       <div class="nav-container">
         <a href="/" class="logo">Woofy.</a>
         <div class="nav-actions">
-          <a href="/pet-profile" class="pet-profile-btn">
+          <a href="/api/pet-profiles" class="pet-profile-btn">
             <span class="avatar"><i data-lucide="paw-print"></i></span>
             <span>My Pets</span>
           </a>
@@ -48,7 +48,7 @@
               </p>
             </div>
             <a
-              href="/add-pet"
+              href="/api/create-pet-profile"
               class="btn btn-primary"
               style="display: flex; align-items: center; gap: 8px"
             >
@@ -80,48 +80,66 @@
         <div class="split-content">
           <h2 class="section-title">Health & Care Records</h2>
           <div class="grid-cards two-cols-grid">
-            <a href="/records/weight" class="dash-card">
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="scale"></i></div>
               <div class="card-info">
                 <h3>Weight</h3>
                 <p>Track growth</p>
+                <a href="/records/weight" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
-            <a href="/records/medical" class="dash-card">
+            </div>
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="stethoscope"></i></div>
               <div class="card-info">
                 <h3>Medical</h3>
                 <p>Past surgeries</p>
+                <a href="/records/medical" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
-            <a href="/records/medicine" class="dash-card">
+            </div>
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="pill"></i></div>
               <div class="card-info">
                 <h3>Medicine</h3>
                 <p>Treatments</p>
+                <a href="/records/medicine" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
-            <a href="/records/vet" class="dash-card">
+            </div>
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
               <div class="card-info">
                 <h3>Vet History</h3>
                 <p>Prescriptions</p>
+                <a href="/records/vet" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
-            <a href="/records/grooming" class="dash-card">
+            </div>
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="scissors"></i></div>
               <div class="card-info">
                 <h3>Grooming</h3>
                 <p>Spa & cuts</p>
+                <a href="/records/grooming" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
-            <a href="/records/bath" class="dash-card">
+            </div>
+            <div class="dash-card">
               <div class="card-icon"><i data-lucide="droplets"></i></div>
               <div class="card-info">
                 <h3>Bath</h3>
                 <p>Wash schedule</p>
+                <a href="/records/bath" class="card-cta">
+                  Start Tracking <i data-lucide="arrow-right"></i>
+                </a>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </section>

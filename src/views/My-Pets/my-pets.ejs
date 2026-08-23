@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Pets | Woofy</title>
+    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header id="navbar">
+      <div class="container nav-container">
+        <div class="logo">Woofy.</div>
+        <nav class="nav-links">
+          <a href="/api/dashboard">Home</a>
+          
+        </nav>
+        
+      </div>
+    </header>
+
+    <section class="pets-page">
+      <div class="container">
+        <div class="pets-header reveal">
+          <div>
+            <h2>My Pets</h2>
+            <p>All your registered pet profiles in one place.</p>
+          </div>
+          <a href="/api/create-pet-profile" class="btn btn-primary">
+            <i data-lucide="plus"></i> Add New Pet
+          </a>
+        </div>
+
+        <div class="pets-grid">
+          <!-- Pet Card 1 -->
+          <div class="pet-card reveal">
+            <div class="pet-card-top">
+              <div class="profile-avatar-fallback">B</div>
+              <div>
+                <h3>Bruno</h3>
+                <p class="pet-sub">Labrador • Male</p>
+              </div>
+            </div>
+            <div class="pet-card-stats">
+              <div class="stat">
+                <span class="stat-label">Age</span>
+                <span class="stat-value">2 yrs</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Weight</span>
+                <span class="stat-value">18 kg</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Vaccinated</span>
+                <span class="stat-value">Yes</span>
+              </div>
+            </div>
+            <a href="/Profile/profile.html" class="btn btn-secondary pet-card-btn">View Profile</a>
+          </div>
+
+          <!-- Pet Card 2 -->
+          <div class="pet-card reveal">
+            <div class="pet-card-top">
+              <div class="profile-avatar-fallback">M</div>
+              <div>
+                <h3>Milo</h3>
+                <p class="pet-sub">Persian Cat • Male</p>
+              </div>
+            </div>
+            <div class="pet-card-stats">
+              <div class="stat">
+                <span class="stat-label">Age</span>
+                <span class="stat-value">1.5 yrs</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Weight</span>
+                <span class="stat-value">4 kg</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Vaccinated</span>
+                <span class="stat-value">Yes</span>
+              </div>
+            </div>
+            <a href="/Profile/profile.html" class="btn btn-secondary pet-card-btn">View Profile</a>
+          </div>
+
+          <!-- Pet Card 3 -->
+          <div class="pet-card reveal">
+            <div class="pet-card-top">
+              <div class="profile-avatar-fallback">D</div>
+              <div>
+                <h3>Daisy</h3>
+                <p class="pet-sub">Beagle • Female</p>
+              </div>
+            </div>
+            <div class="pet-card-stats">
+              <div class="stat">
+                <span class="stat-label">Age</span>
+                <span class="stat-value">4 yrs</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Weight</span>
+                <span class="stat-value">12 kg</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Vaccinated</span>
+                <span class="stat-value">No</span>
+              </div>
+            </div>
+            <a href="/Profile/profile.html" class="btn btn-secondary pet-card-btn">View Profile</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h2>Woofy.</h2>
+          <p>Premium PetCare.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Created By
+            <b>
+              
+                class="linkedin"
+                href="https://linkedin.com/in/shubham-rathod-tech"
+              >
+                Shubham Rathod - Jimmy
+              </a>
+            </b>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="/My-Pets/my-pets.js"></script>
+  </body>
+</html>
