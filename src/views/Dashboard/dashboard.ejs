@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | Woofy Premium Pet Care</title>
+
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- External CSS -->
     <link rel="stylesheet" href="/Dashboard/dashboard.css" />
+
     <!-- Lucide Icons Script -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -85,9 +90,6 @@
               <div class="card-info">
                 <h3>Weight</h3>
                 <p>Track growth</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
             <div class="dash-card">
@@ -95,9 +97,6 @@
               <div class="card-info">
                 <h3>Medical</h3>
                 <p>Past surgeries</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
             <div class="dash-card">
@@ -105,9 +104,6 @@
               <div class="card-info">
                 <h3>Medicine</h3>
                 <p>Treatments</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
             <div class="dash-card">
@@ -115,9 +111,6 @@
               <div class="card-info">
                 <h3>Vet History</h3>
                 <p>Prescriptions</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
             <div class="dash-card">
@@ -125,9 +118,6 @@
               <div class="card-info">
                 <h3>Grooming</h3>
                 <p>Spa & cuts</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
             <div class="dash-card">
@@ -135,11 +125,45 @@
               <div class="card-info">
                 <h3>Bath</h3>
                 <p>Wash schedule</p>
-                <a href="/api/select-pet-for-tracking" class="card-cta">
-                  Start Tracking <i data-lucide="arrow-right"></i>
-                </a>
               </div>
             </div>
+          </div>
+
+          <!-- Tracking & Records Buttons (Updated with class for mobile responsiveness) -->
+          <div class="action-buttons">
+            <a
+              href="/api/select-pet-for-tracking"
+              class="btn btn-primary"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+              "
+            >
+              Start Tracking
+              <i
+                data-lucide="arrow-right"
+                style="width: 18px; height: 18px"
+              ></i>
+            </a>
+
+            <a
+              href="/api/select-pet-to-show-record"
+              class="btn btn-secondary"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+              "
+            >
+              <i
+                data-lucide="clipboard-list"
+                style="width: 18px; height: 18px"
+              ></i>
+              Show Records
+            </a>
           </div>
         </div>
       </section>
@@ -180,7 +204,7 @@
         </div>
       </section>
 
-      <!-- SECTION 4: Shop Section (Full Width, No big image here to keep it clean) -->
+      <!-- SECTION 4: Shop Section -->
       <section class="dashboard-section shop-section">
         <div class="section-header-flex">
           <h2 class="section-title">Recommended Products</h2>

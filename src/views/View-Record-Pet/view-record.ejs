@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Records | Woofy Premium Pet Care</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/View-Record/view-record.css" />
+
+    <!-- Lucide Icons Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <header class="dashboard-nav">
+      <div class="nav-container">
+        <a href="/dashboard" class="logo">Woofy.</a>
+        <div class="nav-actions">
+          <a href="/api/pet-profiles" class="pet-profile-btn">
+            <span class="avatar"><i data-lucide="paw-print"></i></span>
+            <span>My Pets</span>
+          </a>
+          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <!-- Breadcrumb & Header -->
+      <a href="/api/dashboard" class="back-link"
+        ><i data-lucide="arrow-left" style="width: 16px; height: 16px"></i> Back
+        to Dashboard</a
+      >
+
+      <div class="page-header">
+        <div>
+          <h1>All Pet Records</h1>
+          <p>View and filter your pet's complete history.</p>
+        </div>
+      </div>
+
+      <!-- Category Filters -->
+      <div class="filter-container">
+        <button class="filter-btn active" data-category="all">
+          All Records
+        </button>
+        <button class="filter-btn" data-category="weight">Weight</button>
+        <button class="filter-btn" data-category="medical">Medical</button>
+        <button class="filter-btn" data-category="medicine">Medicine</button>
+        <button class="filter-btn" data-category="vet">Vet History</button>
+        <button class="filter-btn" data-category="grooming">Grooming</button>
+        <button class="filter-btn" data-category="bath">Bath</button>
+      </div>
+
+      <!-- Records List Container -->
+      <div class="records-list" id="recordsList">
+        <!-- Record Item: Medical -->
+        <div class="record-item" data-category="medical">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="stethoscope" style="color: #991b1b"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Spay / Neuter Surgery</h4>
+              <span class="badge badge-medical">Medical</span>
+              <span class="record-date">Aug 05, 2022</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p><strong>Clinic:</strong> Blue Cross Hospital</p>
+            <p>
+              Surgery was successful. Pet needs to wear the E-collar for 10 days
+              to prevent licking the stitches. Next follow-up is in 2 weeks.
+            </p>
+          </div>
+        </div>
+
+        <!-- Record Item: Weight -->
+        <div class="record-item" data-category="weight">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="scale" style="color: #0369a1"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Weight Check - 24.5 kg</h4>
+              <span class="badge badge-weight">Weight</span>
+              <span class="record-date">Oct 15, 2023</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p>
+              Gained 0.5kg since last month. Keep diet strictly to 2 cups a day
+              and increase evening walk time by 15 mins.
+            </p>
+          </div>
+        </div>
+
+        <!-- Record Item: Medicine -->
+        <div class="record-item" data-category="medicine">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="pill" style="color: #1e40af"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Tick & Flea Treatment</h4>
+              <span class="badge badge-medicine">Medicine</span>
+              <span class="record-date">Oct 05, 2023</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p><strong>Product:</strong> Bravecto Spot-On</p>
+            <p>
+              Applied Spot-On treatment behind the neck. Next dose due in
+              December. Ensure no bathing for next 48 hours.
+            </p>
+          </div>
+        </div>
+
+        <!-- Record Item: Bath -->
+        <div class="record-item" data-category="bath">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="droplets" style="color: #0284c7"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Home Bath</h4>
+              <span class="badge badge-bath">Bath</span>
+              <span class="record-date">Oct 01, 2023</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p>
+              Used anti-tick shampoo and cleaned paws thoroughly. Cleaned ears
+              with cotton swabs safely.
+            </p>
+          </div>
+        </div>
+
+        <!-- Record Item: Vet History -->
+        <div class="record-item" data-category="vet">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="clipboard-list" style="color: #065f46"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Ear Infection Checkup</h4>
+              <span class="badge badge-vet">Vet History</span>
+              <span class="record-date">Sep 20, 2023</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p><strong>Doctor:</strong> Dr. Sharma</p>
+            <p>
+              Prescribed 'Otomax' ear drops. 3 drops in the right ear twice a
+              day for 7 days. Mild yeast infection detected.
+            </p>
+          </div>
+        </div>
+
+        <!-- Record Item: Grooming -->
+        <div class="record-item" data-category="grooming">
+          <div class="record-summary">
+            <div class="record-icon">
+              <i data-lucide="scissors" style="color: #7c3aed"></i>
+            </div>
+            <div class="record-info">
+              <h4 class="record-title">Full Spa & Haircut</h4>
+              <span class="badge badge-grooming">Grooming</span>
+              <span class="record-date">Aug 28, 2023</span>
+            </div>
+            <button class="expand-btn" aria-label="Expand record">
+              <i data-lucide="chevron-down"></i>
+            </button>
+          </div>
+          <div class="record-details">
+            <p><strong>Salon:</strong> Paws & Claws Grooming Spa</p>
+            <p>
+              Nail clipping, ear cleaning, and a short summer trim. Pet was a
+              bit anxious during nail clipping but otherwise good.
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container">
+        <p>Woofy | Pet Management Application</p>
+      </div>
+    </footer>
+
+    <!-- Filtering & Expansion Logic -->
+    <script>
+      // Initialize Icons
+      lucide.createIcons();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const records = document.querySelectorAll(".record-item");
+        const expandBtns = document.querySelectorAll(".expand-btn");
+
+        // 1. Filtering Logic
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Remove active class from all buttons
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            // Add active class to clicked button
+            btn.classList.add("active");
+
+            const selectedCategory = btn.getAttribute("data-category");
+
+            // Show/Hide records based on category
+            records.forEach((record) => {
+              const recordCategory = record.getAttribute("data-category");
+              if (
+                selectedCategory === "all" ||
+                recordCategory === selectedCategory
+              ) {
+                record.style.display = "block";
+              } else {
+                record.style.display = "none";
+              }
+            });
+          });
+        });
+
+        // 2. Expand/Collapse Logic
+        expandBtns.forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const recordItem = e.currentTarget.closest(".record-item");
+
+            // Toggle the 'expanded' class
+            recordItem.classList.toggle("expanded");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

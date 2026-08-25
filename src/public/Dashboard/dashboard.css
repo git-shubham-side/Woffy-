@@ -7,7 +7,7 @@
   --bg-light: #f8fafc;
   --white: #ffffff;
   --border-color: #e2e8f0;
-  --border-radius: 4px; /* Sharp 4px borders */
+  --border-radius: 4px;
   --transition: all 0.2s ease-in-out;
 }
 
@@ -120,7 +120,7 @@ body.dashboard-body {
   padding: 3rem 1.5rem;
 }
 
-/* --- SPLIT LAYOUT FOR IMAGES & CONTENT --- */
+/* SPLIT LAYOUT FOR IMAGES & CONTENT */
 .split-section {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -226,6 +226,14 @@ body.dashboard-body {
   text-decoration: underline;
 }
 
+/* Action Buttons Container (Desktop) */
+.action-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 /* Grids & Cards */
 .two-cols-grid {
   display: grid;
@@ -275,34 +283,8 @@ body.dashboard-body {
 .card-info p {
   font-size: 0.85rem;
   color: var(--text-muted);
-  margin: 0 0 0.9rem;
+  margin: 0;
   line-height: 1.4;
-}
-
-/* Start Tracking CTA inside records cards */
-.card-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--accent-color);
-  text-decoration: none;
-  transition: var(--transition);
-}
-
-.card-cta svg {
-  width: 14px;
-  height: 14px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.card-cta:hover {
-  color: var(--primary-color);
-}
-
-.card-cta:hover svg {
-  transform: translateX(3px);
 }
 
 .service-card .card-icon {
@@ -353,8 +335,6 @@ body.dashboard-body {
   text-align: center;
   padding: 2rem 0;
   border-top: 1px solid var(--border-color);
-  /* background-color: var(--white);
-  color: var(--text-muted); */
   background-color: var(--primary-color);
   color: var(--white);
   font-size: 0.875rem;
@@ -384,5 +364,14 @@ body.dashboard-body {
   }
   .welcome-text h1 {
     font-size: 1.8rem;
+  }
+
+  /* Action Buttons Full Width on Mobile */
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .action-buttons .btn {
+    width: 100%;
   }
 }

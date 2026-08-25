@@ -1,0 +1,324 @@
+/* --- Base Reset & Variables --- */
+:root {
+  --primary-color: #0f172a;
+  --accent-color: #2563eb;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+  --border-color: #e2e8f0;
+  --border-radius: 4px;
+  --transition: all 0.2s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px; /* Thoda narrow rakha hai list acche se padhne ke liye */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Navigation --- */
+.dashboard-nav {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  letter-spacing: -0.05em;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.pet-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+.pet-profile-btn:hover {
+  background-color: var(--bg-light);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border-color: var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+  border-color: var(--primary-color);
+}
+
+/* --- Page Header --- */
+.dashboard-main {
+  padding: 3rem 1.5rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+.page-header h1 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+.page-header p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+.back-link:hover {
+  color: var(--primary-color);
+}
+
+/* --- Filter Buttons --- */
+.filter-container {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border-color);
+  background: var(--white);
+  border-radius: 999px; /* Pill shape */
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: var(--transition);
+}
+.filter-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+.filter-btn.active {
+  background: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* --- Expandable Record Cards --- */
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.record-item {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: box-shadow 0.2s ease-in-out;
+  overflow: hidden;
+}
+.record-item:hover {
+  border-color: var(--primary-color);
+}
+
+/* Short Summary View */
+.record-summary {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  gap: 1.25rem;
+}
+
+.record-icon {
+  font-size: 1.5rem;
+  background: var(--bg-light);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.record-title {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin: 0;
+}
+.record-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-left: auto; /* Pushes date to the right on desktop */
+}
+
+/* Expand Button */
+.expand-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+.expand-btn:hover {
+  background: var(--bg-light);
+  color: var(--primary-color);
+}
+.expand-btn svg {
+  transition: transform 0.3s ease;
+}
+
+/* Expanded Details Section (Hidden by default) */
+.record-details {
+  display: none;
+  padding: 0 1.5rem 1.5rem 5rem; /* Left padding matches the icon width alignment */
+  border-top: 1px dashed var(--border-color);
+  margin-top: -0.5rem;
+  padding-top: 1.25rem;
+}
+.record-details p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.record-details p:last-child {
+  margin-bottom: 0;
+}
+.record-details strong {
+  color: var(--text-main);
+}
+
+/* JS Triggered Class for Expansion */
+.record-item.expanded .record-details {
+  display: block;
+}
+.record-item.expanded .expand-btn svg {
+  transform: rotate(180deg);
+}
+.record-item.expanded {
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Category Badges --- */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-weight {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+.badge-bath {
+  background: #cffafe;
+  color: #0284c7;
+}
+.badge-grooming {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+.badge-medical {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.badge-medicine {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.badge-vet {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* --- Footer --- */
+.dash-footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--primary-color);
+  color: var(--white);
+  font-size: 0.875rem;
+  margin-top: 4rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .record-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .record-date {
+    margin-left: 0; /* Reset margin on mobile */
+  }
+  .record-summary {
+    padding: 1rem;
+    align-items: flex-start;
+  }
+  .record-details {
+    padding: 0 1rem 1rem 1rem;
+  }
+}

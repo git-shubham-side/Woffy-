@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Health Records | Woofy Premium Pet Care</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      /* --- Base Reset & Variables (From Your Dashboard) --- */
+      :root {
+        --primary-color: #0f172a;
+        --accent-color: #2563eb;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --bg-light: #f8fafc;
+        --white: #ffffff;
+        --border-color: #e2e8f0;
+        --border-radius: 4px;
+        --transition: all 0.2s ease-in-out;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-main);
+        background-color: var(--bg-light);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* --- Navigation --- */
+      .dashboard-nav {
+        background-color: var(--white);
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+      }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        letter-spacing: -0.05em;
+      }
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .pet-profile-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--text-main);
+        font-weight: 500;
+        padding: 0.5rem;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+      }
+      .pet-profile-btn:hover {
+        background-color: var(--bg-light);
+      }
+
+      /* --- Buttons --- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        cursor: pointer;
+        font-size: 1rem;
+        border: 2px solid transparent;
+      }
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border-color: var(--primary-color);
+      }
+      .btn-primary:hover {
+        background-color: #1e293b;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        color: var(--primary-color);
+        border-color: var(--border-color);
+      }
+      .btn-secondary:hover {
+        border-color: var(--primary-color);
+      }
+      .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+      }
+      .btn-block {
+        width: 100%;
+        display: flex;
+      }
+
+      /* --- Page Layout --- */
+      .dashboard-main {
+        padding: 3rem 1.5rem;
+      }
+
+      .page-header {
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 1rem;
+      }
+      .page-header h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.02em;
+      }
+      .page-header p {
+        color: var(--text-muted);
+        margin: 0;
+      }
+
+      .back-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+      }
+      .back-link:hover {
+        color: var(--primary-color);
+      }
+
+      /* Layout Grid for Records */
+      .records-layout {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr; /* Left Form, Right List */
+        gap: 3rem;
+        align-items: start;
+      }
+
+      /* --- Forms Styling (NEW) --- */
+      .form-card {
+        background-color: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      }
+      .form-card h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--text-main);
+      }
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        font-family: inherit;
+        font-size: 1rem;
+        color: var(--text-main);
+        transition: var(--transition);
+        background-color: var(--white);
+      }
+      .form-control:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      /* --- Record Cards Styling (View Records) --- */
+      .records-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .record-item {
+        background-color: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        display: flex;
+        gap: 1.25rem;
+        transition: var(--transition);
+      }
+      .record-item:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+      }
+
+      .record-icon {
+        font-size: 1.5rem;
+        background: var(--bg-light);
+        padding: 0.75rem;
+        border-radius: var(--border-radius);
+        height: fit-content;
+      }
+
+      .record-content {
+        flex: 1;
+      }
+      .record-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+      }
+      .record-title {
+        font-size: 1.1rem;
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .record-date {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+      .record-desc {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+      }
+
+      /* Category Badges */
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .badge-medical {
+        background: #fee2e2;
+        color: #991b1b;
+      } /* Red for surgery */
+      .badge-medicine {
+        background: #dbeafe;
+        color: #1e40af;
+      } /* Blue for medicine */
+      .badge-vet {
+        background: #d1fae5;
+        color: #065f46;
+      } /* Green for vet history */
+
+      .record-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
+      }
+      .action-link {
+        font-size: 0.85rem;
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .action-link.delete {
+        color: #dc2626;
+      }
+      .action-link:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      .dash-footer {
+        text-align: center;
+        padding: 2rem 0;
+        border-top: 1px solid var(--border-color);
+        background-color: var(--primary-color);
+        color: var(--white);
+        font-size: 0.875rem;
+        margin-top: 4rem;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .records-layout {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <header class="dashboard-nav">
+      <div class="nav-container">
+        <a href="/dashboard" class="logo">Woofy.</a>
+        <div class="nav-actions">
+          <a href="/api/pet-profiles" class="pet-profile-btn">
+            <span class="avatar"><i data-lucide="paw-print"></i></span>
+            <span>My Pets</span>
+          </a>
+          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <!-- Breadcrumb & Header -->
+      <a href="/dashboard" class="back-link"
+        ><i data-lucide="arrow-left" style="width: 16px; height: 16px"></i> Back
+        to Dashboard</a
+      >
+
+      <div class="page-header">
+        <div>
+          <h1>Pet Health & Vet Records</h1>
+          <p>Manage surgeries, treatments, and prescriptions in one place.</p>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="records-layout">
+        <!-- LEFT SIDE: CREATE RECORD FORM -->
+        <section class="create-record-section">
+          <form class="form-card" action="/api/records/create" method="POST">
+            <h2>Add New Record</h2>
+
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select name="category" class="form-control" required>
+                <option value="" disabled selected>Select category...</option>
+                <option value="medical">Medical - Past Surgeries</option>
+                <option value="medicine">Medicine - Treatments</option>
+                <option value="vet_history">Vet History - Prescriptions</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Record Title</label>
+              <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="e.g., Dental Cleaning, Deworming Pill"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" name="date" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Details / Notes</label>
+              <textarea
+                name="details"
+                class="form-control"
+                placeholder="Add doctor notes, dosage, or recovery instructions..."
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              <i data-lucide="save" style="width: 18px; height: 18px"></i> Save
+              Record
+            </button>
+          </form>
+        </section>
+
+        <!-- RIGHT SIDE: VIEW RECORDS LIST -->
+        <section class="view-records-section">
+          <h2
+            style="
+              font-size: 1.25rem;
+              margin-bottom: 1.5rem;
+              color: var(--primary-color);
+            "
+          >
+            Recent Records
+          </h2>
+
+          <div class="records-list">
+            <!-- Record Item 1: Vet History -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="clipboard-list" style="color: #065f46"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Ear Infection Prescription</div>
+                  <div class="record-date">Oct 12, 2023</div>
+                </div>
+                <span class="badge badge-vet">Vet History - Prescriptions</span>
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Dr. Sharma prescribed 'Otomax' ear drops. 3 drops in the right
+                  ear twice a day for 7 days.
+                </p>
+                <div class="record-actions">
+                  <a href="#" class="action-link"
+                    ><i
+                      data-lucide="edit"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Edit</a
+                  >
+                  <a href="#" class="action-link delete"
+                    ><i
+                      data-lucide="trash-2"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Record Item 2: Medical / Surgery -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="stethoscope" style="color: #991b1b"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Spay / Neuter Surgery</div>
+                  <div class="record-date">Aug 05, 2022</div>
+                </div>
+                <span class="badge badge-medical"
+                  >Medical - Past Surgeries</span
+                >
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Surgery was successful at Blue Cross Hospital. Pet needs to
+                  wear the E-collar for 10 days to prevent licking the stitches.
+                </p>
+                <div class="record-actions">
+                  <a href="#" class="action-link"
+                    ><i
+                      data-lucide="edit"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Edit</a
+                  >
+                  <a href="#" class="action-link delete"
+                    ><i
+                      data-lucide="trash-2"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Record Item 3: Medicine -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="pill" style="color: #1e40af"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Monthly Tick & Flea Treatment</div>
+                  <div class="record-date">Sep 01, 2023</div>
+                </div>
+                <span class="badge badge-medicine">Medicine - Treatments</span>
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Applied Bravecto Spot-On treatment. Next dose due on Dec 01,
+                  2023. Do not bathe the dog for 48 hours.
+                </p>
+                <div class="record-actions">
+                  <a href="#" class="action-link"
+                    ><i
+                      data-lucide="edit"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Edit</a
+                  >
+                  <a href="#" class="action-link delete"
+                    ><i
+                      data-lucide="trash-2"
+                      style="width: 14px; height: 14px"
+                    ></i>
+                    Delete</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container">
+        <p>Woofy | Pet Management Application</p>
+      </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

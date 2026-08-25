@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Activity | Woofy Premium Pet Care</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/Track-Record-Form/tracking.css" />
+
+    <!-- Lucide Icons Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <header class="dashboard-nav">
+      <div class="nav-container">
+        <a href="/api/dashboard" class="logo">Woofy.</a>
+        <div class="nav-actions">
+          <a href="/api/pet-profiles" class="pet-profile-btn">
+            <span class="avatar"><i data-lucide="paw-print"></i></span>
+            <span>My Pets</span>
+          </a>
+          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main container">
+      <!-- Breadcrumb & Header -->
+      <a href="/api/dashboard" class="back-link"
+        ><i data-lucide="arrow-left" style="width: 16px; height: 16px"></i> Back
+        to Dashboard</a
+      >
+
+      <div class="page-header">
+        <div>
+          <h1>Track Pet Activity</h1>
+          <p>Log your pet's health, treatments, and grooming schedules.</p>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="records-layout">
+        <!-- LEFT SIDE: CREATE TRACK RECORD FORM -->
+        <section class="create-record-section">
+          <form class="form-card" action="/api/track/create" method="POST">
+            <h2>Add New Log</h2>
+
+            <div class="form-group">
+              <label class="form-label">Activity Type</label>
+              <select name="activityType" class="form-control" required>
+                <option value="" disabled selected>Select activity...</option>
+                <option value="weight">Weight (Track growth)</option>
+                <option value="medical">Medical (Past surgeries)</option>
+                <option value="medicine">Medicine (Treatments)</option>
+                <option value="vet_history">Vet History (Prescriptions)</option>
+                <option value="grooming">Grooming (Spa & cuts)</option>
+                <option value="bath">Bath (Wash schedule)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Title / Measurement</label>
+              <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="e.g., 15.5 kg, Deworming Pill, Spa Bath"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" name="date" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Additional Notes</label>
+              <textarea
+                name="notes"
+                class="form-control"
+                placeholder="Any specific details? (e.g., used oatmeal shampoo, doctor's advice)"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+              "
+            >
+              <i data-lucide="activity" style="width: 18px; height: 18px"></i>
+              Save Tracking Log
+            </button>
+          </form>
+        </section>
+
+        <!-- RIGHT SIDE: VIEW RECENT LOGS -->
+        <section class="view-records-section">
+          <h2
+            style="
+              font-size: 1.25rem;
+              margin-bottom: 1.5rem;
+              color: var(--primary-color);
+            "
+          >
+            Recent Logs
+          </h2>
+
+          <div class="records-list">
+            <!-- Tracking Item 1: Weight -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="scale" style="color: #0369a1"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Weight Check - 24.5 kg</div>
+                  <div class="record-date">Oct 15, 2023</div>
+                </div>
+                <span class="badge badge-weight">Weight</span>
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Gained 0.5kg since last month. Keep diet strictly to 2 cups a
+                  day.
+                </p>
+              </div>
+            </div>
+
+            <!-- Tracking Item 2: Medicine -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="pill" style="color: #1e40af"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Tick & Flea Treatment</div>
+                  <div class="record-date">Oct 05, 2023</div>
+                </div>
+                <span class="badge badge-medicine">Medicine</span>
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Applied Spot-On treatment. Next dose due in December.
+                </p>
+              </div>
+            </div>
+
+            <!-- Tracking Item 3: Bath -->
+            <div class="record-item">
+              <div class="record-icon">
+                <i data-lucide="droplets" style="color: #0284c7"></i>
+              </div>
+              <div class="record-content">
+                <div class="record-header">
+                  <div class="record-title">Home Bath</div>
+                  <div class="record-date">Oct 01, 2023</div>
+                </div>
+                <span class="badge badge-bath">Bath</span>
+                <p class="record-desc" style="margin-top: 0.75rem">
+                  Used anti-tick shampoo and cleaned paws thoroughly.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container">
+        <p>Woofy | Pet Management Application</p>
+      </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,313 @@
+/* --- Base Reset & Variables (Consistent Theme) --- */
+:root {
+  --primary-color: #0f172a;
+  --accent-color: #2563eb;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-light: #f8fafc;
+  --white: #ffffff;
+  --border-color: #e2e8f0;
+  --border-radius: 4px;
+  --transition: all 0.2s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Navigation --- */
+.dashboard-nav {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+  letter-spacing: -0.05em;
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.pet-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+.pet-profile-btn:hover {
+  background-color: var(--bg-light);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  cursor: pointer;
+  font-size: 1rem;
+  border: 2px solid transparent;
+}
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+.btn-primary:hover {
+  background-color: #1e293b;
+}
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border-color: var(--border-color);
+}
+.btn-secondary:hover {
+  border-color: var(--primary-color);
+}
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+.btn-block {
+  width: 100%;
+}
+
+/* --- Page Layout --- */
+.dashboard-main {
+  padding: 3rem 1.5rem;
+}
+
+.page-header {
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+.page-header h1 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+.page-header p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+.back-link:hover {
+  color: var(--primary-color);
+}
+
+/* Grid Layout for Forms & Logs */
+.records-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Left Form, Right List */
+  gap: 3rem;
+  align-items: start;
+}
+
+/* --- Forms Styling --- */
+.form-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+.form-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-main);
+  transition: var(--transition);
+  background-color: var(--white);
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* --- Tracking Record Cards --- */
+.records-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.record-item {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  display: flex;
+  gap: 1.25rem;
+  transition: var(--transition);
+}
+.record-item:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.record-icon {
+  font-size: 1.5rem;
+  background: var(--bg-light);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  height: fit-content;
+}
+
+.record-content {
+  flex: 1;
+}
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+.record-title {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.record-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.record-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* Custom Badges for all 6 Dashboard Categories */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge-weight {
+  background: #e0f2fe; /* light blue */
+  color: #0369a1;
+}
+.badge-bath {
+  background: #cffafe; /* cyan */
+  color: #0284c7;
+}
+.badge-grooming {
+  background: #ede9fe; /* purple */
+  color: #7c3aed;
+}
+.badge-medical {
+  background: #fee2e2; /* red */
+  color: #991b1b;
+}
+.badge-medicine {
+  background: #dbeafe; /* dark blue */
+  color: #1e40af;
+}
+.badge-vet {
+  background: #d1fae5; /* green */
+  color: #065f46;
+}
+
+/* Footer */
+.dash-footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--primary-color);
+  color: var(--white);
+  font-size: 0.875rem;
+  margin-top: 4rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .records-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

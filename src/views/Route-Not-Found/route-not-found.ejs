@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 Not Found - Woofy</title>
+
+    <!-- Design System Typography: Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Link to your main stylesheet -->
+    <link rel="stylesheet" href="/Route-Not-Found/route-not-found.css" />
+  </head>
+  <body>
+    <!-- 1. Standard Layout: Dashboard Navigation -->
+    <header class="dashboard-nav">
+      <div class="nav-container">
+        <div class="logo"></i> Woofy.</div>
+        <!-- <div class="nav-actions">
+          <button class="btn btn-secondary btn-sm">My Pets</button>
+          <button class="btn btn-secondary btn-sm">Logout</button>
+        </div> -->
+      </div>
+    </header>
+
+    <!-- 2. Standard Layout: Main Container -->
+    <main class="dashboard-main container">
+      <!-- Back Link -->
+      <a href="/api/dashboard" class="back-link">
+        <i data-lucide="arrow-left"></i> Back to Home
+      </a>
+
+      <!-- 3. Standard Layout: Page Header -->
+      <div class="page-header">
+        <h1>404 - Page Not Found</h1>
+        <p>Oops! Looks like you've barked up the wrong tree.</p>
+      </div>
+
+      <!-- 4. Content Card (Using form-card as a structural wrapper for the message) -->
+      <div class="form-card">
+        <h2><i data-lucide="search-x"></i> Are you lost?</h2>
+        <p>
+          We sniffed around everywhere but couldn't find the page you're looking
+          for. The link might be broken, or the page may have been removed.
+        </p>
+
+        <br />
+
+        <a href="/api/dashboard" class="btn btn-primary">
+          <i data-lucide="home"></i> Return to Dashboard
+        </a>
+        <!-- <a href="/support" class="btn btn-secondary">
+          <i data-lucide="life-buoy"></i> Get Help
+        </a> -->
+      </div>
+    </main>
+
+    <!-- 5. Standard Layout: Footer -->
+    <footer class="dash-footer">
+      <p>Woofy | PetCare Application.</p>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

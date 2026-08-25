@@ -17,9 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.get("/test", (req, res) => {
-  res.render("Tracking-Pages-Section-1/tracking-page-1");
-});
+app.get("/test", (req, res) => {});
 
 // Routes
 app.get("/", (req, res) => {
@@ -75,9 +73,25 @@ app.get("/api/select-pet-for-tracking", (req, res) => {
   res.render("Select-pets-for-tracking/pet-tracking");
 });
 
+//-----Form Pet For Tracking --------
+app.get("/api/petId", (req, res) => {
+  res.render("Track-Record-Form/track-record-form");
+});
+
+//---------- Select Pet to Show Record - Form Dashboard
+app.get("/api/select-pet-to-show-record", (req, res) => {
+  res.render("Select-Pet-to-show-Record/select-pet-to-show-record");
+});
+
+//---------Show PET Records ---------
+app.get("/api/show-records/petID", (req, res) => {
+  res.render("View-Record-Pet/view-record");
+});
+
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
+  res.render("Route-Not-Found/route-not-found");
+  // res.status(404).json({ error: "Route not found" });
 });
 
 // Global error handler
@@ -88,6 +102,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
