@@ -353,8 +353,10 @@ body.dashboard-body {
   text-align: center;
   padding: 2rem 0;
   border-top: 1px solid var(--border-color);
-  background-color: var(--white);
-  color: var(--text-muted);
+  /* background-color: var(--white);
+  color: var(--text-muted); */
+  background-color: var(--primary-color);
+  color: var(--white);
   font-size: 0.875rem;
 }
 

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Care Log | Woofy</title>
+    <link
+      rel="stylesheet"
+      href="/Tracking-Pages-Section-1/tracking-page-1.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <div class="logo">Woofy.</div>
+        <nav class="nav-links">
+          <a href="/api/dashboard">Home</a>
+          <a href="/My-Pets/my-pets.html">My Pets</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="pets-page">
+      <div class="container" style="max-width: 750px">
+        <!-- Page Header -->
+        <div class="pets-header reveal">
+          <div>
+            <h2>Care Log</h2>
+            <p>Record your pet's activities and view their recent history.</p>
+          </div>
+        </div>
+
+        <!-- Add Record Form -->
+        <div class="form-card reveal">
+          <h3 class="section-title">
+            <i data-lucide="plus-circle"></i> New Entry
+          </h3>
+          <form action="#" method="POST">
+            <!-- Row 1: Activity & Date -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="activityType">Record Type</label>
+                <div class="input-wrapper">
+                  <i data-lucide="activity" class="input-icon"></i>
+                  <select id="activityType" class="form-control with-icon">
+                    <option value="weight">Weight</option>
+                    <option value="bath">Bath</option>
+                    <option value="grooming">Grooming</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="recordDate">Date</label>
+                <div class="input-wrapper">
+                  <i data-lucide="calendar" class="input-icon"></i>
+                  <input
+                    type="date"
+                    id="recordDate"
+                    class="form-control with-icon"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Details (Full Width) -->
+            <div class="form-group" style="margin-bottom: 1.5rem">
+              <label for="recordNote">Details</label>
+              <div class="input-wrapper">
+                <i data-lucide="file-text" class="input-icon"></i>
+                <input
+                  type="text"
+                  id="recordNote"
+                  class="form-control with-icon"
+                  placeholder="e.g., 15.2 kg or Used flea shampoo"
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary submit-btn">
+              <i data-lucide="save"></i> Save Record
+            </button>
+          </form>
+        </div>
+
+        <!-- Recent Records Section -->
+        <div class="records-section reveal" style="margin-top: 3.5rem">
+          <h3 class="section-title">
+            <i data-lucide="list"></i> Recent Records
+          </h3>
+
+          <div class="history-list" id="dynamicRecordsContainer">
+            <!-- Blank Fake Slide (Empty State) -->
+            <div class="empty-state">
+              <div class="empty-icon">
+                <i data-lucide="inbox"></i>
+              </div>
+              <h3>No records found</h3>
+              <p>
+                Add a new entry above to start tracking history for this pet.
+              </p>
+            </div>
+
+            <!-- Jab record add hoga, toh wo yahan append hoga aur upar wala 'empty-state' hide ho jayega -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h2>Woofy.</h2>
+          <p>Premium PetCare.</p>
+        </div>
+        <!-- <div class="footer-links">
+          <p>
+            Created By
+            <b>
+              <a
+                class="linkedin"
+                href="https://linkedin.com/in/shubham-rathod-tech"
+              >
+                Shubham Rathod - Jimmy
+              </a>
+            </b>
+          </p>
+        </div> -->
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="/My-Pets/my-pets.js"></script>
+  </body>
+</html>

@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.get("/test", (req, res) => {
+  res.render("Tracking-Pages-Section-1/tracking-page-1");
+});
+
 // Routes
 app.get("/", (req, res) => {
   res.render("Landing/index");
@@ -24,10 +28,6 @@ app.get("/", (req, res) => {
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "OK", uptime: process.uptime() });
-});
-
-app.get("/test", (req, res) => {
-  res.render("My-Pets/my-pets");
 });
 
 // Routes
@@ -68,6 +68,11 @@ app.get("/api/pet-profile", (req, res) => {
 //-----------Show User Pet Profiles ---------||
 app.get("/api/pet-profiles", (req, res) => {
   res.render("My-Pets/my-pets");
+});
+
+//------- Select Pet record Type  -------
+app.get("/api/select-pet-for-tracking", (req, res) => {
+  res.render("Select-pets-for-tracking/pet-tracking");
 });
 
 // 404 handler
