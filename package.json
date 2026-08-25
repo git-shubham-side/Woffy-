@@ -26,10 +26,13 @@
     "dev": "nodemon src/server.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-mongo": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^6.0.1",
     "express": "^4.19.2",
+    "express-session": "^1.19.0",
     "mongoose": "^9.9.3",
     "morgan": "^1.10.0",
     "mysql2": "^3.24.2",
