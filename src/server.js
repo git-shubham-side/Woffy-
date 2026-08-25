@@ -17,6 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+//Database
+const dbConnection = require("./Database/db");
+dbConnection();
+
 app.get("/test", (req, res) => {});
 
 // Routes
