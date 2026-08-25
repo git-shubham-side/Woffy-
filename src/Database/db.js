@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 async function dbConnection() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/Woffy");
+    await mongoose.connect(process.env.DBURL);
     console.log("Database Connected Sussfully!");
   } catch (err) {
     console.log("Database Connection Error!");
