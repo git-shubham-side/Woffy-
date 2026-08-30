@@ -22,6 +22,9 @@ const {
 
 const app = express();
 
+// Trust Reverse Proxy (Required for Render, Heroku, etc.)
+app.set("trust proxy", 1);
+
 // View Engine & Static Assets
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
@@ -31,7 +34,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 // Session & Flash Configuration
 app.use(
@@ -45,7 +48,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 24 hours
       httpOnly: true,
-      secure: false, // Set to true in production with HTTPS
+      secure: "auto", // Automatically detects HTTPS on Render vs HTTP on localhost
+      sameSite: "lax",
     },
   }),
 );

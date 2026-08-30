@@ -24,21 +24,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Quick Fill Admin / Demo Credentials
-  const quickFillBtn = document.getElementById("quickFillBtn");
-  const emailInput = document.getElementById("email");
-
-  if (quickFillBtn && emailInput && passwordInput) {
-    quickFillBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      emailInput.value = "rathodshubham7711@gmail.com";
-      passwordInput.value = "admin123";
-
-      // Subtle flash animation on button
-      quickFillBtn.textContent = "Filled!";
-      setTimeout(() => {
-        quickFillBtn.textContent = "Fill Admin";
-      }, 1500);
-    });
-  }
 });

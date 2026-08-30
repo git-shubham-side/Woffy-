@@ -200,7 +200,10 @@ const postAdminDirectAddHospital = async (req, res) => {
 
     let photoPath = "";
     if (req.file) {
-      photoPath = "/uploads/hospitals/" + req.file.filename;
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/hospitals/" + req.file.filename;
     } else if (req.body.photoUrl && req.body.photoUrl.trim() !== "") {
       photoPath = req.body.photoUrl.trim();
     } else {
@@ -292,7 +295,10 @@ const postAddRescueService = async (req, res) => {
 
     let photoPath = "";
     if (req.file) {
-      photoPath = "/uploads/rescue/" + req.file.filename;
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/rescue/" + req.file.filename;
     } else if (req.body.photoUrl && req.body.photoUrl.trim() !== "") {
       photoPath = req.body.photoUrl.trim();
     } else {
@@ -432,7 +438,10 @@ const postEditProduct = async (req, res) => {
 
     let photoPath = product.image;
     if (req.file) {
-      photoPath = "/uploads/products/" + req.file.filename;
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/products/" + req.file.filename;
     } else if (photoUrl && photoUrl.trim() !== "") {
       photoPath = photoUrl.trim();
     }
@@ -490,7 +499,10 @@ const postAddProduct = async (req, res) => {
 
     let photoPath = "";
     if (req.file) {
-      photoPath = "/uploads/products/" + req.file.filename;
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/products/" + req.file.filename;
     } else if (req.body.photoUrl && req.body.photoUrl.trim() !== "") {
       photoPath = req.body.photoUrl.trim();
     } else {

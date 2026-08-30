@@ -92,7 +92,10 @@ const postCreateRecord = async (req, res) => {
 
     let recordImage = "";
     if (req.file) {
-      recordImage = "/uploads/records/" + req.file.filename;
+      recordImage =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/records/" + req.file.filename;
     }
 
     await Record.create({

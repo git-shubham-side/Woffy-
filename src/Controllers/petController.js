@@ -74,7 +74,11 @@ const postCreatePet = async (req, res) => {
       req.files["petImage"] &&
       req.files["petImage"].length > 0
     ) {
-      mainPhoto = "/uploads/pets/" + req.files["petImage"][0].filename;
+      const file = req.files["petImage"][0];
+      mainPhoto =
+        file.path && file.path.startsWith("http")
+          ? file.path
+          : "/uploads/pets/" + file.filename;
     } else if (photoUrl && photoUrl.trim() !== "") {
       mainPhoto = photoUrl.trim();
     }
@@ -85,8 +89,10 @@ const postCreatePet = async (req, res) => {
       req.files["galleryImages"] &&
       req.files["galleryImages"].length > 0
     ) {
-      galleryPhotos = req.files["galleryImages"].map(
-        (file) => "/uploads/gallery/" + file.filename,
+      galleryPhotos = req.files["galleryImages"].map((file) =>
+        file.path && file.path.startsWith("http")
+          ? file.path
+          : "/uploads/gallery/" + file.filename,
       );
     }
 
@@ -235,7 +241,11 @@ const postEditPet = async (req, res) => {
       req.files["petImage"] &&
       req.files["petImage"].length > 0
     ) {
-      pet.photo = "/uploads/pets/" + req.files["petImage"][0].filename;
+      const file = req.files["petImage"][0];
+      pet.photo =
+        file.path && file.path.startsWith("http")
+          ? file.path
+          : "/uploads/pets/" + file.filename;
     } else if (photoUrl && photoUrl.trim() !== "") {
       pet.photoUrl = photoUrl.trim();
     }
@@ -246,8 +256,10 @@ const postEditPet = async (req, res) => {
       req.files["galleryImages"] &&
       req.files["galleryImages"].length > 0
     ) {
-      const newGalleryPhotos = req.files["galleryImages"].map(
-        (file) => "/uploads/gallery/" + file.filename,
+      const newGalleryPhotos = req.files["galleryImages"].map((file) =>
+        file.path && file.path.startsWith("http")
+          ? file.path
+          : "/uploads/gallery/" + file.filename,
       );
       pet.gallery = (pet.gallery || []).concat(newGalleryPhotos);
     }

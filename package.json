@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^6.0.0",
     "cors": "^2.8.5",
@@ -37,6 +38,7 @@
     "mongoose": "^9.9.3",
     "morgan": "^1.10.0",
     "multer": "^2.3.0",
+    "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.24.2",
     "nodemailer": "^9.0.6",
     "sequelize": "^6.37.8",

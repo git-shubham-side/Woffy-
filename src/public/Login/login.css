@@ -311,48 +311,6 @@ body {
   font-size: 0.975rem;
 }
 
-/* Quick Fill Demo Banner */
-.quick-fill-box {
-  background: #f8fafc;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
-  margin-bottom: 1.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.quick-fill-text p {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.quick-fill-text strong {
-  color: var(--primary-color);
-  font-size: 0.85rem;
-}
-
-.quick-fill-btn {
-  background: #eff6ff;
-  color: var(--accent-color);
-  border: 1px solid #bfdbfe;
-  padding: 0.35rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-  white-space: nowrap;
-}
-
-.quick-fill-btn:hover {
-  background: var(--accent-color);
-  color: #ffffff;
-  border-color: var(--accent-color);
-}
 
 /* Form Groups & Inputs */
 .input-group {

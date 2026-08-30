@@ -282,7 +282,10 @@ const postAddHospital = async (req, res) => {
 
     let photoPath = "";
     if (req.file) {
-      photoPath = "/uploads/hospitals/" + req.file.filename;
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/hospitals/" + req.file.filename;
     } else if (req.body.photoUrl && req.body.photoUrl.trim() !== "") {
       photoPath = req.body.photoUrl.trim();
     } else {
