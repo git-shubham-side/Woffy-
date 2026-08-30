@@ -9,8 +9,23 @@ const rescueServiceSchema = new mongoose.Schema(
     },
     orgType: {
       type: String,
-      enum: ["NGO", "Animal Ambulance", "Shelter", "Stray Rescue", "Government Helpline"],
+      enum: [
+        "NGO",
+        "Animal Ambulance",
+        "Shelter",
+        "Stray Rescue",
+        "Government Helpline",
+        "Wildlife Rescue",
+        "Adoption Center",
+        "Animal Hospital & Sanctuary",
+        "Trust",
+      ],
       default: "NGO",
+    },
+    contactPerson: {
+      type: String,
+      trim: true,
+      default: "",
     },
     city: {
       type: String,
@@ -27,6 +42,11 @@ const rescueServiceSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    pincode: {
+      type: String,
+      trim: true,
+      default: "",
     },
     phone: {
       type: String,
@@ -45,6 +65,11 @@ const rescueServiceSchema = new mongoose.Schema(
     website: {
       type: String,
       trim: true,
+    },
+    googleMapsUrl: {
+      type: String,
+      trim: true,
+      default: "",
     },
     services: {
       type: [String],

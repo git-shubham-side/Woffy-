@@ -3,90 +3,183 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log in to Woofy | Premium Pet Care</title>
+    <title>Log in to Woofy | Complete Pet Care Platform</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="/Login/login.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <div class="login-layout">
-      <!-- Left Side: Branding & Image -->
+      <!-- Left Side: Branding & Showcase Hero Panel -->
       <div class="login-brand">
+        <div class="brand-top">
+          <a href="/" class="logo">
+            Woofy<span>.</span>
+          </a>
+          <a href="/" class="back-home-link">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Back to Home</span>
+          </a>
+        </div>
+
         <div class="brand-content">
-          <a href="/" class="logo">Woofy.</a>
-          <h2>Welcome back to the pack.</h2>
+          <div class="sketch-badge">
+            <span>✦ Complete Pet Care Platform</span>
+          </div>
+
+          <h2>
+            Welcome Back to Your Pet's <span class="sketch-highlight">World</span>.
+          </h2>
+
           <p>
-            Manage your pet's appointments, track walks, and access premium care
-            all in one place.
+            Log in to manage vaccinations, track health records, explore 24/7 verified emergency pet hospitals, and connect with local rescue NGOs.
           </p>
+
+          <!-- Interactive Feature Micro-Pills -->
+          <div class="feature-pills-list">
+            <div class="feature-pill-item">
+              <div class="pill-icon">
+                <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>Digital Health, Weight & Vaccine Logs</span>
+            </div>
+            <div class="feature-pill-item">
+              <div class="pill-icon" style="background: rgba(249, 115, 22, 0.35); color: #fb923c;">
+                <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>100% Verified Pet Hospitals & Clinics</span>
+            </div>
+            <div class="feature-pill-item">
+              <div class="pill-icon" style="background: rgba(16, 185, 129, 0.35); color: #34d399;">
+                <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>24/7 Emergency Animal Rescue Helplines</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parent Testimonial Card -->
+        <div class="brand-footer-quote">
+          <div class="quote-stars">
+            <i data-lucide="star" style="width: 14px; height: 14px; fill: #f59e0b;"></i>
+            <i data-lucide="star" style="width: 14px; height: 14px; fill: #f59e0b;"></i>
+            <i data-lucide="star" style="width: 14px; height: 14px; fill: #f59e0b;"></i>
+            <i data-lucide="star" style="width: 14px; height: 14px; fill: #f59e0b;"></i>
+            <i data-lucide="star" style="width: 14px; height: 14px; fill: #f59e0b;"></i>
+          </div>
+          <p>"Woofy made tracking Bruno's vaccinations and finding nearby emergency vets completely seamless."</p>
+          <span class="quote-author">— Priya Sharma, Pet Parent of 2 Golden Retrievers</span>
         </div>
       </div>
 
-      <!-- Right Side: Login Form -->
+      <!-- Right Side: Login Form Container -->
       <div class="login-form-container">
         <div class="form-wrapper">
           <div class="form-header">
+            <span class="form-tag">Account Login</span>
             <h2>Sign in</h2>
-            <p>Please enter your details to continue.</p>
+            <p>Enter your credentials to access your pet care dashboard.</p>
           </div>
 
           <!-- Flash Messages -->
           <%- include('../partials/flash-messages') %>
 
+          <!-- Quick Fill Demo / Admin Pill -->
+          <div class="quick-fill-box">
+            <div class="quick-fill-text">
+              <p>Demo & Admin Access</p>
+              <strong>rathodshubham7711@gmail.com</strong>
+            </div>
+            <button type="button" id="quickFillBtn" class="quick-fill-btn">
+              Fill Admin
+            </button>
+          </div>
+
+          <!-- Login Form -->
           <form id="loginForm" method="POST" action="/api/login">
+            <!-- Email -->
             <div class="input-group">
-              <label for="email">Email address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="name@example.com"
-                required
-              />
+              <label for="email">Email Address *</label>
+              <div class="input-field-wrapper">
+                <i data-lucide="mail" class="input-icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
             </div>
 
+            <!-- Password -->
             <div class="input-group">
-              <label for="password">Password</label>
-              <div class="password-wrapper">
+              <label for="password">Password *</label>
+              <div class="input-field-wrapper">
+                <i data-lucide="lock" class="input-icon"></i>
                 <input
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="Enter your password"
+                  placeholder="••••••••"
                   required
+                  autocomplete="current-password"
                 />
-                <button type="button" id="togglePassword" class="toggle-btn">
-                  Show
+                <button
+                  type="button"
+                  id="togglePasswordBtn"
+                  class="toggle-password-btn"
+                  title="Toggle Password Visibility"
+                >
+                  <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
                 </button>
               </div>
             </div>
 
+            <!-- Remember Me & Forgot Password -->
             <div class="form-actions">
               <label class="remember-me">
-                <input type="checkbox" />
+                <input type="checkbox" name="remember" checked />
                 <span>Remember me</span>
               </label>
-              <a href="/api/forget-pass" class="forgot-link"
-                >Forgot password?</a
-              >
+              <a href="/api/forget-pass" class="forgot-link">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block">
-              Sign in
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">
+              <span>Sign In to Dashboard</span>
+              <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
             </button>
           </form>
 
           <div class="form-footer">
             <p>
-              Don't have an account? <a href="/api/signup">Sign up for free</a>
+              Don't have an account yet?
+              <a href="/api/signup">
+                <span>Sign up for free</span>
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+              </a>
             </p>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Scripts -->
     <script src="/Login/login.js"></script>
   </body>
 </html>

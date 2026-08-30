@@ -4,91 +4,189 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create an Account | Woofy</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="/Signup/signup.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <div class="signup-layout">
-      <!-- Left Side: Registration Form -->
+      <!-- Left Side: Registration Form Container -->
       <div class="signup-form-container">
         <div class="form-wrapper">
           <div class="form-header">
-            <h2>Join the Woofy family</h2>
-            <p>
-              Set up your account to start booking premium care for your pet.
-            </p>
+            <span class="form-tag">Free Registration</span>
+            <h2>Create an account</h2>
+            <p>Join Woofy to manage pet health, discover verified clinics, and access emergency care.</p>
           </div>
-          <!-- ---------- FLASH MESSAGES ----------- -->
+
+          <!-- Flash Messages -->
           <%- include('../partials/flash-messages') %>
-          <!-- ---------------------------------------------- -->
+
+          <!-- Signup Form -->
           <form id="signupForm" method="POST" action="/api/signup">
+            <!-- Full Name -->
             <div class="input-group">
-              <label for="fullName">Full name</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                placeholder="John Doe"
-                required
-              />
+              <label for="fullName">Full Name *</label>
+              <div class="input-field-wrapper">
+                <i data-lucide="user" class="input-icon"></i>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  placeholder="e.g. Shubham Rathod"
+                  required
+                  autocomplete="name"
+                />
+              </div>
             </div>
 
+            <!-- Email Address -->
             <div class="input-group">
-              <label for="email">Email address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="name@example.com"
-                required
-              />
+              <label for="email">Email Address *</label>
+              <div class="input-field-wrapper">
+                <i data-lucide="mail" class="input-icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
             </div>
 
+            <!-- Password -->
             <div class="input-group">
-              <label for="password">Create password</label>
-              <div class="password-wrapper">
+              <label for="password">Create Password *</label>
+              <div class="input-field-wrapper">
+                <i data-lucide="lock" class="input-icon"></i>
                 <input
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="At least 8 characters"
+                  placeholder="At least 6 characters"
                   required
+                  minlength="6"
+                  autocomplete="new-password"
                 />
-                <button type="button" id="togglePassword" class="toggle-btn" aria-label="Toggle password visibility">
-                  Show
+                <button
+                  type="button"
+                  id="togglePasswordBtn"
+                  class="toggle-password-btn"
+                  title="Toggle Password Visibility"
+                >
+                  <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
                 </button>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block">
-              Create account
+            <!-- Terms & Privacy Agreement -->
+            <div class="terms-agreement">
+              <input type="checkbox" id="termsCheck" required checked />
+              <label for="termsCheck">
+                I agree to Woofy's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">
+              <span>Create Free Account</span>
+              <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
             </button>
           </form>
 
           <div class="form-footer">
-            <p>Already have an account? <a href="/api/login">Log in here</a></p>
+            <p>
+              Already have an account?
+              <a href="/api/login">
+                <span>Log in here</span>
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+              </a>
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Right Side: Branding & Image (Flipped from login for variation) -->
+      <!-- Right Side: Value Proposition & Brand Panel -->
       <div class="signup-brand">
+        <div class="brand-top">
+          <a href="/" class="logo">
+            Woofy<span>.</span>
+          </a>
+          <a href="/" class="back-home-link">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Back to Home</span>
+          </a>
+        </div>
+
         <div class="brand-content">
-          <a href="/" class="logo">Woofy.</a>
+          <div class="sketch-badge">
+            <span>✦ 100% Free for Pet Parents</span>
+          </div>
+
           <h2>
-            Peace of mind for you. <br />
-            Pure joy for them.
+            Peace of Mind for You. <br />
+            Pure <span class="sketch-highlight">Joy</span> for Them.
           </h2>
+
           <p>
-            Join thousands of pet parents who trust Woofy for uncompromising,
-            professional pet care.
+            Join thousands of dedicated pet parents who trust Woofy for effortless pet management, emergency veterinary access, and growth tracking.
           </p>
+
+          <!-- Interactive Feature Micro-Pills -->
+          <div class="feature-pills-list">
+            <div class="feature-pill-item">
+              <div class="pill-icon">
+                <i data-lucide="file-text" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>Digital Health Records & Doctor Slips</span>
+            </div>
+            <div class="feature-pill-item">
+              <div class="pill-icon" style="background: rgba(249, 115, 22, 0.35); color: #fb923c;">
+                <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>Nearby 24/7 Verified Emergency Clinics</span>
+            </div>
+            <div class="feature-pill-item">
+              <div class="pill-icon" style="background: rgba(16, 185, 129, 0.35); color: #34d399;">
+                <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+              </div>
+              <span>Certified Animal Rescue Shelters & Helplines</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Proof Stats Banner -->
+        <div class="brand-footer-proof">
+          <div class="avatar-stack-small">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+          </div>
+          <div class="proof-content">
+            <p>2,500+ Pet Parents Enrolled</p>
+            <span>★★★★★ 4.9 Average Rating</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Scripts -->
     <script src="/Signup/signup.js"></script>
   </body>
 </html>

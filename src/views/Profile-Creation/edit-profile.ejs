@@ -1,36 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit <%= pet.petName %>'s Profile | Woofy</title>
-    <link rel="stylesheet" href="/Create-Profile/create-profile.css" />
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Create-Profile/create-profile.css" />
   </head>
   <body>
+    <!-- Navigation -->
     <header id="navbar">
-      <div class="container nav-container">
-        <a href="/api/dashboard" class="logo">Woofy.</a>
-        <nav class="nav-links">
-          <a href="/api/dashboard">Home</a>
+      <div class="nav-container">
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">Dashboard</a>
           <a href="/api/pet-profiles">My Pets</a>
+          <a href="/services/hospitals">Hospitals</a>
+          <a href="/services/rescue">Rescue NGOs</a>
+          <a href="/shop">Shop</a>
         </nav>
+
+        <div class="nav-actions">
+          <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-secondary btn-sm">Cancel</a>
+        </div>
       </div>
     </header>
 
-    <section class="profile-page">
+    <main class="profile-page">
       <div class="container">
-        <form class="form-card reveal" id="editPetForm" method="POST" action="/api/pet-profile/edit/<%= pet._id %>" enctype="multipart/form-data">
-          <h2>Edit Pet Profile</h2>
-          <p>
-            Update <%= pet.petName %>'s details, health stats, and photos.
-          </p>
+        <form class="form-card" id="editPetForm" method="POST" action="/api/pet-profile/edit/<%= pet._id %>" enctype="multipart/form-data">
+          <!-- Form Header -->
+          <div class="form-header-area">
+            <h2>Edit <%= pet.petName %>'s Profile</h2>
+            <p>Update <%= pet.petName %>'s details, health stats, and photos.</p>
+          </div>
 
           <!-- Flash Messages -->
           <%- include('../partials/flash-messages') %>
+
+          <!-- Section 1: Basic Information -->
+          <div class="form-section-title">1. Basic Information</div>
 
           <div class="form-row">
             <div class="form-group">
@@ -39,17 +58,20 @@
                 type="text"
                 id="petName"
                 name="petName"
+                class="form-control"
                 required
                 value="<%= pet.petName %>"
-                placeholder="e.g. Jimmy"
+                placeholder="e.g. Bruno"
               />
             </div>
+
             <div class="form-group">
-              <label for="ownerName">Owner Name</label>
+              <label for="ownerName">Owner / Pet Parent Name</label>
               <input
                 type="text"
                 id="ownerName"
                 name="ownerName"
+                class="form-control"
                 value="<%= pet.ownerName || '' %>"
                 placeholder="e.g. Shubham Rathod"
               />
@@ -58,18 +80,30 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="species">Species</label>
-              <select id="species" name="species" required>
+              <label for="species">Species *</label>
+              <select id="species" name="species" class="form-select" required>
                 <option value="Dog" <%= pet.species === 'Dog' ? 'selected' : '' %>>Dog</option>
                 <option value="Cat" <%= pet.species === 'Cat' ? 'selected' : '' %>>Cat</option>
+                <option value="Bird" <%= pet.species === 'Bird' ? 'selected' : '' %>>Bird</option>
                 <option value="Other" <%= pet.species === 'Other' ? 'selected' : '' %>>Other</option>
               </select>
             </div>
+
             <div class="form-group">
               <label for="breed">Breed</label>
-              <input type="text" id="breed" name="breed" value="<%= pet.breed || '' %>" placeholder="e.g. Labrador" />
+              <input
+                type="text"
+                id="breed"
+                name="breed"
+                class="form-control"
+                value="<%= pet.breed || '' %>"
+                placeholder="e.g. Golden Retriever, Labrador"
+              />
             </div>
           </div>
+
+          <!-- Section 2: Health & Growth Metrics -->
+          <div class="form-section-title">2. Health & Growth Metrics</div>
 
           <div class="form-row">
             <div class="form-group">
@@ -78,22 +112,25 @@
                 type="number"
                 id="age"
                 name="age"
+                class="form-control"
                 min="0"
                 step="0.1"
                 value="<%= pet.age %>"
-                placeholder="e.g. 2"
+                placeholder="e.g. 2.5"
               />
             </div>
+
             <div class="form-group">
               <label for="weight">Weight (kg)</label>
               <input
                 type="number"
                 id="weight"
                 name="weight"
+                class="form-control"
                 min="0"
                 step="0.1"
                 value="<%= pet.weight %>"
-                placeholder="e.g. 18"
+                placeholder="e.g. 28"
               />
             </div>
           </div>
@@ -101,78 +138,114 @@
           <div class="form-row">
             <div class="form-group">
               <label for="gender">Gender</label>
-              <select id="gender" name="gender">
+              <select id="gender" name="gender" class="form-select">
                 <option value="Male" <%= pet.gender === 'Male' ? 'selected' : '' %>>Male</option>
                 <option value="Female" <%= pet.gender === 'Female' ? 'selected' : '' %>>Female</option>
               </select>
             </div>
+
             <div class="form-group">
               <label for="vaccinated">Vaccinated</label>
-              <select id="vaccinated" name="vaccinated">
+              <select id="vaccinated" name="vaccinated" class="form-select">
                 <option value="Yes" <%= pet.vaccinated === 'Yes' ? 'selected' : '' %>>Yes</option>
                 <option value="No" <%= pet.vaccinated === 'No' ? 'selected' : '' %>>No</option>
               </select>
             </div>
           </div>
 
+          <!-- Section 3: Profile Photo & Gallery -->
+          <div class="form-section-title">3. Profile Photo & Gallery</div>
+
+          <!-- Current Photo Thumbnail -->
+          <% if (pet.photo || pet.photoUrl) { %>
+          <div class="photo-preview-item">
+            <img src="<%= pet.photo || pet.photoUrl %>" alt="<%= pet.petName %>" class="photo-preview-thumb" />
+            <div>
+              <strong style="font-size: 0.875rem; color: var(--primary-color);">Current Profile Photo</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Upload a new image below to replace it.</p>
+            </div>
+          </div>
+          <% } %>
+
           <div class="form-row">
             <div class="form-group">
-              <label for="petImage">Change Profile Photo</label>
-              <% if (pet.photo || pet.photoUrl) { %>
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                  <img src="<%= pet.photo || pet.photoUrl %>" alt="<%= pet.petName %>" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;" />
-                  <span style="font-size: 0.85rem; color: var(--text-muted);">Current Photo</span>
-                </div>
-              <% } %>
-              <input type="file" id="petImage" name="petImage" accept="image/*" />
-              <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Upload new photo to replace current profile picture.</small>
+              <label for="petImage">Upload New Profile Photo</label>
+              <input
+                type="file"
+                id="petImage"
+                name="petImage"
+                class="form-control"
+                accept="image/*"
+                style="padding-top: 0.5rem;"
+              />
             </div>
+
             <div class="form-group">
               <label for="photoUrl">Or Photo URL</label>
-              <input type="url" id="photoUrl" name="photoUrl" value="<%= pet.photoUrl || '' %>" placeholder="https://..." />
+              <input
+                type="url"
+                id="photoUrl"
+                name="photoUrl"
+                class="form-control"
+                value="<%= pet.photoUrl || '' %>"
+                placeholder="https://images.unsplash.com/..."
+              />
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="galleryImages">Add More Gallery Photos</label>
-            <% if (pet.gallery && pet.gallery.length > 0) { %>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 0.75rem;">
-                <% pet.gallery.forEach(function(imgSrc) { %>
-                  <img src="<%= imgSrc %>" alt="Gallery photo" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover; border: 1px solid #cbd5e1;" />
-                <% }); %>
-              </div>
-            <% } %>
-            <input type="file" id="galleryImages" name="galleryImages" accept="image/*" multiple />
-            <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Upload additional photos to add to <%= pet.petName %>'s gallery.</small>
+          <!-- Current Gallery Preview -->
+          <% if (pet.gallery && pet.gallery.length > 0) { %>
+          <div style="margin-bottom: 1rem;">
+            <p style="font-size: 0.85rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem;">Current Gallery Photos (<%= pet.gallery.length %>)</p>
+            <div class="gallery-preview-row">
+              <% pet.gallery.forEach(function(imgSrc) { %>
+              <img src="<%= imgSrc %>" alt="Gallery photo" class="gallery-preview-thumb" />
+              <% }); %>
+            </div>
           </div>
+          <% } %>
 
           <div class="form-group">
-            <label for="notes">Additional Notes</label>
+            <label for="galleryImages">Add More Gallery Photos (Multiple)</label>
+            <input
+              type="file"
+              id="galleryImages"
+              name="galleryImages"
+              class="form-control"
+              accept="image/*"
+              multiple
+              style="padding-top: 0.5rem;"
+            />
+            <span class="help-text">Upload more pictures to add to <%= pet.petName %>'s gallery.</span>
+          </div>
+
+          <!-- Section 4: Notes -->
+          <div class="form-section-title">4. Additional Notes</div>
+
+          <div class="form-group">
+            <label for="notes">Care & Behaviour Notes</label>
             <textarea
               id="notes"
               name="notes"
-              placeholder="Allergies, favorite food, behaviour notes, etc."
+              class="form-control"
+              placeholder="Allergies, favourite treats, behaviour notes, medication timings..."
             ><%= pet.notes || '' %></textarea>
           </div>
 
-          <div class="form-actions" style="display: flex; gap: 1rem; align-items: center;">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+          <!-- Action Buttons -->
+          <div class="form-actions">
             <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update Pet Profile</button>
           </div>
         </form>
       </div>
-    </section>
+    </main>
 
+    <!-- Footer -->
     <footer>
       <div class="container footer-container">
-        <div class="footer-brand">
-          <h2>Woofy.</h2>
-          <p>Premium PetCare.</p>
-        </div>
+        <p>&copy; <%= new Date().getFullYear() %> Woofy. All rights reserved.</p>
       </div>
     </footer>
-
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="/Create-Profile/create-profile.js"></script>
   </body>
 </html>

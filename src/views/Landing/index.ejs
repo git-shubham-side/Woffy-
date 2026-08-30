@@ -1,30 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Woofy | Premium Pet Care</title>
-    <link rel="stylesheet" href="/Landing/style.css" />
-    <!-- Google Fonts for a sharp, professional look -->
+    <title>Woofy | Complete Pet Care & Health Platform</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Landing/style.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Navigation -->
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Navigation Header -->
     <header id="navbar">
       <div class="container nav-container">
-        <a href="/" class="logo">Woofy.</a>
+        <a href="/" class="logo">
+          Woofy<span>.</span>
+        </a>
+
         <nav class="nav-links">
           <a href="#home">Home</a>
           <a href="#services">Services</a>
           <a href="#why-us">Why Us</a>
+          <a href="/shop">Pet Shop</a>
           <a href="#contact">Contact Us</a>
         </nav>
+
         <div class="nav-auth-buttons">
-          <a href="/api/login" class="btn btn-secondary">Login</a>
-          <a href="/api/signup" class="btn btn-primary">Sign Up</a>
+          <a href="/api/login" class="btn btn-secondary btn-sm">Login</a>
+          <a href="/api/signup" class="btn btn-accent btn-sm">Sign Up Free</a>
         </div>
       </div>
     </header>
@@ -33,63 +49,170 @@
     <section id="home" class="hero">
       <div class="container hero-container">
         <div class="hero-content">
-          <h1>Uncompromising Care for Your Best Friend.</h1>
-          <p>
-            Professional pet sitting, grooming, and walking services tailored to
-            your pet's unique needs. Simple, reliable, and premium care.
+          <!-- Sketch Badge -->
+          <div class="sketch-badge">
+            <span class="sketch-sparkle">✦</span>
+            <span>All-in-One Pet Health & Lifestyle Care</span>
+          </div>
+
+          <h1>
+            Uncompromising <span class="sketch-highlight">Care</span> for Your Best Companion.
+          </h1>
+
+          <p class="hero-description">
+            Track daily health records, attach medicine prescriptions, discover 24/7 verified pet hospitals in your city, and connect with emergency rescue NGOs — all in one modern platform.
           </p>
+
           <div class="hero-buttons">
-            <a href="#services" class="btn btn-primary">Explore Services</a>
-            <a href="/api/login" class="btn btn-secondary">Login</a>
-            <a href="/api/signup" class="btn btn-secondary">Sign Up</a>
+            <a href="/api/signup" class="btn btn-accent btn-lg">
+              <span>Get Started Free</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#services" class="btn btn-secondary btn-lg">
+              <i data-lucide="compass"></i>
+              <span>Explore Platform</span>
+            </a>
+          </div>
+
+          <div class="hero-social-proof">
+            <div class="avatar-stack">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+              <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
+            </div>
+            <div class="proof-text">
+              <span>★★★★★ 4.9/5</span> from 2,500+ happy pet parents
+            </div>
           </div>
         </div>
-        <div class="hero-image">
-          <img
-            src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
-            alt="Happy dog looking sharp"
-          />
+
+        <!-- Hero Visual Media & Floating Cards -->
+        <div class="hero-media-wrapper">
+          <!-- Floating Badge Top Left -->
+          <div class="floating-badge badge-top-left">
+            <div class="badge-icon-box badge-icon-blue">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <div class="badge-content">
+              <h4>Verified Platform</h4>
+              <p>100% authentic hospital data</p>
+            </div>
+          </div>
+
+          <!-- Hero Main Card -->
+          <div class="hero-img-card">
+            <img
+              src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
+              alt="Happy golden retriever dog looking sharp"
+            />
+          </div>
+
+          <!-- Floating Badge Bottom Right -->
+          <div class="floating-badge badge-bottom-right">
+            <div class="badge-icon-box badge-icon-emerald">
+              <i data-lucide="activity"></i>
+            </div>
+            <div class="badge-content">
+              <h4>Health & Growth</h4>
+              <p>Active medical records logged</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- Statistics Ribbon Banner -->
+    <div class="container">
+      <div class="stats-ribbon reveal">
+        <div class="stats-grid">
+          <div class="stat-block">
+            <h3>100<span>%</span></h3>
+            <p>Verified Pet Hospitals</p>
+          </div>
+          <div class="stat-block">
+            <h3>24<span>/7</span></h3>
+            <p>Emergency Animal Care</p>
+          </div>
+          <div class="stat-block">
+            <h3>30<span>+</span></h3>
+            <p>Indian Cities Covered</p>
+          </div>
+          <div class="stat-block">
+            <h3>4.9<span>★</span></h3>
+            <p>Parent Satisfaction</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Services Section -->
     <section id="services" class="services">
       <div class="container">
         <div class="section-header reveal">
-          <h2>Our Services</h2>
-          <p>Everything your pet needs under one roof.</p>
+          <span class="section-tag">Platform Features</span>
+          <h2>Everything Your Pet Needs, Simplified.</h2>
+          <p>Four specialized services designed to give your furry family members the longest, happiest, and healthiest life possible.</p>
         </div>
+
         <div class="services-grid">
-          <!-- Card 1 -->
-          <div class="service-card reveal">
-            <div class="icon"><i data-lucide="clipboard-list"></i></div>
-            <h3>Track Multiple Records</h3>
+          <!-- Card 1: Health Records -->
+          <div class="service-card reveal" style="--card-color: #2563eb; --icon-bg: #eff6ff; --icon-color: #2563eb;">
+            <div class="icon-box">
+              <i data-lucide="clipboard-list" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3>Track Health Records</h3>
             <p>
-              Keep track of all your pets' vaccinations, health checkups, and
-              medical history in one place anytime, anywhere.
+              Log vaccinations, surgery dates, allergy lists, medicine routines, weight progress, and attach doctor prescriptions directly to each record.
             </p>
+            <a href="/api/signup" class="card-cta-link">
+              <span>Start Health Tracking</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
           </div>
-          <!-- Card 2 -->
-          <div class="service-card reveal">
-            <div class="icon"><i data-lucide="heart-handshake"></i></div>
-            <h3>Find Dog Rescue NGO's</h3>
+
+          <!-- Card 2: Hospitals -->
+          <div class="service-card reveal" style="--card-color: #f97316; --icon-bg: #fff7ed; --icon-color: #ea580c;">
+            <div class="icon-box">
+              <i data-lucide="hospital" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3>Verified Pet Hospitals</h3>
             <p>
-              Find verified dog rescue NGOs near you and contribute to helping
-              stray or abandoned pets.
+              Auto-detect your location and discover verified veterinary clinics and 24/7 emergency care centers near you with direct phone call and Google Maps directions.
             </p>
+            <a href="/services/hospitals" class="card-cta-link">
+              <span>Find Hospitals</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
           </div>
-          <!-- Card 3 -->
-          <div class="service-card reveal">
-            <div class="icon"><i data-lucide="hospital"></i></div>
-            <h3>Find Best Hospitals in your area</h3>
+
+          <!-- Card 3: Rescue Services -->
+          <div class="service-card reveal" style="--card-color: #10b981; --icon-bg: #ecfdf5; --icon-color: #059669;">
+            <div class="icon-box">
+              <i data-lucide="heart-handshake" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3>Rescue NGOs & Helplines</h3>
             <p>
-              Browse a list of top-rated pet hospitals and vets in your area -
-              find the right place instantly, whether it's an emergency or a
-              routine checkup.
+              Quickly contact certified animal rescue NGOs, stray ambulances, and animal shelter teams for emergency assistance or adoption opportunities.
             </p>
-            <a href="/services/hospitals" style="color: #f97316; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 0.75rem;">
-              Find Hospitals &rarr;
+            <a href="/services/rescue" class="card-cta-link">
+              <span>Find Rescue NGOs</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
+          </div>
+
+          <!-- Card 4: Pet Shop -->
+          <div class="service-card reveal" style="--card-color: #8b5cf6; --icon-bg: #f5f3ff; --icon-color: #7c3aed;">
+            <div class="icon-box">
+              <i data-lucide="shopping-bag" style="width: 26px; height: 26px;"></i>
+            </div>
+            <h3>Pet Essentials Shop</h3>
+            <p>
+              Browse verified nutrition kibbles, grooming shampoos, tough chew toys, and wellness supplements curated specifically for Indian breeds and climate.
+            </p>
+            <a href="/shop" class="card-cta-link">
+              <span>Browse Pet Store</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
           </div>
         </div>
@@ -100,22 +223,22 @@
     <section id="why-us" class="why-us-section">
       <div class="container">
         <div class="section-header reveal">
-          <h2>Why Choose Woofy?</h2>
+          <span class="section-tag" style="background: #e0e7ff; color: #4338ca;">Why Choose Woofy</span>
+          <h2>Built for Serious Pet Parents</h2>
           <p>
-            Built specifically for dedicated pet parents who want modern,
-            effortless care management.
+            Combining modern cloud architecture with thoughtful pet care design to solve real daily problems.
           </p>
         </div>
+
         <div class="specialities-grid">
           <!-- Speciality 1 -->
           <div class="speciality-card reveal">
             <div class="speciality-icon">
               <i data-lucide="activity"></i>
             </div>
-            <h3>Complete Health & Growth Tracking</h3>
+            <h3>Complete Growth Tracking</h3>
             <p>
-              Monitor weight changes, surgery histories, medication routines,
-              vet appointments, grooming sessions, and wash cycles with ease.
+              Monitor weight changes, surgery histories, medication routines, vet appointments, grooming sessions, and wash cycles with ease.
             </p>
           </div>
 
@@ -124,10 +247,9 @@
             <div class="speciality-icon">
               <i data-lucide="file-text"></i>
             </div>
-            <h3>Prescription & Document Attachments</h3>
+            <h3>Prescription Attachments</h3>
             <p>
-              Never lose a doctor's slip. Attach medicine photos, prescription
-              receipts, and vet checkup scans directly to each health record.
+              Never lose a doctor's slip. Attach medicine photos, prescription receipts, and vet checkup scans directly to each health record.
             </p>
           </div>
 
@@ -138,8 +260,7 @@
             </div>
             <h3>Pet Profile & Photo Gallery</h3>
             <p>
-              Create dedicated pet profiles with primary avatars and upload
-              multi-image galleries celebrating your companion's best moments.
+              Create dedicated pet profiles with primary avatars and upload multi-image galleries celebrating your companion's best moments.
             </p>
           </div>
 
@@ -148,22 +269,20 @@
             <div class="speciality-icon">
               <i data-lucide="shield-check"></i>
             </div>
-            <h3>Secure & Private Data</h3>
+            <h3>Enterprise-Grade Security</h3>
             <p>
-              Your pet's data and personal credentials are protected with
-              industry-standard bcrypt encryption and secure session handling.
+              Your pet's data and personal credentials are protected with industry-standard bcrypt encryption and secure session handling.
             </p>
           </div>
 
           <!-- Speciality 5 -->
           <div class="speciality-card reveal">
             <div class="speciality-icon">
-              <i data-lucide="map-pin"></i>
+              <i data-lucide="crosshair"></i>
             </div>
-            <h3>Emergency City Services Directory</h3>
+            <h3>GPS Reverse Geocoding</h3>
             <p>
-              Instantly connect with top 24/7 veterinary hospitals and certified
-              animal rescue shelters right around your city.
+              Intelligent location detector reverse geocodes user coordinates to pinpoint your exact city and sort hospitals by proximity in kilometers.
             </p>
           </div>
 
@@ -172,10 +291,9 @@
             <div class="speciality-icon">
               <i data-lucide="smartphone"></i>
             </div>
-            <h3>Clean, Responsive Experience</h3>
+            <h3>Ultra-Responsive UI</h3>
             <p>
-              Designed with a sleek, minimalist aesthetic that works seamlessly
-              across smartphones, tablets, and desktop workstations.
+              Designed with a sharp, colorful modern aesthetic that works seamlessly across smartphones, tablets, and desktop workstations.
             </p>
           </div>
         </div>
@@ -186,9 +304,10 @@
     <section id="contact" class="contact-section">
       <div class="container">
         <div class="section-header reveal">
-          <h2>Get in Touch</h2>
+          <span class="section-tag" style="background: #fef2f2; color: #dc2626;">Get in Touch</span>
+          <h2>Let's Connect & Collaborate</h2>
           <p>
-            Have questions, feedback, or suggestions? Reach out to us anytime.
+            Have questions, feedback, hospital partnership inquiries, or suggestions? Reach out anytime.
           </p>
         </div>
 
@@ -200,20 +319,17 @@
                 src="/Images/Shubham.jpeg"
                 alt="Shubham Rathod - Creator of Woofy"
                 class="creator-avatar"
+                onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'"
               />
             </div>
-            <span class="creator-badge">Creator & Developer</span>
+            <span class="creator-badge">Creator & Full-Stack Developer</span>
             <h3>Shubham Rathod</h3>
             <p class="creator-role">Full-Stack Web Developer</p>
             <p class="creator-bio">
-              Building modern, intuitive web applications and pet management
-              solutions. Feel free to connect for collaborations or feedback!
+              Building modern, intuitive web applications and pet management solutions. Feel free to connect for collaborations or feedback!
             </p>
 
             <div class="creator-social-links">
-              <!-- ======================================================== -->
-              <!-- GITHUB & LINKEDIN LINKS: Edit the href URLs below -->
-              <!-- ======================================================== -->
               <a
                 href="https://github.com/git-shubham-side"
                 target="_blank"
@@ -231,7 +347,7 @@
                 <i data-lucide="linkedin"></i> LinkedIn
               </a>
               <a
-                href="mailto:contact.shubham.tech@gmail.com"
+                href="mailto:rathodshubham7711@gmail.com"
                 class="social-btn"
               >
                 <i data-lucide="mail"></i> Email
@@ -241,15 +357,15 @@
 
           <!-- Contact Message Form Card -->
           <div class="contact-form-card reveal">
-            <h3>Send a Message</h3>
-            <p>Drop a note and we'll get back to you as soon as possible.</p>
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.25rem;">Send a Message</h3>
+            <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">Drop a note and we will get back to you as soon as possible.</p>
 
             <div
               id="contactAlert"
               style="
                 display: none;
                 padding: 0.85rem 1rem;
-                border-radius: 4px;
+                border-radius: 8px;
                 margin-bottom: 1.25rem;
                 font-size: 0.95rem;
               "
@@ -295,9 +411,9 @@
                 type="submit"
                 id="contactSubmitBtn"
                 class="btn btn-primary"
-                style="display: flex; align-items: center; gap: 8px"
+                style="width: 100%; justify-content: center;"
               >
-                <i data-lucide="send" style="width: 16px; height: 16px"></i>
+                <i data-lucide="send" style="width: 16px; height: 16px;"></i>
                 <span id="contactBtnText">Send Message</span>
               </button>
             </form>
@@ -311,29 +427,30 @@
       <div class="container footer-container">
         <div class="footer-brand">
           <h2>Woofy.</h2>
-          <p>Premium PetCare & Management.</p>
+          <p>Complete Pet Care, Health Tracking & Verified Emergency Network.</p>
         </div>
         <div class="footer-links">
-          <p style="color: #94a3b8; font-size: 0.95rem">
-            Created With Love for Animals by
+          <p style="color: #94a3b8; font-size: 0.95rem;">
+            Designed & Developed with Passion by
             <a
-              class="linkedin"
               href="https://linkedin.com/in/shubham-rathod-tech"
               target="_blank"
-              style="
-                color: #ffffff;
-                text-decoration: underline;
-                font-weight: 500;
-              "
+              style="color: #ffffff; text-decoration: underline; font-weight: 600;"
             >
               Shubham Rathod
             </a>
           </p>
         </div>
       </div>
+      <div class="footer-bottom">
+        &copy; <%= new Date().getFullYear() %> Woofy. All rights reserved.
+      </div>
     </footer>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Lucide & Interactive Scripts -->
     <script src="/Landing/script.js"></script>
+    <script>
+      if (window.lucide) lucide.createIcons();
+    </script>
   </body>
 </html>

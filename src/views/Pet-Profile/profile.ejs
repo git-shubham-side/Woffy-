@@ -1,171 +1,199 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pet Profile | Woofy</title>
-    <link rel="stylesheet" href="/Profile/profile.css" />
+    <title><%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Profile" : 'Pet Profile' %> | Woofy</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Profile/profile.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Navigation -->
     <header id="navbar">
-      <div class="container nav-container">
-        <a href="/api/dashboard" class="logo">Woofy.</a>
-        <nav class="nav-links">
-          <a href="/api/dashboard">Home</a>
-          <a href="/api/pet-profiles">My Pets</a>
-          <a href="/api/create-pet-profile">Add Pet</a>
+      <div class="nav-container">
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">Dashboard</a>
+          <a href="/api/pet-profiles" class="active">My Pets</a>
+          <a href="/services/hospitals">Hospitals</a>
+          <a href="/services/rescue">Rescue NGOs</a>
+          <a href="/shop">Shop</a>
         </nav>
+
+        <div class="nav-actions">
+          <a href="/api/pet-profiles" class="btn btn-secondary btn-sm">
+            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+            <span>Back to My Pets</span>
+          </a>
+        </div>
       </div>
     </header>
 
-    <section class="profile-page">
+    <main class="profile-page">
       <div class="container" id="profileContainer">
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
 
         <% if (typeof pet !== 'undefined' && pet) { %>
-          <div class="profile-card reveal">
+          <div class="profile-card">
+            <!-- Hero Banner -->
             <div class="profile-banner">
               <% if (pet.photo) { %>
-                <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="profile-avatar" />
+                <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="profile-avatar" onerror="this.src='/uploads/pets/default-pet.png'" />
               <% } else if (pet.photoUrl) { %>
-                <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="profile-avatar" />
+                <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="profile-avatar" onerror="this.src='/uploads/pets/default-pet.png'" />
               <% } else { %>
                 <div class="profile-avatar-fallback">
                   <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
                 </div>
               <% } %>
-              <div>
+              
+              <div class="profile-banner-info">
                 <h2><%= pet.petName %></h2>
-                <p><%= pet.breed || pet.species %> • Owned by <%= pet.ownerName || 'Pet Parent' %></p>
+                <p><%= pet.breed || pet.species %> • Pet Parent: <%= pet.ownerName || 'Shubham Rathod' %></p>
               </div>
             </div>
+
+            <!-- Profile Body Information -->
             <div class="profile-body">
               <div class="info-grid">
+                <!-- Species -->
                 <div class="info-item">
-                  <div class="label"><i data-lucide="paw-print"></i> Species</div>
+                  <div class="label">Species</div>
                   <div class="value"><%= pet.species %></div>
                 </div>
+
+                <!-- Breed -->
                 <div class="info-item">
-                  <div class="label"><i data-lucide="calendar"></i> Age</div>
-                  <div class="value"><%= pet.age %> yrs</div>
+                  <div class="label">Breed</div>
+                  <div class="value"><%= pet.breed || 'Not specified' %></div>
                 </div>
+
+                <!-- Age -->
                 <div class="info-item">
-                  <div class="label"><i data-lucide="scale"></i> Weight</div>
-                  <div class="value"><%= pet.weight %> kg</div>
+                  <div class="label">Age</div>
+                  <div class="value"><%= pet.age ? pet.age + ' yrs' : 'N/A' %></div>
                 </div>
+
+                <!-- Weight -->
                 <div class="info-item">
-                  <div class="label">
-                    <i data-lucide="venetian-mask"></i> Gender
+                  <div class="label">Weight</div>
+                  <div class="value"><%= pet.weight ? pet.weight + ' kg' : 'N/A' %></div>
+                </div>
+
+                <!-- Gender -->
+                <div class="info-item">
+                  <div class="label">Gender</div>
+                  <div class="value"><%= pet.gender || 'Male' %></div>
+                </div>
+
+                <!-- Vaccinated -->
+                <div class="info-item">
+                  <div class="label">Vaccination Status</div>
+                  <div class="value" style="color: <%= pet.vaccinated === 'Yes' ? '#16a34a' : '#ea580c' %>;">
+                    <%= pet.vaccinated === 'Yes' ? '✓ Fully Vaccinated' : 'Pending / No' %>
                   </div>
-                  <div class="value"><%= pet.gender %></div>
                 </div>
-                <div class="info-item">
-                  <div class="label">
-                    <i data-lucide="syringe"></i> Vaccinated
-                  </div>
-                  <div class="value"><%= pet.vaccinated %></div>
-                </div>
-                <div class="info-item">
-                  <div class="label"><i data-lucide="user"></i> Owner</div>
-                  <div class="value"><%= pet.ownerName || 'Pet Parent' %></div>
-                </div>
+
+                <!-- Care Notes (Full Width) -->
                 <div class="info-item full">
-                  <div class="label">
-                    <i data-lucide="notebook-pen"></i> Notes
+                  <div class="label">Care & Behaviour Notes</div>
+                  <div class="value notes">
+                    <%= pet.notes || 'No specific dietary or medical notes provided.' %>
                   </div>
-                  <div class="value notes"><%= pet.notes || 'No additional notes.' %></div>
                 </div>
               </div>
 
+              <!-- Pet Multi-Photo Gallery -->
               <% if (typeof pet.gallery !== 'undefined' && pet.gallery && pet.gallery.length > 0) { %>
                 <div class="pet-gallery-section">
-                  <h3 style="font-size: 1.15rem; color: var(--primary-color); display: flex; align-items: center; gap: 6px; margin-bottom: 0.5rem;">
-                    <i data-lucide="image" style="width: 18px; height: 18px;"></i> <%= pet.petName %>'s Photo Gallery
-                  </h3>
+                  <h3><%= pet.petName %>'s Photo Gallery (<%= pet.gallery.length %>)</h3>
                   <div class="pet-gallery-grid">
                     <% pet.gallery.forEach(function(imgSrc) { %>
                       <div class="gallery-img-item">
-                        <img src="<%= imgSrc %>" alt="<%= pet.petName %> gallery photo" />
+                        <img src="<%= imgSrc %>" alt="<%= pet.petName %> photo" loading="lazy" />
                       </div>
                     <% }); %>
                   </div>
                 </div>
               <% } %>
 
-              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center;">
-                <a
-                  href="/api/track/<%= pet._id %>"
-                  class="btn btn-primary"
-                  style="display: inline-flex; align-items: center; gap: 8px;"
-                  ><i data-lucide="activity" style="width: 16px; height: 16px;"></i> Track Activity</a
-                >
-                <a
-                  href="/api/show-records/<%= pet._id %>"
-                  class="btn btn-secondary"
-                  style="display: inline-flex; align-items: center; gap: 8px;"
-                  ><i data-lucide="clipboard-list" style="width: 16px; height: 16px;"></i> View Records</a
-                >
-                <a
-                  href="/api/pet-profile/edit/<%= pet._id %>"
-                  class="btn btn-secondary"
-                  style="display: inline-flex; align-items: center; gap: 8px;"
-                  ><i data-lucide="edit-3" style="width: 16px; height: 16px;"></i> Edit Pet</a
-                >
-                <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0; display: inline;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile and all their tracking records? This cannot be undone.');">
-                  <button
-                    type="submit"
-                    class="btn btn-danger"
-                    style="display: inline-flex; align-items: center; gap: 8px;"
-                  >
-                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Delete Pet
+              <!-- Action Buttons Row -->
+              <div class="profile-actions-bar">
+                <a href="/api/track/<%= pet._id %>" class="btn btn-primary">
+                  <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                  <span>Track Health Activity</span>
+                </a>
+
+                <a href="/api/show-records/<%= pet._id %>" class="btn btn-secondary">
+                  <i data-lucide="clipboard-list" style="width: 16px; height: 16px;"></i>
+                  <span>View Records</span>
+                </a>
+
+                <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-secondary">
+                  <i data-lucide="edit-3" style="width: 16px; height: 16px;"></i>
+                  <span>Edit Pet</span>
+                </a>
+
+                <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile and all their records? This action cannot be undone.');">
+                  <button type="submit" class="btn btn-danger">
+                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i>
+                    <span>Delete Pet</span>
                   </button>
                 </form>
-                <a
-                  href="/api/pet-profiles"
-                  class="btn btn-secondary"
-                  >Back to My Pets</a
-                >
+
+                <a href="/api/pet-profiles" class="btn btn-secondary" style="margin-left: auto;">
+                  <span>Back to My Pets</span>
+                </a>
               </div>
             </div>
           </div>
         <% } else { %>
-          <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+          <div class="profile-card" style="padding: 3rem; text-align: center;">
             <h3>Pet Profile Not Found</h3>
-            <p style="color: var(--text-muted); margin: 1rem 0;">The requested pet profile does not exist.</p>
+            <p style="color: var(--text-muted); margin: 1rem 0;">The requested pet profile does not exist or has been removed.</p>
             <a href="/api/pet-profiles" class="btn btn-primary">Back to My Pets</a>
           </div>
         <% } %>
       </div>
-    </section>
+    </main>
 
+    <!-- Footer -->
     <footer>
-      <div class="container footer-container">
+      <div class="footer-container">
         <div class="footer-brand">
-          <h2>Woofy.</h2>
-          <p>Premium PetCare.</p>
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
         </div>
         <div class="footer-links">
           <p>
-            Created By
-            <b>
-              <a
-                class="linkedin"
-                href="https://linkedin.com/in/shubham-rathod-tech"
-              >
-                Shubham Rathod - Jimmy
-              </a>
-            </b>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
           </p>
         </div>
       </div>
     </footer>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="/Profile/profile.js"></script>
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
   </body>
 </html>

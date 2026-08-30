@@ -1,13 +1,26 @@
-/* --- Base Reset & Variables (Consistent Theme) --- */
+/* ==========================================================================
+   Woofy - Health Records & Tracking Stylesheet
+   Theme: Clean, Sharp, Responsive & Fully Aligned
+   ========================================================================== */
+
 :root {
-  --primary-color: #0f172a;
-  --accent-color: #2563eb;
+  --primary-color: #0f172a;       /* Deep Slate / Midnight Charcoal */
+  --accent-color: #2563eb;        /* Electric Royal Blue */
+  --accent-hover: #1d4ed8;
+  --coral-accent: #f97316;        /* Warm Sunset Coral / Amber */
+  --emerald-accent: #10b981;      /* Fresh Emerald Green */
+  --violet-accent: #8b5cf6;       /* Radiant Violet */
   --text-main: #1e293b;
   --text-muted: #64748b;
   --bg-light: #f8fafc;
   --white: #ffffff;
   --border-color: #e2e8f0;
-  --border-radius: 4px;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --border-radius-pill: 999px;
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
   --transition: all 0.2s ease-in-out;
 }
 
@@ -18,195 +31,254 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: var(--text-main);
   background-color: var(--bg-light);
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
 }
 
-/* --- Navigation --- */
-.dashboard-nav {
-  background-color: var(--white);
-  border-bottom: 1px solid var(--border-color);
+/* Typography */
+h1, h2, h3, h4 {
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--primary-color);
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+}
+
+/* Navigation */
+header.dashboard-nav {
   position: sticky;
   top: 0;
-  z-index: 100;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 1000;
 }
+
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 70px;
 }
-.logo,
-.logo a,
-a.logo {
+
+.logo {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.05em;
   color: #000000 !important;
   text-decoration: none !important;
-  letter-spacing: -0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
+
+.logo span {
+  color: var(--accent-color);
+}
+
+.nav-center-links {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-center-links a {
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-center-links a:hover,
+.nav-center-links a.active {
+  color: var(--accent-color);
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-}
-.pet-profile-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  color: var(--text-main);
-  font-weight: 500;
-  padding: 0.5rem;
-  border-radius: var(--border-radius);
-  transition: var(--transition);
-}
-.pet-profile-btn:hover {
-  background-color: var(--bg-light);
+  gap: 1rem;
 }
 
-/* --- Buttons --- */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
+  gap: 0.45rem;
+  padding: 0.75rem 1.35rem;
+  font-weight: 700;
   text-decoration: none;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius-sm);
   transition: var(--transition);
   cursor: pointer;
-  font-size: 1rem;
-  border: 2px solid transparent;
+  font-size: 0.95rem;
+  border: 1.5px solid transparent;
+  font-family: inherit;
+  line-height: 1;
 }
+
 .btn-primary {
-  background-color: var(--primary-color);
-  color: var(--white);
-  border-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
+  color: var(--white) !important;
+  border-color: var(--primary-color) !important;
 }
+
 .btn-primary:hover {
-  background-color: #1e293b;
+  background-color: #1e293b !important;
+  transform: translateY(-1px);
 }
+
 .btn-secondary {
-  background-color: transparent;
-  color: var(--primary-color);
-  border-color: var(--border-color);
+  background-color: var(--white) !important;
+  color: var(--primary-color) !important;
+  border: 1.5px solid var(--border-color) !important;
 }
+
 .btn-secondary:hover {
-  border-color: var(--primary-color);
+  border-color: var(--primary-color) !important;
+  background-color: #f8fafc !important;
 }
+
 .btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
 }
+
 .btn-block {
   width: 100%;
 }
 
-/* --- Page Layout --- */
+/* Main Layout */
 .dashboard-main {
-  padding: 3rem 1.5rem;
+  padding: 2rem 0 4rem;
+  flex: 1;
 }
 
 .page-header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  border-bottom: 2px solid var(--border-color);
-  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
 .page-header h1 {
-  font-size: 2rem;
-  color: var(--primary-color);
   margin-bottom: 0.25rem;
-  letter-spacing: -0.02em;
 }
+
 .page-header p {
   color: var(--text-muted);
+  font-size: 0.95rem;
   margin: 0;
 }
 
 .back-link {
-  color: var(--text-muted);
+  color: var(--accent-color);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-weight: 500;
+  gap: 6px;
+  font-weight: 700;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
   transition: var(--transition);
 }
+
 .back-link:hover {
-  color: var(--primary-color);
+  gap: 10px;
 }
 
-/* Grid Layout for Forms & Logs */
 .records-layout {
   display: grid;
-  grid-template-columns: 1fr 1.5fr; /* Left Form, Right List */
-  gap: 3rem;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 2rem;
   align-items: start;
 }
 
-/* --- Forms Styling --- */
+/* Form Card */
 .form-card {
   background-color: var(--white);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
 }
+
 .form-card h2 {
   font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
 }
+
 .form-label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--primary-color);
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  height: 46px;
+  padding: 0 0.95rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-family: inherit;
   font-size: 0.95rem;
   color: var(--text-main);
-}
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--text-main);
-  transition: var(--transition);
-  background-color: var(--white);
-}
-.form-control:focus {
+  background-color: #ffffff;
   outline: none;
+  transition: var(--transition);
+}
+
+.form-control:focus,
+.form-select:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
+
 textarea.form-control {
+  height: auto;
+  min-height: 90px;
+  padding: 0.75rem 0.95rem;
   resize: vertical;
-  min-height: 100px;
 }
 
-/* --- Tracking Record Cards --- */
+/* Records Timeline */
 .records-list {
   display: flex;
   flex-direction: column;
@@ -217,99 +289,146 @@ textarea.form-control {
   background-color: var(--white);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
-  padding: 1.5rem;
+  padding: 1.25rem 1.4rem;
   display: flex;
   gap: 1.25rem;
+  align-items: flex-start;
   transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
+
 .record-item:hover {
-  border-color: var(--primary-color);
+  border-color: #cbd5e1;
   transform: translateY(-2px);
-  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-md);
 }
 
 .record-icon {
-  font-size: 1.5rem;
-  background: var(--bg-light);
-  padding: 0.75rem;
-  border-radius: var(--border-radius);
-  height: fit-content;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
 }
 
 .record-content {
   flex: 1;
 }
+
 .record-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-.record-title {
-  font-size: 1.1rem;
-  color: var(--primary-color);
-  font-weight: 600;
-}
-.record-date {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-.record-desc {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-bottom: 0;
-  line-height: 1.5;
+  align-items: baseline;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-/* Custom Badges for all 6 Dashboard Categories */
-.badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
+.record-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.record-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
   font-weight: 600;
 }
-.badge-weight {
-  background: #e0f2fe; /* light blue */
-  color: #0369a1;
+
+/* Category Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--border-radius-pill);
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
-.badge-bath {
-  background: #cffafe; /* cyan */
-  color: #0284c7;
-}
-.badge-grooming {
-  background: #ede9fe; /* purple */
-  color: #7c3aed;
-}
-.badge-medical {
-  background: #fee2e2; /* red */
-  color: #991b1b;
-}
-.badge-medicine {
-  background: #dbeafe; /* dark blue */
-  color: #1e40af;
-}
-.badge-vet {
-  background: #d1fae5; /* green */
-  color: #065f46;
+
+.badge-weight { background: #e0f2fe; color: #0284c7; }
+.badge-medical { background: #fee2e2; color: #dc2626; }
+.badge-medicine { background: #dbeafe; color: #2563eb; }
+.badge-vet_history { background: #dcfce7; color: #16a34a; }
+.badge-grooming { background: #f3e8ff; color: #9333ea; }
+.badge-bath { background: #cffafe; color: #0891b2; }
+
+.record-desc {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  background: #f8fafc;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #f1f5f9;
 }
 
 /* Footer */
-.dash-footer {
-  text-align: center;
-  padding: 2rem 0;
-  border-top: 1px solid var(--border-color);
+footer.dash-footer {
   background-color: var(--primary-color);
   color: var(--white);
-  font-size: 0.875rem;
-  margin-top: 4rem;
+  padding: 2.25rem 0;
+  border-top: 1px solid #1e293b;
+  margin-top: auto;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-brand h3 {
+  color: var(--white);
+  font-size: 1.25rem;
+  margin-bottom: 0.15rem;
+}
+
+.footer-brand p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.footer-links p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.footer-links a {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */
-@media (max-width: 992px) {
+@media (max-width: 900px) {
   .records-layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-center-links {
+    display: none;
+  }
+  .form-card {
+    padding: 1.5rem 1.25rem;
+  }
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
   }
 }

@@ -224,18 +224,24 @@
     <header id="navbar">
       <div class="container nav-container">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <a href="/admin" class="logo">Woofy.</a>
+          <a href="/admin" class="logo">
+            Woofy<span>.</span>
+          </a>
           <span class="admin-badge-pill">Company Admin</span>
         </div>
         <div class="nav-actions">
-          <nav class="nav-links">
-            <a href="/api/dashboard">Dashboard</a>
-            <a href="/services/hospitals" target="_blank">
-              <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
-              <span>Live Site</span>
-            </a>
-            <a href="/logout">Logout</a>
-          </nav>
+          <a href="/api/dashboard" class="btn btn-secondary btn-sm">
+            <i data-lucide="layout-dashboard" style="width: 14px; height: 14px;"></i>
+            <span>User Dashboard</span>
+          </a>
+          <a href="/services/hospitals" target="_blank" class="btn btn-secondary btn-sm">
+            <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+            <span>Live Site</span>
+          </a>
+          <a href="/logout" class="btn btn-primary btn-sm" style="background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important;">
+            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+            <span>Logout</span>
+          </a>
         </div>
       </div>
     </header>
@@ -578,17 +584,30 @@
                   <span class="app-status status-approved">Active NGO</span>
                 </div>
                 <div class="admin-info-list">
+                  <% if (r.contactPerson) { %>
+                  <div class="info-row"><strong>Contact Person:</strong> <span><%= r.contactPerson %></span></div>
+                  <% } %>
                   <div class="info-row"><strong>Phone:</strong> <span><%= r.phone %></span></div>
                   <% if (r.emergencyHelpline) { %>
-                  <div class="info-row"><strong>Helpline:</strong> <span><%= r.emergencyHelpline %></span></div>
+                  <div class="info-row"><strong>24/7 Helpline:</strong> <span><%= r.emergencyHelpline %></span></div>
                   <% } %>
                   <div class="info-row"><strong>Address:</strong> <span><%= r.address %></span></div>
                   <div class="info-row"><strong>Services:</strong> <span><%= (r.services || []).join(', ') %></span></div>
                 </div>
                 <div class="admin-action-row">
+                  <% if (r.googleMapsUrl) { %>
+                  <a href="<%= r.googleMapsUrl %>" target="_blank" class="btn btn-secondary btn-sm" style="display: inline-flex;">
+                    <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i> Map Location
+                  </a>
+                  <% } %>
+                  <% if (r.website) { %>
+                  <a href="<%= r.website %>" target="_blank" class="btn btn-secondary btn-sm" style="display: inline-flex;">
+                    <i data-lucide="globe" style="width: 14px; height: 14px;"></i> Website
+                  </a>
+                  <% } %>
                   <form action="/admin/rescue/delete/<%= r._id %>" method="POST" style="display: inline;">
                     <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this rescue service?');">
-                      <i data-lucide="trash-2"></i> Delete
+                      <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> Delete
                     </button>
                   </form>
                 </div>
@@ -605,52 +624,226 @@
           <!-- Add Rescue Service Form -->
           <div id="addRescueForm" class="form-wrapper-box" style="margin: 0;">
             <div class="form-title-group">
-              <h3>Add New Animal Rescue NGO / Shelter</h3>
-              <p>Publish an animal rescue service, NGO helpline, or shelter.</p>
+              <h3>Register New Animal Rescue NGO / Shelter</h3>
+              <p>Add verified animal rescue organizations, ambulance helplines, shelters, or wildlife rescue trusts.</p>
             </div>
             <form action="/admin/rescue/add" method="POST" enctype="multipart/form-data">
               <div class="form-grid-layout">
+                <!-- 1. Organization Name -->
                 <div class="field-group full">
-                  <label class="field-label">Organization Name *</label>
-                  <input type="text" name="name" class="field-input" placeholder="e.g. Stray Relief & Animal Welfare (STRAW)" required />
+                  <label class="field-label">Organization Official Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    class="field-input"
+                    placeholder="e.g. Stray Relief and Animal Welfare (STRAW India)"
+                    required
+                  />
                 </div>
+
+                <!-- 2. Organization Type -->
                 <div class="field-group">
-                  <label class="field-label">Organization Type</label>
+                  <label class="field-label">Organization Category *</label>
                   <select name="orgType" class="field-select">
-                    <option value="NGO">Registered NGO</option>
-                    <option value="Animal Ambulance">Animal Ambulance</option>
-                    <option value="Shelter">Animal Shelter</option>
-                    <option value="Stray Rescue">Stray Dog Rescue</option>
+                    <option value="NGO">Registered NGO Trust</option>
+                    <option value="Animal Ambulance">Animal Ambulance & Mobile Clinic</option>
+                    <option value="Shelter">Animal Shelter & Sanctuary</option>
+                    <option value="Stray Rescue">Stray Dog Rescue Team</option>
+                    <option value="Wildlife Rescue">Bird & Wildlife Rescue</option>
+                    <option value="Adoption Center">Pet Adoption & Foster Care</option>
+                    <option value="Government Helpline">Government Animal Helpline</option>
+                    <option value="Trust">Animal Welfare Trust</option>
                   </select>
                 </div>
+
+                <!-- 3. Contact Person / Coordinator -->
+                <div class="field-group">
+                  <label class="field-label">Contact Person / Coordinator</label>
+                  <input
+                    type="text"
+                    name="contactPerson"
+                    class="field-input"
+                    placeholder="e.g. Dr. Anita Rao / Rescue Lead"
+                  />
+                </div>
+
+                <!-- 4. City -->
                 <div class="field-group">
                   <label class="field-label">City *</label>
-                  <input type="text" name="city" class="field-input" placeholder="e.g. Mumbai, Pune, Delhi" required />
+                  <input
+                    type="text"
+                    name="city"
+                    class="field-input"
+                    placeholder="e.g. Mumbai, Pune, Delhi, Bangalore"
+                    required
+                  />
                 </div>
-                <div class="field-group full">
-                  <label class="field-label">Full Address / Location *</label>
-                  <input type="text" name="address" class="field-input" placeholder="e.g. Sector 12, Palm Beach Road" required />
-                </div>
+
+                <!-- 5. State -->
                 <div class="field-group">
-                  <label class="field-label">Primary Contact Phone *</label>
-                  <input type="tel" name="phone" class="field-input" placeholder="+91 98200 12345" required />
+                  <label class="field-label">State</label>
+                  <input
+                    type="text"
+                    name="state"
+                    class="field-input"
+                    placeholder="e.g. Maharashtra"
+                    value="Maharashtra"
+                  />
                 </div>
+
+                <!-- 6. Full Address -->
+                <div class="field-group full">
+                  <label class="field-label">Full Street Address *</label>
+                  <input
+                    type="text"
+                    name="address"
+                    class="field-input"
+                    placeholder="e.g. Plot 18, Near Animal Care Center, Link Road"
+                    required
+                  />
+                </div>
+
+                <!-- 7. Pincode -->
                 <div class="field-group">
-                  <label class="field-label">24/7 Emergency Helpline</label>
-                  <input type="tel" name="emergencyHelpline" class="field-input" placeholder="+91 98200 99999" />
+                  <label class="field-label">Pincode</label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    class="field-input"
+                    placeholder="e.g. 400053"
+                  />
                 </div>
-                <div class="field-group full">
-                  <label class="field-label">Services Provided (Comma separated)</label>
-                  <input type="text" name="customServices" class="field-input" placeholder="24/7 Stray Rescue, Animal Ambulance, Medical Aid, Adoption" />
+
+                <!-- 8. Google Maps Location URL -->
+                <div class="field-group">
+                  <label class="field-label">Google Maps Location Link 📍</label>
+                  <input
+                    type="url"
+                    name="googleMapsUrl"
+                    class="field-input"
+                    placeholder="https://maps.google.com/?q=..."
+                  />
                 </div>
+
+                <!-- 9. Primary Reception Phone -->
+                <div class="field-group">
+                  <label class="field-label">Primary Reception Phone *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    class="field-input"
+                    placeholder="e.g. +91 98200 12345"
+                    required
+                  />
+                </div>
+
+                <!-- 10. 24/7 Emergency Helpline -->
+                <div class="field-group">
+                  <label class="field-label">24/7 Emergency Helpline Number</label>
+                  <input
+                    type="tel"
+                    name="emergencyHelpline"
+                    class="field-input"
+                    placeholder="e.g. +91 98200 99999"
+                  />
+                </div>
+
+                <!-- 11. Official Email -->
+                <div class="field-group">
+                  <label class="field-label">Official Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    class="field-input"
+                    placeholder="e.g. helpline@strawindia.org"
+                  />
+                </div>
+
+                <!-- 12. Official Website -->
+                <div class="field-group">
+                  <label class="field-label">Official Website</label>
+                  <input
+                    type="url"
+                    name="website"
+                    class="field-input"
+                    placeholder="https://strawindia.org"
+                  />
+                </div>
+
+                <!-- 13. 24/7 Emergency Checkbox -->
+                <div class="field-group full" style="margin: 0.25rem 0;">
+                  <label class="checkbox-item" style="font-weight: 700; color: var(--primary-color);">
+                    <input type="checkbox" name="is24x7" value="true" checked />
+                    <span>Operates a 24/7 Emergency Animal Distress Helpline</span>
+                  </label>
+                </div>
+
+                <!-- 14. Services Checklist -->
                 <div class="field-group full">
-                  <label class="field-label">Photo URL</label>
-                  <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                  <label class="field-label">Rescue Services Offered (Check all that apply)</label>
+                  <div class="checkbox-grid">
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="24/7 Stray Rescue" checked /> 24/7 Stray Rescue</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Animal Ambulance" checked /> Animal Ambulance</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Critical Trauma Care" checked /> Critical Trauma Care</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Anti-Rabies & Vaccination" checked /> Anti-Rabies Vaccination</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Sterilization (ABC)" checked /> Sterilization (ABC)</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Stray Cat Care" /> Stray Cat Care</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Bird & Wildlife Rescue" /> Bird & Wildlife Rescue</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Adoption & Foster" checked /> Adoption & Foster</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Feeding & Shelter" checked /> Feeding & Shelter</label>
+                    <label class="checkbox-item"><input type="checkbox" name="services" value="Post-Op Boarding" /> Post-Op Boarding</label>
+                  </div>
+                </div>
+
+                <!-- 15. Custom Additional Services -->
+                <div class="field-group full">
+                  <label class="field-label">Other Custom Services (Comma separated)</label>
+                  <input
+                    type="text"
+                    name="customServices"
+                    class="field-input"
+                    placeholder="e.g. Free OPD for Community Animals, Hydrotherapy"
+                  />
+                </div>
+
+                <!-- 16. Upload Photo File -->
+                <div class="field-group">
+                  <label class="field-label">Upload NGO Photo File</label>
+                  <input
+                    type="file"
+                    name="rescueImage"
+                    class="field-input"
+                    accept="image/*"
+                    style="padding-top: 0.45rem;"
+                  />
+                </div>
+
+                <!-- 17. Or Photo URL -->
+                <div class="field-group">
+                  <label class="field-label">Or Image URL</label>
+                  <input
+                    type="url"
+                    name="photoUrl"
+                    class="field-input"
+                    placeholder="https://images.unsplash.com/..."
+                  />
+                </div>
+
+                <!-- 18. Additional Notes -->
+                <div class="field-group full">
+                  <label class="field-label">Operating Hours / Important Notes</label>
+                  <textarea
+                    name="notes"
+                    class="field-input"
+                    placeholder="e.g. Ambulance operates 24/7. Clinic OPD open Mon-Sat 9 AM to 6 PM."
+                  ></textarea>
                 </div>
               </div>
-              <div class="form-button-row">
+
+              <div class="form-button-row" style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
                 <button type="submit" class="btn btn-primary">
-                  <i data-lucide="plus"></i> Add Rescue Service
+                  <i data-lucide="check-circle" style="width: 16px; height: 16px;"></i>
+                  <span>Register & Publish Rescue NGO</span>
                 </button>
               </div>
             </form>
@@ -709,9 +902,13 @@
                     </td>
                     <td>⭐ <%= p.rating ? p.rating.toFixed(1) : '4.8' %></td>
                     <td>
-                      <div style="display: flex; gap: 0.4rem;">
+                      <div style="display: flex; gap: 0.4rem; align-items: center;">
+                        <a href="/admin/products/edit/<%= p._id %>" class="btn btn-secondary btn-sm" title="Edit Product">
+                          <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                          <span>Edit</span>
+                        </a>
                         <form action="/admin/products/toggle-stock/<%= p._id %>" method="POST" style="display: inline;">
-                          <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Stock">
+                          <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Stock Status">
                             <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
                           </button>
                         </form>
@@ -738,7 +935,7 @@
           <div id="addProductForm" class="form-wrapper-box" style="margin: 0;">
             <div class="form-title-group">
               <h3>Add Product to Catalog</h3>
-              <p>Enter pet product details to list on the Woofy shop.</p>
+              <p>Enter comprehensive product details to list in the shop and recommended dashboard carousel.</p>
             </div>
             <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
               <div class="form-grid-layout">
@@ -754,6 +951,14 @@
                     <option value="Healthcare">Healthcare & Supplements</option>
                     <option value="Toys">Chew Toys & Balls</option>
                     <option value="Accessories">Collars, Leashes & Bowls</option>
+                    <option value="Bedding & Bowls">Bedding & Bowls</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Stock Status *</label>
+                  <select name="inStock" class="field-select">
+                    <option value="true" selected>In Stock (Available)</option>
+                    <option value="false">Out of Stock</option>
                   </select>
                 </div>
                 <div class="field-group">
@@ -761,20 +966,34 @@
                   <input type="number" name="price" class="field-input" placeholder="e.g. 1499" min="0" required />
                 </div>
                 <div class="field-group">
-                  <label class="field-label">Original MRP Price (₹) (Optional)</label>
+                  <label class="field-label">Original MRP Price (₹) (For discount badge)</label>
                   <input type="number" name="originalPrice" class="field-input" placeholder="e.g. 1899" min="0" />
                 </div>
                 <div class="field-group">
-                  <label class="field-label">Rating</label>
+                  <label class="field-label">Rating (1.0 - 5.0)</label>
                   <input type="number" name="rating" class="field-input" placeholder="4.8" step="0.1" min="1" max="5" value="4.8" />
+                </div>
+                <div class="field-group full">
+                  <label class="check-item" style="font-weight: 600; color: var(--primary-color);">
+                    <input type="checkbox" name="isFeatured" value="true" checked />
+                    <span>Featured Product (Show in Dashboard recommendations)</span>
+                  </label>
                 </div>
                 <div class="field-group full">
                   <label class="field-label">Product Description</label>
                   <input type="text" name="description" class="field-input" placeholder="e.g. High-protein complete adult nutrition for large breed dogs." />
                 </div>
                 <div class="field-group full">
+                  <label class="field-label">Search Tags (Comma separated)</label>
+                  <input type="text" name="tags" class="field-input" placeholder="Dog Food, Puppy, Adult, High Protein, Best Seller" />
+                </div>
+                <div class="field-group full">
                   <label class="field-label">Product Image URL</label>
                   <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Or Upload Product Image File</label>
+                  <input type="file" name="productImage" class="field-input" accept="image/*" style="padding-top: 0.5rem;" />
                 </div>
                 <div class="field-group full">
                   <label class="field-label">Buy / Purchase Link</label>
@@ -791,6 +1010,24 @@
         <% } %>
       </div>
     </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
 
     <script>
       if (window.lucide) lucide.createIcons();

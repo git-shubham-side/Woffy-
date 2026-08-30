@@ -1,3 +1,6 @@
+const RescueService = require("../Models/RescueService");
+const Product = require("../Models/Product");
+
 /**
  * GET: Render Landing Page
  */
@@ -13,10 +16,102 @@ const getHealthCheck = (req, res) => {
 };
 
 /**
- * GET: Services & Shop Redirect to Dashboard
+ * GET: Public Animal Rescue Services & Helplines Directory
  */
-const getServicesRedirect = (req, res) => {
-  res.redirect("/api/dashboard");
+const getRescueServicesPage = async (req, res) => {
+  try {
+    const { city, search, orgType } = req.query;
+
+    const query = { isVerified: true };
+
+    if (city && city.trim() !== "" && city !== "All") {
+      query.city = new RegExp(`^${city.trim()}$`, "i");
+    }
+
+    if (orgType && orgType.trim() !== "" && orgType !== "All") {
+      query.orgType = orgType.trim();
+    }
+
+    if (search && search.trim() !== "") {
+      const searchRegex = new RegExp(search.trim(), "i");
+      query.$or = [
+        { name: searchRegex },
+        { address: searchRegex },
+        { city: searchRegex },
+        { services: searchRegex },
+      ];
+    }
+
+    const rescueServices = await RescueService.find(query).sort({
+      createdAt: -1,
+    });
+    const distinctCities = await RescueService.distinct("city", {
+      isVerified: true,
+    });
+    const defaultCities = ["Mumbai", "Pune", "Bengaluru", "Delhi", "Thane"];
+    const allCities = Array.from(
+      new Set([...distinctCities, ...defaultCities]),
+    ).sort();
+
+    res.render("Rescue/rescue", {
+      rescueServices,
+      cities: allCities,
+      selectedCity: city || "All",
+      selectedType: orgType || "All",
+      searchQuery: search || "",
+    });
+  } catch (err) {
+    console.error("Rescue services directory error:", err);
+    res.render("Rescue/rescue", {
+      rescueServices: [],
+      cities: ["Mumbai", "Pune", "Bengaluru", "Delhi"],
+      selectedCity: "All",
+      selectedType: "All",
+      searchQuery: "",
+    });
+  }
+};
+
+/**
+ * GET: Public Pet Products Shop Catalog
+ */
+const getShopPage = async (req, res) => {
+  try {
+    const { category, search } = req.query;
+
+    const query = { inStock: true };
+
+    if (category && category.trim() !== "" && category !== "All") {
+      query.category = category.trim();
+    }
+
+    if (search && search.trim() !== "") {
+      const searchRegex = new RegExp(search.trim(), "i");
+      query.$or = [
+        { name: searchRegex },
+        { description: searchRegex },
+        { category: searchRegex },
+      ];
+    }
+
+    const products = await Product.find(query).sort({
+      isFeatured: -1,
+      createdAt: -1,
+    });
+
+    res.render("Shop/shop", {
+      products,
+      selectedCategory: category || "All",
+      searchQuery: search || "",
+    });
+  } catch (err) {
+    console.error("Shop catalog error:", err);
+    res.render("Shop/shop", {
+      products: [],
+      selectedCategory: "All",
+      searchQuery: "",
+    });
+  }
 };
 
 /**
@@ -39,7 +134,8 @@ const globalErrorHandler = (err, req, res, next) => {
 module.exports = {
   getLandingPage,
   getHealthCheck,
-  getServicesRedirect,
+  getRescueServicesPage,
+  getShopPage,
   notFoundHandler,
   globalErrorHandler,
 };

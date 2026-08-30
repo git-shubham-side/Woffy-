@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Product | Woofy Admin Suite</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      .admin-badge-pill {
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.25rem 0.65rem;
+        border-radius: 4px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .stock-toggle-box {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border: 1.5px solid var(--border-color);
+        border-radius: var(--border-radius);
+      }
+      .stock-radio-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .stock-radio-label input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #2563eb;
+      }
+      .image-preview-box {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background: #f8fafc;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+      }
+      .preview-thumb {
+        width: 80px;
+        height: 80px;
+        border-radius: 6px;
+        object-fit: cover;
+        background: #e2e8f0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Header -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="/admin" class="logo">
+            Woofy<span>.</span>
+          </a>
+          <span class="admin-badge-pill">Company Admin</span>
+        </div>
+        <div class="nav-actions">
+          <a href="/admin?section=products" class="btn btn-secondary btn-sm">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Back to Products</span>
+          </a>
+          <a href="/shop" target="_blank" class="btn btn-secondary btn-sm">
+            <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+            <span>Live Shop</span>
+          </a>
+          <a href="/logout" class="btn btn-primary btn-sm" style="background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important;">
+            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div class="form-wrapper-box">
+          <div class="form-title-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <h2>Edit Product: <%= product.name %></h2>
+              <span class="app-status <%= product.inStock ? 'status-approved' : 'status-rejected' %>" style="padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+                <%= product.inStock ? 'In Stock' : 'Out of Stock' %>
+              </span>
+            </div>
+            <p style="margin-top: 0.25rem;">Update product details, pricing, inventory stock status, description, and buy link.</p>
+          </div>
+
+          <form action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+            <div class="form-grid-layout">
+              <!-- Product Title -->
+              <div class="field-group full">
+                <label for="name" class="field-label">Product Title / Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="field-input"
+                  value="<%= product.name %>"
+                  required
+                />
+              </div>
+
+              <!-- Category -->
+              <div class="field-group">
+                <label for="category" class="field-label">Category *</label>
+                <select name="category" id="category" class="field-select">
+                  <option value="Food" <%= product.category === 'Food' ? 'selected' : '' %>>Pet Food & Nutrition</option>
+                  <option value="Grooming" <%= product.category === 'Grooming' ? 'selected' : '' %>>Grooming & Shampoo</option>
+                  <option value="Healthcare" <%= product.category === 'Healthcare' ? 'selected' : '' %>>Healthcare & Supplements</option>
+                  <option value="Toys" <%= product.category === 'Toys' ? 'selected' : '' %>>Chew Toys & Balls</option>
+                  <option value="Accessories" <%= product.category === 'Accessories' ? 'selected' : '' %>>Collars, Leashes & Bowls</option>
+                  <option value="Bedding & Bowls" <%= product.category === 'Bedding & Bowls' ? 'selected' : '' %>>Bedding & Bowls</option>
+                </select>
+              </div>
+
+              <!-- Stock Status Selector -->
+              <div class="field-group">
+                <label class="field-label">Inventory Stock Availability *</label>
+                <div class="stock-toggle-box">
+                  <label class="stock-radio-label" style="color: #15803d;">
+                    <input type="radio" name="inStock" value="true" <%= product.inStock ? 'checked' : '' %> />
+                    <span>In Stock (Available)</span>
+                  </label>
+                  <label class="stock-radio-label" style="color: #b91c1c;">
+                    <input type="radio" name="inStock" value="false" <%= !product.inStock ? 'checked' : '' %> />
+                    <span>Out of Stock</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Selling Price -->
+              <div class="field-group">
+                <label for="price" class="field-label">Selling Price (₹) *</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  class="field-input"
+                  value="<%= product.price %>"
+                  min="0"
+                  required
+                />
+              </div>
+
+              <!-- Original MRP Price -->
+              <div class="field-group">
+                <label for="originalPrice" class="field-label">Original MRP Price (₹) (For discount)</label>
+                <input
+                  type="number"
+                  id="originalPrice"
+                  name="originalPrice"
+                  class="field-input"
+                  value="<%= product.originalPrice || '' %>"
+                  min="0"
+                  placeholder="e.g. 1899"
+                />
+              </div>
+
+              <!-- Rating -->
+              <div class="field-group">
+                <label for="rating" class="field-label">Customer Rating (1.0 - 5.0)</label>
+                <input
+                  type="number"
+                  id="rating"
+                  name="rating"
+                  class="field-input"
+                  value="<%= product.rating || 4.8 %>"
+                  step="0.1"
+                  min="1"
+                  max="5"
+                />
+              </div>
+
+              <!-- Review Count -->
+              <div class="field-group">
+                <label for="reviewCount" class="field-label">Review Count</label>
+                <input
+                  type="number"
+                  id="reviewCount"
+                  name="reviewCount"
+                  class="field-input"
+                  value="<%= product.reviewCount || 25 %>"
+                  min="0"
+                />
+              </div>
+
+              <!-- Featured Toggle -->
+              <div class="field-group full">
+                <label class="check-item" style="font-weight: 600; color: var(--primary-color);">
+                  <input type="checkbox" name="isFeatured" value="true" <%= product.isFeatured ? 'checked' : '' %> />
+                  <span>Featured Product (Highlight on User Dashboard & Shop top carousel)</span>
+                </label>
+              </div>
+
+              <!-- Description -->
+              <div class="field-group full">
+                <label for="description" class="field-label">Product Description & Highlights</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  class="field-input"
+                  value="<%= product.description || '' %>"
+                  placeholder="e.g. High-protein complete adult nutrition for large breed dogs."
+                />
+              </div>
+
+              <!-- Buy / Purchase URL -->
+              <div class="field-group full">
+                <label for="buyUrl" class="field-label">Buy / Purchase Link (Amazon / Affiliate / Store URL)</label>
+                <input
+                  type="url"
+                  id="buyUrl"
+                  name="buyUrl"
+                  class="field-input"
+                  value="<%= product.buyUrl || '' %>"
+                  placeholder="https://amazon.in/..."
+                />
+              </div>
+
+              <!-- Tags -->
+              <div class="field-group full">
+                <label for="tags" class="field-label">Product Search Tags (Comma separated)</label>
+                <input
+                  type="text"
+                  id="tags"
+                  name="tags"
+                  class="field-input"
+                  value="<%= (product.tags || []).join(', ') %>"
+                  placeholder="Dog Food, Puppy, Adult, High Protein, Best Seller"
+                />
+              </div>
+
+              <!-- Product Image -->
+              <div class="field-group full">
+                <label class="field-label">Product Image</label>
+                <% if (product.image) { %>
+                <div class="image-preview-box">
+                  <img src="<%= product.image %>" alt="<%= product.name %>" class="preview-thumb" />
+                  <div>
+                    <p style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.2rem;">Current Image</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); word-break: break-all;"><%= product.image %></p>
+                  </div>
+                </div>
+                <% } %>
+
+                <div style="margin-top: 0.75rem;">
+                  <label for="photoUrl" class="field-label" style="font-size: 0.85rem;">Update Image URL</label>
+                  <input
+                    type="url"
+                    id="photoUrl"
+                    name="photoUrl"
+                    class="field-input"
+                    value="<%= product.image && product.image.startsWith('http') ? product.image : '' %>"
+                    placeholder="https://images.unsplash.com/..."
+                  />
+                </div>
+
+                <div style="margin-top: 0.75rem;">
+                  <label for="productImage" class="field-label" style="font-size: 0.85rem;">Or Upload New Image File</label>
+                  <input
+                    type="file"
+                    id="productImage"
+                    name="productImage"
+                    class="field-input"
+                    accept="image/*"
+                    style="padding-top: 0.5rem;"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-button-row">
+              <a href="/admin?section=products" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="check"></i>
+                <span>Save Product Changes</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      if (window.lucide) lucide.createIcons();
+    </script>
+  </body>
+</html>

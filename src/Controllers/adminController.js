@@ -254,13 +254,16 @@ const postAddRescueService = async (req, res) => {
     const {
       name,
       orgType,
+      contactPerson,
       city,
       state,
       address,
+      pincode,
       phone,
       emergencyHelpline,
       email,
       website,
+      googleMapsUrl,
       services,
       customServices,
       is24x7,
@@ -300,13 +303,16 @@ const postAddRescueService = async (req, res) => {
     const rescue = await RescueService.create({
       name: name.trim(),
       orgType: orgType || "NGO",
+      contactPerson: contactPerson ? contactPerson.trim() : "",
       city: city.trim(),
       state: state ? state.trim() : "Maharashtra",
       address: address.trim(),
+      pincode: pincode ? pincode.trim() : "",
       phone: phone.trim(),
       emergencyHelpline: emergencyHelpline ? emergencyHelpline.trim() : phone.trim(),
       email: email ? email.toLowerCase().trim() : "",
       website: website ? website.trim() : "",
+      googleMapsUrl: googleMapsUrl ? googleMapsUrl.trim() : "",
       services: servicesList.length > 0 ? servicesList : ["Stray Rescue", "Medical Care"],
       is24x7: is24x7 === "on" || is24x7 === "true" || is24x7 === true,
       isVerified: true,
@@ -353,6 +359,113 @@ const postDeleteRescueService = async (req, res) => {
    ========================================================================== */
 
 /**
+ * GET: Render Structured Edit Product Form
+ */
+const getEditProductPage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    if (!product) {
+      req.flash("error", "Product not found.");
+      return res.redirect("/admin?section=products");
+    }
+
+    res.render("Admin/edit-product", {
+      product,
+    });
+  } catch (err) {
+    console.error("Edit product load error:", err);
+    req.flash("error", "Failed to load product edit page.");
+    res.redirect("/admin?section=products");
+  }
+};
+
+/**
+ * POST: Update Product Details & Stock Status
+ */
+const postEditProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      category,
+      price,
+      originalPrice,
+      rating,
+      reviewCount,
+      inStock,
+      isFeatured,
+      description,
+      buyUrl,
+      tags,
+      photoUrl,
+    } = req.body;
+
+    const product = await Product.findById(id);
+    if (!product) {
+      req.flash("error", "Product not found.");
+      return res.redirect("/admin?section=products");
+    }
+
+    if (!name || !price) {
+      req.flash("error", "Product title and selling price are required.");
+      return res.redirect(`/admin/products/edit/${id}`);
+    }
+
+    const priceNum = parseFloat(price);
+    const originalPriceNum = originalPrice ? parseFloat(originalPrice) : null;
+    let discountPercent = 0;
+    if (originalPriceNum && originalPriceNum > priceNum) {
+      discountPercent = Math.round(
+        ((originalPriceNum - priceNum) / originalPriceNum) * 100,
+      );
+    }
+
+    let tagsList = product.tags;
+    if (tags && typeof tags === "string") {
+      tagsList = tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    }
+
+    let photoPath = product.image;
+    if (req.file) {
+      photoPath = "/uploads/products/" + req.file.filename;
+    } else if (photoUrl && photoUrl.trim() !== "") {
+      photoPath = photoUrl.trim();
+    }
+
+    product.name = name.trim();
+    product.category = category || product.category;
+    product.price = priceNum;
+    product.originalPrice = originalPriceNum;
+    product.discountPercent = discountPercent;
+    product.rating = rating ? parseFloat(rating) : product.rating;
+    product.reviewCount = reviewCount ? parseInt(reviewCount) : product.reviewCount;
+    product.inStock = inStock === "true" || inStock === "on" || inStock === true;
+    product.isFeatured = isFeatured === "true" || isFeatured === "on" || isFeatured === true;
+    product.description = description ? description.trim() : "";
+    product.buyUrl = buyUrl ? buyUrl.trim() : "";
+    product.tags = tagsList;
+    product.image = photoPath;
+
+    await product.save();
+
+    req.flash(
+      "success",
+      `Product "${product.name}" updated successfully (Status: ${product.inStock ? "In Stock" : "Out of Stock"})!`,
+    );
+    res.redirect("/admin?section=products");
+  } catch (err) {
+    console.error("Update product error:", err);
+    req.flash("error", "Failed to update product: " + err.message);
+    res.redirect(`/admin/products/edit/${req.params.id}`);
+  }
+};
+
+/**
  * POST: Add Product to Shop Catalog
  */
 const postAddProduct = async (req, res) => {
@@ -362,10 +475,11 @@ const postAddProduct = async (req, res) => {
       category,
       price,
       originalPrice,
+      inStock,
+      isFeatured,
       rating,
       description,
       buyUrl,
-      isFeatured,
       tags,
     } = req.body;
 
@@ -411,8 +525,8 @@ const postAddProduct = async (req, res) => {
       description: description ? description.trim() : "",
       image: photoPath,
       buyUrl: buyUrl ? buyUrl.trim() : "",
-      isFeatured: isFeatured === "on" || isFeatured === "true",
-      inStock: true,
+      isFeatured: isFeatured === "on" || isFeatured === "true" || isFeatured === true,
+      inStock: inStock === "false" ? false : true,
       tags: tagsList,
     });
 
@@ -483,6 +597,8 @@ module.exports = {
   postAdminDirectAddHospital,
   postAddRescueService,
   postDeleteRescueService,
+  getEditProductPage,
+  postEditProduct,
   postAddProduct,
   postToggleProductStock,
   postDeleteProduct,

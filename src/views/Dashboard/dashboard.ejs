@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | Woofy Premium Pet Care</title>
+    <title>Dashboard | Woofy - Complete Pet Care Platform</title>
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -18,22 +18,52 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body class="dashboard-body">
-    <!-- Top Navigation -->
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Top Sticky Glassmorphism Navigation -->
     <header class="dashboard-nav">
       <div class="nav-container">
-        <a href="/" class="logo">Woofy.</a>
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard" class="active">
+            <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+            <span>Shop</span>
+          </a>
+        </nav>
+
         <div class="nav-actions">
           <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-          <a href="/admin/hospitals" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+          <a href="/admin" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
             <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
             <span>Admin Portal <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
           </a>
           <% } %>
-          <a href="/api/pet-profiles" class="pet-profile-btn">
-            <span class="avatar"><i data-lucide="paw-print"></i></span>
-            <span>My Pets</span>
+          <a href="/logout" class="btn btn-secondary btn-sm">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span>Log out</span>
           </a>
-          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
         </div>
       </div>
     </header>
@@ -42,49 +72,106 @@
       <!-- Flash Messages -->
       <%- include('../partials/flash-messages') %>
 
-      <!-- SECTION 1: Welcome & Add Pet (Image on Right) -->
+      <!-- SECTION 0: Quick Stat Ribbon -->
+      <div class="quick-stats-row">
+        <!-- Stat 1: Registered Pets -->
+        <div class="stat-pill-card">
+          <div class="stat-pill-icon" style="background: #eff6ff; color: #2563eb;">
+            <i data-lucide="paw-print" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="stat-pill-info">
+            <h4><%= (typeof pets !== 'undefined' && pets) ? pets.length : 0 %></h4>
+            <p>Registered Pets</p>
+          </div>
+        </div>
+
+        <!-- Stat 2: Care Trackers -->
+        <div class="stat-pill-card">
+          <div class="stat-pill-icon" style="background: #ecfdf5; color: #10b981;">
+            <i data-lucide="activity" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="stat-pill-info">
+            <h4>6 Modules</h4>
+            <p>Health Loggers</p>
+          </div>
+        </div>
+
+        <!-- Stat 3: 24/7 Hospitals -->
+        <div class="stat-pill-card">
+          <div class="stat-pill-icon" style="background: #fff7ed; color: #ea580c;">
+            <i data-lucide="hospital" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="stat-pill-info">
+            <h4>24/7 Care</h4>
+            <p>Verified Clinics</p>
+          </div>
+        </div>
+
+        <!-- Stat 4: Rescue NGOs -->
+        <div class="stat-pill-card">
+          <div class="stat-pill-icon" style="background: #f5f3ff; color: #8b5cf6;">
+            <i data-lucide="heart-handshake" style="width: 22px; height: 22px;"></i>
+          </div>
+          <div class="stat-pill-info">
+            <h4>Active Helpline</h4>
+            <p>Rescue Network</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: Welcome & Pet Profile Switcher / Add Pet -->
       <section class="split-section">
         <div class="split-content">
           <div class="welcome-text">
             <h1>
-              Welcome back, <%= typeof userName !== 'undefined' ? userName :
-              'Pet Parent' %>!
+              Welcome back, <span class="sketch-highlight"><%= typeof userName !== 'undefined' && userName ? userName : 'Pet Parent' %></span>!
             </h1>
-            <p>Let's make sure your furry friend is healthy and happy today.</p>
+            <p>Monitor your companions' medical checkups, vaccination schedules, and emergency care all in one place.</p>
           </div>
 
+          <!-- Add Pet Callout -->
           <div class="add-pet-banner">
             <div class="banner-content">
-              <h3>Start by adding your pet</h3>
+              <h3><%= (typeof pets !== 'undefined' && pets && pets.length > 0) ? 'Manage your registered pets' : 'Start by creating your first pet profile' %></h3>
               <p>
-                Create a profile for your pet to track their health, grooming,
-                and medical records.
+                <%= (typeof pets !== 'undefined' && pets && pets.length > 0) ? 'View full profiles, weight charts, and multi-photo galleries.' : 'Create a profile to begin tracking vaccinations, health logs, and growth records.' %>
               </p>
             </div>
-            <a
-              href="/api/create-pet-profile"
-              class="btn btn-primary"
-              style="display: flex; align-items: center; gap: 8px"
-            >
-              <i data-lucide="plus" style="width: 18px; height: 18px"></i> Add
-              New Pet
+            <a href="/api/create-pet-profile" class="btn btn-primary">
+              <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+              <span>Add New Pet</span>
             </a>
           </div>
+
+          <!-- Registered Pets Quick Switcher Pills -->
+          <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
+          <div class="pets-preview-row">
+            <% pets.forEach(p => { %>
+            <a href="/api/profile/<%= p._id %>" class="pet-preview-pill" title="View <%= p.petName %>'s Profile">
+              <% if (p.photo) { %>
+              <img src="<%= p.photo %>" alt="<%= p.petName %>" onerror="this.src='/uploads/pets/default-pet.png'" />
+              <% } else { %>
+              <span class="pill-avatar-fallback"><%= p.petName.charAt(0).toUpperCase() %></span>
+              <% } %>
+              <span><%= p.petName %> (<%= p.breed || p.species %>)</span>
+              <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8;"></i>
+            </a>
+            <% }) %>
+          </div>
+          <% } %>
         </div>
 
         <div class="split-image square-image">
-          <!-- Indian street dog bonding with human -->
           <img
             src="https://www.annaroseheaton.com/uploads/4/7/0/2/47021893/anna-rose-heaton-professional-dog-photographer-east-midlands3_orig.jpg"
-            alt="Pet parent playing with Indian Indie dog"
+            alt="Pet parent bonding with dog"
           />
         </div>
       </section>
 
-      <!-- SECTION 2: Records Dashboard (Image on Left, Cards on Right) -->
+      <!-- SECTION 2: 6-in-1 Health & Care Records Hub -->
       <section class="split-section reverse-layout">
         <div class="split-image tall-image">
-          <!-- Professional Vet Checkup -->
           <img
             src="https://media.istockphoto.com/id/462435907/photo/puppy-and-kitten.jpg?s=612x612&w=0&k=20&c=ERmnTnx1ecWH5fEe1ngzgf5czngJFWk6m2CNDEzxOQ4="
             alt="Veterinarian examining a dog professionally"
@@ -92,131 +179,126 @@
         </div>
 
         <div class="split-content">
-          <h2 class="section-title">Health & Care Records</h2>
-          <div class="grid-cards two-cols-grid">
+          <h2 class="section-title">Health & Care Loggers</h2>
+          <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Comprehensive 6-module daily tracking for proactive pet wellness.</p>
+
+          <div class="two-cols-grid">
+            <!-- 1. Weight -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="scale"></i></div>
-              <div class="card-info">
-                <h3>Weight</h3>
-                <p>Track growth</p>
+              <div class="card-icon" style="background: #e0f2fe; color: #0284c7;">
+                <i data-lucide="scale"></i>
               </div>
+              <h3>Weight</h3>
+              <p>Growth & Diet</p>
             </div>
+
+            <!-- 2. Medical -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="stethoscope"></i></div>
-              <div class="card-info">
-                <h3>Medical</h3>
-                <p>Past surgeries</p>
+              <div class="card-icon" style="background: #fee2e2; color: #dc2626;">
+                <i data-lucide="stethoscope"></i>
               </div>
+              <h3>Medical</h3>
+              <p>Surgeries & Tests</p>
             </div>
+
+            <!-- 3. Medicine -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="pill"></i></div>
-              <div class="card-info">
-                <h3>Medicine</h3>
-                <p>Treatments</p>
+              <div class="card-icon" style="background: #dbeafe; color: #2563eb;">
+                <i data-lucide="pill"></i>
               </div>
+              <h3>Medicine</h3>
+              <p>Dosages & Routine</p>
             </div>
+
+            <!-- 4. Vet History -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
-              <div class="card-info">
-                <h3>Vet History</h3>
-                <p>Prescriptions</p>
+              <div class="card-icon" style="background: #dcfce7; color: #16a34a;">
+                <i data-lucide="clipboard-list"></i>
               </div>
+              <h3>Vet History</h3>
+              <p>Doctor Slips</p>
             </div>
+
+            <!-- 5. Grooming -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="scissors"></i></div>
-              <div class="card-info">
-                <h3>Grooming</h3>
-                <p>Spa & cuts</p>
+              <div class="card-icon" style="background: #f3e8ff; color: #9333ea;">
+                <i data-lucide="scissors"></i>
               </div>
+              <h3>Grooming</h3>
+              <p>Fur & Nail Care</p>
             </div>
+
+            <!-- 6. Bath -->
             <div class="dash-card">
-              <div class="card-icon"><i data-lucide="droplets"></i></div>
-              <div class="card-info">
-                <h3>Bath</h3>
-                <p>Wash schedule</p>
+              <div class="card-icon" style="background: #cffafe; color: #0891b2;">
+                <i data-lucide="droplets"></i>
               </div>
+              <h3>Bath</h3>
+              <p>Wash Schedule</p>
             </div>
           </div>
 
-          <!-- Tracking & Records Buttons (Updated with class for mobile responsiveness) -->
+          <!-- Action Buttons Row -->
           <div class="action-buttons">
-            <a
-              href="/api/select-pet-for-tracking"
-              class="btn btn-primary"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 8px;
-              "
-            >
-              Start Tracking
-              <i
-                data-lucide="arrow-right"
-                style="width: 18px; height: 18px"
-              ></i>
+            <a href="/api/select-pet-for-tracking" class="btn btn-primary">
+              <span>Start Tracking</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </a>
 
-            <a
-              href="/api/select-pet-to-show-record"
-              class="btn btn-secondary"
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 8px;
-              "
-            >
-              <i
-                data-lucide="clipboard-list"
-                style="width: 18px; height: 18px"
-              ></i>
-              Show Records
+            <a href="/api/select-pet-to-show-record" class="btn btn-secondary">
+              <i data-lucide="history" style="width: 16px; height: 16px;"></i>
+              <span>View Past Records</span>
             </a>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 3: City Services (Cards on Left, Image on Right) -->
+      <!-- SECTION 3: City Emergency Services -->
       <section class="split-section">
         <div class="split-content">
-          <h2 class="section-title">City Services</h2>
+          <h2 class="section-title">Emergency City Network</h2>
+          <p style="color: var(--text-muted);">Verified local veterinary care and stray rescue helplines in your area.</p>
+
           <div class="service-list">
             <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-            <a href="/admin/hospitals" class="dash-card service-card" style="border: 1.5px solid #2563eb; background: #eff6ff;">
-              <div class="card-icon" style="background: #2563eb; color: #ffffff;"><i data-lucide="shield-alert"></i></div>
+            <a href="/admin" class="dash-card service-card" style="border: 1.5px solid #2563eb; background: #eff6ff;">
+              <div class="card-icon" style="background: #2563eb; color: #ffffff;">
+                <i data-lucide="shield-check"></i>
+              </div>
               <div class="card-info">
                 <h3 style="color: #1e40af;">Company Admin Portal</h3>
                 <p style="color: #1e3a8a;">
-                  Review & verify incoming hospital applications (<%= typeof pendingHospitalCount !== 'undefined' ? pendingHospitalCount : 0 %> pending).
+                  Platform management: Verify hospital applications, manage rescue NGOs, and product catalog.
                 </p>
               </div>
             </a>
             <% } %>
+
+            <!-- Hospitals Service Card -->
             <a href="/services/hospitals" class="dash-card service-card">
-              <div class="card-icon"><i data-lucide="hospital"></i></div>
+              <div class="card-icon" style="background: #fff7ed; color: #ea580c;">
+                <i data-lucide="hospital"></i>
+              </div>
               <div class="card-info">
-                <h3>Find Best Hospitals</h3>
-                <p>
-                  Locate top-rated vet clinics and 24/7 animal hospitals in your
-                  city.
-                </p>
+                <h3>Find Verified Pet Hospitals</h3>
+                <p>Auto-locate 24/7 veterinary emergency centers near you with direct phone call & map directions.</p>
               </div>
             </a>
+
+            <!-- Rescue Service Card -->
             <a href="/services/rescue" class="dash-card service-card">
-              <div class="card-icon"><i data-lucide="truck"></i></div>
+              <div class="card-icon" style="background: #ecfdf5; color: #059669;">
+                <i data-lucide="heart-handshake"></i>
+              </div>
               <div class="card-info">
-                <h3>Animal Rescue Services</h3>
-                <p>
-                  Emergency contacts for animal rescue and shelters near you.
-                </p>
+                <h3>Animal Rescue NGOs & Shelters</h3>
+                <p>Emergency rescue contacts, stray dog ambulances, and certified animal shelter teams.</p>
               </div>
             </a>
           </div>
         </div>
 
         <div class="split-image square-image">
-          <!-- Beautiful Indian Pariah Rescue Dog -->
           <img
             src="https://content.jdmagicbox.com/v2/comp/bangalore/p4/080pxx80.xx80.131024174625.x6p4/catalogue/charlies-animal-rescue-centre-yelahanka-bangalore-animal-welfare-organisations-1xe2c7ipd1.jpg"
             alt="Indian Pariah rescue dog portrait"
@@ -224,58 +306,90 @@
         </div>
       </section>
 
-      <!-- SECTION 4: Shop Section -->
+      <!-- SECTION 4: Recommended Pet Products (Live from MongoDB) -->
       <section class="dashboard-section shop-section">
         <div class="section-header-flex">
-          <h2 class="section-title">Recommended Products</h2>
-          <a href="/shop" class="view-more-link">View all products &rarr;</a>
+          <div>
+            <h2 class="section-title">Recommended Pet Products</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0;">Curated food, grooming supplies, and health supplements.</p>
+          </div>
+          <a href="/shop" class="view-more-link">
+            <span>View all products</span>
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </a>
         </div>
 
+        <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
         <div class="grid-cards three-cols">
+          <% products.forEach(product => { %>
           <div class="product-card">
-            <div class="product-img placeholder-img">Premium Food</div>
+            <div class="product-img-wrap">
+              <img
+                src="<%= product.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= product.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'"
+              />
+              <% if (product.discountPercent && product.discountPercent > 0) { %>
+              <span class="discount-badge">
+                <%= product.discountPercent %>% OFF
+              </span>
+              <% } %>
+            </div>
             <div class="product-details">
-              <h4>Organic Dog Kibble</h4>
-              <p class="price">₹1,200</p>
-              <button class="btn btn-secondary btn-sm btn-block">
-                Buy Now
-              </button>
+              <span class="product-category-tag"><%= product.category %></span>
+              <h4><%= product.name %></h4>
+              
+              <div class="price-row">
+                <span class="price-current">₹<%= product.price %></span>
+                <% if (product.originalPrice) { %>
+                <span class="price-original">₹<%= product.originalPrice %></span>
+                <% } %>
+              </div>
+
+              <a
+                href="<%= product.buyUrl || '/shop' %>"
+                target="<%= product.buyUrl ? '_blank' : '_self' %>"
+                class="btn btn-secondary btn-sm btn-block"
+              >
+                <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                <span>Buy Now</span>
+              </a>
             </div>
           </div>
-          <div class="product-card">
-            <div class="product-img placeholder-img">Toy</div>
-            <div class="product-details">
-              <h4>Tough Chew Toy</h4>
-              <p class="price">₹450</p>
-              <button class="btn btn-secondary btn-sm btn-block">
-                Buy Now
-              </button>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="product-img placeholder-img">Shampoo</div>
-            <div class="product-details">
-              <h4>Oatmeal Pet Shampoo</h4>
-              <p class="price">₹600</p>
-              <button class="btn btn-secondary btn-sm btn-block">
-                Buy Now
-              </button>
-            </div>
-          </div>
+          <% }) %>
         </div>
+        <% } else { %>
+        <div class="empty-state-box">
+          <i data-lucide="shopping-bag" style="width: 44px; height: 44px; color: #94a3b8; margin-bottom: 0.75rem;"></i>
+          <p>No products available currently. Check back soon!</p>
+        </div>
+        <% } %>
       </section>
     </main>
 
     <!-- Footer -->
     <footer class="dash-footer">
-      <div class="container">
-        <p>Woofy | Pet Management Application</p>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
 
     <!-- Initialize Lucide Icons -->
     <script>
-      lucide.createIcons();
+      if (window.lucide) {
+        lucide.createIcons();
+      }
     </script>
   </body>
 </html>

@@ -1,6 +1,7 @@
 const User = require("../Models/User");
 const Pet = require("../Models/Pet");
 const Record = require("../Models/Record");
+const Product = require("../Models/Product");
 
 /**
  * GET: User Dashboard
@@ -11,16 +12,21 @@ const getDashboard = async (req, res) => {
     const pets = await Pet.find({ user: req.session.userId }).sort({
       createdAt: -1,
     });
+    const products = await Product.find({ inStock: true })
+      .sort({ isFeatured: -1, createdAt: -1 })
+      .limit(6);
 
     res.render("Dashboard/dashboard", {
       userName: user ? user.fullName : "Pet Parent",
       pets: pets || [],
+      products: products || [],
     });
   } catch (err) {
     console.error("Dashboard error:", err);
     res.render("Dashboard/dashboard", {
       userName: "Pet Parent",
       pets: [],
+      products: [],
     });
   }
 };

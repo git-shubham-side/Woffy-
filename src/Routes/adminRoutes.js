@@ -47,6 +47,12 @@ router.post("/rescue/delete/:id", adminController.postDeleteRescueService);
 /* ==========================================================================
    PRODUCTS CATALOG ROUTES
    ========================================================================== */
+router.get("/products/edit/:id", adminController.getEditProductPage);
+router.post(
+  "/products/edit/:id",
+  upload.single("productImage"),
+  adminController.postEditProduct,
+);
 router.post(
   "/products/add",
   upload.single("productImage"),

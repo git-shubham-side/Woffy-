@@ -1,89 +1,141 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Pets | Woofy</title>
-    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+    <title>My Pets | Woofy - Pet Health & Management Platform</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <!-- Sticky Glassmorphic Navbar -->
     <header id="navbar">
       <div class="container nav-container">
-        <a href="/api/dashboard" class="logo">Woofy.</a>
-        <nav class="nav-links">
-          <a href="/api/dashboard">Home</a>
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles" class="active">
+            <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+            <span>Shop</span>
+          </a>
         </nav>
+
+        <div class="nav-actions">
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+            <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
+            <span>Admin Portal</span>
+          </a>
+          <% } %>
+          <a href="/logout" class="btn btn-secondary btn-sm">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span>Log out</span>
+          </a>
+        </div>
       </div>
     </header>
 
-    <section class="pets-page">
+    <main class="pets-page">
       <div class="container">
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
 
-        <div class="pets-header reveal">
+        <div class="pets-header">
           <div>
-            <h2>My Pets</h2>
-            <p>All your registered pet profiles in one place.</p>
+            <span class="page-badge-pill">Pet Parent Workspace</span>
+            <h2>My Registered <span class="sketch-highlight">Pets</span></h2>
+            <p>Manage individual pet profiles, growth charts, vaccination schedules, and photo galleries.</p>
           </div>
           <a href="/api/create-pet-profile" class="btn btn-primary">
-            <i data-lucide="plus"></i> Add New Pet
+            <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+            <span>Add New Pet</span>
           </a>
         </div>
 
-        <% if (typeof pets !== 'undefined' && pets.length > 0) { %>
+        <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
           <div class="pets-grid">
             <% pets.forEach(function(pet) { %>
-              <div class="pet-card reveal">
+              <div class="pet-card">
                 <div class="pet-card-top">
                   <% if (pet.photo) { %>
-                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
                   <% } else if (pet.photoUrl) { %>
-                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
                   <% } else { %>
                     <div class="profile-avatar-fallback">
                       <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
                     </div>
                   <% } %>
-                  <div>
+                  <div class="pet-header-info">
                     <h3><%= pet.petName %></h3>
-                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender %></p>
+                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender || 'Pet' %></p>
                   </div>
                 </div>
+
                 <div class="pet-card-stats">
                   <div class="stat">
                     <span class="stat-label">Age</span>
-                    <span class="stat-value"><%= pet.age %> yrs</span>
+                    <span class="stat-value"><%= pet.age ? pet.age + ' yrs' : 'N/A' %></span>
                   </div>
                   <div class="stat">
                     <span class="stat-label">Weight</span>
-                    <span class="stat-value"><%= pet.weight %> kg</span>
+                    <span class="stat-value"><%= pet.weight ? pet.weight + ' kg' : 'N/A' %></span>
                   </div>
                   <div class="stat">
                     <span class="stat-label">Vaccinated</span>
-                    <span class="stat-value"><%= pet.vaccinated %></span>
+                    <span class="stat-value" style="color: <%= pet.vaccinated === 'Yes' ? '#16a34a' : '#ea580c' %>;">
+                      <%= pet.vaccinated || 'Yes' %>
+                    </span>
                   </div>
                 </div>
+
                 <div class="card-actions-row">
-                  <a
-                    href="/api/pet-profile/<%= pet._id %>"
-                    class="btn btn-primary btn-sm"
-                    style="flex: 1;"
-                    ><i data-lucide="eye"></i> View</a
-                  >
-                  <a
-                    href="/api/pet-profile/edit/<%= pet._id %>"
-                    class="btn btn-secondary btn-sm"
-                    title="Edit Pet"
-                    ><i data-lucide="edit-3"></i> Edit</a
-                  >
+                  <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-primary btn-sm" style="flex: 1.2;">
+                    <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
+                    <span>Profile</span>
+                  </a>
+                  <a href="/api/track-record/<%= pet._id %>" class="btn btn-secondary btn-sm" title="Track Records">
+                    <i data-lucide="activity" style="width: 15px; height: 15px;"></i>
+                    <span>Track</span>
+                  </a>
+                  <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-secondary btn-sm" title="Edit Profile">
+                    <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
+                  </a>
                   <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile?');">
                     <button type="submit" class="btn btn-danger btn-sm" title="Delete <%= pet.petName %>">
-                      <i data-lucide="trash-2"></i>
+                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
                     </button>
                   </form>
                 </div>
@@ -91,42 +143,33 @@
             <% }); %>
           </div>
         <% } else { %>
-          <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius); margin-top: 1.5rem;">
-            <div style="margin-bottom: 1rem; color: var(--text-muted);">
-              <i data-lucide="paw-print" style="width: 48px; height: 48px;"></i>
+          <div class="empty-pets-box">
+            <div class="empty-pets-icon">
+              <i data-lucide="paw-print" style="width: 32px; height: 32px;"></i>
             </div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">No pets registered yet</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Add your furry companion to track their health, visits, and care schedules.</p>
+            <h3>No Pets Registered Yet</h3>
+            <p>Add your first furry companion to start tracking their growth, vaccination schedules, and medical prescriptions.</p>
             <a href="/api/create-pet-profile" class="btn btn-primary">
-              <i data-lucide="plus"></i> Add Your First Pet
+              <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+              <span>Add Your First Pet</span>
             </a>
           </div>
         <% } %>
       </div>
-    </section>
+    </main>
 
+    <!-- Footer -->
     <footer>
       <div class="container footer-container">
-        <div class="footer-brand">
-          <h2>Woofy.</h2>
-          <p>Premium PetCare.</p>
-        </div>
-        <!-- <div class="footer-links">
-          <p>
-            <b>Created By</b>
-
-            <a
-              class="linkedin"
-              href="https://linkedin.com/in/shubham-rathod-tech"
-            >
-              Shubham Rathod - Jimmy
-            </a>
-          </p>
-        </div> -->
+        <p>&copy; <%= new Date().getFullYear() %> Woofy. Complete Pet Care & Health Tracking Platform.</p>
       </div>
     </footer>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="/My-Pets/my-pets.js"></script>
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
   </body>
 </html>

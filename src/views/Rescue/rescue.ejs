@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animal Rescue NGOs & Emergency Helplines | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .rescue-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+        gap: 1.75rem;
+      }
+      .rescue-card {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+      .rescue-card:hover {
+        border-color: #cbd5e1;
+        box-shadow: var(--shadow-md);
+        transform: translateY(-4px);
+      }
+      .rescue-img-box {
+        position: relative;
+        height: 190px;
+        background: #f8fafc;
+        overflow: hidden;
+      }
+      .rescue-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+      .rescue-card:hover .rescue-img-box img {
+        transform: scale(1.04);
+      }
+      .org-type-badge {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        background: #059669;
+        color: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 0.25rem 0.6rem;
+        border-radius: 4px;
+      }
+      .rescue-card-content {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .rescue-card-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.4rem;
+        line-height: 1.3;
+      }
+      .rescue-info-line {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: flex-start;
+        gap: 0.45rem;
+        margin-bottom: 0.4rem;
+      }
+      .rescue-info-line i {
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+        color: #94a3b8;
+      }
+      .emergency-call-banner {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: #065f46;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">Dashboard</a>
+          <a href="/api/pet-profiles">My Pets</a>
+          <a href="/services/hospitals">Hospitals</a>
+          <a href="/services/rescue" class="active">Rescue NGOs</a>
+          <a href="/shop">Shop</a>
+        </nav>
+
+        <div class="nav-actions">
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin?section=rescue" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+            <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+            <span>Manage NGOs</span>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </header>
+
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div class="hospitals-header">
+          <div>
+            <span class="page-badge-pill">24/7 Emergency Stray & Animal Rescue</span>
+            <h2>Animal Rescue NGOs & <span class="sketch-highlight">Helplines</span></h2>
+            <p>Verified NGOs, animal ambulance helplines, and shelters for stray or injured animals.</p>
+          </div>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin?section=rescue" class="btn btn-primary">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>Add Rescue NGO</span>
+          </a>
+          <% } %>
+        </div>
+
+        <!-- Emergency Quick Notice -->
+        <div class="emergency-call-banner">
+          <i data-lucide="heart-handshake" style="width: 20px; height: 20px; color: #059669; flex-shrink: 0;"></i>
+          <span>For urgent animal distress, injured strays, or ambulance needs, call the direct helpline numbers below.</span>
+        </div>
+
+        <!-- Search & Filter Panel -->
+        <div class="search-filter-panel">
+          <form method="GET" action="/services/rescue">
+            <div class="search-form-row">
+              <div class="search-input-wrap">
+                <i data-lucide="search"></i>
+                <input
+                  type="text"
+                  name="search"
+                  class="search-input"
+                  placeholder="Search by NGO name, city, or service..."
+                  value="<%= searchQuery %>"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="city-select-wrap">
+                <select name="city" class="city-select" onchange="this.form.submit()">
+                  <option value="All" <%= selectedCity === 'All' ? 'selected' : '' %>>All Cities</option>
+                  <% cities.forEach(city => { %>
+                  <option value="<%= city %>" <%= selectedCity.toLowerCase() === city.toLowerCase() ? 'selected' : '' %>>
+                    <%= city %>
+                  </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <button type="submit" class="search-btn">
+                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                <span>Search</span>
+              </button>
+            </div>
+
+            <div class="filter-controls-row">
+              <span style="font-size: 0.875rem; color: var(--text-muted);">
+                Showing <strong><%= rescueServices.length %></strong> verified rescue organization<%= rescueServices.length === 1 ? '' : 's' %>
+                <% if (selectedCity !== 'All') { %> in <strong><%= selectedCity %></strong><% } %>
+              </span>
+            </div>
+          </form>
+        </div>
+
+        <!-- Rescue Services Grid -->
+        <% if (rescueServices && rescueServices.length > 0) { %>
+        <div class="rescue-grid">
+          <% rescueServices.forEach(r => { %>
+          <div class="rescue-card">
+            <div class="rescue-img-box">
+              <img
+                src="<%= r.photo || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= r.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80'"
+              />
+              <span class="org-type-badge"><%= r.orgType || 'NGO Trust' %></span>
+              
+              <% if (r.is24x7) { %>
+              <div class="badge-247">
+                <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                <span>24/7 Helpline</span>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="rescue-card-content">
+              <h3><%= r.name %></h3>
+              
+              <div class="rescue-info-line">
+                <i data-lucide="map-pin" style="width: 15px; height: 15px;"></i>
+                <span><%= r.address %>, <%= r.city %></span>
+              </div>
+
+              <div class="rescue-info-line">
+                <i data-lucide="phone" style="width: 15px; height: 15px;"></i>
+                <span>Helpline: <strong><%= r.phone %></strong> <%= r.emergencyHelpline ? ' | Emergency: ' + r.emergencyHelpline : '' %></span>
+              </div>
+
+              <div class="hospital-services-chips" style="margin-top: 0.75rem; margin-bottom: 1.25rem;">
+                <% (r.services || []).forEach(service => { %>
+                <span class="service-chip"><%= service %></span>
+                <% }) %>
+              </div>
+
+              <div class="hospital-card-actions" style="margin-top: auto;">
+                <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="btn btn-primary btn-sm">
+                  <i data-lucide="phone-call" style="width: 14px; height: 14px;"></i>
+                  <span>Call Helpline</span>
+                </a>
+                <a
+                  href="<%= r.googleMapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ' ' + r.address + ' ' + r.city)) %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i data-lucide="map" style="width: 14px; height: 14px;"></i>
+                  <span>Directions</span>
+                </a>
+                <% if (r.website) { %>
+                <a href="<%= r.website %>" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" title="Visit Website">
+                  <i data-lucide="globe" style="width: 14px; height: 14px;"></i>
+                  <span>Website</span>
+                </a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: #ecfdf5; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #059669;">
+            <i data-lucide="heart-handshake" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">No Rescue Organizations Listed in <%= selectedCity !== 'All' ? selectedCity : 'This Area' %></h3>
+          <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--text-muted); font-size: 0.95rem;">We are actively onboarding verified animal rescue NGOs, shelter trusts, and stray dog ambulance teams.</p>
+          <a href="/services/rescue" class="btn btn-secondary">View All Cities</a>
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Care Store & Essentials | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">Dashboard</a>
+          <a href="/api/pet-profiles">My Pets</a>
+          <a href="/services/hospitals">Hospitals</a>
+          <a href="/services/rescue">Rescue NGOs</a>
+          <a href="/shop" class="active">Shop</a>
+        </nav>
+
+        <div class="nav-actions">
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin?section=products" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+            <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+            <span>Manage Products</span>
+          </a>
+          <% } %>
+        </div>
+      </div>
+    </header>
+
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <!-- Header -->
+        <div class="hospitals-header">
+          <div>
+            <span class="page-badge-pill">Verified Nutrition & Essentials Store</span>
+            <h2>Pet Care Store & <span class="sketch-highlight">Essentials</span></h2>
+            <p>Curated pet food, wellness supplements, grooming kits, and durable toys for Indian breeds.</p>
+          </div>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin?section=products#addProductForm" class="btn btn-primary">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>Add New Product</span>
+          </a>
+          <% } %>
+        </div>
+
+        <!-- Filter Categories & Search Panel -->
+        <div class="search-filter-panel">
+          <form method="GET" action="/shop">
+            <div class="search-form-row" style="grid-template-columns: 1fr auto;">
+              <div class="search-input-wrap">
+                <i data-lucide="search"></i>
+                <input
+                  type="text"
+                  name="search"
+                  class="search-input"
+                  placeholder="Search products by brand, ingredient, or name..."
+                  value="<%= searchQuery %>"
+                  autocomplete="off"
+                />
+              </div>
+
+              <% if (selectedCategory && selectedCategory !== 'All') { %>
+              <input type="hidden" name="category" value="<%= selectedCategory %>" />
+              <% } %>
+
+              <button type="submit" class="search-btn">
+                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                <span>Search</span>
+              </button>
+            </div>
+
+            <!-- Filter Controls Row -->
+            <div class="filter-controls-row">
+              <div class="filter-pills">
+                <a
+                  href="/shop<%= searchQuery ? '?search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'All' ? 'active' : '' %>"
+                >
+                  All Items
+                </a>
+                <a
+                  href="/shop?category=Food<%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'Food' ? 'active' : '' %>"
+                >
+                  🍲 Pet Food
+                </a>
+                <a
+                  href="/shop?category=Grooming<%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'Grooming' ? 'active' : '' %>"
+                >
+                  🧼 Grooming & Bath
+                </a>
+                <a
+                  href="/shop?category=Toys<%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'Toys' ? 'active' : '' %>"
+                >
+                  🎾 Chew Toys
+                </a>
+                <a
+                  href="/shop?category=Healthcare<%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'Healthcare' ? 'active' : '' %>"
+                >
+                  💊 Health & Vitamins
+                </a>
+                <a
+                  href="/shop?category=Accessories<%= searchQuery ? '&search=' + encodeURIComponent(searchQuery) : '' %>"
+                  class="filter-pill <%= selectedCategory === 'Accessories' ? 'active' : '' %>"
+                >
+                  🦮 Leashes & Bowls
+                </a>
+              </div>
+
+              <span style="font-size: 0.875rem; color: var(--text-muted);">
+                Showing <strong><%= products.length %></strong> product<%= products.length === 1 ? '' : 's' %>
+                <% if (selectedCategory !== 'All') { %> in <strong><%= selectedCategory %></strong><% } %>
+              </span>
+            </div>
+          </form>
+        </div>
+
+        <!-- Products Grid -->
+        <% if (products && products.length > 0) { %>
+        <div class="shop-grid">
+          <% products.forEach(product => { %>
+          <div class="shop-card">
+            <div class="shop-img-box">
+              <img
+                src="<%= product.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= product.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'"
+              />
+              <% if (product.discountPercent && product.discountPercent > 0) { %>
+              <span class="discount-tag"><%= product.discountPercent %>% OFF</span>
+              <% } %>
+              <% if (!product.inStock) { %>
+              <span class="discount-tag" style="background: #64748b; left: auto; right: 0.75rem;">Out of Stock</span>
+              <% } %>
+            </div>
+
+            <div class="shop-body">
+              <span class="category-label"><%= product.category %></span>
+              <h3><%= product.name %></h3>
+              <p><%= product.description ? (product.description.length > 90 ? product.description.substring(0, 90) + '...' : product.description) : 'Premium verified quality pet care essential.' %></p>
+
+              <div class="price-row">
+                <div class="price-box">
+                  <span class="selling-price">₹<%= product.price %></span>
+                  <% if (product.originalPrice) { %>
+                  <span class="mrp-price">₹<%= product.originalPrice %></span>
+                  <% } %>
+                </div>
+                
+                <% if (product.inStock) { %>
+                <a
+                  href="<%= product.buyUrl || '#' %>"
+                  target="<%= product.buyUrl ? '_blank' : '_self' %>"
+                  class="btn btn-primary btn-sm"
+                >
+                  <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                  <span>Buy Now</span>
+                </a>
+                <% } else { %>
+                <button class="btn btn-secondary btn-sm" disabled style="opacity: 0.6; cursor: not-allowed;">
+                  <span>Out of Stock</span>
+                </button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+          <div style="width: 64px; height: 64px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #2563eb;">
+            <i data-lucide="shopping-bag" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">No Products Found in <%= selectedCategory !== 'All' ? selectedCategory : 'Store' %></h3>
+          <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--text-muted); font-size: 0.95rem;">No pet supplies matched your filter or search query. Check back soon or view all products.</p>
+          <a href="/shop" class="btn btn-secondary">View All Products</a>
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>
