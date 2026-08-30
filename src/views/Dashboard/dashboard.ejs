@@ -23,6 +23,12 @@
       <div class="nav-container">
         <a href="/" class="logo">Woofy.</a>
         <div class="nav-actions">
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin/hospitals" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+            <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
+            <span>Admin Portal <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
+          </a>
+          <% } %>
           <a href="/api/pet-profiles" class="pet-profile-btn">
             <span class="avatar"><i data-lucide="paw-print"></i></span>
             <span>My Pets</span>
@@ -33,6 +39,9 @@
     </header>
 
     <main class="dashboard-main container">
+      <!-- Flash Messages -->
+      <%- include('../partials/flash-messages') %>
+
       <!-- SECTION 1: Welcome & Add Pet (Image on Right) -->
       <section class="split-section">
         <div class="split-content">
@@ -173,6 +182,17 @@
         <div class="split-content">
           <h2 class="section-title">City Services</h2>
           <div class="service-list">
+            <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+            <a href="/admin/hospitals" class="dash-card service-card" style="border: 1.5px solid #2563eb; background: #eff6ff;">
+              <div class="card-icon" style="background: #2563eb; color: #ffffff;"><i data-lucide="shield-alert"></i></div>
+              <div class="card-info">
+                <h3 style="color: #1e40af;">Company Admin Portal</h3>
+                <p style="color: #1e3a8a;">
+                  Review & verify incoming hospital applications (<%= typeof pendingHospitalCount !== 'undefined' ? pendingHospitalCount : 0 %> pending).
+                </p>
+              </div>
+            </a>
+            <% } %>
             <a href="/services/hospitals" class="dash-card service-card">
               <div class="card-icon"><i data-lucide="hospital"></i></div>
               <div class="card-info">

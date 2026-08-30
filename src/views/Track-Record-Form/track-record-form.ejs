@@ -33,16 +33,19 @@
     </header>
 
     <main class="dashboard-main container">
+      <!-- Flash Messages -->
+      <%- include('../partials/flash-messages') %>
+
       <!-- Breadcrumb & Header -->
-      <a href="/api/dashboard" class="back-link"
+      <a href="/api/select-pet-for-tracking" class="back-link"
         ><i data-lucide="arrow-left" style="width: 16px; height: 16px"></i> Back
-        to Dashboard</a
+        to Pet Selection</a
       >
 
       <div class="page-header">
         <div>
-          <h1>Track Pet Activity</h1>
-          <p>Log your pet's health, treatments, and grooming schedules.</p>
+          <h1>Track <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Activity" : 'Pet Activity' %></h1>
+          <p>Log health checks, medical treatments, baths, and grooming schedules.</p>
         </div>
       </div>
 
@@ -50,16 +53,20 @@
       <div class="records-layout">
         <!-- LEFT SIDE: CREATE TRACK RECORD FORM -->
         <section class="create-record-section">
-          <form class="form-card" action="/api/track/create" method="POST">
+          <form class="form-card" action="/api/track/create" method="POST" enctype="multipart/form-data">
             <h2>Add New Log</h2>
+
+            <% if (typeof pet !== 'undefined' && pet) { %>
+              <input type="hidden" name="petId" value="<%= pet._id %>" />
+            <% } %>
 
             <div class="form-group">
               <label class="form-label">Activity Type</label>
               <select name="activityType" class="form-control" required>
                 <option value="" disabled selected>Select activity...</option>
                 <option value="weight">Weight (Track growth)</option>
-                <option value="medical">Medical (Past surgeries)</option>
-                <option value="medicine">Medicine (Treatments)</option>
+                <option value="medical">Medical (Past surgeries / Illness)</option>
+                <option value="medicine">Medicine (Treatments / Pills)</option>
                 <option value="vet_history">Vet History (Prescriptions)</option>
                 <option value="grooming">Grooming (Spa & cuts)</option>
                 <option value="bath">Bath (Wash schedule)</option>
@@ -72,14 +79,20 @@
                 type="text"
                 name="title"
                 class="form-control"
-                placeholder="e.g., 15.5 kg, Deworming Pill, Spa Bath"
+                placeholder="e.g., 18.5 kg, Deworming Pill, Full Spa Grooming"
                 required
               />
             </div>
 
             <div class="form-group">
               <label class="form-label">Date</label>
-              <input type="date" name="date" class="form-control" required />
+              <input type="date" name="date" class="form-control" required value="<%= new Date().toISOString().split('T')[0] %>" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Attach Photo / Prescription / Medicine (Optional)</label>
+              <input type="file" name="recordImage" class="form-control" accept="image/*" />
+              <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Upload prescription, medicine box, doctor slip, or photo.</small>
             </div>
 
             <div class="form-group">
@@ -87,7 +100,7 @@
               <textarea
                 name="notes"
                 class="form-control"
-                placeholder="Any specific details? (e.g., used oatmeal shampoo, doctor's advice)"
+                placeholder="Any specific details? (e.g., dosage, shampoo used, vet advice)"
               ></textarea>
             </div>
 
@@ -109,68 +122,74 @@
 
         <!-- RIGHT SIDE: VIEW RECENT LOGS -->
         <section class="view-records-section">
-          <h2
-            style="
-              font-size: 1.25rem;
-              margin-bottom: 1.5rem;
-              color: var(--primary-color);
-            "
-          >
-            Recent Logs
-          </h2>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2
+              style="
+                font-size: 1.25rem;
+                margin-bottom: 0;
+                color: var(--primary-color);
+              "
+            >
+              Recent Logs
+            </h2>
+            <% if (typeof pet !== 'undefined' && pet) { %>
+              <a href="/api/show-records/<%= pet._id %>" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 4px;">
+                <i data-lucide="clipboard-list" style="width: 14px; height: 14px;"></i> View All Records
+              </a>
+            <% } %>
+          </div>
 
           <div class="records-list">
-            <!-- Tracking Item 1: Weight -->
-            <div class="record-item">
-              <div class="record-icon">
-                <i data-lucide="scale" style="color: #0369a1"></i>
-              </div>
-              <div class="record-content">
-                <div class="record-header">
-                  <div class="record-title">Weight Check - 24.5 kg</div>
-                  <div class="record-date">Oct 15, 2023</div>
+            <% if (typeof records !== 'undefined' && records.length > 0) { %>
+              <% records.forEach(function(rec) { %>
+                <div class="record-item">
+                  <div class="record-icon">
+                    <% if (rec.activityType === 'weight') { %>
+                      <i data-lucide="scale" style="color: #0369a1"></i>
+                    <% } else if (rec.activityType === 'medical') { %>
+                      <i data-lucide="stethoscope" style="color: #991b1b"></i>
+                    <% } else if (rec.activityType === 'medicine') { %>
+                      <i data-lucide="pill" style="color: #1e40af"></i>
+                    <% } else if (rec.activityType === 'vet_history') { %>
+                      <i data-lucide="clipboard-list" style="color: #065f46"></i>
+                    <% } else if (rec.activityType === 'grooming') { %>
+                      <i data-lucide="scissors" style="color: #7c3aed"></i>
+                    <% } else { %>
+                      <i data-lucide="droplets" style="color: #0284c7"></i>
+                    <% } %>
+                  </div>
+                  <div class="record-content">
+                    <div class="record-header">
+                      <div class="record-title"><%= rec.title %></div>
+                      <div class="record-date">
+                        <%= new Date(rec.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %>
+                      </div>
+                    </div>
+                    <span class="badge badge-<%= rec.activityType %>"><%= rec.activityType.replace('_', ' ').toUpperCase() %></span>
+                    <% if (rec.notes) { %>
+                      <p class="record-desc" style="margin-top: 0.75rem">
+                        <%= rec.notes %>
+                      </p>
+                    <% } %>
+                    <% if (rec.image) { %>
+                      <div style="margin-top: 0.75rem;">
+                        <a href="<%= rec.image %>" target="_blank" style="display: inline-block;">
+                          <img src="<%= rec.image %>" alt="Attached photo" style="max-width: 140px; max-height: 95px; border-radius: 4px; border: 1px solid var(--border-color); object-fit: cover;" />
+                        </a>
+                      </div>
+                    <% } %>
+                  </div>
                 </div>
-                <span class="badge badge-weight">Weight</span>
-                <p class="record-desc" style="margin-top: 0.75rem">
-                  Gained 0.5kg since last month. Keep diet strictly to 2 cups a
-                  day.
-                </p>
-              </div>
-            </div>
-
-            <!-- Tracking Item 2: Medicine -->
-            <div class="record-item">
-              <div class="record-icon">
-                <i data-lucide="pill" style="color: #1e40af"></i>
-              </div>
-              <div class="record-content">
-                <div class="record-header">
-                  <div class="record-title">Tick & Flea Treatment</div>
-                  <div class="record-date">Oct 05, 2023</div>
+              <% }); %>
+            <% } else { %>
+              <div style="text-align: center; padding: 3rem 1.5rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+                <div style="color: var(--text-muted); margin-bottom: 0.75rem;">
+                  <i data-lucide="inbox" style="width: 36px; height: 36px;"></i>
                 </div>
-                <span class="badge badge-medicine">Medicine</span>
-                <p class="record-desc" style="margin-top: 0.75rem">
-                  Applied Spot-On treatment. Next dose due in December.
-                </p>
+                <h4 style="margin-bottom: 0.25rem; color: var(--primary-color);">No logs yet</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Fill out the form on the left to add your first activity log.</p>
               </div>
-            </div>
-
-            <!-- Tracking Item 3: Bath -->
-            <div class="record-item">
-              <div class="record-icon">
-                <i data-lucide="droplets" style="color: #0284c7"></i>
-              </div>
-              <div class="record-content">
-                <div class="record-header">
-                  <div class="record-title">Home Bath</div>
-                  <div class="record-date">Oct 01, 2023</div>
-                </div>
-                <span class="badge badge-bath">Bath</span>
-                <p class="record-desc" style="margin-top: 0.75rem">
-                  Used anti-tick shampoo and cleaned paws thoroughly.
-                </p>
-              </div>
-            </div>
+            <% } %>
           </div>
         </section>
       </div>

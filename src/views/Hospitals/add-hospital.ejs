@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hospital Listing Application | Woofy Partner</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <a href="/api/dashboard" class="logo">Woofy.</a>
+        <div class="nav-actions">
+          <nav class="nav-links">
+            <a href="/services/hospitals">
+              <i data-lucide="arrow-left" style="width: 16px; height: 16px"></i>
+              <span>Back to Hospitals</span>
+            </a>
+            <a href="/api/dashboard">Dashboard</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <section class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div class="form-wrapper-box">
+          <div class="form-title-group">
+            <h2>Register Your Hospital with Woofy</h2>
+            <p style="margin-top: 0.25rem">
+              Fill in your clinic details below. Our company team will verify
+              your application and publish your hospital listing to pet owners
+              in your city.
+            </p>
+          </div>
+
+          <form
+            action="/services/hospitals/add"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="form-grid-layout">
+              <!-- Hospital Name -->
+              <div class="field-group full">
+                <label for="name" class="field-label"
+                  >Hospital / Clinic Official Name *</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="field-input"
+                  placeholder="e.g. Crown Vet 24/7 Multi-Speciality Care"
+                  required
+                />
+              </div>
+
+              <!-- Contact Person Name -->
+              <div class="field-group">
+                <label for="contactPerson" class="field-label"
+                  >Contact Person Name *</label
+                >
+                <input
+                  type="text"
+                  id="contactPerson"
+                  name="contactPerson"
+                  class="field-input"
+                  placeholder="e.g. Dr. Rajesh Sharma"
+                  required
+                />
+              </div>
+
+              <!-- Contact Person Role -->
+              <div class="field-group">
+                <label for="contactRole" class="field-label"
+                  >Your Role / Designation *</label
+                >
+                <input
+                  type="text"
+                  id="contactRole"
+                  name="contactRole"
+                  class="field-input"
+                  placeholder="e.g. Chief Veterinarian / Clinic Manager"
+                  required
+                />
+              </div>
+
+              <!-- License / Registration No -->
+              <div class="field-group full">
+                <label for="licenseNumber" class="field-label"
+                  >Clinic License / Veterinary Reg. No (Optional)</label
+                >
+                <input
+                  type="text"
+                  id="licenseNumber"
+                  name="licenseNumber"
+                  class="field-input"
+                  placeholder="e.g. VCI-2024-XXXX or State Council Reg."
+                />
+              </div>
+
+              <!-- City -->
+              <div class="field-group">
+                <label for="city" class="field-label">City *</label>
+                <input
+                  type="text"
+                  id="city"
+                  name="city"
+                  class="field-input"
+                  placeholder="e.g. Mumbai, Pune, Delhi"
+                  required
+                />
+              </div>
+
+              <!-- State -->
+              <div class="field-group">
+                <label for="state" class="field-label">State</label>
+                <input
+                  type="text"
+                  id="state"
+                  name="state"
+                  class="field-input"
+                  placeholder="e.g. Maharashtra"
+                  value="Maharashtra"
+                />
+              </div>
+
+              <!-- Full Address -->
+              <div class="field-group full">
+                <label for="address" class="field-label"
+                  >Full Clinic Address *</label
+                >
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  class="field-input"
+                  placeholder="e.g. Shop 4, Ground Floor, Below Mahalaxmi Flyover, Mahalaxmi"
+                  required
+                />
+              </div>
+
+              <!-- Pincode -->
+              <div class="field-group">
+                <label for="pincode" class="field-label">Pincode</label>
+                <input
+                  type="text"
+                  id="pincode"
+                  name="pincode"
+                  class="field-input"
+                  placeholder="e.g. 400034"
+                />
+              </div>
+
+              <!-- Phone -->
+              <div class="field-group">
+                <label for="phone" class="field-label"
+                  >Primary Contact Number *</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="field-input"
+                  placeholder="e.g. +91 98200 12345"
+                  required
+                />
+              </div>
+
+              <!-- Emergency Phone -->
+              <div class="field-group">
+                <label for="emergencyPhone" class="field-label"
+                  >24/7 Emergency Helpline Number</label
+                >
+                <input
+                  type="tel"
+                  id="emergencyPhone"
+                  name="emergencyPhone"
+                  class="field-input"
+                  placeholder="e.g. +91 98200 99999"
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="field-group">
+                <label for="email" class="field-label"
+                  >Official Email Address</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="field-input"
+                  placeholder="clinic@example.com"
+                />
+              </div>
+
+              <!-- Website / Map link -->
+              <div class="field-group full">
+                <label for="website" class="field-label"
+                  >Website or Google Maps Location Link</label
+                >
+                <input
+                  type="url"
+                  id="website"
+                  name="website"
+                  class="field-input"
+                  placeholder="https://..."
+                />
+              </div>
+
+              <!-- 24/7 Emergency Toggle -->
+              <div class="field-group full">
+                <label
+                  class="check-item"
+                  style="font-weight: 600; color: var(--primary-color)"
+                >
+                  <input type="checkbox" name="is24x7" value="true" />
+                  <i
+                    data-lucide="zap"
+                    style="
+                      width: 16px;
+                      height: 16px;
+                      color: var(--accent-color);
+                    "
+                  ></i>
+                  <span
+                    >This hospital operates 24/7 for round-the-clock emergency
+                    veterinary care</span
+                  >
+                </label>
+              </div>
+
+              <!-- Available Services Checkboxes -->
+              <div class="field-group full">
+                <label class="field-label"
+                  >Available Medical Facilities & Specialities</label
+                >
+                <div class="checkbox-services-container">
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="24/7 Emergency"
+                    />
+                    <span>24/7 Emergency</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="Surgery & OT"
+                      checked
+                    />
+                    <span>Surgery & OT</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="ICU & Critical Care"
+                    />
+                    <span>ICU & Critical Care</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="OPD & Consultation"
+                      checked
+                    />
+                    <span>OPD & Consultation</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="Vaccination"
+                      checked
+                    />
+                    <span>Vaccination</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="Digital X-Ray / Scan"
+                    />
+                    <span>Digital X-Ray / Scan</span>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="services" value="Ultrasound" />
+                    <span>Ultrasound</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="In-House Pharmacy"
+                      checked
+                    />
+                    <span>In-House Pharmacy</span>
+                  </label>
+                  <label class="check-item">
+                    <input type="checkbox" name="services" value="Blood Bank" />
+                    <span>Blood Bank</span>
+                  </label>
+                  <label class="check-item">
+                    <input
+                      type="checkbox"
+                      name="services"
+                      value="Pet Ambulance"
+                    />
+                    <span>Pet Ambulance</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Custom Services -->
+              <div class="field-group full">
+                <label for="customServices" class="field-label"
+                  >Additional Services (Comma separated)</label
+                >
+                <input
+                  type="text"
+                  id="customServices"
+                  name="customServices"
+                  class="field-input"
+                  placeholder="e.g. Dental Scaling, Laser Therapy, Pet Boarding"
+                />
+              </div>
+
+              <!-- Hospital Photo Upload -->
+              <div class="field-group full">
+                <label class="field-label"
+                  >Clinic Front / Hospital Building Photo</label
+                >
+                <div
+                  class="file-dropzone"
+                  onclick="document.getElementById('hospitalImage').click()"
+                >
+                  <i
+                    data-lucide="image"
+                    style="
+                      width: 32px;
+                      height: 32px;
+                      color: var(--text-muted);
+                      margin-bottom: 0.5rem;
+                    "
+                  ></i>
+                  <p style="font-weight: 500; font-size: 0.95rem">
+                    Click to upload hospital photo
+                  </p>
+                  <p style="font-size: 0.8rem; color: var(--text-muted)">
+                    PNG, JPG, WEBP up to 10MB
+                  </p>
+                  <input
+                    type="file"
+                    id="hospitalImage"
+                    name="hospitalImage"
+                    accept="image/*"
+                    style="display: none"
+                    onchange="
+                      if (this.files.length)
+                        this.previousElementSibling.previousElementSibling.innerText =
+                          this.files[0].name;
+                    "
+                  />
+                </div>
+              </div>
+
+              <!-- Photo URL alternative -->
+              <div class="field-group full">
+                <label for="photoUrl" class="field-label">Or Image URL</label>
+                <input
+                  type="url"
+                  id="photoUrl"
+                  name="photoUrl"
+                  class="field-input"
+                  placeholder="https://images.unsplash.com/..."
+                />
+              </div>
+            </div>
+
+            <div class="form-button-row">
+              <a href="/services/hospitals" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">
+                <i data-lucide="send"></i>
+                <span>Submit Application for Verification</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      if (window.lucide) lucide.createIcons();
+    </script>
+  </body>
+</html>

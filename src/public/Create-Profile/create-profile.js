@@ -3,14 +3,6 @@ if (window.lucide) {
   lucide.createIcons();
 }
 
-// Form submit placeholder - apna save/API logic yahan add karo
-const petForm = document.getElementById("petForm");
-if (petForm) {
-  petForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    // TODO: handle form data + save logic
-  });
-}
 
 // Scroll-reveal animation
 const revealEls = document.querySelectorAll(".reveal");

@@ -15,13 +15,17 @@
     <!-- Navigation -->
     <header id="navbar">
       <div class="container nav-container">
-        <div class="logo">Woofy.</div>
+        <a href="/" class="logo">Woofy.</a>
         <nav class="nav-links">
           <a href="#home">Home</a>
           <a href="#services">Services</a>
-          <a href="#about">Why Us</a>
+          <a href="#why-us">Why Us</a>
+          <a href="#contact">Contact Us</a>
         </nav>
-        <a href="/api/signup" class="btn btn-primary">Sign Up</a>
+        <div class="nav-auth-buttons">
+          <a href="/api/login" class="btn btn-secondary">Login</a>
+          <a href="/api/signup" class="btn btn-primary">Sign Up</a>
+        </div>
       </div>
     </header>
 
@@ -36,11 +40,11 @@
           </p>
           <div class="hero-buttons">
             <a href="#services" class="btn btn-primary">Explore Services</a>
-            <a href="/api/signup" class="btn btn-secondary">Signup</a>
+            <a href="/api/login" class="btn btn-secondary">Login</a>
+            <a href="/api/signup" class="btn btn-secondary">Sign Up</a>
           </div>
         </div>
         <div class="hero-image">
-          <!-- Placeholder for a high-quality, sharp image -->
           <img
             src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
             alt="Happy dog looking sharp"
@@ -84,6 +88,219 @@
               find the right place instantly, whether it's an emergency or a
               routine checkup.
             </p>
+            <a href="/services/hospitals" style="color: #f97316; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 0.75rem;">
+              Find Hospitals &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Us / Project Specialities Section -->
+    <section id="why-us" class="why-us-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Why Choose Woofy?</h2>
+          <p>
+            Built specifically for dedicated pet parents who want modern,
+            effortless care management.
+          </p>
+        </div>
+        <div class="specialities-grid">
+          <!-- Speciality 1 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="activity"></i>
+            </div>
+            <h3>Complete Health & Growth Tracking</h3>
+            <p>
+              Monitor weight changes, surgery histories, medication routines,
+              vet appointments, grooming sessions, and wash cycles with ease.
+            </p>
+          </div>
+
+          <!-- Speciality 2 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="file-text"></i>
+            </div>
+            <h3>Prescription & Document Attachments</h3>
+            <p>
+              Never lose a doctor's slip. Attach medicine photos, prescription
+              receipts, and vet checkup scans directly to each health record.
+            </p>
+          </div>
+
+          <!-- Speciality 3 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="image"></i>
+            </div>
+            <h3>Pet Profile & Photo Gallery</h3>
+            <p>
+              Create dedicated pet profiles with primary avatars and upload
+              multi-image galleries celebrating your companion's best moments.
+            </p>
+          </div>
+
+          <!-- Speciality 4 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <h3>Secure & Private Data</h3>
+            <p>
+              Your pet's data and personal credentials are protected with
+              industry-standard bcrypt encryption and secure session handling.
+            </p>
+          </div>
+
+          <!-- Speciality 5 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="map-pin"></i>
+            </div>
+            <h3>Emergency City Services Directory</h3>
+            <p>
+              Instantly connect with top 24/7 veterinary hospitals and certified
+              animal rescue shelters right around your city.
+            </p>
+          </div>
+
+          <!-- Speciality 6 -->
+          <div class="speciality-card reveal">
+            <div class="speciality-icon">
+              <i data-lucide="smartphone"></i>
+            </div>
+            <h3>Clean, Responsive Experience</h3>
+            <p>
+              Designed with a sleek, minimalist aesthetic that works seamlessly
+              across smartphones, tablets, and desktop workstations.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Us & Developer Profile Section -->
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Get in Touch</h2>
+          <p>
+            Have questions, feedback, or suggestions? Reach out to us anytime.
+          </p>
+        </div>
+
+        <div class="contact-layout">
+          <!-- Developer / Creator Showcase Card -->
+          <div class="creator-card reveal">
+            <div class="creator-avatar-wrap">
+              <img
+                src="/Images/Shubham.jpeg"
+                alt="Shubham Rathod - Creator of Woofy"
+                class="creator-avatar"
+              />
+            </div>
+            <span class="creator-badge">Creator & Developer</span>
+            <h3>Shubham Rathod</h3>
+            <p class="creator-role">Full-Stack Web Developer</p>
+            <p class="creator-bio">
+              Building modern, intuitive web applications and pet management
+              solutions. Feel free to connect for collaborations or feedback!
+            </p>
+
+            <div class="creator-social-links">
+              <!-- ======================================================== -->
+              <!-- GITHUB & LINKEDIN LINKS: Edit the href URLs below -->
+              <!-- ======================================================== -->
+              <a
+                href="https://github.com/git-shubham-side"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-btn github"
+              >
+                <i data-lucide="github"></i> GitHub
+              </a>
+              <a
+                href="https://linkedin.com/in/shubham-rathod-tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-btn linkedin"
+              >
+                <i data-lucide="linkedin"></i> LinkedIn
+              </a>
+              <a
+                href="mailto:contact.shubham.tech@gmail.com"
+                class="social-btn"
+              >
+                <i data-lucide="mail"></i> Email
+              </a>
+            </div>
+          </div>
+
+          <!-- Contact Message Form Card -->
+          <div class="contact-form-card reveal">
+            <h3>Send a Message</h3>
+            <p>Drop a note and we'll get back to you as soon as possible.</p>
+
+            <div
+              id="contactAlert"
+              style="
+                display: none;
+                padding: 0.85rem 1rem;
+                border-radius: 4px;
+                margin-bottom: 1.25rem;
+                font-size: 0.95rem;
+              "
+            ></div>
+
+            <form id="contactForm" action="/api/contact" method="POST">
+              <div class="contact-form-group">
+                <label for="senderName">Your Name *</label>
+                <input
+                  type="text"
+                  id="senderName"
+                  name="name"
+                  class="contact-form-control"
+                  placeholder="e.g. John Doe"
+                  required
+                />
+              </div>
+
+              <div class="contact-form-group">
+                <label for="senderEmail">Your Email *</label>
+                <input
+                  type="email"
+                  id="senderEmail"
+                  name="email"
+                  class="contact-form-control"
+                  placeholder="e.g. john@example.com"
+                  required
+                />
+              </div>
+
+              <div class="contact-form-group">
+                <label for="messageContent">Message *</label>
+                <textarea
+                  id="messageContent"
+                  name="message"
+                  class="contact-form-control"
+                  placeholder="How can we help you or your pet?"
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                id="contactSubmitBtn"
+                class="btn btn-primary"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <i data-lucide="send" style="width: 16px; height: 16px"></i>
+                <span id="contactBtnText">Send Message</span>
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -94,26 +311,29 @@
       <div class="container footer-container">
         <div class="footer-brand">
           <h2>Woofy.</h2>
-          <p>Premium PetCare.</p>
+          <p>Premium PetCare & Management.</p>
         </div>
-        <!-- <div class="footer-links">
-          <p>
-            Created By
-            <b>
-              <a
-                class="linkedin"
-                href="https://linkedin.com/in/shubham-rathod-tech"
-              >
-                Shubham Rathod - Jimmy
-              </a>
-            </b>
+        <div class="footer-links">
+          <p style="color: #94a3b8; font-size: 0.95rem">
+            Created With Love for Animals by
+            <a
+              class="linkedin"
+              href="https://linkedin.com/in/shubham-rathod-tech"
+              target="_blank"
+              style="
+                color: #ffffff;
+                text-decoration: underline;
+                font-weight: 500;
+              "
+            >
+              Shubham Rathod
+            </a>
           </p>
-        </div> -->
+        </div>
       </div>
     </footer>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="/Landing/script.js"></script>
     <script src="/Landing/script.js"></script>
   </body>
 </html>

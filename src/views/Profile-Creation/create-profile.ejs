@@ -13,14 +13,9 @@
   <body>
     <header id="navbar">
       <div class="container nav-container">
-        <div class="logo">
-          <a href="/api/dashboard" style="text-decoration: none; color: black"
-            >Woofy.</a
-          >
-        </div>
+        <a href="/api/dashboard" class="logo">Woofy.</a>
         <nav class="nav-links">
           <a href="/api/dashboard">Home</a>
-
           <a href="/api/pet-profiles">My Pets</a>
         </nav>
       </div>
@@ -28,11 +23,14 @@
 
     <section class="profile-page">
       <div class="container">
-        <form class="form-card reveal" id="petForm">
+        <form class="form-card reveal" id="petForm" method="POST" action="/api/create-pet-profile" enctype="multipart/form-data">
           <h2>Create Your Pet Profile</h2>
           <p>
             Fill in your pet’s basic details and create their profile instantly.
           </p>
+
+          <!-- Flash Messages -->
+          <%- include('../partials/flash-messages') %>
 
           <div class="form-row">
             <div class="form-group">
@@ -40,6 +38,7 @@
               <input
                 type="text"
                 id="petName"
+                name="petName"
                 required
                 placeholder="e.g. Jimmy"
               />
@@ -49,6 +48,8 @@
               <input
                 type="text"
                 id="ownerName"
+                name="ownerName"
+                value="<%= typeof ownerName !== 'undefined' ? ownerName : '' %>"
                 required
                 placeholder="e.g. Shubham Rathod"
               />
@@ -58,7 +59,7 @@
           <div class="form-row">
             <div class="form-group">
               <label for="species">Species</label>
-              <select id="species" required>
+              <select id="species" name="species" required>
                 <option value="Dog">Dog</option>
                 <option value="Cat">Cat</option>
                 <option value="Other">Other</option>
@@ -66,7 +67,7 @@
             </div>
             <div class="form-group">
               <label for="breed">Breed</label>
-              <input type="text" id="breed" placeholder="e.g. Labrador" />
+              <input type="text" id="breed" name="breed" placeholder="e.g. Labrador" />
             </div>
           </div>
 
@@ -76,6 +77,7 @@
               <input
                 type="number"
                 id="age"
+                name="age"
                 min="0"
                 step="0.1"
                 placeholder="e.g. 2"
@@ -86,6 +88,7 @@
               <input
                 type="number"
                 id="weight"
+                name="weight"
                 min="0"
                 step="0.1"
                 placeholder="e.g. 18"
@@ -96,29 +99,43 @@
           <div class="form-row">
             <div class="form-group">
               <label for="gender">Gender</label>
-              <select id="gender">
+              <select id="gender" name="gender">
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
             </div>
             <div class="form-group">
               <label for="vaccinated">Vaccinated</label>
-              <select id="vaccinated">
+              <select id="vaccinated" name="vaccinated">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
               </select>
             </div>
           </div>
 
+          <div class="form-row">
+            <div class="form-group">
+              <label for="petImage">Pet Profile Photo</label>
+              <input type="file" id="petImage" name="petImage" accept="image/*" />
+              <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Upload a profile picture for your pet.</small>
+            </div>
+            <div class="form-group">
+              <label for="photoUrl">Or Photo URL (optional)</label>
+              <input type="url" id="photoUrl" name="photoUrl" placeholder="https://..." />
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="photoUrl">Photo URL (optional)</label>
-            <input type="url" id="photoUrl" placeholder="https://..." />
+            <label for="galleryImages">Pet Gallery Photos (Add multiple photos)</label>
+            <input type="file" id="galleryImages" name="galleryImages" accept="image/*" multiple />
+            <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.25rem;">Select multiple photos to showcase in your pet's gallery.</small>
           </div>
 
           <div class="form-group">
             <label for="notes">Additional Notes</label>
             <textarea
               id="notes"
+              name="notes"
               placeholder="Allergies, favorite food, behaviour notes, etc."
             ></textarea>
           </div>

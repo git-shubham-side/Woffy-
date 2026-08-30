@@ -113,11 +113,14 @@ header.scrolled {
   height: 80px;
 }
 
-.logo {
+.logo,
+.logo a,
+a.logo {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.05em;
-  color: var(--primary-color);
+  color: #000000 !important;
+  text-decoration: none !important;
 }
 
 .nav-links a {
@@ -130,6 +133,12 @@ header.scrolled {
 
 .nav-links a:hover {
   color: var(--accent-color);
+}
+
+.nav-auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 /* Hero Section */
@@ -187,9 +196,245 @@ header.scrolled {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
-.service-card .icon {
-  font-size: 2.5rem;
+/* ===== Why Us / Specialities Section ===== */
+.why-us-section {
+  padding: 100px 0;
+  background-color: var(--bg-light);
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.specialities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.speciality-card {
+  background-color: var(--white);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  padding: 2.25rem 2rem;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.speciality-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px rgba(37, 99, 235, 0.08);
+}
+
+.speciality-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--border-radius);
+  background-color: #eff6ff;
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1.5rem;
+}
+
+.speciality-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.speciality-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary-color);
+}
+
+.speciality-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ===== Contact Us & Developer Profile Section ===== */
+.contact-section {
+  padding: 100px 0;
+  background-color: var(--white);
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Developer Profile Card */
+.creator-card {
+  background-color: var(--bg-light);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.creator-avatar-wrap {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  border: 4px solid var(--white);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  background-color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.creator-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.creator-badge {
+  display: inline-block;
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.creator-card h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+}
+
+.creator-role {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.creator-bio {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+
+.creator-social-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: var(--transition);
+  border: 1px solid #cbd5e1;
+  background-color: var(--white);
+  color: var(--text-main);
+}
+
+.social-btn:hover {
+  border-color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.social-btn.github:hover {
+  background-color: #24292e;
+  border-color: #24292e;
+  color: var(--white);
+}
+
+.social-btn.linkedin:hover {
+  background-color: #0a66c2;
+  border-color: #0a66c2;
+  color: var(--white);
+}
+
+/* Contact Message Card */
+.contact-form-card {
+  background-color: var(--white);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.contact-form-card h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.contact-form-card p {
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+  font-size: 0.95rem;
+}
+
+.contact-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.contact-form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-bottom: 0.4rem;
+}
+
+.contact-form-control {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  transition: var(--transition);
+  background-color: var(--white);
+}
+
+.contact-form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+textarea.contact-form-control {
+  resize: vertical;
+  min-height: 120px;
 }
 
 /* Footer */
@@ -299,6 +544,16 @@ html {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
+
+  .specialities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
 }
 
 /* Mobile */
@@ -347,7 +602,9 @@ html {
     text-align: center;
   }
 
-  .services {
+  .services,
+  .why-us-section,
+  .contact-section {
     padding: 60px 0;
   }
 
@@ -355,11 +612,15 @@ html {
     margin-bottom: 2.5rem;
   }
 
-  .services-grid {
+  .services-grid,
+  .specialities-grid {
     grid-template-columns: 1fr;
   }
 
-  .service-card {
+  .service-card,
+  .speciality-card,
+  .creator-card,
+  .contact-form-card {
     padding: 1.75rem;
   }
 
@@ -391,6 +652,11 @@ html {
   .btn {
     padding: 0.65rem 1.25rem;
     font-size: 0.95rem;
+  }
+
+  .nav-auth-buttons .btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
   }
 
   .service-card {

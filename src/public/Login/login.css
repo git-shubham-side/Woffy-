@@ -141,18 +141,30 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.password-wrapper input[type="password"],
+.password-wrapper input[type="text"] {
+  width: 100%;
+  padding-right: 4rem;
 }
 
 .toggle-btn {
   position: absolute;
-  right: 1rem;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
   font-family: inherit;
+  padding: 0.25rem 0.5rem;
+  user-select: none;
+  transition: var(--transition);
 }
 
 .toggle-btn:hover {

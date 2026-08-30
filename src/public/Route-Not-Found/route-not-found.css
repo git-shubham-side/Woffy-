@@ -49,13 +49,16 @@ body {
   align-items: center;
 }
 
-.logo {
+.logo,
+.logo a,
+a.logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--primary);
+  color: #000000 !important;
+  text-decoration: none !important;
 }
 
 .nav-actions {

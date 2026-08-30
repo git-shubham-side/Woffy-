@@ -110,11 +110,14 @@ header.scrolled {
   height: 80px;
 }
 
-.logo {
+.logo,
+.logo a,
+a.logo {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.05em;
-  color: var(--primary-color);
+  color: #000000 !important;
+  text-decoration: none !important;
 }
 
 .nav-links a {

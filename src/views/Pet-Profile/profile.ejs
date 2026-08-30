@@ -13,70 +13,133 @@
   <body>
     <header id="navbar">
       <div class="container nav-container">
-        <div class="logo">Woofy.</div>
+        <a href="/api/dashboard" class="logo">Woofy.</a>
         <nav class="nav-links">
           <a href="/api/dashboard">Home</a>
-          <a href="/api/create-pet-profile">Create Profile</a>
-          <a href="/Landing/profile.html">My Pet</a>
+          <a href="/api/pet-profiles">My Pets</a>
+          <a href="/api/create-pet-profile">Add Pet</a>
         </nav>
-        <a href="/api/signup" class="btn btn-primary">Sign Up</a>
       </div>
     </header>
 
     <section class="profile-page">
       <div class="container" id="profileContainer">
-        <div class="profile-card reveal">
-          <div class="profile-banner">
-            <div class="profile-avatar-fallback">B</div>
-            <div>
-              <h2>Bruno</h2>
-              <p>Labrador • Owned by Shubham Rathod</p>
-            </div>
-          </div>
-          <div class="profile-body">
-            <div class="info-grid">
-              <div class="info-item">
-                <div class="label"><i data-lucide="paw-print"></i> Species</div>
-                <div class="value">Dog</div>
-              </div>
-              <div class="info-item">
-                <div class="label"><i data-lucide="calendar"></i> Age</div>
-                <div class="value">2 yrs</div>
-              </div>
-              <div class="info-item">
-                <div class="label"><i data-lucide="scale"></i> Weight</div>
-                <div class="value">18 kg</div>
-              </div>
-              <div class="info-item">
-                <div class="label">
-                  <i data-lucide="venetian-mask"></i> Gender
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <% if (typeof pet !== 'undefined' && pet) { %>
+          <div class="profile-card reveal">
+            <div class="profile-banner">
+              <% if (pet.photo) { %>
+                <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="profile-avatar" />
+              <% } else if (pet.photoUrl) { %>
+                <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="profile-avatar" />
+              <% } else { %>
+                <div class="profile-avatar-fallback">
+                  <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
                 </div>
-                <div class="value">Male</div>
-              </div>
-              <div class="info-item">
-                <div class="label">
-                  <i data-lucide="syringe"></i> Vaccinated
-                </div>
-                <div class="value">Yes</div>
-              </div>
-              <div class="info-item">
-                <div class="label"><i data-lucide="user"></i> Owner</div>
-                <div class="value">Shubham Rathod</div>
-              </div>
-              <div class="info-item full">
-                <div class="label">
-                  <i data-lucide="notebook-pen"></i> Notes
-                </div>
-                <div class="value notes">No additional notes.</div>
+              <% } %>
+              <div>
+                <h2><%= pet.petName %></h2>
+                <p><%= pet.breed || pet.species %> • Owned by <%= pet.ownerName || 'Pet Parent' %></p>
               </div>
             </div>
-            <a
-              href="/Create-Profile/create-profile.html"
-              class="btn btn-secondary"
-              >Edit Profile</a
-            >
+            <div class="profile-body">
+              <div class="info-grid">
+                <div class="info-item">
+                  <div class="label"><i data-lucide="paw-print"></i> Species</div>
+                  <div class="value"><%= pet.species %></div>
+                </div>
+                <div class="info-item">
+                  <div class="label"><i data-lucide="calendar"></i> Age</div>
+                  <div class="value"><%= pet.age %> yrs</div>
+                </div>
+                <div class="info-item">
+                  <div class="label"><i data-lucide="scale"></i> Weight</div>
+                  <div class="value"><%= pet.weight %> kg</div>
+                </div>
+                <div class="info-item">
+                  <div class="label">
+                    <i data-lucide="venetian-mask"></i> Gender
+                  </div>
+                  <div class="value"><%= pet.gender %></div>
+                </div>
+                <div class="info-item">
+                  <div class="label">
+                    <i data-lucide="syringe"></i> Vaccinated
+                  </div>
+                  <div class="value"><%= pet.vaccinated %></div>
+                </div>
+                <div class="info-item">
+                  <div class="label"><i data-lucide="user"></i> Owner</div>
+                  <div class="value"><%= pet.ownerName || 'Pet Parent' %></div>
+                </div>
+                <div class="info-item full">
+                  <div class="label">
+                    <i data-lucide="notebook-pen"></i> Notes
+                  </div>
+                  <div class="value notes"><%= pet.notes || 'No additional notes.' %></div>
+                </div>
+              </div>
+
+              <% if (typeof pet.gallery !== 'undefined' && pet.gallery && pet.gallery.length > 0) { %>
+                <div class="pet-gallery-section">
+                  <h3 style="font-size: 1.15rem; color: var(--primary-color); display: flex; align-items: center; gap: 6px; margin-bottom: 0.5rem;">
+                    <i data-lucide="image" style="width: 18px; height: 18px;"></i> <%= pet.petName %>'s Photo Gallery
+                  </h3>
+                  <div class="pet-gallery-grid">
+                    <% pet.gallery.forEach(function(imgSrc) { %>
+                      <div class="gallery-img-item">
+                        <img src="<%= imgSrc %>" alt="<%= pet.petName %> gallery photo" />
+                      </div>
+                    <% }); %>
+                  </div>
+                </div>
+              <% } %>
+
+              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; align-items: center;">
+                <a
+                  href="/api/track/<%= pet._id %>"
+                  class="btn btn-primary"
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                  ><i data-lucide="activity" style="width: 16px; height: 16px;"></i> Track Activity</a
+                >
+                <a
+                  href="/api/show-records/<%= pet._id %>"
+                  class="btn btn-secondary"
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                  ><i data-lucide="clipboard-list" style="width: 16px; height: 16px;"></i> View Records</a
+                >
+                <a
+                  href="/api/pet-profile/edit/<%= pet._id %>"
+                  class="btn btn-secondary"
+                  style="display: inline-flex; align-items: center; gap: 8px;"
+                  ><i data-lucide="edit-3" style="width: 16px; height: 16px;"></i> Edit Pet</a
+                >
+                <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0; display: inline;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile and all their tracking records? This cannot be undone.');">
+                  <button
+                    type="submit"
+                    class="btn btn-danger"
+                    style="display: inline-flex; align-items: center; gap: 8px;"
+                  >
+                    <i data-lucide="trash-2" style="width: 16px; height: 16px;"></i> Delete Pet
+                  </button>
+                </form>
+                <a
+                  href="/api/pet-profiles"
+                  class="btn btn-secondary"
+                  >Back to My Pets</a
+                >
+              </div>
+            </div>
           </div>
-        </div>
+        <% } else { %>
+          <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
+            <h3>Pet Profile Not Found</h3>
+            <p style="color: var(--text-muted); margin: 1rem 0;">The requested pet profile does not exist.</p>
+            <a href="/api/pet-profiles" class="btn btn-primary">Back to My Pets</a>
+          </div>
+        <% } %>
       </div>
     </section>
 

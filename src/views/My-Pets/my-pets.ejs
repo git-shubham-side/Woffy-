@@ -13,11 +13,7 @@
   <body>
     <header id="navbar">
       <div class="container nav-container">
-        <div class="logo">
-          <a href="/api/dashboard" style="text-decoration: none; color: black"
-            >Woofy.</a
-          >
-        </div>
+        <a href="/api/dashboard" class="logo">Woofy.</a>
         <nav class="nav-links">
           <a href="/api/dashboard">Home</a>
         </nav>
@@ -26,6 +22,9 @@
 
     <section class="pets-page">
       <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
         <div class="pets-header reveal">
           <div>
             <h2>My Pets</h2>
@@ -36,97 +35,73 @@
           </a>
         </div>
 
-        <div class="pets-grid">
-          <!-- Pet Card 1 -->
-          <div class="pet-card reveal">
-            <div class="pet-card-top">
-              <div class="profile-avatar-fallback">B</div>
-              <div>
-                <h3>Bruno</h3>
-                <p class="pet-sub">Labrador • Male</p>
+        <% if (typeof pets !== 'undefined' && pets.length > 0) { %>
+          <div class="pets-grid">
+            <% pets.forEach(function(pet) { %>
+              <div class="pet-card reveal">
+                <div class="pet-card-top">
+                  <% if (pet.photo) { %>
+                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                  <% } else if (pet.photoUrl) { %>
+                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                  <% } else { %>
+                    <div class="profile-avatar-fallback">
+                      <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
+                    </div>
+                  <% } %>
+                  <div>
+                    <h3><%= pet.petName %></h3>
+                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender %></p>
+                  </div>
+                </div>
+                <div class="pet-card-stats">
+                  <div class="stat">
+                    <span class="stat-label">Age</span>
+                    <span class="stat-value"><%= pet.age %> yrs</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Weight</span>
+                    <span class="stat-value"><%= pet.weight %> kg</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Vaccinated</span>
+                    <span class="stat-value"><%= pet.vaccinated %></span>
+                  </div>
+                </div>
+                <div class="card-actions-row">
+                  <a
+                    href="/api/pet-profile/<%= pet._id %>"
+                    class="btn btn-primary btn-sm"
+                    style="flex: 1;"
+                    ><i data-lucide="eye"></i> View</a
+                  >
+                  <a
+                    href="/api/pet-profile/edit/<%= pet._id %>"
+                    class="btn btn-secondary btn-sm"
+                    title="Edit Pet"
+                    ><i data-lucide="edit-3"></i> Edit</a
+                  >
+                  <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile?');">
+                    <button type="submit" class="btn btn-danger btn-sm" title="Delete <%= pet.petName %>">
+                      <i data-lucide="trash-2"></i>
+                    </button>
+                  </form>
+                </div>
               </div>
-            </div>
-            <div class="pet-card-stats">
-              <div class="stat">
-                <span class="stat-label">Age</span>
-                <span class="stat-value">2 yrs</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Weight</span>
-                <span class="stat-value">18 kg</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Vaccinated</span>
-                <span class="stat-value">Yes</span>
-              </div>
-            </div>
-            <a
-              href="/Profile/profile.html"
-              class="btn btn-secondary pet-card-btn"
-              >View Profile</a
-            >
+            <% }); %>
           </div>
-
-          <!-- Pet Card 2 -->
-          <div class="pet-card reveal">
-            <div class="pet-card-top">
-              <div class="profile-avatar-fallback">M</div>
-              <div>
-                <h3>Milo</h3>
-                <p class="pet-sub">Persian Cat • Male</p>
-              </div>
+        <% } else { %>
+          <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius); margin-top: 1.5rem;">
+            <div style="margin-bottom: 1rem; color: var(--text-muted);">
+              <i data-lucide="paw-print" style="width: 48px; height: 48px;"></i>
             </div>
-            <div class="pet-card-stats">
-              <div class="stat">
-                <span class="stat-label">Age</span>
-                <span class="stat-value">1.5 yrs</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Weight</span>
-                <span class="stat-value">4 kg</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Vaccinated</span>
-                <span class="stat-value">Yes</span>
-              </div>
-            </div>
-            <a
-              href="/Profile/profile.html"
-              class="btn btn-secondary pet-card-btn"
-              >View Profile</a
-            >
+            <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">No pets registered yet</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Add your furry companion to track their health, visits, and care schedules.</p>
+            <a href="/api/create-pet-profile" class="btn btn-primary">
+              <i data-lucide="plus"></i> Add Your First Pet
+            </a>
           </div>
-
-          <!-- Pet Card 3 -->
-          <div class="pet-card reveal">
-            <div class="pet-card-top">
-              <div class="profile-avatar-fallback">D</div>
-              <div>
-                <h3>Daisy</h3>
-                <p class="pet-sub">Beagle • Female</p>
-              </div>
-            </div>
-            <div class="pet-card-stats">
-              <div class="stat">
-                <span class="stat-label">Age</span>
-                <span class="stat-value">4 yrs</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Weight</span>
-                <span class="stat-value">12 kg</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Vaccinated</span>
-                <span class="stat-value">No</span>
-              </div>
-            </div>
-            <a
-              href="/Profile/profile.html"
-              class="btn btn-secondary pet-card-btn"
-              >View Profile</a
-            >
-          </div>
-        </div>
+        <% } %>
       </div>
     </section>
 

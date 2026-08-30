@@ -21,31 +21,19 @@
               Set up your account to start booking premium care for your pet.
             </p>
           </div>
-
+          <!-- ---------- FLASH MESSAGES ----------- -->
+          <%- include('../partials/flash-messages') %>
+          <!-- ---------------------------------------------- -->
           <form id="signupForm" method="POST" action="/api/signup">
-            <!-- Form Row for Side-by-Side inputs on desktop -->
-            <div class="form-row">
-              <div class="input-group">
-                <label for="fullName">Full name</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-              <!-- <div class="input-group">
-                <label for="petName"
-                  >Pet's name <span class="optional">(Optional)</span></label
-                >
-                <input
-                  type="text"
-                  id="petName"
-                  name="petName"
-                  placeholder="e.g. Max"
-                />
-              </div> -->
+            <div class="input-group">
+              <label for="fullName">Full name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                placeholder="John Doe"
+                required
+              />
             </div>
 
             <div class="input-group">
@@ -69,21 +57,11 @@
                   placeholder="At least 8 characters"
                   required
                 />
-                <button type="button" id="togglePassword" class="toggle-btn">
+                <button type="button" id="togglePassword" class="toggle-btn" aria-label="Toggle password visibility">
                   Show
                 </button>
               </div>
             </div>
-
-            <!-- <div class="form-actions">
-              <label class="terms-checkbox">
-                <input type="checkbox" required />
-                <span
-                  >I agree to the <a href="#">Terms of Service</a> and
-                  <a href="/api/terms">Privacy Policy</a>.</span
-                >
-              </label>
-            </div> -->
 
             <button type="submit" class="btn btn-primary btn-block">
               Create account
@@ -99,7 +77,7 @@
       <!-- Right Side: Branding & Image (Flipped from login for variation) -->
       <div class="signup-brand">
         <div class="brand-content">
-          <a href="index.html" class="logo">Woofy.</a>
+          <a href="/" class="logo">Woofy.</a>
           <h2>
             Peace of mind for you. <br />
             Pure joy for them.
@@ -111,7 +89,6 @@
         </div>
       </div>
     </div>
-
     <script src="/Signup/signup.js"></script>
   </body>
 </html>

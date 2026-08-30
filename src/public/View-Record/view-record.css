@@ -47,11 +47,13 @@ body {
   align-items: center;
   height: 70px;
 }
-.logo {
+.logo,
+.logo a,
+a.logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
-  text-decoration: none;
+  color: #000000 !important;
+  text-decoration: none !important;
   letter-spacing: -0.05em;
 }
 .nav-actions {
@@ -72,20 +74,56 @@ body {
 }
 .pet-profile-btn:hover {
   background-color: var(--bg-light);
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  cursor: pointer;
+  font-size: 1rem;
+  border: 2px solid transparent;
+  font-family: inherit;
 }
-
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+.btn-primary:hover {
+  background-color: #1e293b;
+  color: var(--white);
+}
 .btn-secondary {
   background-color: transparent;
   color: var(--primary-color);
   border-color: var(--border-color);
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
-  text-decoration: none;
-  font-size: 0.875rem;
-  border: 1px solid var(--border-color);
 }
 .btn-secondary:hover {
   border-color: var(--primary-color);
+  background-color: var(--bg-light);
+}
+.btn-danger {
+  background-color: #ef4444;
+  color: var(--white);
+  border-color: #ef4444;
+}
+.btn-danger:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+  color: var(--white);
+}
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+.btn-block {
+  width: 100%;
 }
 
 /* --- Page Header --- */

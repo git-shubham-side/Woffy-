@@ -47,11 +47,13 @@ body {
   align-items: center;
   height: 70px;
 }
-.logo {
+.logo,
+.logo a,
+a.logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
-  text-decoration: none;
+  color: #000000 !important;
+  text-decoration: none !important;
   letter-spacing: -0.05em;
 }
 .nav-actions {

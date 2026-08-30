@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Admin Suite | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Shared Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      .admin-badge-pill {
+        background: #0f172a;
+        color: #ffffff;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.25rem 0.65rem;
+        border-radius: 4px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      .admin-top-nav-tabs {
+        display: flex;
+        gap: 0.5rem;
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        padding: 0.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      .nav-tab-link {
+        padding: 0.65rem 1.25rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        color: var(--text-muted);
+        border-radius: 6px;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .nav-tab-link:hover {
+        color: var(--primary-color);
+        background: #f1f5f9;
+      }
+      .nav-tab-link.active {
+        background: var(--primary-color);
+        color: #ffffff !important;
+      }
+      .admin-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .admin-stat-card {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.25rem;
+      }
+      .admin-stat-card .stat-num {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: var(--primary-color);
+        line-height: 1.1;
+      }
+      .admin-stat-card .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-top: 0.35rem;
+        font-weight: 500;
+      }
+      .sub-tabs-nav {
+        display: flex;
+        gap: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+        margin-bottom: 1.75rem;
+        flex-wrap: wrap;
+      }
+      .sub-tab-btn {
+        padding: 0.65rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        color: var(--text-muted);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .sub-tab-btn:hover {
+        color: var(--primary-color);
+      }
+      .sub-tab-btn.active {
+        color: var(--primary-color);
+        border-bottom-color: var(--primary-color);
+      }
+      .tab-counter {
+        background: #f1f5f9;
+        color: var(--text-main);
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.15rem 0.5rem;
+        border-radius: 999px;
+      }
+      .tab-counter.counter-alert {
+        background: #fee2e2;
+        color: #ef4444;
+      }
+      .admin-card-item {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+      }
+      .admin-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      .app-status {
+        padding: 0.25rem 0.65rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+      .status-pending { background: #fef3c7; color: #b45309; }
+      .status-approved { background: #dcfce7; color: #15803d; }
+      .status-rejected { background: #fee2e2; color: #b91c1c; }
+      .status-instock { background: #dbeafe; color: #1e40af; }
+      .status-outofstock { background: #f1f5f9; color: #64748b; }
+      .admin-flex-grid {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 1.5rem;
+      }
+      .admin-item-thumb {
+        width: 140px;
+        height: 140px;
+        border-radius: 6px;
+        object-fit: cover;
+        background: #f1f5f9;
+      }
+      .admin-info-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+      }
+      .info-row {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .info-row strong {
+        color: var(--primary-color);
+        min-width: 130px;
+      }
+      .admin-action-row {
+        display: flex;
+        gap: 0.65rem;
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f1f5f9;
+        flex-wrap: wrap;
+      }
+      .table-container {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        text-align: left;
+      }
+      .admin-table th {
+        background: #f8fafc;
+        padding: 0.85rem 1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+      .admin-table td {
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+      }
+      .admin-table tr:last-child td {
+        border-bottom: none;
+      }
+      @media (max-width: 768px) {
+        .admin-flex-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Header -->
+    <header id="navbar">
+      <div class="container nav-container">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="/admin" class="logo">Woofy.</a>
+          <span class="admin-badge-pill">Company Admin</span>
+        </div>
+        <div class="nav-actions">
+          <nav class="nav-links">
+            <a href="/api/dashboard">Dashboard</a>
+            <a href="/services/hospitals" target="_blank">
+              <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+              <span>Live Site</span>
+            </a>
+            <a href="/logout">Logout</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h2>Company Admin Suite</h2>
+          <p>Manage platform-wide resources: review pet hospital applications, add rescue services/NGOs, and maintain shop products.</p>
+        </div>
+
+        <!-- Section Navigation Tabs -->
+        <div class="admin-top-nav-tabs">
+          <a href="/admin?section=overview" class="nav-tab-link <%= section === 'overview' ? 'active' : '' %>">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Overview</span>
+          </a>
+          <a href="/admin?section=hospitals" class="nav-tab-link <%= section === 'hospitals' ? 'active' : '' %>">
+            <i data-lucide="hospital"></i>
+            <span>Pet Hospitals (<%= stats.pendingHospitals %> Pending)</span>
+          </a>
+          <a href="/admin?section=rescue" class="nav-tab-link <%= section === 'rescue' ? 'active' : '' %>">
+            <i data-lucide="heart-handshake"></i>
+            <span>Rescue Services & NGOs (<%= stats.rescueTotal %>)</span>
+          </a>
+          <a href="/admin?section=products" class="nav-tab-link <%= section === 'products' ? 'active' : '' %>">
+            <i data-lucide="shopping-bag"></i>
+            <span>Shop Products (<%= stats.productsTotal %>)</span>
+          </a>
+        </div>
+
+        <!-- ==================================================================
+             SECTION 1: OVERVIEW DASHBOARD
+             ================================================================== -->
+        <% if (section === 'overview') { %>
+          <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+              <div class="stat-num" style="color: #ea580c;"><%= stats.pendingHospitals %></div>
+              <div class="stat-label">Pending Hospital Verification</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="stat-num" style="color: #16a34a;"><%= stats.approvedHospitals %></div>
+              <div class="stat-label">Live Verified Hospitals</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="stat-num" style="color: #2563eb;"><%= stats.rescueTotal %></div>
+              <div class="stat-label">Rescue NGOs & Shelters</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="stat-num" style="color: #9333ea;"><%= stats.productsTotal %></div>
+              <div class="stat-label">Shop Products Listed</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <!-- Hospital Management Card -->
+            <div class="admin-card-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="background: #eff6ff; color: #2563eb; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="hospital"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.15rem;">Hospitals & Clinics</h3>
+                  <p style="font-size: 0.85rem;"><%= stats.pendingHospitals %> waiting for approval</p>
+                </div>
+              </div>
+              <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Verify incoming applications from clinic owners or directly publish verified medical centers.</p>
+              <a href="/admin?section=hospitals" class="btn btn-primary btn-sm">
+                Manage Hospitals <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Rescue NGOs Card -->
+            <div class="admin-card-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="background: #ecfdf5; color: #059669; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="heart-handshake"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.15rem;">Rescue & Shelters</h3>
+                  <p style="font-size: 0.85rem;"><%= stats.rescueTotal %> active organizations</p>
+                </div>
+              </div>
+              <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Register emergency animal rescue helplines, shelter centers, and 24/7 ambulances.</p>
+              <a href="/admin?section=rescue" class="btn btn-primary btn-sm">
+                Manage Rescue Services <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Products Catalog Card -->
+            <div class="admin-card-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="background: #fbf5ff; color: #9333ea; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i data-lucide="shopping-bag"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.15rem;">Shop Products</h3>
+                  <p style="font-size: 0.85rem;"><%= stats.productsTotal %> catalog items</p>
+                </div>
+              </div>
+              <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Add pet food, grooming supplies, accessories, toys, and manage in-stock status.</p>
+              <a href="/admin?section=products" class="btn btn-primary btn-sm">
+                Manage Products <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- ==================================================================
+             SECTION 2: HOSPITALS MANAGEMENT
+             ================================================================== -->
+        <% if (section === 'hospitals') { %>
+          <div class="sub-tabs-nav">
+            <a href="/admin?section=hospitals&tab=pending" class="sub-tab-btn <%= activeTab === 'pending' ? 'active' : '' %>">
+              <i data-lucide="clock"></i>
+              <span>Pending Applications</span>
+              <span class="tab-counter <%= stats.pendingHospitals > 0 ? 'counter-alert' : '' %>"><%= stats.pendingHospitals %></span>
+            </a>
+            <a href="/admin?section=hospitals&tab=approved" class="sub-tab-btn <%= activeTab === 'approved' ? 'active' : '' %>">
+              <i data-lucide="check-circle"></i>
+              <span>Live / Approved</span>
+              <span class="tab-counter"><%= stats.approvedHospitals %></span>
+            </a>
+            <a href="/admin?section=hospitals&tab=rejected" class="sub-tab-btn <%= activeTab === 'rejected' ? 'active' : '' %>">
+              <i data-lucide="x-circle"></i>
+              <span>Rejected</span>
+              <span class="tab-counter"><%= stats.rejectedHospitals %></span>
+            </a>
+            <a href="/admin?section=hospitals&tab=add" class="sub-tab-btn <%= activeTab === 'add' ? 'active' : '' %>">
+              <i data-lucide="plus-circle"></i>
+              <span>Direct Add Verified Hospital</span>
+            </a>
+          </div>
+
+          <!-- Pending Applications -->
+          <% if (activeTab === 'pending') { %>
+            <% if (pendingApplications && pendingApplications.length > 0) { %>
+              <% pendingApplications.forEach(app => { %>
+              <div class="admin-card-item">
+                <div class="admin-card-header">
+                  <div>
+                    <h3 style="font-size: 1.2rem;"><%= app.name %></h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">Submitted: <%= new Date(app.createdAt).toLocaleDateString('en-IN') %></p>
+                  </div>
+                  <span class="app-status status-pending">Pending Verification</span>
+                </div>
+
+                <div class="admin-flex-grid">
+                  <img src="<%= app.photo || 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=600&q=80' %>" alt="<%= app.name %>" class="admin-item-thumb" onerror="this.src='https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=600&q=80'" />
+                  <div class="admin-info-list">
+                    <div class="info-row"><strong>City & State:</strong> <span><%= app.city %>, <%= app.state %></span></div>
+                    <div class="info-row"><strong>Address:</strong> <span><%= app.address %></span></div>
+                    <div class="info-row"><strong>Contact Person:</strong> <span><%= app.contactPerson || 'N/A' %> <%= app.contactRole ? '(' + app.contactRole + ')' : '' %></span></div>
+                    <div class="info-row"><strong>Phone:</strong> <span><%= app.phone %> <%= app.emergencyPhone ? '| Emergency: ' + app.emergencyPhone : '' %></span></div>
+                    <div class="info-row"><strong>License / Reg:</strong> <span><%= app.licenseNumber || 'Not specified' %></span></div>
+                    <div class="info-row"><strong>Facilities:</strong> <span><%= (app.services || []).join(', ') %></span></div>
+                  </div>
+                </div>
+
+                <div class="admin-action-row">
+                  <form action="/admin/hospitals/approve/<%= app._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Verify and publish this hospital live?');">
+                      <i data-lucide="check"></i> Verify & Publish Live
+                    </button>
+                  </form>
+                  <form action="/admin/hospitals/reject/<%= app._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('Reject this application?');">
+                      <i data-lucide="x"></i> Reject Application
+                    </button>
+                  </form>
+                  <form action="/admin/hospitals/delete/<%= app._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete permanently?');">
+                      <i data-lucide="trash-2"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+            <% } else { %>
+              <div class="empty-state-box">
+                <i data-lucide="check-circle" style="width: 44px; height: 44px; color: #16a34a; margin-bottom: 0.75rem;"></i>
+                <h3>No Pending Applications</h3>
+                <p>All clinic applications have been reviewed.</p>
+              </div>
+            <% } %>
+          <% } %>
+
+          <!-- Live Approved Hospitals -->
+          <% if (activeTab === 'approved') { %>
+            <% if (approvedHospitals && approvedHospitals.length > 0) { %>
+              <% approvedHospitals.forEach(h => { %>
+              <div class="admin-card-item">
+                <div class="admin-card-header">
+                  <div>
+                    <h3 style="font-size: 1.2rem;"><%= h.name %></h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);"><%= h.city %> • <%= h.is24x7 ? '24/7 Emergency' : 'Standard Hours' %></p>
+                  </div>
+                  <span class="app-status status-approved">Live & Verified</span>
+                </div>
+                <div class="admin-flex-grid">
+                  <img src="<%= h.photo || 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=600&q=80' %>" alt="<%= h.name %>" class="admin-item-thumb" />
+                  <div class="admin-info-list">
+                    <div class="info-row"><strong>Address:</strong> <span><%= h.address %>, <%= h.city %></span></div>
+                    <div class="info-row"><strong>Phone:</strong> <span><%= h.phone %></span></div>
+                    <div class="info-row"><strong>Services:</strong> <span><%= (h.services || []).join(', ') %></span></div>
+                  </div>
+                </div>
+                <div class="admin-action-row">
+                  <a href="/services/hospitals?city=<%= encodeURIComponent(h.city) %>" target="_blank" class="btn btn-secondary btn-sm">
+                    <i data-lucide="external-link"></i> View Live
+                  </a>
+                  <form action="/admin/hospitals/delete/<%= h._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Remove this hospital from directory?');">
+                      <i data-lucide="trash-2"></i> Remove Listing
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+            <% } else { %>
+              <div class="empty-state-box">
+                <h3>No Live Hospitals</h3>
+                <p>Approve applications or use Direct Add to publish clinics.</p>
+              </div>
+            <% } %>
+          <% } %>
+
+          <!-- Rejected Applications -->
+          <% if (activeTab === 'rejected') { %>
+            <% if (rejectedApplications && rejectedApplications.length > 0) { %>
+              <% rejectedApplications.forEach(h => { %>
+              <div class="admin-card-item">
+                <div class="admin-card-header">
+                  <div>
+                    <h3 style="font-size: 1.2rem;"><%= h.name %></h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);"><%= h.city %> • <%= h.phone %></p>
+                  </div>
+                  <span class="app-status status-rejected">Rejected</span>
+                </div>
+                <div class="admin-action-row">
+                  <form action="/admin/hospitals/approve/<%= h._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                      <i data-lucide="refresh-cw"></i> Re-verify & Publish
+                    </button>
+                  </form>
+                  <form action="/admin/hospitals/delete/<%= h._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;">
+                      <i data-lucide="trash-2"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+            <% } else { %>
+              <div class="empty-state-box"><p>No rejected applications.</p></div>
+            <% } %>
+          <% } %>
+
+          <!-- Direct Add Hospital Form -->
+          <% if (activeTab === 'add') { %>
+            <div class="form-wrapper-box" style="margin: 0;">
+              <div class="form-title-group">
+                <h3>Direct Publish Verified Hospital</h3>
+                <p>Instantly publish a verified hospital to the public directory.</p>
+              </div>
+              <form action="/admin/hospitals/add" method="POST" enctype="multipart/form-data">
+                <div class="form-grid-layout">
+                  <div class="field-group full">
+                    <label class="field-label">Hospital Name *</label>
+                    <input type="text" name="name" class="field-input" placeholder="e.g. Crown Vet Emergency Center" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">City *</label>
+                    <input type="text" name="city" class="field-input" placeholder="e.g. Mumbai" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">State</label>
+                    <input type="text" name="state" class="field-input" value="Maharashtra" />
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Full Address *</label>
+                    <input type="text" name="address" class="field-input" placeholder="e.g. Shop 4, Mahalaxmi" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Phone Number *</label>
+                    <input type="tel" name="phone" class="field-input" placeholder="+91 98200 12345" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Emergency Helpline</label>
+                    <input type="tel" name="emergencyPhone" class="field-input" placeholder="+91 98200 99999" />
+                  </div>
+                  <div class="field-group full">
+                    <label class="check-item">
+                      <input type="checkbox" name="is24x7" value="true" />
+                      <span>Open 24/7 for Emergency Care</span>
+                    </label>
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Photo URL</label>
+                    <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                  </div>
+                </div>
+                <div class="form-button-row">
+                  <button type="submit" class="btn btn-primary">
+                    <i data-lucide="check-circle"></i> Publish Verified Hospital Live
+                  </button>
+                </div>
+              </form>
+            </div>
+          <% } %>
+        <% } %>
+
+        <!-- ==================================================================
+             SECTION 3: RESCUE SERVICES MANAGEMENT
+             ================================================================== -->
+        <% if (section === 'rescue') { %>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3>Animal Rescue NGOs & Shelters</h3>
+              <p>Register and manage verified rescue organizations, animal ambulances, and shelters.</p>
+            </div>
+            <a href="#addRescueForm" class="btn btn-primary btn-sm">
+              <i data-lucide="plus"></i> Add Rescue Service
+            </a>
+          </div>
+
+          <!-- Existing Rescue Services List -->
+          <% if (rescueServices && rescueServices.length > 0) { %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+              <% rescueServices.forEach(r => { %>
+              <div class="admin-card-item" style="margin-bottom: 0;">
+                <div class="admin-card-header">
+                  <div>
+                    <h3 style="font-size: 1.15rem;"><%= r.name %></h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);"><%= r.city %> • <%= r.orgType %></p>
+                  </div>
+                  <span class="app-status status-approved">Active NGO</span>
+                </div>
+                <div class="admin-info-list">
+                  <div class="info-row"><strong>Phone:</strong> <span><%= r.phone %></span></div>
+                  <% if (r.emergencyHelpline) { %>
+                  <div class="info-row"><strong>Helpline:</strong> <span><%= r.emergencyHelpline %></span></div>
+                  <% } %>
+                  <div class="info-row"><strong>Address:</strong> <span><%= r.address %></span></div>
+                  <div class="info-row"><strong>Services:</strong> <span><%= (r.services || []).join(', ') %></span></div>
+                </div>
+                <div class="admin-action-row">
+                  <form action="/admin/rescue/delete/<%= r._id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this rescue service?');">
+                      <i data-lucide="trash-2"></i> Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+              <h3>No Rescue Services Registered Yet</h3>
+              <p>Add emergency rescue organizations and shelters below.</p>
+            </div>
+          <% } %>
+
+          <!-- Add Rescue Service Form -->
+          <div id="addRescueForm" class="form-wrapper-box" style="margin: 0;">
+            <div class="form-title-group">
+              <h3>Add New Animal Rescue NGO / Shelter</h3>
+              <p>Publish an animal rescue service, NGO helpline, or shelter.</p>
+            </div>
+            <form action="/admin/rescue/add" method="POST" enctype="multipart/form-data">
+              <div class="form-grid-layout">
+                <div class="field-group full">
+                  <label class="field-label">Organization Name *</label>
+                  <input type="text" name="name" class="field-input" placeholder="e.g. Stray Relief & Animal Welfare (STRAW)" required />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Organization Type</label>
+                  <select name="orgType" class="field-select">
+                    <option value="NGO">Registered NGO</option>
+                    <option value="Animal Ambulance">Animal Ambulance</option>
+                    <option value="Shelter">Animal Shelter</option>
+                    <option value="Stray Rescue">Stray Dog Rescue</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">City *</label>
+                  <input type="text" name="city" class="field-input" placeholder="e.g. Mumbai, Pune, Delhi" required />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Full Address / Location *</label>
+                  <input type="text" name="address" class="field-input" placeholder="e.g. Sector 12, Palm Beach Road" required />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Primary Contact Phone *</label>
+                  <input type="tel" name="phone" class="field-input" placeholder="+91 98200 12345" required />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">24/7 Emergency Helpline</label>
+                  <input type="tel" name="emergencyHelpline" class="field-input" placeholder="+91 98200 99999" />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Services Provided (Comma separated)</label>
+                  <input type="text" name="customServices" class="field-input" placeholder="24/7 Stray Rescue, Animal Ambulance, Medical Aid, Adoption" />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Photo URL</label>
+                  <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                </div>
+              </div>
+              <div class="form-button-row">
+                <button type="submit" class="btn btn-primary">
+                  <i data-lucide="plus"></i> Add Rescue Service
+                </button>
+              </div>
+            </form>
+          </div>
+        <% } %>
+
+        <!-- ==================================================================
+             SECTION 4: PRODUCTS / SHOP MANAGEMENT
+             ================================================================== -->
+        <% if (section === 'products') { %>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3>Shop & Pet Products Catalog</h3>
+              <p>Add new pet foods, grooming items, toys, and update stock availability.</p>
+            </div>
+            <a href="#addProductForm" class="btn btn-primary btn-sm">
+              <i data-lucide="plus"></i> Add Product
+            </a>
+          </div>
+
+          <!-- Products Table -->
+          <% if (products && products.length > 0) { %>
+            <div class="table-container" style="margin-bottom: 2.5rem;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock Status</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% products.forEach(p => { %>
+                  <tr>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <img src="<%= p.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>" alt="<%= p.name %>" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
+                        <div>
+                          <strong><%= p.name %></strong>
+                          <p style="font-size: 0.8rem; color: var(--text-muted);"><%= p.description ? p.description.substring(0, 45) + '...' : '' %></p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><%= p.category %></td>
+                    <td>
+                      <strong>₹<%= p.price %></strong>
+                      <% if (p.originalPrice) { %><span style="text-decoration: line-through; color: #94a3b8; font-size: 0.8rem;">₹<%= p.originalPrice %></span><% } %>
+                    </td>
+                    <td>
+                      <span class="app-status <%= p.inStock ? 'status-instock' : 'status-outofstock' %>">
+                        <%= p.inStock ? 'In Stock' : 'Out of Stock' %>
+                      </span>
+                    </td>
+                    <td>⭐ <%= p.rating ? p.rating.toFixed(1) : '4.8' %></td>
+                    <td>
+                      <div style="display: flex; gap: 0.4rem;">
+                        <form action="/admin/products/toggle-stock/<%= p._id %>" method="POST" style="display: inline;">
+                          <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Stock">
+                            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+                          </button>
+                        </form>
+                        <form action="/admin/products/delete/<%= p._id %>" method="POST" style="display: inline;">
+                          <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this product?');">
+                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+              <h3>No Products in Catalog Yet</h3>
+              <p>Add pet food, grooming supplies, and accessories using the form below.</p>
+            </div>
+          <% } %>
+
+          <!-- Add Product Form -->
+          <div id="addProductForm" class="form-wrapper-box" style="margin: 0;">
+            <div class="form-title-group">
+              <h3>Add Product to Catalog</h3>
+              <p>Enter pet product details to list on the Woofy shop.</p>
+            </div>
+            <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
+              <div class="form-grid-layout">
+                <div class="field-group full">
+                  <label class="field-label">Product Title *</label>
+                  <input type="text" name="name" class="field-input" placeholder="e.g. Royal Canin Maxi Adult Dog Food (3kg)" required />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Category *</label>
+                  <select name="category" class="field-select">
+                    <option value="Food">Pet Food & Nutrition</option>
+                    <option value="Grooming">Grooming & Shampoo</option>
+                    <option value="Healthcare">Healthcare & Supplements</option>
+                    <option value="Toys">Chew Toys & Balls</option>
+                    <option value="Accessories">Collars, Leashes & Bowls</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Selling Price (₹) *</label>
+                  <input type="number" name="price" class="field-input" placeholder="e.g. 1499" min="0" required />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Original MRP Price (₹) (Optional)</label>
+                  <input type="number" name="originalPrice" class="field-input" placeholder="e.g. 1899" min="0" />
+                </div>
+                <div class="field-group">
+                  <label class="field-label">Rating</label>
+                  <input type="number" name="rating" class="field-input" placeholder="4.8" step="0.1" min="1" max="5" value="4.8" />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Product Description</label>
+                  <input type="text" name="description" class="field-input" placeholder="e.g. High-protein complete adult nutrition for large breed dogs." />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Product Image URL</label>
+                  <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                </div>
+                <div class="field-group full">
+                  <label class="field-label">Buy / Purchase Link</label>
+                  <input type="url" name="buyUrl" class="field-input" placeholder="https://amazon.in/..." />
+                </div>
+              </div>
+              <div class="form-button-row">
+                <button type="submit" class="btn btn-primary">
+                  <i data-lucide="plus"></i> Add Product to Catalog
+                </button>
+              </div>
+            </form>
+          </div>
+        <% } %>
+      </div>
+    </main>
+
+    <script>
+      if (window.lucide) lucide.createIcons();
+    </script>
+  </body>
+</html>

@@ -15,7 +15,7 @@
       <!-- Left Side: Branding & Image -->
       <div class="login-brand">
         <div class="brand-content">
-          <a href="index.html" class="logo">Woofy.</a>
+          <a href="/" class="logo">Woofy.</a>
           <h2>Welcome back to the pack.</h2>
           <p>
             Manage your pet's appointments, track walks, and access premium care
@@ -31,6 +31,9 @@
             <h2>Sign in</h2>
             <p>Please enter your details to continue.</p>
           </div>
+
+          <!-- Flash Messages -->
+          <%- include('../partials/flash-messages') %>
 
           <form id="loginForm" method="POST" action="/api/login">
             <div class="input-group">
