@@ -113,23 +113,34 @@ const postCreatePet = async (req, res) => {
       petDob = approxPastDate;
     }
 
-    // Process Main Profile Photo
+    // Process Main Profile Photo (supports both 'petImage' and 'photo' field names)
     let mainPhoto = "";
-    if (req.files && req.files.photo && req.files.photo[0]) {
-      const file = req.files.photo[0];
+    const mainPhotoFile =
+      req.files &&
+      ((req.files.petImage && req.files.petImage[0]) ||
+        (req.files.photo && req.files.photo[0]));
+
+    if (mainPhotoFile) {
       mainPhoto =
-        file.path && file.path.startsWith("http")
-          ? file.path
-          : "/uploads/pets/" + file.filename;
+        mainPhotoFile.path && mainPhotoFile.path.startsWith("http")
+          ? mainPhotoFile.path
+          : "/uploads/pets/" + (mainPhotoFile.filename || "");
+    } else if (photoUrl && photoUrl.trim()) {
+      mainPhoto = photoUrl.trim();
     }
 
-    // Process Multi-Photo Gallery
+    // Process Multi-Photo Gallery (supports both 'galleryImages' and 'gallery' field names)
     let galleryPhotos = [];
-    if (req.files && req.files.gallery && req.files.gallery.length > 0) {
-      galleryPhotos = req.files.gallery.map((file) =>
+    const galleryFiles =
+      req.files &&
+      ((req.files.galleryImages && req.files.galleryImages.length > 0 && req.files.galleryImages) ||
+        (req.files.gallery && req.files.gallery.length > 0 && req.files.gallery));
+
+    if (galleryFiles) {
+      galleryPhotos = galleryFiles.map((file) =>
         file.path && file.path.startsWith("http")
           ? file.path
-          : "/uploads/gallery/" + file.filename,
+          : "/uploads/gallery/" + (file.filename || ""),
       );
     }
 
@@ -330,21 +341,32 @@ const postEditPet = async (req, res) => {
     if (homeCity !== undefined) pet.homeCity = homeCity.trim();
     if (rewardAmount !== undefined) pet.rewardAmount = rewardAmount.trim();
 
-    // Update main photo if uploaded
-    if (req.files && req.files.photo && req.files.photo[0]) {
-      const file = req.files.photo[0];
+    // Update main photo if uploaded (supports both 'petImage' and 'photo' field names)
+    const editMainPhotoFile =
+      req.files &&
+      ((req.files.petImage && req.files.petImage[0]) ||
+        (req.files.photo && req.files.photo[0]));
+
+    if (editMainPhotoFile) {
       pet.photo =
-        file.path && file.path.startsWith("http")
-          ? file.path
-          : "/uploads/pets/" + file.filename;
+        editMainPhotoFile.path && editMainPhotoFile.path.startsWith("http")
+          ? editMainPhotoFile.path
+          : "/uploads/pets/" + (editMainPhotoFile.filename || "");
+    } else if (photoUrl && photoUrl.trim() && !pet.photo) {
+      pet.photo = photoUrl.trim();
     }
 
-    // Append new gallery photos if uploaded
-    if (req.files && req.files.gallery && req.files.gallery.length > 0) {
-      const newGallery = req.files.gallery.map((file) =>
+    // Append new gallery photos if uploaded (supports both 'galleryImages' and 'gallery' field names)
+    const editGalleryFiles =
+      req.files &&
+      ((req.files.galleryImages && req.files.galleryImages.length > 0 && req.files.galleryImages) ||
+        (req.files.gallery && req.files.gallery.length > 0 && req.files.gallery));
+
+    if (editGalleryFiles) {
+      const newGallery = editGalleryFiles.map((file) =>
         file.path && file.path.startsWith("http")
           ? file.path
-          : "/uploads/gallery/" + file.filename,
+          : "/uploads/gallery/" + (file.filename || ""),
       );
       pet.gallery = (pet.gallery || []).concat(newGallery);
     }
