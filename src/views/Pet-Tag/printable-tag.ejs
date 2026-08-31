@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Printable Smart Collar Tag — <%= pet.petName %> | Woofy</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Pet-Tag/pet-tag.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      @media print {
+        .no-print { display: none !important; }
+        body { background: #fff !important; }
+        .printable-page-container { max-width: 100% !important; padding: 0 !important; }
+      }
+    </style>
+  </head>
+  <body style="background: #f8fafc; padding: 24px;">
+    <div class="printable-page-container">
+      <!-- Action Toolbar (Hidden during print) -->
+      <div class="print-toolbar no-print">
+        <div>
+          <h2 style="margin: 0; font-size: 1.3rem; color: #0f172a;">Smart QR Collar Tag & Emergency ID Card</h2>
+          <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.88rem;">
+            Print on cardstock or laminate for <%= pet.petName %>'s collar.
+          </p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <a href="/api/pet-profile/<%= pet._id %>" class="btn-emergency-tap" style="background: #e2e8f0; color: #0f172a; padding: 8px 16px; font-size: 0.85rem;">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Back to Profile</span>
+          </a>
+          <button onclick="window.print()" class="btn-emergency-tap btn-emergency-call" style="padding: 8px 18px; font-size: 0.85rem;">
+            <i data-lucide="printer" style="width: 16px; height: 16px;"></i>
+            <span>Print Tag Stencil</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Cutout Sheet -->
+      <div class="print-sheet-box">
+        <div style="text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 16px; margin-bottom: 24px;">
+          <h1 style="font-size: 1.5rem; margin: 0; color: #0f172a;">Woofy Smart Pet Rescue Kit</h1>
+          <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.85rem;">Cut along the dashed lines. Attach to pet collar or keep in your wallet.</p>
+        </div>
+
+        <div class="print-tag-cards-grid">
+          <!-- CARD 1: Collar Cutout Badge -->
+          <div class="collar-tag-cutout">
+            <div class="collar-ring-hole" title="Punch hole here for collar ring"></div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px;">
+              🐾 IF LOST, SCAN ME 🐾
+            </div>
+            <h2 style="margin: 0 0 8px 0; font-size: 1.4rem; color: #0f172a;"><%= pet.petName %></h2>
+
+            <% if (pet.qrCodeDataUrl) { %>
+            <img src="<%= pet.qrCodeDataUrl %>" alt="QR Code" style="width: 160px; height: 160px; display: block; margin: 0 auto 8px auto; border: 1px solid #e2e8f0; border-radius: 8px;" />
+            <% } %>
+
+            <div style="font-size: 0.78rem; font-weight: 700; color: #0f172a; font-family: monospace;">
+              TAG ID: <%= pet.collarId %>
+            </div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #059669; margin-top: 4px;">
+              📞 <%= pet.emergencyPhone || (user ? user.email : 'Scan for Owner Contact') %>
+            </div>
+          </div>
+
+          <!-- CARD 2: Pet Parent Wallet Emergency Card -->
+          <div class="wallet-card-cutout">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span style="font-weight: 900; font-size: 1.1rem; letter-spacing: -0.02em;">Woofy<span style="color: #60a5fa;">.</span></span>
+              <span style="font-size: 0.7rem; text-transform: uppercase; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 4px; font-weight: 800;">Emergency ID</span>
+            </div>
+
+            <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 12px;">
+              <% if (pet.photo || pet.photoUrl) { %>
+              <img src="<%= pet.photo || pet.photoUrl %>" alt="<%= pet.petName %>" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.3);" />
+              <% } %>
+              <div>
+                <h3 style="margin: 0; font-size: 1.2rem; color: #ffffff;"><%= pet.petName %></h3>
+                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #94a3b8;"><%= pet.breed %> &bull; <%= pet.age %> yrs</p>
+                <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #cbd5e1;">Parent: <%= pet.ownerName || (user ? user.fullName : 'Owner') %></p>
+              </div>
+            </div>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; font-size: 0.8rem; line-height: 1.4;">
+              <div><strong>Emergency:</strong> <%= pet.emergencyPhone || 'Not set' %></div>
+              <% if (pet.allergies) { %>
+              <div style="color: #fbbf24;"><strong>Allergies:</strong> <%= pet.allergies %></div>
+              <% } %>
+              <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;">Direct Scan URL: <%= publicUrl %></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

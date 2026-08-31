@@ -1,8 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const petController = require("../Controllers/petController");
+const publicTagController = require("../Controllers/publicTagController");
 const isAuthenticated = require("../Middlewares/isAuthenticated");
 const upload = require("../Middlewares/upload");
+
+// Public Emergency Pet Tag Route (No Auth Required for Finders/Scanners)
+router.get(
+  ["/pet/tag/:id", "/pet/scan/:id", "/api/pet/tag/:id"],
+  publicTagController.getPublicPetTag,
+);
 
 // Dashboard
 router.get(
@@ -58,6 +65,27 @@ router.post(
   petController.postEditPet,
 );
 
+// Toggle Lost Pet Alert (1-Click Emergency Switch)
+router.post(
+  "/api/pet-profile/:petId/toggle-lost",
+  isAuthenticated,
+  petController.postToggleLostStatus,
+);
+
+// Update Emergency Contact & Medical Tag Info
+router.post(
+  "/api/pet-profile/:petId/update-tag",
+  isAuthenticated,
+  petController.postUpdateEmergencyInfo,
+);
+
+// Printable Collar Tag & Wallet Card Sheet
+router.get(
+  "/api/pet-profile/:petId/print-tag",
+  isAuthenticated,
+  petController.getPrintableTag,
+);
+
 // Delete Pet Profile
 router.post(
   "/api/pet-profile/delete/:petId",
@@ -81,5 +109,3 @@ router.post(
 );
 
 module.exports = router;
-
-

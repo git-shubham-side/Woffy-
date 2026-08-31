@@ -40,6 +40,13 @@
             <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
             <span>My Pets</span>
           </a>
+          <a href="/api/vaccinations">
+            <i data-lucide="syringe" style="width: 16px; height: 16px;"></i>
+            <span>Vaccinations</span>
+            <% if (typeof dueVaccineCount !== 'undefined' && dueVaccineCount > 0) { %>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 9999px; margin-left: 3px;"><%= dueVaccineCount %></span>
+            <% } %>
+          </a>
           <a href="/services/hospitals">
             <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
             <span>Hospitals</span>
@@ -87,6 +94,10 @@
             <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
             <span>My Pets</span>
           </a>
+          <a href="/api/vaccinations">
+            <i data-lucide="syringe" style="width: 18px; height: 18px;"></i>
+            <span>Vaccinations</span>
+          </a>
           <a href="/services/hospitals">
             <i data-lucide="hospital" style="width: 18px; height: 18px;"></i>
             <span>Hospitals</span>
@@ -122,7 +133,7 @@
           <div class="pets-header-text">
             <span class="page-badge-pill">Pet Parent Workspace</span>
             <h2>My Registered <span class="sketch-highlight">Pets</span></h2>
-            <p>Manage individual pet profiles, growth charts, vaccination schedules, and medical tracking logs.</p>
+            <p>Manage individual pet profiles, growth charts, automated vaccination schedules, and medical tracking logs.</p>
           </div>
           <div class="pets-header-actions">
             <a href="/api/create-pet-profile" class="btn btn-add-pet">
@@ -180,16 +191,24 @@
                   <div class="actions-tier-primary">
                     <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-action-profile" title="View <%= pet.petName %>'s Full Profile">
                       <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
-                      <span>View Profile</span>
+                      <span>Profile</span>
+                    </a>
+                    <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-action-track" style="background: #4f46e5; color: #fff;" title="View <%= pet.petName %>'s Automated Vaccination Schedule">
+                      <i data-lucide="syringe" style="width: 16px; height: 16px;"></i>
+                      <span>Vaccines</span>
                     </a>
                     <a href="/api/track/<%= pet._id %>" class="btn btn-action-track" title="Track <%= pet.petName %>'s Daily Health & Activity">
                       <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
-                      <span>Track Activity</span>
+                      <span>Track</span>
                     </a>
                   </div>
 
                   <!-- Tier 2: Quick Management Tools -->
                   <div class="actions-tier-secondary">
+                    <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="btn btn-action-records" title="Print Smart QR Collar Tag">
+                      <i data-lucide="qr-code" style="width: 14px; height: 14px; color: #2563eb;"></i>
+                      <span>QR Tag</span>
+                    </a>
                     <a href="/api/show-records/<%= pet._id %>" class="btn btn-action-records" title="View Medical & Activity History">
                       <i data-lucide="clipboard-list" style="width: 14px; height: 14px;"></i>
                       <span>Records</span>
@@ -215,7 +234,7 @@
               <i data-lucide="paw-print" style="width: 36px; height: 36px;"></i>
             </div>
             <h3>No Pets Registered Yet</h3>
-            <p>Add your first furry companion to start tracking their growth, vaccination schedules, daily activities, and medical prescriptions.</p>
+            <p>Add your first furry companion to start tracking their growth, automated vaccination schedules, daily activities, and medical prescriptions.</p>
             <a href="/api/create-pet-profile" class="btn btn-add-pet">
               <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
               <span>Add Your First Pet</span>

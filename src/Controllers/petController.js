@@ -2,6 +2,13 @@ const User = require("../Models/User");
 const Pet = require("../Models/Pet");
 const Record = require("../Models/Record");
 const Product = require("../Models/Product");
+const Vaccination = require("../Models/Vaccination");
+const {
+  generateScheduleForPet,
+  getUpcomingVaccinesForUser,
+  syncVaccinationStatuses,
+} = require("../Utils/vaccineScheduleGenerator");
+const { syncPetQrCode } = require("../Utils/qrTagGenerator");
 
 /**
  * GET: User Dashboard
@@ -19,12 +26,16 @@ const getDashboard = async (req, res) => {
       submittedBy: req.session.userId,
     }).sort({ createdAt: -1 });
 
+    // Fetch upcoming & overdue vaccines for all pets of user
+    const vaccineAlerts = await getUpcomingVaccinesForUser(req.session.userId, 30);
+
     res.render("Dashboard/dashboard", {
       userName: user ? user.fullName : "Pet Parent",
       currentUser: user,
       pets: pets || [],
       products: products || [],
       userProductRequests: userProductRequests || [],
+      vaccineAlerts: vaccineAlerts || { dueSoon: [], overdue: [], totalDueCount: 0 },
     });
   } catch (err) {
     console.error("Dashboard error:", err);
@@ -34,6 +45,7 @@ const getDashboard = async (req, res) => {
       pets: [],
       products: [],
       userProductRequests: [],
+      vaccineAlerts: { dueSoon: [], overdue: [], totalDueCount: 0 },
     });
   }
 };
@@ -48,12 +60,13 @@ const getCreatePetPage = async (req, res) => {
       ownerName: user ? user.fullName : "",
     });
   } catch (err) {
-    res.render("Profile-Creation/create-profile", { ownerName: "" });
+    console.error("Error rendering create pet page:", err);
+    res.redirect("/api/dashboard");
   }
 };
 
 /**
- * POST: Create New Pet Profile (with Photo and Gallery Uploads)
+ * POST: Create New Pet Profile
  */
 const postCreatePet = async (req, res) => {
   try {
@@ -69,42 +82,51 @@ const postCreatePet = async (req, res) => {
       vaccinated,
       photoUrl,
       notes,
+      emergencyPhone,
+      secondaryPhone,
+      allergies,
+      medicalAlerts,
+      homeCity,
     } = req.body;
 
-    if (!petName || petName.trim() === "") {
+    if (!petName || !petName.trim()) {
       req.flash("error", "Pet name is required.");
       return res.redirect("/api/create-pet-profile");
     }
 
-    let parsedAge = age ? parseFloat(age) : 0;
-    const petDob = dob && dob.trim() !== "" ? new Date(dob) : null;
-    if ((!age || isNaN(parsedAge)) && petDob && !isNaN(petDob.getTime())) {
-      const diffMs = Date.now() - petDob.getTime();
-      parsedAge = Math.max(0, parseFloat((diffMs / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1)));
+    // Process DOB or Age
+    let petDob = null;
+    let parsedAge = parseFloat(age);
+
+    if (dob && dob.trim() !== "") {
+      petDob = new Date(dob);
+      if (!isNaN(petDob.getTime())) {
+        const diffMs = Date.now() - petDob.getTime();
+        const calculatedAgeYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+        parsedAge = Math.max(0, parseFloat(calculatedAgeYears.toFixed(1)));
+      }
+    } else if (!isNaN(parsedAge) && parsedAge >= 0) {
+      const approxPastDate = new Date();
+      approxPastDate.setMonth(
+        approxPastDate.getMonth() - Math.round(parsedAge * 12),
+      );
+      petDob = approxPastDate;
     }
 
+    // Process Main Profile Photo
     let mainPhoto = "";
-    if (
-      req.files &&
-      req.files["petImage"] &&
-      req.files["petImage"].length > 0
-    ) {
-      const file = req.files["petImage"][0];
+    if (req.files && req.files.photo && req.files.photo[0]) {
+      const file = req.files.photo[0];
       mainPhoto =
         file.path && file.path.startsWith("http")
           ? file.path
           : "/uploads/pets/" + file.filename;
-    } else if (photoUrl && photoUrl.trim() !== "") {
-      mainPhoto = photoUrl.trim();
     }
 
+    // Process Multi-Photo Gallery
     let galleryPhotos = [];
-    if (
-      req.files &&
-      req.files["galleryImages"] &&
-      req.files["galleryImages"].length > 0
-    ) {
-      galleryPhotos = req.files["galleryImages"].map((file) =>
+    if (req.files && req.files.gallery && req.files.gallery.length > 0) {
+      galleryPhotos = req.files.gallery.map((file) =>
         file.path && file.path.startsWith("http")
           ? file.path
           : "/uploads/gallery/" + file.filename,
@@ -126,13 +148,21 @@ const postCreatePet = async (req, res) => {
       photoUrl: photoUrl ? photoUrl.trim() : "",
       gallery: galleryPhotos,
       notes: notes ? notes.trim() : "",
+      emergencyPhone: emergencyPhone ? emergencyPhone.trim() : "",
+      secondaryPhone: secondaryPhone ? secondaryPhone.trim() : "",
+      allergies: allergies ? allergies.trim() : "",
+      medicalAlerts: medicalAlerts ? medicalAlerts.trim() : "",
+      homeCity: homeCity ? homeCity.trim() : "",
     });
+
+    // Generate Smart QR Collar Tag
+    await syncPetQrCode(newPet);
 
     req.flash(
       "success",
-      `Pet profile for "${newPet.petName}" created successfully!`,
+      `Pet profile for "${newPet.petName}" created with Smart QR Collar Tag!`,
     );
-    res.redirect("/api/pet-profiles");
+    res.redirect(`/api/pet-profile/${newPet._id}`);
   } catch (err) {
     console.error("Pet creation error:", err);
     req.flash(
@@ -151,6 +181,14 @@ const getAllPets = async (req, res) => {
     const pets = await Pet.find({ user: req.session.userId }).sort({
       createdAt: -1,
     });
+
+    // Ensure all pets have a QR code
+    for (const p of pets) {
+      if (!p.qrCodeDataUrl) {
+        await syncPetQrCode(p);
+      }
+    }
+
     res.render("My-Pets/my-pets", { pets: pets || [] });
   } catch (err) {
     console.error("Fetch pets error:", err);
@@ -160,7 +198,7 @@ const getAllPets = async (req, res) => {
 };
 
 /**
- * GET: View Single Pet Profile
+ * GET: View Single Pet Profile with Smart QR Tag & Health Summary
  */
 const getPetProfile = async (req, res) => {
   try {
@@ -180,16 +218,38 @@ const getPetProfile = async (req, res) => {
       return res.redirect("/api/pet-profiles");
     }
 
-    res.render("Pet-Profile/profile", { pet });
+    // Ensure Smart QR Code exists
+    await syncPetQrCode(pet);
+
+    // Refresh & fetch vaccination summary for this pet
+    await syncVaccinationStatuses(pet._id);
+    const vaccinations = await Vaccination.find({ pet: pet._id }).sort({ dueDate: 1 });
+    const totalDoses = vaccinations.length;
+    const completedDoses = vaccinations.filter((v) => v.status === "Completed").length;
+    const nextDueVaccine = vaccinations.find((v) => v.status !== "Completed" && v.status !== "Skipped");
+
+    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const publicTagUrl = `${appBaseUrl}/pet/tag/${pet.collarId || pet._id}`;
+
+    res.render("Pet-Profile/profile", {
+      pet,
+      publicTagUrl,
+      vaccineSummary: {
+        totalDoses,
+        completedDoses,
+        percent: totalDoses > 0 ? Math.round((completedDoses / totalDoses) * 100) : 0,
+        nextDue: nextDueVaccine || null,
+      },
+    });
   } catch (err) {
-    console.error("View pet profile error:", err);
-    req.flash("error", "Unable to load pet profile.");
-    res.redirect("/api/pet-profiles");
+    console.error("Fetch pet profile error:", err);
+    req.flash("error", "Error loading pet profile.");
+    res.redirect("/api/dashboard");
   }
 };
 
 /**
- * GET: Render Edit Pet Profile Form
+ * GET: Render Edit Pet Page
  */
 const getEditPetPage = async (req, res) => {
   try {
@@ -197,31 +257,23 @@ const getEditPetPage = async (req, res) => {
     const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
 
     if (!pet) {
-      req.flash("error", "Pet profile not found.");
+      req.flash("error", "Pet not found.");
       return res.redirect("/api/pet-profiles");
     }
 
-    res.render("Profile-Creation/edit-profile", { pet });
+    res.render("Edit-Pet/edit-pet", { pet });
   } catch (err) {
-    console.error("Edit pet view error:", err);
-    req.flash("error", "Error loading edit page.");
+    console.error("Edit pet page error:", err);
     res.redirect("/api/pet-profiles");
   }
 };
 
 /**
- * POST: Update Pet Profile
+ * POST: Handle Pet Profile Update
  */
 const postEditPet = async (req, res) => {
   try {
     const { petId } = req.params;
-    const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
-
-    if (!pet) {
-      req.flash("error", "Pet profile not found.");
-      return res.redirect("/api/pet-profiles");
-    }
-
     const {
       petName,
       ownerName,
@@ -234,87 +286,213 @@ const postEditPet = async (req, res) => {
       vaccinated,
       photoUrl,
       notes,
+      emergencyPhone,
+      secondaryPhone,
+      allergies,
+      medicalAlerts,
+      homeCity,
+      rewardAmount,
     } = req.body;
 
-    if (!petName || petName.trim() === "") {
-      req.flash("error", "Pet name is required.");
-      return res.redirect(`/api/pet-profile/edit/${pet._id}`);
+    const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+    if (!pet) {
+      req.flash("error", "Pet not found.");
+      return res.redirect("/api/pet-profiles");
     }
 
-    pet.petName = petName.trim();
-    pet.ownerName = ownerName ? ownerName.trim() : "";
-    pet.species = species || "Dog";
-    pet.breed = breed ? breed.trim() : "Unknown";
-    if (dob !== undefined) {
-      pet.dob = dob && dob.trim() !== "" ? new Date(dob) : null;
+    if (petName) pet.petName = petName.trim();
+    if (ownerName !== undefined) pet.ownerName = ownerName.trim();
+    if (species) pet.species = species;
+    if (breed !== undefined) pet.breed = breed.trim();
+
+    if (dob && dob.trim() !== "") {
+      const parsedDob = new Date(dob);
+      if (!isNaN(parsedDob.getTime())) {
+        pet.dob = parsedDob;
+        const diffMs = Date.now() - parsedDob.getTime();
+        const calculatedAgeYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+        pet.age = Math.max(0, parseFloat(calculatedAgeYears.toFixed(1)));
+      }
+    } else if (age !== undefined) {
+      pet.age = parseFloat(age) || 0;
     }
-    if (age !== undefined && age !== "") {
-      pet.age = parseFloat(age);
-    } else if (pet.dob && !isNaN(pet.dob.getTime())) {
-      const diffMs = Date.now() - pet.dob.getTime();
-      pet.age = Math.max(0, parseFloat((diffMs / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1)));
-    }
-    pet.weight =
-      weight !== undefined && weight !== "" ? parseFloat(weight) : pet.weight;
-    pet.gender = gender || "Male";
-    pet.vaccinated = vaccinated || "Yes";
+
+    if (weight !== undefined) pet.weight = parseFloat(weight) || 0;
+    if (gender) pet.gender = gender;
+    if (vaccinated) pet.vaccinated = vaccinated;
+    if (photoUrl !== undefined) pet.photoUrl = photoUrl.trim();
     if (notes !== undefined) pet.notes = notes.trim();
 
-    // Check if new primary photo was uploaded
-    if (
-      req.files &&
-      req.files["petImage"] &&
-      req.files["petImage"].length > 0
-    ) {
-      const file = req.files["petImage"][0];
+    if (emergencyPhone !== undefined) pet.emergencyPhone = emergencyPhone.trim();
+    if (secondaryPhone !== undefined) pet.secondaryPhone = secondaryPhone.trim();
+    if (allergies !== undefined) pet.allergies = allergies.trim();
+    if (medicalAlerts !== undefined) pet.medicalAlerts = medicalAlerts.trim();
+    if (homeCity !== undefined) pet.homeCity = homeCity.trim();
+    if (rewardAmount !== undefined) pet.rewardAmount = rewardAmount.trim();
+
+    // Update main photo if uploaded
+    if (req.files && req.files.photo && req.files.photo[0]) {
+      const file = req.files.photo[0];
       pet.photo =
         file.path && file.path.startsWith("http")
           ? file.path
           : "/uploads/pets/" + file.filename;
-    } else if (photoUrl && photoUrl.trim() !== "") {
-      pet.photoUrl = photoUrl.trim();
     }
 
-    // Check if new gallery photos were added
-    if (
-      req.files &&
-      req.files["galleryImages"] &&
-      req.files["galleryImages"].length > 0
-    ) {
-      const newGalleryPhotos = req.files["galleryImages"].map((file) =>
+    // Append new gallery photos if uploaded
+    if (req.files && req.files.gallery && req.files.gallery.length > 0) {
+      const newGallery = req.files.gallery.map((file) =>
         file.path && file.path.startsWith("http")
           ? file.path
           : "/uploads/gallery/" + file.filename,
       );
-      pet.gallery = (pet.gallery || []).concat(newGalleryPhotos);
+      pet.gallery = (pet.gallery || []).concat(newGallery);
     }
 
+    // Ensure QR Code is updated
+    await syncPetQrCode(pet);
     await pet.save();
 
-    req.flash(
-      "success",
-      `Pet profile for "${pet.petName}" updated successfully!`,
-    );
+    req.flash("success", `Pet profile for "${pet.petName}" updated successfully!`);
     res.redirect(`/api/pet-profile/${pet._id}`);
   } catch (err) {
-    console.error("Update pet error:", err);
-    req.flash(
-      "error",
-      "Failed to update pet profile. " + (err.message || ""),
-    );
+    console.error("Pet update error:", err);
+    req.flash("error", "Failed to update pet profile.");
     res.redirect(`/api/pet-profile/edit/${req.params.petId}`);
   }
 };
 
 /**
- * POST: Delete Pet Profile & Cascade Associated Records
+ * POST: Toggle Lost Pet Alert Status (Emergency Lost & Found Switch)
+ */
+const postToggleLostStatus = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const { rewardAmount, lostMessage } = req.body;
+    const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+
+    if (!pet) {
+      req.flash("error", "Pet profile not found.");
+      return res.redirect("/api/pet-profiles");
+    }
+
+    pet.isLost = !pet.isLost;
+    if (rewardAmount !== undefined) pet.rewardAmount = rewardAmount.trim();
+    if (lostMessage !== undefined) pet.lostMessage = lostMessage.trim();
+
+    await pet.save();
+
+    req.flash(
+      "success",
+      pet.isLost
+        ? `🚨 Emergency LOST PET alert activated for "${pet.petName}". The public QR tag now displays high-visibility emergency rescue instructions.`
+        : `🎉 Glad to hear! "${pet.petName}" is marked as safe & found.`,
+    );
+    res.redirect(`/api/pet-profile/${pet._id}`);
+  } catch (err) {
+    console.error("Toggle lost status error:", err);
+    req.flash("error", "Failed to update lost status.");
+    res.redirect(`/api/pet-profile/${req.params.petId}`);
+  }
+};
+
+/**
+ * POST: Update Emergency Tag Info (Quick Modal)
+ */
+const postUpdateEmergencyInfo = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const {
+      emergencyPhone,
+      secondaryPhone,
+      allergies,
+      medicalAlerts,
+      homeCity,
+      rewardAmount,
+      lostMessage,
+    } = req.body;
+
+    const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+    if (!pet) {
+      req.flash("error", "Pet profile not found.");
+      return res.redirect("/api/pet-profiles");
+    }
+
+    if (emergencyPhone !== undefined) pet.emergencyPhone = emergencyPhone.trim();
+    if (secondaryPhone !== undefined) pet.secondaryPhone = secondaryPhone.trim();
+    if (allergies !== undefined) pet.allergies = allergies.trim();
+    if (medicalAlerts !== undefined) pet.medicalAlerts = medicalAlerts.trim();
+    if (homeCity !== undefined) pet.homeCity = homeCity.trim();
+    if (rewardAmount !== undefined) pet.rewardAmount = rewardAmount.trim();
+    if (lostMessage !== undefined) pet.lostMessage = lostMessage.trim();
+
+    await pet.save();
+    req.flash(
+      "success",
+      `Emergency contact & rescue tag details updated for "${pet.petName}".`,
+    );
+    res.redirect(`/api/pet-profile/${pet._id}`);
+  } catch (err) {
+    console.error("Update emergency info error:", err);
+    req.flash("error", "Failed to update tag info.");
+    res.redirect(`/api/pet-profile/${req.params.petId}`);
+  }
+};
+
+/**
+ * GET: Render Printable Smart Collar Tag & Wallet ID Card
+ */
+const getPrintableTag = async (req, res) => {
+  try {
+    const { petId } = req.params;
+    const user = await User.findById(req.session.userId);
+    const pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+
+    if (!pet) {
+      req.flash("error", "Pet profile not found.");
+      return res.redirect("/api/pet-profiles");
+    }
+
+    await syncPetQrCode(pet);
+    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const publicUrl = `${appBaseUrl}/pet/tag/${pet.collarId || pet._id}`;
+
+    res.render("Pet-Tag/printable-tag", {
+      pet,
+      user,
+      publicUrl,
+    });
+  } catch (err) {
+    console.error("Print tag error:", err);
+    req.flash("error", "Failed to generate printable collar tag.");
+    res.redirect(`/api/pet-profile/${req.params.petId}`);
+  }
+};
+
+/**
+ * POST: Delete Pet Profile & Cascading Records
  */
 const deletePet = async (req, res) => {
   try {
     const { petId } = req.params;
-    await Pet.findOneAndDelete({ _id: petId, user: req.session.userId });
+    const deletedPet = await Pet.findOneAndDelete({
+      _id: petId,
+      user: req.session.userId,
+    });
+
+    if (!deletedPet) {
+      req.flash("error", "Pet profile not found or already removed.");
+      return res.redirect("/api/pet-profiles");
+    }
+
+    // Cascade delete health records & vaccination records
     await Record.deleteMany({ pet: petId, user: req.session.userId });
-    req.flash("success", "Pet profile and all associated logs were deleted.");
+    await Vaccination.deleteMany({ pet: petId, user: req.session.userId });
+
+    req.flash(
+      "success",
+      `Pet profile "${deletedPet.petName}" and all associated records deleted successfully.`,
+    );
     res.redirect("/api/pet-profiles");
   } catch (err) {
     console.error("Delete pet error:", err);
@@ -324,74 +502,35 @@ const deletePet = async (req, res) => {
 };
 
 /**
- * POST: User Submit Product Listing Request (Pending Admin Approval)
+ * POST: Handle Community Product Request Submission
  */
 const postRequestProduct = async (req, res) => {
   try {
-    const {
-      name,
-      category,
-      brandName,
-      price,
-      originalPrice,
-      description,
-      buyUrl,
-      submitterPhone,
-      photoUrl,
-      tags,
-    } = req.body;
+    const user = await User.findById(req.session.userId);
+    const { name, category, price, description, link, submitterPhone } =
+      req.body;
 
-    if (!name || !price) {
-      req.flash("error", "Product name and price are required.");
+    if (!name || !price || !description) {
+      req.flash("error", "Please fill in all required product details.");
       return res.redirect("/api/dashboard");
     }
 
-    const user = await User.findById(req.session.userId);
-
-    let photoPath = "";
+    let productImage = "";
     if (req.file) {
-      photoPath =
+      productImage =
         req.file.path && req.file.path.startsWith("http")
           ? req.file.path
           : "/uploads/products/" + req.file.filename;
-    } else if (photoUrl && photoUrl.trim() !== "") {
-      photoPath = photoUrl.trim();
-    } else {
-      photoPath =
-        "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80";
-    }
-
-    const priceNum = parseFloat(price);
-    const originalPriceNum = originalPrice ? parseFloat(originalPrice) : null;
-    let discountPercent = 0;
-    if (originalPriceNum && originalPriceNum > priceNum) {
-      discountPercent = Math.round(
-        ((originalPriceNum - priceNum) / originalPriceNum) * 100,
-      );
-    }
-
-    let tagsList = ["Dog Care"];
-    if (tags && tags.trim() !== "") {
-      tagsList = tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
     }
 
     const productRequest = await Product.create({
       name: name.trim(),
-      category: category || "Food",
-      brandName: brandName ? brandName.trim() : "",
-      price: priceNum,
-      originalPrice: originalPriceNum,
-      discountPercent,
-      description: description ? description.trim() : "",
-      image: photoPath,
-      buyUrl: buyUrl ? buyUrl.trim() : "",
-      tags: tagsList,
-      rating: 4.8,
-      inStock: true,
-      isFeatured: false,
+      category: category || "Other",
+      price: parseFloat(price) || 0,
+      description: description.trim(),
+      image: productImage,
+      link: link ? link.trim() : "",
+      inStock: false,
       status: "pending",
       submittedBy: req.session.userId,
       submitterName: user ? user.fullName : "Pet Parent",
@@ -438,9 +577,10 @@ module.exports = {
   getPetProfile,
   getEditPetPage,
   postEditPet,
+  postToggleLostStatus,
+  postUpdateEmergencyInfo,
+  getPrintableTag,
   deletePet,
   getListingRequestPage,
   postRequestProduct,
 };
-
-

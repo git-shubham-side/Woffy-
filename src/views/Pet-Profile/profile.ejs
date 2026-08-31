@@ -7,7 +7,7 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -16,6 +16,118 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .tag-widget-box {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 24px;
+        align-items: center;
+      }
+      .tag-widget-qr {
+        width: 120px;
+        height: 120px;
+        padding: 6px;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        display: block;
+      }
+      .tag-widget-info h3 {
+        margin: 0 0 6px 0;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .tag-pill-badge {
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 2px 10px;
+        border-radius: 9999px;
+      }
+      .tag-pill-safe { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+      .tag-pill-lost { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; animation: pulse 2s infinite; }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+      .tag-widget-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .tag-action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+        justify-content: center;
+      }
+      .btn-lost-toggle {
+        background: #fff1f2;
+        border-color: #fecdd3;
+        color: #e11d48;
+      }
+      .btn-lost-toggle:hover { background: #ffe4e6; }
+      .btn-lost-active {
+        background: #e11d48;
+        color: #ffffff;
+      }
+
+      /* Modal styling */
+      .custom-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(6px);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .custom-modal-overlay.active {
+        display: flex;
+      }
+      .custom-modal-card {
+        background: #ffffff;
+        border-radius: 16px;
+        max-width: 500px;
+        width: 100%;
+        padding: 28px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      }
+
+      @media (max-width: 768px) {
+        .tag-widget-box {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .tag-widget-qr {
+          margin: 0 auto;
+        }
+        .tag-widget-info h3 {
+          justify-content: center;
+        }
+        .tag-widget-actions {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Navigation -->
@@ -28,6 +140,7 @@
         <nav class="nav-center-links">
           <a href="/api/dashboard">Dashboard</a>
           <a href="/api/pet-profiles" class="active">My Pets</a>
+          <a href="/api/vaccinations">Vaccinations</a>
           <a href="/services/hospitals">Hospitals</a>
           <a href="/services/rescue">Rescue NGOs</a>
           <a href="/shop">Shop</a>
@@ -63,12 +176,127 @@
               
               <div class="profile-banner-info">
                 <h2><%= pet.petName %></h2>
-                <p><%= pet.breed || pet.species %> • Pet Parent: <%= pet.ownerName || 'Shubham Rathod' %></p>
+                <p><%= pet.breed || pet.species %> • Pet Parent: <%= pet.ownerName || 'Pet Parent' %></p>
               </div>
             </div>
 
             <!-- Profile Body Information -->
             <div class="profile-body">
+              <!-- SMART QR CODE DIGITAL COLLAR TAG WIDGET -->
+              <div class="tag-widget-box">
+                <div>
+                  <% if (pet.qrCodeDataUrl) { %>
+                  <img src="<%= pet.qrCodeDataUrl %>" alt="Collar QR Code" class="tag-widget-qr" />
+                  <% } else { %>
+                  <div class="tag-widget-qr" style="display: flex; align-items: center; justify-content: center; color: #64748b;">
+                    <i data-lucide="qr-code" style="width: 48px; height: 48px;"></i>
+                  </div>
+                  <% } %>
+                  <div style="text-align: center; margin-top: 6px; font-family: monospace; font-size: 0.78rem; font-weight: 800; color: #64748b;">
+                    <%= pet.collarId || 'WF-PET' %>
+                  </div>
+                </div>
+
+                <div class="tag-widget-info">
+                  <h3>
+                    <span>Smart QR Digital Collar Tag</span>
+                    <% if (pet.isLost) { %>
+                    <span class="tag-pill-badge tag-pill-lost">🚨 LOST PET MODE ACTIVE</span>
+                    <% } else { %>
+                    <span class="tag-pill-badge tag-pill-safe">✓ Safe & Active</span>
+                    <% } %>
+                  </h3>
+                  <p style="margin: 0 0 10px 0; color: #475569; font-size: 0.88rem; line-height: 1.5;">
+                    Anyone scanning <%= pet.petName %>'s physical QR collar tag will see emergency phone contacts, allergies, and can share their real-time GPS location with you.
+                  </p>
+
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.82rem;">
+                    <span style="background: #f1f5f9; padding: 3px 10px; border-radius: 6px; color: #334155;">
+                      <strong>Emergency:</strong> <%= pet.emergencyPhone || 'Not set' %>
+                    </span>
+                    <% if (pet.allergies) { %>
+                    <span style="background: #fffbeb; color: #92400e; border: 1px solid #fde68a; padding: 3px 10px; border-radius: 6px;">
+                      <strong>Allergies:</strong> <%= pet.allergies %>
+                    </span>
+                    <% } %>
+                    <% if (pet.medicalAlerts) { %>
+                    <span style="background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; padding: 3px 10px; border-radius: 6px;">
+                      <strong>Medical:</strong> <%= pet.medicalAlerts %>
+                    </span>
+                    <% } %>
+                  </div>
+                </div>
+
+                <div class="tag-widget-actions">
+                  <!-- Print Collar Tag Stencil -->
+                  <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="tag-action-btn btn btn-primary" style="font-size: 0.82rem; padding: 8px 14px;">
+                    <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+                    <span>Print Collar Tag</span>
+                  </a>
+
+                  <!-- Download QR Image -->
+                  <% if (pet.qrCodeDataUrl) { %>
+                  <a href="<%= pet.qrCodeDataUrl %>" download="<%= pet.petName %>-collar-qr.png" class="tag-action-btn btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
+                    <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+                    <span>Download QR</span>
+                  </a>
+                  <% } %>
+
+                  <!-- Test Public Scan Page -->
+                  <a href="/pet/tag/<%= pet.collarId || pet._id %>" target="_blank" class="tag-action-btn btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
+                    <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+                    <span>Test Scan Page</span>
+                  </a>
+
+                  <!-- Edit Tag Info Modal -->
+                  <button type="button" onclick="openModal('editTagModal')" class="tag-action-btn btn btn-secondary" style="font-size: 0.82rem; padding: 8px 14px;">
+                    <i data-lucide="settings" style="width: 14px; height: 14px;"></i>
+                    <span>Edit Rescue Details</span>
+                  </button>
+
+                  <!-- Toggle Lost Pet Mode -->
+                  <button type="button" onclick="openModal('lostModal')" class="tag-action-btn <%= pet.isLost ? 'btn-lost-active' : 'btn-lost-toggle' %>" style="font-size: 0.82rem; padding: 8px 14px;">
+                    <i data-lucide="alert-triangle" style="width: 14px; height: 14px;"></i>
+                    <span><%= pet.isLost ? 'Deactivate Lost Mode' : '🚨 Mark Pet as Lost' %></span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Vaccination & Deworming Passport Preview Banner -->
+              <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border: 1.5px solid rgba(99, 102, 241, 0.25); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <div style="width: 44px; height: 44px; border-radius: 10px; background: #4f46e5; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <i data-lucide="syringe" style="width: 22px; height: 22px;"></i>
+                  </div>
+                  <div>
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                      <span>Automated Vaccination & Deworming Schedule</span>
+                      <% if (typeof vaccineSummary !== 'undefined' && vaccineSummary) { %>
+                      <span style="font-size: 0.75rem; background: #10b981; color: #fff; padding: 2px 8px; border-radius: 9999px; font-weight: 700;"><%= vaccineSummary.completedDoses %> / <%= vaccineSummary.totalDoses %> Doses Done</span>
+                      <% } %>
+                    </h3>
+                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.85rem;">
+                      <% if (typeof vaccineSummary !== 'undefined' && vaccineSummary && vaccineSummary.nextDue) { %>
+                        <strong>Next Due:</strong> <%= vaccineSummary.nextDue.vaccineName %> (Due: <%= new Date(vaccineSummary.nextDue.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) %>)
+                      <% } else { %>
+                        WSAVA certified schedule generated for <%= pet.petName %>.
+                      <% } %>
+                    </p>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <a href="/api/vaccinations/print/<%= pet._id %>" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.85rem;">
+                    <i data-lucide="printer" style="width: 14px; height: 14px;"></i>
+                    <span>Digital Passport</span>
+                  </a>
+                  <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-primary btn-sm" style="font-size: 0.85rem;">
+                    <i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
+                    <span>Manage Schedule</span>
+                  </a>
+                </div>
+              </div>
+
               <div class="info-grid">
                 <!-- Species -->
                 <div class="info-item">
@@ -112,7 +340,7 @@
                 <div class="info-item">
                   <div class="label">Vaccination Status</div>
                   <div class="value" style="color: <%= pet.vaccinated === 'Yes' ? '#16a34a' : '#ea580c' %>;">
-                    <%= pet.vaccinated === 'Yes' ? '✓ Fully Vaccinated' : 'Pending / No' %>
+                    <%= pet.vaccinated === 'Yes' ? '✓ Registered Vaccinated' : 'Pending / No' %>
                   </div>
                 </div>
 
@@ -141,6 +369,11 @@
 
               <!-- Action Buttons Row -->
               <div class="profile-actions-bar">
+                <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-primary" style="background: #4f46e5;">
+                  <i data-lucide="syringe" style="width: 16px; height: 16px;"></i>
+                  <span>Vaccine Schedule</span>
+                </a>
+
                 <a href="/api/track/<%= pet._id %>" class="btn btn-primary">
                   <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
                   <span>Track Health Activity</span>
@@ -162,11 +395,98 @@
                     <span>Delete Pet</span>
                   </button>
                 </form>
-
-                <a href="/api/pet-profiles" class="btn btn-secondary" style="margin-left: auto;">
-                  <span>Back to My Pets</span>
-                </a>
               </div>
+            </div>
+          </div>
+
+          <!-- ==========================================================================
+               MODAL: EDIT EMERGENCY RESCUE DETAILS
+               ========================================================================== -->
+          <div class="custom-modal-overlay" id="editTagModal">
+            <div class="custom-modal-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="margin: 0; font-size: 1.2rem; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="qr-code" style="width: 20px; height: 20px; color: #2563eb;"></i>
+                  <span>Emergency Tag Rescue Info</span>
+                </h2>
+                <button type="button" onclick="closeModal('editTagModal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #64748b;">&times;</button>
+              </div>
+
+              <form action="/api/pet-profile/<%= pet._id %>/update-tag" method="POST">
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Primary Emergency Phone <span style="color: #ef4444;">*</span></label>
+                  <input type="tel" name="emergencyPhone" value="<%= pet.emergencyPhone || '' %>" placeholder="e.g. +91 9876543210" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;" required />
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Secondary Backup Phone</label>
+                  <input type="tel" name="secondaryPhone" value="<%= pet.secondaryPhone || '' %>" placeholder="e.g. +91 9123456789" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;" />
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Home City / Neighborhood</label>
+                  <input type="text" name="homeCity" value="<%= pet.homeCity || '' %>" placeholder="e.g. Bandra West, Mumbai" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;" />
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Known Allergies (Food & Drugs)</label>
+                  <input type="text" name="allergies" value="<%= pet.allergies || '' %>" placeholder="e.g. Allergic to Chicken, Penicillin" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;" />
+                </div>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Medical Alerts / Daily Medicines</label>
+                  <textarea name="medicalAlerts" rows="2" placeholder="e.g. Requires daily thyroid medication. Sensitive digestion." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;"><%= pet.medicalAlerts || '' %></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                  <button type="button" onclick="closeModal('editTagModal')" class="btn btn-secondary">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save Rescue Details</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- ==========================================================================
+               MODAL: TOGGLE LOST PET ALERT MODE
+               ========================================================================== -->
+          <div class="custom-modal-overlay" id="lostModal">
+            <div class="custom-modal-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h2 style="margin: 0; font-size: 1.2rem; color: #e11d48; display: flex; align-items: center; gap: 8px;">
+                  <i data-lucide="alert-triangle" style="width: 20px; height: 20px;"></i>
+                  <span><%= pet.isLost ? 'Deactivate Lost Pet Alert' : 'Activate Emergency LOST PET Alert' %></span>
+                </h2>
+                <button type="button" onclick="closeModal('lostModal')" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #64748b;">&times;</button>
+              </div>
+
+              <form action="/api/pet-profile/<%= pet._id %>/toggle-lost" method="POST">
+                <% if (!pet.isLost) { %>
+                <p style="color: #475569; font-size: 0.9rem; line-height: 1.5; margin-bottom: 16px;">
+                  Activating Lost Pet Mode immediately turns <%= pet.petName %>'s public QR collar tag into an emergency high-visibility red alert.
+                </p>
+
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Reward Amount (Optional)</label>
+                  <input type="text" name="rewardAmount" value="<%= pet.rewardAmount || '' %>" placeholder="e.g. ₹5,000 / Generous Reward" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;" />
+                </div>
+
+                <div style="margin-bottom: 16px;">
+                  <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">Emergency Message for Finder</label>
+                  <textarea name="lostMessage" rows="2" placeholder="e.g. <%= pet.petName %> went missing near Shivaji Park. Friendly and responds to whistle. Please call immediately!" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;"><%= pet.lostMessage || '' %></textarea>
+                </div>
+                <% } else { %>
+                <p style="color: #059669; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                  🎉 Has <strong><%= pet.petName %></strong> returned home safely? Clicking below will deactivate the emergency alert and return the collar tag to normal active mode.
+                </p>
+                <% } %>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                  <button type="button" onclick="closeModal('lostModal')" class="btn btn-secondary">Cancel</button>
+                  <button type="submit" class="btn <%= pet.isLost ? 'btn-primary' : 'btn-danger' %>" style="font-weight: 800;">
+                    <%= pet.isLost ? 'Mark Pet as Safe & Found' : 'Activate LOST Alert' %>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         <% } else { %>
@@ -197,11 +517,27 @@
       </div>
     </footer>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- Interactive Scripts -->
     <script>
       if (window.lucide) {
         lucide.createIcons();
       }
+
+      function openModal(id) {
+        const m = document.getElementById(id);
+        if (m) m.classList.add('active');
+      }
+
+      function closeModal(id) {
+        const m = document.getElementById(id);
+        if (m) m.classList.remove('active');
+      }
+
+      window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('custom-modal-overlay')) {
+          e.target.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>

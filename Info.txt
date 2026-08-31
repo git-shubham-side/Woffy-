@@ -1,2 +1,2 @@
-1. /api/terms -- implement the terms & COnditions on the signup page 
-2. /api/forget-pass  --- implement forget pass route-- via login
+[COMPLETED] 1. /api/terms -- implemented full Terms of Service & Privacy Policy view and linked on signup page
+[COMPLETED] 2. /api/forget-pass -- implemented secure 1-Click crypto Token reset & 6-Digit OTP verification flow with email dispatch

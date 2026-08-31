@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms of Service & Privacy Policy — Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Forgot-Password/forgot-password.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="auth-body">
+    <!-- Ambient Glow -->
+    <div class="auth-ambient-glow" aria-hidden="true">
+      <div class="glow-auth-1"></div>
+      <div class="glow-auth-2"></div>
+    </div>
+
+    <div class="auth-card-container" style="max-width: 680px;">
+      <div class="auth-card">
+        <div class="auth-logo-row">
+          <a href="/" class="auth-logo">Woofy<span>.</span></a>
+          <a href="/api/signup" style="color: #94a3b8; font-size: 0.85rem; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>Back to Sign up</span>
+          </a>
+        </div>
+
+        <div class="auth-header">
+          <h1>Terms of Service & Privacy Policy 📜</h1>
+          <p>Please read these terms carefully before using the Woofy pet care platform.</p>
+        </div>
+
+        <div class="terms-content-box">
+          <h2>1. Introduction & Acceptance</h2>
+          <p>
+            Welcome to <strong>Woofy</strong>. By accessing our platform, registering an account, or logging health records, you agree to comply with and be bound by these Terms of Service and Privacy Policy.
+          </p>
+
+          <h2>2. Pet Health Records & Information</h2>
+          <p>
+            Woofy provides tools for pet parents to track vaccinations, weight milestones, medications, and general health logs. All schedules (including WSAVA vaccination guidelines) are intended for organizational assistance and do not substitute for professional in-person veterinary consultations.
+          </p>
+
+          <h2>3. Emergency Directory & Hospital Listings</h2>
+          <p>
+            While we verify hospital registrations and rescue contact information, users are encouraged to directly telephone hospitals during critical emergencies to ensure availability and bed readiness.
+          </p>
+
+          <h2>4. Privacy & Data Protection</h2>
+          <p>
+            Your personal information, email address, pet records, and attached prescriptions are encrypted and securely stored. We do not sell or rent your personal information to third parties.
+          </p>
+
+          <h2>5. Account Security</h2>
+          <p>
+            You are responsible for maintaining the confidentiality of your account password and OTP verification codes. If you suspect unauthorized access, use the Forgot Password recovery flow immediately.
+          </p>
+        </div>
+
+        <div class="auth-footer-links" style="display: flex; justify-content: space-between; align-items: center;">
+          <a href="/api/signup">&larr; Back to Registration</a>
+          <a href="/api/dashboard">Go to Dashboard &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

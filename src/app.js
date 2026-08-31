@@ -12,6 +12,7 @@ const pageRoutes = require("./Routes/pageRoutes");
 const authRoutes = require("./Routes/authRoutes");
 const petRoutes = require("./Routes/petRoutes");
 const recordRoutes = require("./Routes/recordRoutes");
+const vaccinationRoutes = require("./Routes/vaccinationRoutes");
 const contactRoutes = require("./Routes/contactRoutes");
 const hospitalRoutes = require("./Routes/hospitalRoutes");
 const adminRoutes = require("./Routes/adminRoutes");
@@ -57,14 +58,16 @@ app.use(flash());
 
 const User = require("./Models/User");
 const Hospital = require("./Models/Hospital");
+const Vaccination = require("./Models/Vaccination");
 
-// Global Flash Messages & Session User Middleware
+// Global Flash Messages, Session User & Notification Badge Middleware
 app.use(async (req, res, next) => {
   res.locals.success_msg = req.flash("success");
   res.locals.error_msg = req.flash("error");
   res.locals.userId = req.session ? req.session.userId : null;
   res.locals.isAdminUser = false;
   res.locals.pendingHospitalCount = 0;
+  res.locals.dueVaccineCount = 0;
   res.locals.currentUser = null;
 
   if (req.session && req.session.userId) {
@@ -88,6 +91,12 @@ app.use(async (req, res, next) => {
             status: "pending",
           });
         }
+
+        // Count pending / due soon / overdue vaccines for in-app badge notification
+        res.locals.dueVaccineCount = await Vaccination.countDocuments({
+          user: req.session.userId,
+          status: { $in: ["Due Soon", "Overdue"] },
+        });
       }
     } catch (e) {
       console.warn("Session user check warning:", e.message);
@@ -101,6 +110,7 @@ app.use("/", pageRoutes);
 app.use("/", authRoutes);
 app.use("/", petRoutes);
 app.use("/", recordRoutes);
+app.use("/", vaccinationRoutes);
 app.use("/", contactRoutes);
 app.use("/", hospitalRoutes);
 app.use("/admin", adminRoutes);

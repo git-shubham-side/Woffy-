@@ -41,6 +41,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.24.2",
     "nodemailer": "^9.0.6",
+    "qrcode": "^1.5.4",
     "sequelize": "^6.37.8",
     "tailwindcss": "^1.9.6"
   }

@@ -12,6 +12,7 @@ const galleryUploads = path.join(uploadBase, "gallery");
 const hospitalUploads = path.join(uploadBase, "hospitals");
 const productUploads = path.join(uploadBase, "products");
 const rescueUploads = path.join(uploadBase, "rescue");
+const vaccineUploads = path.join(uploadBase, "vaccines");
 
 [
   uploadBase,
@@ -21,6 +22,7 @@ const rescueUploads = path.join(uploadBase, "rescue");
   hospitalUploads,
   productUploads,
   rescueUploads,
+  vaccineUploads,
 ].forEach((dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -40,6 +42,7 @@ if (isCloudinaryConfigured()) {
       else if (file.fieldname === "hospitalImage") folder = "woffy/hospitals";
       else if (file.fieldname === "productImage") folder = "woffy/products";
       else if (file.fieldname === "rescueImage") folder = "woffy/rescue";
+      else if (file.fieldname === "vaccineImage") folder = "woffy/vaccines";
 
       return {
         folder: folder,
@@ -63,6 +66,8 @@ if (isCloudinaryConfigured()) {
         cb(null, productUploads);
       } else if (file.fieldname === "rescueImage") {
         cb(null, rescueUploads);
+      } else if (file.fieldname === "vaccineImage") {
+        cb(null, vaccineUploads);
       } else {
         cb(null, uploadBase);
       }

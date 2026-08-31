@@ -64,6 +64,60 @@ const petSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+
+  /* ==========================================================================
+     SMART QR COLLAR TAG & EMERGENCY "LOST & FOUND" LIFESAVER FIELDS
+     ========================================================================== */
+  collarId: {
+    type: String,
+    trim: true,
+    default: null,
+    index: true,
+  },
+  emergencyPhone: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  secondaryPhone: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  allergies: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  medicalAlerts: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  homeCity: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  isLost: {
+    type: Boolean,
+    default: false,
+  },
+  lostMessage: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  rewardAmount: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+  qrCodeDataUrl: {
+    type: String,
+    default: "",
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

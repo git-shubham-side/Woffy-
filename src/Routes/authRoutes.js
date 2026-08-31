@@ -13,11 +13,37 @@ router.post(["/login", "/api/login"], authController.postLogin);
 // Logout
 router.get(["/logout", "/api/logout"], authController.logout);
 
-// Forgot Password & Terms
+// Forgot Password Request
 router.get(
-  ["/forget-pass", "/api/forget-pass"],
-  authController.getForgotPassword,
+  ["/forget-pass", "/api/forget-pass", "/forgot-password", "/api/forgot-password"],
+  authController.getForgotPasswordPage,
 );
+router.post(
+  ["/forget-pass", "/api/forget-pass", "/forgot-password", "/api/forgot-password"],
+  authController.postForgotPassword,
+);
+
+// Reset Password via 1-Click Secure Token Link
+router.get(
+  ["/reset-password/:token", "/api/reset-password/:token"],
+  authController.getResetPasswordWithTokenPage,
+);
+router.post(
+  ["/reset-password/:token", "/api/reset-password/:token"],
+  authController.postResetPasswordWithToken,
+);
+
+// Verify OTP & Reset Password
+router.get(
+  ["/verify-reset-otp", "/api/verify-reset-otp"],
+  authController.getVerifyOtpPage,
+);
+router.post(
+  ["/verify-reset-otp", "/api/verify-reset-otp"],
+  authController.postVerifyOtpAndReset,
+);
+
+// Terms & Conditions
 router.get(["/terms", "/api/terms"], authController.getTermsPage);
 
 module.exports = router;

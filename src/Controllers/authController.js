@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
+const crypto = require("node:crypto");
 const User = require("../Models/User");
+const { sendPasswordResetEmail } = require("../Utils/mailer");
 
 /**
  * GET: Render Signup Page
@@ -132,51 +134,247 @@ const logout = (req, res) => {
   res.redirect("/api/login");
 };
 
+/* ==========================================================================
+   FORGOT PASSWORD & OTP RESET FLOW
+   ========================================================================== */
+
 /**
- * GET: Forgot Password Placeholder
+ * GET: Render Forgot Password Request Page
  */
-const getForgotPassword = (req, res) => {
-  req.flash(
-    "error",
-    "Password reset instructions sent to your email (if registered).",
-  );
-  res.redirect("/api/login");
+const getForgotPasswordPage = (req, res) => {
+  if (req.session && req.session.userId) {
+    return res.redirect("/api/dashboard");
+  }
+  res.render("Forgot-Password/forgot-password");
 };
 
 /**
- * GET: Render Terms & Privacy Policy
+ * POST: Process Forgot Password Request (Generate Token & 6-Digit OTP)
+ */
+const postForgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email || email.trim() === "") {
+      req.flash("error", "Please enter your registered email address.");
+      return res.redirect("/api/forget-pass");
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      req.flash(
+        "error",
+        "No account with this email was found. Please check your spelling or sign up.",
+      );
+      return res.redirect("/api/forget-pass");
+    }
+
+    // Generate secure raw token for URL link
+    const rawToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(rawToken).digest("hex");
+
+    // Generate 6-digit numeric OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 15 Minutes Expiration
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpires = expiresAt;
+    user.resetPasswordOtp = otp;
+    user.resetPasswordOtpExpires = expiresAt;
+
+    await user.save();
+
+    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const resetUrl = `${appBaseUrl}/api/reset-password/${rawToken}`;
+
+    // Dispatch Email with 1-Click Link and OTP
+    await sendPasswordResetEmail({
+      userEmail: user.email,
+      userName: user.fullName,
+      resetUrl,
+      otp,
+    });
+
+    req.flash(
+      "success",
+      `Password reset instructions and a 6-digit OTP have been sent to ${user.email}. Valid for 15 minutes.`,
+    );
+    return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(user.email)}`);
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    req.flash("error", "Failed to process password reset request. Please try again.");
+    return res.redirect("/api/forget-pass");
+  }
+};
+
+/**
+ * GET: Render Reset Password Form via 1-Click Token
+ */
+const getResetPasswordWithTokenPage = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash(
+        "error",
+        "Password reset token is invalid or has expired. Please request a new one.",
+      );
+      return res.redirect("/api/forget-pass");
+    }
+
+    res.render("Forgot-Password/reset-password", {
+      token,
+      email: user.email,
+    });
+  } catch (err) {
+    console.error("Reset token verification error:", err);
+    req.flash("error", "Error verifying password reset link.");
+    res.redirect("/api/forget-pass");
+  }
+};
+
+/**
+ * POST: Save New Password via 1-Click Token
+ */
+const postResetPasswordWithToken = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
+
+    if (!password || !confirmPassword) {
+      req.flash("error", "Please provide and confirm your new password.");
+      return res.redirect(`/api/reset-password/${token}`);
+    }
+
+    if (password.length < 8) {
+      req.flash("error", "Password must be at least 8 characters long.");
+      return res.redirect(`/api/reset-password/${token}`);
+    }
+
+    if (password !== confirmPassword) {
+      req.flash("error", "Passwords do not match.");
+      return res.redirect(`/api/reset-password/${token}`);
+    }
+
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash(
+        "error",
+        "Password reset session expired. Please request a new link.",
+      );
+      return res.redirect("/api/forget-pass");
+    }
+
+    user.password = password; // Hashed via pre-save hook
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    user.resetPasswordOtp = null;
+    user.resetPasswordOtpExpires = null;
+
+    await user.save();
+
+    req.flash(
+      "success",
+      "🎉 Password updated successfully! Please log in with your new credentials.",
+    );
+    return res.redirect("/api/login");
+  } catch (err) {
+    console.error("Post reset password token error:", err);
+    req.flash("error", "Failed to reset password. Please try again.");
+    return res.redirect(`/api/reset-password/${req.params.token}`);
+  }
+};
+
+/**
+ * GET: Render OTP Verification Page
+ */
+const getVerifyOtpPage = (req, res) => {
+  const { email } = req.query;
+  res.render("Forgot-Password/verify-otp", {
+    email: email || "",
+  });
+};
+
+/**
+ * POST: Verify 6-Digit OTP and Reset Password
+ */
+const postVerifyOtpAndReset = async (req, res) => {
+  try {
+    const { email, otp, password, confirmPassword } = req.body;
+
+    if (!email || !otp || !password || !confirmPassword) {
+      req.flash("error", "All fields including OTP and new password are required.");
+      return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(email || "")}`);
+    }
+
+    if (password.length < 8) {
+      req.flash("error", "New password must be at least 8 characters long.");
+      return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(email)}`);
+    }
+
+    if (password !== confirmPassword) {
+      req.flash("error", "Passwords do not match.");
+      return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(email)}`);
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    const cleanOtp = otp.trim();
+
+    const user = await User.findOne({
+      email: normalizedEmail,
+      resetPasswordOtp: cleanOtp,
+      resetPasswordOtpExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash(
+        "error",
+        "Invalid or expired 6-digit OTP code. Please check and try again.",
+      );
+      return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(email)}`);
+    }
+
+    user.password = password; // Hashed via pre-save hook
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    user.resetPasswordOtp = null;
+    user.resetPasswordOtpExpires = null;
+
+    await user.save();
+
+    req.flash(
+      "success",
+      "🎉 Password updated successfully via OTP verification! Please log in.",
+    );
+    return res.redirect("/api/login");
+  } catch (err) {
+    console.error("Post verify OTP error:", err);
+    req.flash("error", "Failed to verify OTP. Please try again.");
+    return res.redirect(`/api/verify-reset-otp?email=${encodeURIComponent(req.body.email || "")}`);
+  }
+};
+
+/**
+ * GET: Render Terms & Privacy Policy Page
  */
 const getTermsPage = (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Terms & Privacy | Woofy</title>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; padding: 3rem 1.5rem; }
-        .container { max-width: 700px; margin: 0 auto; background: #ffffff; padding: 2.5rem; border-radius: 8px; border: 1px solid #e2e8f0; }
-        h1 { color: #0f172a; margin-bottom: 1rem; }
-        p { margin-bottom: 1rem; color: #64748b; }
-        a { color: #2563eb; text-decoration: none; font-weight: 500; }
-        a:hover { text-decoration: underline; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>Terms of Service & Privacy Policy</h1>
-        <p>Welcome to Woofy! We provide health tracking, grooming logs, and pet care management tools for pet owners.</p>
-        <p>By accessing or using Woofy, you agree to provide accurate information about your pets and respect all community safety standards.</p>
-        <p>Your data is securely stored and used only to offer pet management functionality.</p>
-        <div style="margin-top: 2rem;">
-          <a href="/api/signup">&larr; Back to Signup</a> | <a href="/api/dashboard">Dashboard</a>
-        </div>
-      </div>
-    </body>
-    </html>
-  `);
+  res.render("Forgot-Password/terms");
 };
 
 module.exports = {
@@ -185,6 +383,11 @@ module.exports = {
   getLoginPage,
   postLogin,
   logout,
-  getForgotPassword,
+  getForgotPasswordPage,
+  postForgotPassword,
+  getResetPasswordWithTokenPage,
+  postResetPasswordWithToken,
+  getVerifyOtpPage,
+  postVerifyOtpAndReset,
   getTermsPage,
 };

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= tag.petName %> - Digital Emergency Pet Tag | Woofy</title>
+    <meta name="description" content="Emergency rescue details and contact for <%= tag.petName %> on Woofy Pet Care." />
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Pet-Tag/pet-tag.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="public-tag-body">
+    <!-- Ambient Glow -->
+    <div class="tag-glow-wrapper" aria-hidden="true">
+      <div class="tag-glow-blob blob-blue"></div>
+      <div class="tag-glow-blob blob-amber"></div>
+    </div>
+
+    <main class="public-tag-container">
+      <!-- Top Brand Header -->
+      <div class="tag-brand-header">
+        <a href="/" class="tag-brand-logo">
+          <i data-lucide="paw-print" style="width: 22px; height: 22px; color: #2563eb;"></i>
+          <span>Woofy<strong>.</strong></span>
+        </a>
+        <span class="tag-collar-id-pill">ID: <%= tag.collarId %></span>
+      </div>
+
+      <!-- LOST PET EMERGENCY ALERT (If Active) -->
+      <% if (tag.isLost) { %>
+      <div class="lost-pet-alert-banner" role="alert">
+        <div class="lost-alert-title">
+          <i data-lucide="alert-triangle" style="width: 20px; height: 20px;"></i>
+          <span>🚨 LOST PET ALERT 🚨</span>
+        </div>
+        <p style="margin: 4px 0 0 0; font-size: 0.9rem; font-weight: 600;">
+          <%= tag.lostMessage || tag.petName + ' is currently lost! Please contact the pet parent immediately.' %>
+        </p>
+        <% if (tag.rewardAmount) { %>
+        <div>
+          <span class="lost-alert-reward">💰 Reward Offered: <%= tag.rewardAmount %></span>
+        </div>
+        <% } %>
+      </div>
+      <% } else { %>
+      <div class="safe-pet-banner">
+        <i data-lucide="shield-check" style="width: 18px; height: 18px; color: #059669; flex-shrink: 0;"></i>
+        <span>Smart Digital Collar Tag Verified on Woofy Platform</span>
+      </div>
+      <% } %>
+
+      <!-- Main Rescue Profile Card -->
+      <div class="rescue-card">
+        <!-- Avatar Photo -->
+        <div class="pet-hero-avatar-box">
+          <% if (tag.photo) { %>
+          <img
+            src="<%= tag.photo %>"
+            alt="<%= tag.petName %>"
+            class="pet-hero-avatar"
+            onerror="this.src='/uploads/pets/default-pet.png'"
+          />
+          <% } else { %>
+          <div class="pet-hero-avatar-fallback">
+            <%= tag.petName.charAt(0).toUpperCase() %>
+          </div>
+          <% } %>
+        </div>
+
+        <!-- Name & Species -->
+        <div class="pet-identity-text">
+          <h1><%= tag.petName %></h1>
+          <p style="margin: 0; color: #64748b; font-size: 0.95rem; font-weight: 600;">
+            <%= tag.breed %> &bull; <%= tag.species %>
+          </p>
+          <div class="pet-meta-pills">
+            <span class="pet-badge-pill"><%= tag.gender %></span>
+            <% if (tag.age) { %>
+            <span class="pet-badge-pill"><%= tag.age %> Years Old</span>
+            <% } %>
+            <% if (tag.weight) { %>
+            <span class="pet-badge-pill"><%= tag.weight %> kg</span>
+            <% } %>
+            <% if (tag.homeCity) { %>
+            <span class="pet-badge-pill" style="color: #2563eb; background: #eff6ff;">
+              <i data-lucide="map-pin" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i>
+              <%= tag.homeCity %>
+            </span>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- 1-TAP INSTANT EMERGENCY RESCUE ACTIONS -->
+        <div class="emergency-actions-stack">
+          <!-- Primary Phone Call -->
+          <% if (tag.emergencyPhone) { %>
+          <% const cleanPhone = tag.emergencyPhone.replace(/[^0-9+]/g, ''); %>
+          <a href="tel:<%= cleanPhone %>" class="btn-emergency-tap btn-emergency-call">
+            <i data-lucide="phone-call" style="width: 20px; height: 20px;"></i>
+            <span>Call Pet Parent (<%= tag.ownerName || 'Owner' %>)</span>
+          </a>
+
+          <!-- WhatsApp Chat -->
+          <% const waNumber = cleanPhone.startsWith('+') ? cleanPhone.replace('+', '') : (cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone); %>
+          <% const waText = encodeURIComponent("Hello! I found your pet " + tag.petName + " through their Woofy Smart Collar Tag. Please reply to connect!"); %>
+          <a href="https://wa.me/<%= waNumber %>?text=<%= waText %>" target="_blank" class="btn-emergency-tap btn-emergency-wa">
+            <i data-lucide="message-circle" style="width: 20px; height: 20px;"></i>
+            <span>WhatsApp Pet Parent</span>
+          </a>
+          <% } else { %>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; text-align: center; color: #64748b; font-size: 0.85rem;">
+            Primary emergency phone not specified yet.
+          </div>
+          <% } %>
+
+          <!-- Share Current Location (GPS) -->
+          <button type="button" id="btnShareLocation" class="btn-emergency-tap btn-emergency-location">
+            <i data-lucide="navigation" style="width: 18px; height: 18px;"></i>
+            <span>Share My GPS Location with Owner</span>
+          </button>
+        </div>
+
+        <!-- MEDICAL ALERTS & ALLERGIES (High Priority) -->
+        <% if (tag.allergies || tag.medicalAlerts) { %>
+        <div class="medical-alert-box">
+          <div class="medical-alert-header">
+            <i data-lucide="alert-circle" style="width: 16px; height: 16px;"></i>
+            <span>Critical Medical & Allergy Alerts</span>
+          </div>
+          <div class="medical-alert-content">
+            <% if (tag.allergies) { %>
+            <p style="margin: 0 0 4px 0;"><strong>⚠️ Known Allergies:</strong> <%= tag.allergies %></p>
+            <% } %>
+            <% if (tag.medicalAlerts) { %>
+            <p style="margin: 0;"><strong>💊 Medications / Health:</strong> <%= tag.medicalAlerts %></p>
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Secondary Phone (If configured) -->
+        <% if (tag.secondaryPhone) { %>
+        <div style="margin-bottom: 20px; text-align: center;">
+          <a href="tel:<%= tag.secondaryPhone.replace(/[^0-9+]/g, '') %>" style="color: #2563eb; font-size: 0.85rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+            <i data-lucide="phone" style="width: 14px; height: 14px;"></i>
+            <span>Backup Contact: <%= tag.secondaryPhone %></span>
+          </a>
+        </div>
+        <% } %>
+
+        <!-- Finder Care & Return Guide -->
+        <div class="finder-guide-box">
+          <strong>❤️ Thank You for Helping <%= tag.petName %>!</strong>
+          <p style="margin: 0;">
+            Please keep <%= tag.petName %> in a safe, shaded area with drinking water while coordinating with the owner. If the owner cannot be reached, you can also contact a nearby animal rescue organization.
+          </p>
+        </div>
+
+        <!-- Nearby Hospitals / Rescue Link -->
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <a href="/services/hospitals" class="btn-emergency-tap" style="flex: 1; background: #f1f5f9; color: #0f172a; font-size: 0.82rem; padding: 10px;">
+            <i data-lucide="hospital" style="width: 15px; height: 15px; color: #2563eb;"></i>
+            <span>Nearby Vets</span>
+          </a>
+          <a href="/services/rescue" class="btn-emergency-tap" style="flex: 1; background: #f1f5f9; color: #0f172a; font-size: 0.82rem; padding: 10px;">
+            <i data-lucide="heart-handshake" style="width: 15px; height: 15px; color: #e11d48;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Public Tag Footer -->
+      <footer class="public-tag-footer">
+        <p style="margin: 0;">
+          Powered by <strong>Woofy Smart Pet ID</strong> &bull; Verified Digital Pet Vault
+        </p>
+      </footer>
+    </main>
+
+    <!-- Location Share Script -->
+    <script>
+      lucide.createIcons();
+
+      const btnShareLocation = document.getElementById("btnShareLocation");
+      const ownerPhone = "<%= tag.emergencyPhone ? tag.emergencyPhone.replace(/[^0-9+]/g, '') : '' %>";
+      const petName = "<%= tag.petName %>";
+
+      if (btnShareLocation) {
+        btnShareLocation.addEventListener("click", function() {
+          if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser.");
+            return;
+          }
+
+          btnShareLocation.innerHTML = '<i data-lucide="loader" style="width: 18px; height: 18px;"></i><span>Fetching GPS Coordinates...</span>';
+          lucide.createIcons();
+
+          navigator.geolocation.getCurrentPosition(
+            function(position) {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+              const message = encodeURIComponent(`Hi! I am with your pet ${petName}. Here is my current GPS location: ${mapsUrl}`);
+
+              let waNum = ownerPhone;
+              if (waNum.startsWith("+")) waNum = waNum.replace("+", "");
+              else if (waNum.length === 10) waNum = "91" + waNum;
+
+              if (waNum) {
+                window.location.href = `https://wa.me/${waNum}?text=${message}`;
+              } else {
+                window.location.href = `sms:?body=${message}`;
+              }
+            },
+            function(error) {
+              alert("Could not retrieve GPS location. Please ensure location permissions are enabled.");
+              btnShareLocation.innerHTML = '<i data-lucide="navigation" style="width: 18px; height: 18px;"></i><span>Share My GPS Location with Owner</span>';
+              lucide.createIcons();
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
+        });
+      }
+    </script>
+  </body>
+</html>

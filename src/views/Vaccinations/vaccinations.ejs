@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= currentPet.petName %> - Vaccination & Deworming Hub | Woofy</title>
+    <meta name="description" content="Manage personalized veterinary vaccination timelines, deworming cycles, batch numbers, and digital passport for <%= currentPet.petName %>." />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/Dashboard/dashboard.css" />
+    <link rel="stylesheet" href="/Vaccinations/vaccinations.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="vaccination-body">
+    <!-- Ambient Background Lighting -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+      <div class="ambient-glow glow-3"></div>
+    </div>
+
+    <!-- Top Sticky Navigation Bar -->
+    <header class="dashboard-nav" id="navbar">
+      <div class="nav-container">
+        <a href="/api/dashboard" class="logo">
+          Woofy<span>.</span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/api/vaccinations" class="active">
+            <i data-lucide="syringe" style="width: 16px; height: 16px;"></i>
+            <span>Vaccinations</span>
+            <% if (typeof dueVaccineCount !== 'undefined' && dueVaccineCount > 0) { %>
+            <span style="background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 9999px; margin-left: 4px;"><%= dueVaccineCount %></span>
+            <% } %>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+            <span>Shop</span>
+          </a>
+        </nav>
+
+        <div class="nav-actions">
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin" class="btn btn-admin btn-sm">
+            <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Admin</span>
+          </a>
+          <% } %>
+          <a href="/logout" class="btn btn-secondary btn-sm btn-logout">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Log out</span>
+          </a>
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+            <span class="icon-hamburger" aria-hidden="true">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </span>
+            <span class="icon-close" aria-hidden="true">
+              <i data-lucide="x" style="width: 22px; height: 22px;"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <nav class="mobile-nav-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/api/vaccinations" class="active">
+            <i data-lucide="syringe" style="width: 18px; height: 18px;"></i>
+            <span>Vaccinations</span>
+            <% if (typeof dueVaccineCount !== 'undefined' && dueVaccineCount > 0) { %>
+            <span style="background: #ef4444; color: #fff; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 9999px; margin-left: 6px;"><%= dueVaccineCount %> Due</span>
+            <% } %>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 18px; height: 18px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 18px; height: 18px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+            <span>Shop</span>
+          </a>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin">
+            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+            <span>Admin Portal</span>
+          </a>
+          <% } %>
+          <a href="/logout" class="mobile-logout-link">
+            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+            <span>Log out</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="vaccine-container">
+      <!-- Flash Messages -->
+      <%- include('../partials/flash-messages') %>
+
+      <!-- SECTION 1: Page Hero & Action Controls -->
+      <section class="page-hero">
+        <div class="hero-top-row">
+          <div class="hero-title-group">
+            <h1>
+              <span>Vaccination & Deworming Hub</span>
+              <span class="hero-badge-protocol">
+                <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i>
+                WSAVA Veterinary Standard
+              </span>
+            </h1>
+            <p class="hero-subtitle">
+              Automated immunization calendar and digital health records for <strong><%= currentPet.petName %></strong>.
+            </p>
+          </div>
+
+          <div class="hero-actions-bar">
+            <!-- Digital Passport Export -->
+            <a href="/api/vaccinations/print/<%= currentPet._id %>" target="_blank" class="btn-hub btn-hub-secondary btn-hub-sm" title="Print Official Digital Health & Vaccination Passport">
+              <i data-lucide="printer" style="width: 15px; height: 15px; color: #2563eb;"></i>
+              <span>Digital Passport</span>
+            </a>
+
+            <!-- Send Test/Automated Email Reminder -->
+            <form action="/api/vaccinations/<%= currentPet._id %>/send-reminder" method="POST" style="display: inline;">
+              <button type="submit" class="btn-hub btn-hub-secondary btn-hub-sm" title="Dispatch email reminder alert to your inbox">
+                <i data-lucide="mail" style="width: 15px; height: 15px; color: #0284c7;"></i>
+                <span>Email Reminder</span>
+              </button>
+            </form>
+
+            <!-- Add Custom Vaccine Button -->
+            <button type="button" class="btn-hub btn-hub-primary btn-hub-sm" onclick="openModal('addVaccineModal')">
+              <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+              <span>Add Custom Dose</span>
+            </button>
+
+            <% if (stats.totalCount > 0) { %>
+            <!-- Clear All Records -->
+            <form action="/api/vaccinations/<%= currentPet._id %>/clear-all" method="POST" onsubmit="return confirm('Are you sure you want to clear and delete all vaccination records for <%= currentPet.petName %>?');" style="display: inline;">
+              <button type="submit" class="btn-hub btn-hub-danger-outline btn-hub-sm" title="Clear all vaccination records for this pet">
+                <i data-lucide="trash" style="width: 14px; height: 14px;"></i>
+                <span>Clear All</span>
+              </button>
+            </form>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Pet Switcher Row -->
+        <% if (pets && pets.length > 1) { %>
+        <div class="pet-switcher-wrapper">
+          <span class="pet-switcher-label">
+            <i data-lucide="paw-print" style="width: 14px; height: 14px;"></i>
+            Switch Pet:
+          </span>
+          <div class="pet-pills-list">
+            <% pets.forEach(function(p) { %>
+            <a href="/api/vaccinations/<%= p._id %>" class="pet-nav-pill <%= p._id.toString() === currentPet._id.toString() ? 'active' : '' %>">
+              <% if (p.photo || p.photoUrl) { %>
+              <img src="<%= p.photo || p.photoUrl %>" alt="<%= p.petName %>" onerror="this.src='/uploads/pets/default-pet.png'" />
+              <% } else { %>
+              <span class="pill-avatar-fallback"><%= p.petName.charAt(0).toUpperCase() %></span>
+              <% } %>
+              <span><%= p.petName %></span>
+            </a>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+      </section>
+
+      <!-- SECTION 2: Pet Summary & Progress Banner -->
+      <section class="pet-summary-banner">
+        <div class="pet-meta-flex">
+          <div class="pet-avatar-wrapper">
+            <% if (currentPet.photo || currentPet.photoUrl) { %>
+            <img
+              class="pet-avatar-img"
+              src="<%= currentPet.photo || currentPet.photoUrl %>"
+              alt="<%= currentPet.petName %>"
+              onerror="this.src='/uploads/pets/default-pet.png'"
+            />
+            <% } else { %>
+            <div class="pet-avatar-fallback-lg">
+              <%= currentPet.petName ? currentPet.petName.charAt(0).toUpperCase() : 'P' %>
+            </div>
+            <% } %>
+          </div>
+
+          <div class="pet-details-col">
+            <h2>
+              <span><%= currentPet.petName %></span>
+              <span style="font-size: 0.85rem; font-weight: 600; color: #64748b;">(<%= currentPet.species || 'Dog' %>)</span>
+            </h2>
+            <div class="pet-tags-row">
+              <span class="pet-info-tag">
+                <i data-lucide="dna" style="width: 12px; height: 12px; color: #2563eb;"></i>
+                <%= currentPet.breed || 'Breed' %>
+              </span>
+              <span class="pet-info-tag">
+                <i data-lucide="calendar" style="width: 12px; height: 12px; color: #0284c7;"></i>
+                Age: <%= currentPet.age %> yrs
+              </span>
+              <span class="pet-info-tag">
+                <i data-lucide="scale" style="width: 12px; height: 12px; color: #10b981;"></i>
+                <%= currentPet.weight %> kg
+              </span>
+              <span class="pet-info-tag owner-tag">
+                <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                Parent: <%= currentPet.ownerName || 'Pet Parent' %>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-card-box">
+          <div class="progress-label-row">
+            <span>Immunization Protection</span>
+            <span style="color: #059669;"><%= stats.completedCount %> / <%= stats.totalCount %> Completed (<%= stats.completionPercent %>%)</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill" style="width: <%= stats.completionPercent %>%;"></div>
+          </div>
+          <% if (stats.nextDue) { %>
+          <div class="next-due-callout">
+            <i data-lucide="bell-ring" style="width: 16px; height: 16px; color: #d97706; flex-shrink: 0;"></i>
+            <span><strong>Next Due:</strong> <%= stats.nextDue.vaccineName %> (Due: <%= new Date(stats.nextDue.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>)</span>
+          </div>
+          <% } else { %>
+          <div class="next-due-callout" style="color: #059669; border-color: #a7f3d0; background: #ecfdf5;">
+            <i data-lucide="shield-check" style="width: 16px; height: 16px; color: #059669; flex-shrink: 0;"></i>
+            <span>All scheduled immunizations are up to date! 🎉</span>
+          </div>
+          <% } %>
+        </div>
+      </section>
+
+      <!-- SECTION 3: Key Metrics Cards Grid -->
+      <section class="stats-grid">
+        <div class="stat-item-card">
+          <div class="stat-icon-box total">
+            <i data-lucide="layers" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value"><%= stats.totalCount %></div>
+            <div class="stat-label">Total Scheduled</div>
+          </div>
+        </div>
+
+        <div class="stat-item-card">
+          <div class="stat-icon-box done">
+            <i data-lucide="check-circle" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" style="color: var(--emerald-color);"><%= stats.completedCount %></div>
+            <div class="stat-label">Administered</div>
+          </div>
+        </div>
+
+        <div class="stat-item-card">
+          <div class="stat-icon-box due">
+            <i data-lucide="clock" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" style="color: var(--amber-color);"><%= stats.dueSoonCount %></div>
+            <div class="stat-label">Due Soon (14d)</div>
+          </div>
+        </div>
+
+        <div class="stat-item-card">
+          <div class="stat-icon-box overdue">
+            <i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" style="color: var(--rose-color);"><%= stats.overdueCount %></div>
+            <div class="stat-label">Action Needed</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: Filter Tabs & Real-time Search -->
+      <section class="schedule-control-bar">
+        <div class="tab-filter-pills">
+          <a href="/api/vaccinations/<%= currentPet._id %>?tab=all" class="tab-pill-btn <%= activeTab === 'all' ? 'active' : '' %>">
+            <i data-lucide="list" style="width: 14px; height: 14px;"></i>
+            <span>All (<%= stats.totalCount %>)</span>
+          </a>
+          <a href="/api/vaccinations/<%= currentPet._id %>?tab=due" class="tab-pill-btn <%= activeTab === 'due' ? 'active' : '' %>">
+            <i data-lucide="alert-circle" style="width: 14px; height: 14px; color: <%= (stats.dueSoonCount + stats.overdueCount > 0) ? '#e11d48' : 'inherit' %>;"></i>
+            <span>Due & Overdue (<%= stats.dueSoonCount + stats.overdueCount %>)</span>
+          </a>
+          <a href="/api/vaccinations/<%= currentPet._id %>?tab=core" class="tab-pill-btn <%= activeTab === 'core' ? 'active' : '' %>">
+            <i data-lucide="shield" style="width: 14px; height: 14px;"></i>
+            <span>Core Vaccines</span>
+          </a>
+          <a href="/api/vaccinations/<%= currentPet._id %>?tab=deworming" class="tab-pill-btn <%= activeTab === 'deworming' ? 'active' : '' %>">
+            <i data-lucide="pill" style="width: 14px; height: 14px;"></i>
+            <span>Deworming</span>
+          </a>
+          <a href="/api/vaccinations/<%= currentPet._id %>?tab=completed" class="tab-pill-btn <%= activeTab === 'completed' ? 'active' : '' %>">
+            <i data-lucide="check-check" style="width: 14px; height: 14px;"></i>
+            <span>Completed (<%= stats.completedCount %>)</span>
+          </a>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <div class="search-control-wrap">
+            <i data-lucide="search"></i>
+            <input
+              type="text"
+              id="vaccineSearchInput"
+              class="search-control-input"
+              placeholder="Search vaccines..."
+              aria-label="Search vaccines"
+            />
+          </div>
+
+          <form action="/api/vaccinations/<%= currentPet._id %>/generate" method="POST" onsubmit="return confirm('Do you want to re-sync and regenerate the standard veterinary schedule for <%= currentPet.petName %>?');">
+            <button type="submit" class="btn-hub btn-hub-secondary btn-hub-sm" title="Re-sync standard schedule based on DOB">
+              <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+              <span>Re-Sync</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- SECTION 5: Vaccine Items Timeline Stack -->
+      <section class="vaccine-list-stack" id="vaccineCardsContainer">
+        <% if (vaccinations && vaccinations.length > 0) { %>
+          <% vaccinations.forEach(function(vac) { %>
+            <% 
+              let cardClass = 'status-upcoming';
+              let statusLabel = vac.status;
+              let statusIcon = 'clock';
+
+              if (vac.status === 'Completed') {
+                cardClass = 'status-completed';
+                statusLabel = 'Administered';
+                statusIcon = 'check';
+              } else if (vac.status === 'Due Soon') {
+                cardClass = 'status-due-soon';
+                statusLabel = 'Due Soon';
+                statusIcon = 'alert-circle';
+              } else if (vac.status === 'Overdue') {
+                cardClass = 'status-overdue';
+                statusLabel = 'Overdue';
+                statusIcon = 'alert-triangle';
+              }
+
+              let iconCat = 'core';
+              let iconName = 'shield';
+              if (vac.category === 'Deworming') { iconCat = 'deworming'; iconName = 'pill'; }
+              else if (vac.category === 'Booster') { iconCat = 'booster'; iconName = 'sparkles'; }
+              else if (vac.category === 'Non-Core') { iconCat = 'non-core'; iconName = 'shield-alert'; }
+              else if (vac.category === 'Custom') { iconCat = 'custom'; iconName = 'plus'; }
+
+              const formattedDueDate = vac.dueDate ? new Date(vac.dueDate).toISOString().split('T')[0] : '';
+            %>
+            <div class="vaccine-item-card <%= cardClass %>" data-search-text="<%= (vac.vaccineName + ' ' + (vac.category || '') + ' ' + (vac.clinicOrVetName || '') + ' ' + (vac.notes || '')).toLowerCase() %>">
+              <div class="vaccine-card-left">
+                <div class="category-icon-avatar <%= iconCat %>">
+                  <i data-lucide="<%= iconName %>" style="width: 22px; height: 22px;"></i>
+                </div>
+
+                <div class="vaccine-meta-content">
+                  <h3>
+                    <span><%= vac.vaccineName %></span>
+                    <% if (vac.targetStageDescription) { %>
+                    <span class="target-stage-tag"><%= vac.targetStageDescription %></span>
+                    <% } %>
+                    <span class="status-pill <%= vac.status === 'Completed' ? 'completed' : vac.status === 'Due Soon' ? 'due-soon' : vac.status === 'Overdue' ? 'overdue' : 'upcoming' %>">
+                      <i data-lucide="<%= statusIcon %>" style="width: 12px; height: 12px;"></i>
+                      <span><%= statusLabel %></span>
+                    </span>
+                  </h3>
+
+                  <% if (vac.notes) { %>
+                  <p class="vaccine-notes-text"><%= vac.notes %></p>
+                  <% } %>
+
+                  <div class="details-pills-row">
+                    <div class="detail-pill-item">
+                      <i data-lucide="calendar" style="width: 14px; height: 14px; color: #2563eb;"></i>
+                      <span><strong>Due:</strong> <%= new Date(vac.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                    </div>
+
+                    <% if (vac.status === 'Completed' && vac.administeredDate) { %>
+                    <div class="detail-pill-item" style="color: #059669;">
+                      <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+                      <span><strong>Administered:</strong> <%= new Date(vac.administeredDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                    </div>
+                    <% } %>
+
+                    <% if (vac.clinicOrVetName) { %>
+                    <div class="detail-pill-item">
+                      <i data-lucide="map-pin" style="width: 14px; height: 14px; color: #0284c7;"></i>
+                      <span><strong>Clinic:</strong> <%= vac.clinicOrVetName %></span>
+                    </div>
+                    <% } %>
+
+                    <% if (vac.batchNumber) { %>
+                    <div class="detail-pill-item">
+                      <i data-lucide="tag" style="width: 14px; height: 14px; color: #7c3aed;"></i>
+                      <span><strong>Batch:</strong> <%= vac.batchNumber %></span>
+                    </div>
+                    <% } %>
+
+                    <% if (vac.certificateImage) { %>
+                    <div class="detail-pill-item">
+                      <a href="<%= vac.certificateImage %>" target="_blank" class="cert-proof-btn">
+                        <i data-lucide="file-text" style="width: 13px; height: 13px;"></i>
+                        <span>View Proof / Certificate</span>
+                      </a>
+                    </div>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vaccine-card-actions">
+                <% if (vac.status !== 'Completed') { %>
+                <button
+                  type="button"
+                  class="btn-hub btn-hub-success btn-hub-sm btn-complete-action"
+                  data-id="<%= vac._id %>"
+                  data-name="<%= vac.vaccineName %>"
+                  data-due="<%= formattedDueDate %>"
+                  title="Record as administered"
+                >
+                  <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                  <span>Mark Done</span>
+                </button>
+                <% } %>
+
+                <button
+                  type="button"
+                  class="btn-hub btn-hub-secondary btn-hub-sm btn-edit-action"
+                  data-id="<%= vac._id %>"
+                  data-name="<%= vac.vaccineName %>"
+                  data-category="<%= vac.category %>"
+                  data-due="<%= formattedDueDate %>"
+                  data-status="<%= vac.status %>"
+                  data-clinic="<%= vac.clinicOrVetName || '' %>"
+                  data-batch="<%= vac.batchNumber || '' %>"
+                  data-notes="<%= vac.notes || '' %>"
+                  title="Edit details"
+                >
+                  <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                </button>
+
+                <form
+                  action="/api/vaccinations/delete/<%= vac._id %>"
+                  method="POST"
+                  onsubmit="return confirm('Delete this vaccination entry?');"
+                  style="display: inline;"
+                >
+                  <input type="hidden" name="petId" value="<%= currentPet._id %>" />
+                  <button type="submit" class="btn-hub btn-hub-danger-outline btn-hub-sm" title="Delete">
+                    <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div class="empty-hub-state">
+            <div class="empty-icon-circle">
+              <i data-lucide="shield" style="width: 32px; height: 32px;"></i>
+            </div>
+            <h3>No Immunization Records for <%= currentPet.petName %></h3>
+            <p>Start tracking by logging your pet's vaccines manually, or auto-populate the official standard veterinary schedule anytime.</p>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <button type="button" class="btn-hub btn-hub-primary" onclick="openModal('addVaccineModal')">
+                <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+                <span>Add First Vaccine / Dose</span>
+              </button>
+              <form action="/api/vaccinations/<%= currentPet._id %>/generate" method="POST">
+                <button type="submit" class="btn-hub btn-hub-secondary">
+                  <i data-lucide="sparkles" style="width: 16px; height: 16px; color: #2563eb;"></i>
+                  <span>Auto-Populate WSAVA Schedule</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        <% } %>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ==========================================================================
+         MODAL: MARK VACCINE AS ADMINISTERED / COMPLETED
+         ========================================================================== -->
+    <div class="modal-overlay" id="completeModal" aria-hidden="true" role="dialog">
+      <div class="modal-card">
+        <div class="modal-header-row">
+          <h2>
+            <i data-lucide="check-circle" style="width: 22px; height: 22px; color: #059669;"></i>
+            <span>Record Immunization</span>
+          </h2>
+          <button type="button" class="modal-close-btn" onclick="closeModal('completeModal')" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <form id="completeForm" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="petId" value="<%= currentPet._id %>" />
+
+          <div class="modal-form-group">
+            <label>Vaccine / Immunization Dose</label>
+            <input type="text" id="completeVaccineName" class="modal-form-control" readonly style="opacity: 0.85; background: #e2e8f0;" />
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Date Administered <span style="color: #e11d48;">*</span></label>
+              <input type="date" name="administeredDate" id="completeAdministeredDate" class="modal-form-control" required />
+            </div>
+            <div class="modal-form-group">
+              <label>Vet Clinic / Hospital</label>
+              <input type="text" name="clinicOrVetName" class="modal-form-control" placeholder="e.g. Crown Vet Hospital" />
+            </div>
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Vial Batch #</label>
+              <input type="text" name="batchNumber" class="modal-form-control" placeholder="e.g. DHPP-8921" />
+            </div>
+            <div class="modal-form-group">
+              <label>Certificate / Sticker Photo</label>
+              <input type="file" name="vaccineImage" class="modal-form-control" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label>Vet Observations & Notes</label>
+            <textarea name="notes" class="modal-form-control" rows="2" placeholder="e.g., Healthy puppy, booster advised in 4 weeks."></textarea>
+          </div>
+
+          <div class="modal-actions-footer">
+            <button type="button" class="btn-hub btn-hub-secondary" onclick="closeModal('completeModal')">Cancel</button>
+            <button type="submit" class="btn-hub btn-hub-success">
+              <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+              <span>Save & Verify</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL: ADD CUSTOM VACCINE
+         ========================================================================== -->
+    <div class="modal-overlay" id="addVaccineModal" aria-hidden="true" role="dialog">
+      <div class="modal-card">
+        <div class="modal-header-row">
+          <h2>
+            <i data-lucide="plus-circle" style="width: 22px; height: 22px; color: #2563eb;"></i>
+            <span>Add Custom Vaccine / Dose</span>
+          </h2>
+          <button type="button" class="modal-close-btn" onclick="closeModal('addVaccineModal')" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <form action="/api/vaccinations/<%= currentPet._id %>/add" method="POST" enctype="multipart/form-data">
+          <div class="modal-form-group">
+            <label>Vaccine / Immunization Name <span style="color: #e11d48;">*</span></label>
+            <input type="text" name="vaccineName" class="modal-form-control" placeholder="e.g. Kennel Cough (Bordetella)" required />
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Category</label>
+              <select name="category" class="modal-form-control">
+                <option value="Core Vaccine">Core Vaccine</option>
+                <option value="Deworming">Deworming</option>
+                <option value="Booster">Booster</option>
+                <option value="Non-Core">Non-Core Vaccine</option>
+                <option value="Custom" selected>Custom</option>
+              </select>
+            </div>
+            <div class="modal-form-group">
+              <label>Due Date <span style="color: #e11d48;">*</span></label>
+              <input type="date" name="dueDate" class="modal-form-control" required />
+            </div>
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Initial Status</label>
+              <select name="status" class="modal-form-control">
+                <option value="Upcoming" selected>Upcoming</option>
+                <option value="Completed">Already Administered</option>
+              </select>
+            </div>
+            <div class="modal-form-group">
+              <label>Clinic / Vet Name</label>
+              <input type="text" name="clinicOrVetName" class="modal-form-control" placeholder="e.g. City Pet Care" />
+            </div>
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Vial Batch #</label>
+              <input type="text" name="batchNumber" class="modal-form-control" placeholder="Optional batch ID" />
+            </div>
+            <div class="modal-form-group">
+              <label>Vial Photo / Proof</label>
+              <input type="file" name="vaccineImage" class="modal-form-control" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label>Doctor Notes</label>
+            <textarea name="notes" class="modal-form-control" rows="2" placeholder="Dosage, next reminders, or specific health instructions..."></textarea>
+          </div>
+
+          <div class="modal-actions-footer">
+            <button type="button" class="btn-hub btn-hub-secondary" onclick="closeModal('addVaccineModal')">Cancel</button>
+            <button type="submit" class="btn-hub btn-hub-accent">
+              <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+              <span>Add to Schedule</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL: EDIT VACCINE ENTRY
+         ========================================================================== -->
+    <div class="modal-overlay" id="editModal" aria-hidden="true" role="dialog">
+      <div class="modal-card">
+        <div class="modal-header-row">
+          <h2>
+            <i data-lucide="edit-3" style="width: 22px; height: 22px; color: #7c3aed;"></i>
+            <span>Edit Immunization Details</span>
+          </h2>
+          <button type="button" class="modal-close-btn" onclick="closeModal('editModal')" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <form id="editForm" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="petId" value="<%= currentPet._id %>" />
+
+          <div class="modal-form-group">
+            <label>Vaccine Name <span style="color: #e11d48;">*</span></label>
+            <input type="text" name="vaccineName" id="editVaccineName" class="modal-form-control" required />
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Category</label>
+              <select name="category" id="editCategory" class="modal-form-control">
+                <option value="Core Vaccine">Core Vaccine</option>
+                <option value="Deworming">Deworming</option>
+                <option value="Booster">Booster</option>
+                <option value="Non-Core">Non-Core Vaccine</option>
+                <option value="Custom">Custom</option>
+              </select>
+            </div>
+            <div class="modal-form-group">
+              <label>Due Date <span style="color: #e11d48;">*</span></label>
+              <input type="date" name="dueDate" id="editDueDate" class="modal-form-control" required />
+            </div>
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Status</label>
+              <select name="status" id="editStatus" class="modal-form-control">
+                <option value="Upcoming">Upcoming</option>
+                <option value="Due Soon">Due Soon</option>
+                <option value="Overdue">Overdue</option>
+                <option value="Completed">Completed</option>
+                <option value="Skipped">Skipped</option>
+              </select>
+            </div>
+            <div class="modal-form-group">
+              <label>Clinic / Vet Name</label>
+              <input type="text" name="clinicOrVetName" id="editClinic" class="modal-form-control" />
+            </div>
+          </div>
+
+          <div class="modal-form-row">
+            <div class="modal-form-group">
+              <label>Batch #</label>
+              <input type="text" name="batchNumber" id="editBatch" class="modal-form-control" />
+            </div>
+            <div class="modal-form-group">
+              <label>Update Certificate / Photo</label>
+              <input type="file" name="vaccineImage" class="modal-form-control" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="modal-form-group">
+            <label>Notes</label>
+            <textarea name="notes" id="editNotes" class="modal-form-control" rows="2"></textarea>
+          </div>
+
+          <div class="modal-actions-footer">
+            <button type="button" class="btn-hub btn-hub-secondary" onclick="closeModal('editModal')">Cancel</button>
+            <button type="submit" class="btn-hub btn-hub-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script>
+      // Hydrate Lucide Icons
+      document.addEventListener("DOMContentLoaded", function() {
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+
+        // Mobile Nav Drawer Toggle
+        const mobileNavToggle = document.getElementById("mobileNavToggle");
+        const mobileNavDrawer = document.getElementById("mobileNavDrawer");
+
+        if (mobileNavToggle && mobileNavDrawer) {
+          mobileNavToggle.addEventListener("click", function(e) {
+            e.stopPropagation();
+            const isOpen = mobileNavDrawer.classList.contains("open");
+            mobileNavDrawer.classList.toggle("open", !isOpen);
+            mobileNavToggle.classList.toggle("is-active", !isOpen);
+          });
+
+          document.addEventListener("click", function(e) {
+            if (mobileNavDrawer.classList.contains("open") && !mobileNavDrawer.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+              mobileNavDrawer.classList.remove("open");
+              mobileNavToggle.classList.remove("is-active");
+            }
+          });
+        }
+
+        // Real-time Vaccine Search Filter
+        const searchInput = document.getElementById("vaccineSearchInput");
+        const cards = document.querySelectorAll(".vaccine-item-card");
+
+        if (searchInput) {
+          searchInput.addEventListener("input", function() {
+            const query = this.value.toLowerCase().trim();
+            cards.forEach(function(card) {
+              const text = card.getAttribute("data-search-text") || "";
+              if (!query || text.includes(query)) {
+                card.style.display = "flex";
+              } else {
+                card.style.display = "none";
+              }
+            });
+          });
+        }
+      });
+
+      function openModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          if (window.lucide) lucide.createIcons();
+        }
+      }
+
+      function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+
+      function openCompleteModal(vaccineId, vaccineName, dueDate) {
+        const form = document.getElementById('completeForm');
+        form.action = '/api/vaccinations/complete/' + vaccineId;
+        document.getElementById('completeVaccineName').value = vaccineName || '';
+        document.getElementById('completeAdministeredDate').value = new Date().toISOString().split('T')[0];
+        openModal('completeModal');
+      }
+
+      function openEditModal(vaccineId, vaccineName, category, dueDate, status, clinic, batch, notes) {
+        const form = document.getElementById('editForm');
+        form.action = '/api/vaccinations/update/' + vaccineId;
+        document.getElementById('editVaccineName').value = vaccineName || '';
+        document.getElementById('editCategory').value = category || 'Custom';
+        document.getElementById('editDueDate').value = dueDate || '';
+        document.getElementById('editStatus').value = status || 'Upcoming';
+        document.getElementById('editClinic').value = clinic || '';
+        document.getElementById('editBatch').value = batch || '';
+        document.getElementById('editNotes').value = notes || '';
+        openModal('editModal');
+      }
+
+      // Attach click listeners to complete & edit buttons
+      document.querySelectorAll('.btn-complete-action').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openCompleteModal(btn.dataset.id, btn.dataset.name, btn.dataset.due);
+        });
+      });
+
+      document.querySelectorAll('.btn-edit-action').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          openEditModal(
+            btn.dataset.id,
+            btn.dataset.name,
+            btn.dataset.category,
+            btn.dataset.due,
+            btn.dataset.status,
+            btn.dataset.clinic,
+            btn.dataset.batch,
+            btn.dataset.notes
+          );
+        });
+      });
+
+      // Close modal on outside backdrop click or ESC
+      window.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal-overlay')) {
+          closeModal(e.target.id);
+        }
+      });
+
+      window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-overlay.active').forEach(function(m) {
+            closeModal(m.id);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
