@@ -22,7 +22,86 @@ const getCredentials = () => {
   return { user, pass };
 };
 
-// Reusable warm connection pool (avoids reconnecting & TLS handshakes on every single email)
+/**
+ * Method 1: Instant Resend REST API (Zero queue delay, < 1 second delivery to inbox)
+ */
+const sendViaResend = async ({ to, subject, html, text }) => {
+  const apiKey = (process.env.RESEND_API_KEY || "").replace(/["'\s]/g, "").trim();
+  if (!apiKey) return null;
+
+  try {
+    const fromAddress =
+      process.env.RESEND_FROM || "Woofy <onboarding@resend.dev>";
+
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: fromAddress,
+        to: Array.isArray(to) ? to : [to],
+        subject,
+        html,
+        text: text || "",
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      console.log(`⚡⚡ [Resend Instant API] Email delivered in milliseconds! ID: ${data.id}`);
+      return true;
+    } else {
+      console.warn(`⚠️ [Resend API Error]:`, data);
+      return null;
+    }
+  } catch (err) {
+    console.warn(`⚠️ [Resend API Exception]:`, err.message);
+    return null;
+  }
+};
+
+/**
+ * Method 2: Instant Brevo REST API
+ */
+const sendViaBrevo = async ({ to, subject, html, text }) => {
+  const apiKey = (process.env.BREVO_API_KEY || "").replace(/["'\s]/g, "").trim();
+  if (!apiKey) return null;
+
+  try {
+    const senderEmail = process.env.EMAIL_USER || "rathodshubham7711@gmail.com";
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": apiKey,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        sender: { name: "Woofy", email: senderEmail },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+        textContent: text || "",
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      console.log(`⚡⚡ [Brevo API] Email delivered in milliseconds! ID: ${data.messageId}`);
+      return true;
+    } else {
+      console.warn(`⚠️ [Brevo API Error]:`, data);
+      return null;
+    }
+  } catch (err) {
+    console.warn(`⚠️ [Brevo API Exception]:`, err.message);
+    return null;
+  }
+};
+
+// Reusable warm connection pool for Gmail SMTP fallback
 let warmPoolTransporter = null;
 
 const getWarmTransporter = () => {
@@ -33,8 +112,8 @@ const getWarmTransporter = () => {
     warmPoolTransporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
-      secure: true, // Direct SSL
-      pool: true, // Keep socket alive in background
+      secure: true,
+      pool: true,
       maxConnections: 5,
       maxMessages: 100,
       rateLimit: 5,
@@ -51,14 +130,27 @@ const getWarmTransporter = () => {
 };
 
 /**
- * Send an email with warm socket pooling and fast automatic fallback
+ * Universal Multi-Engine Mail Dispatcher:
+ * 1. Resend API (If RESEND_API_KEY present -> < 1s delivery)
+ * 2. Brevo API (If BREVO_API_KEY present -> < 1s delivery)
+ * 3. Gmail Direct SSL SMTP Pool (Fallback)
  */
 const sendMailFast = async (mailOptions) => {
-  const { user, pass } = getCredentials();
+  const { to, subject, html, text } = mailOptions;
 
+  // 1. Try Resend HTTP API (Fastest delivery to real inboxes)
+  const resendResult = await sendViaResend({ to, subject, html, text });
+  if (resendResult === true) return true;
+
+  // 2. Try Brevo HTTP API
+  const brevoResult = await sendViaBrevo({ to, subject, html, text });
+  if (brevoResult === true) return true;
+
+  // 3. Fallback: SMTP Transport
+  const { user, pass } = getCredentials();
   if (!user || !pass) {
     console.warn(
-      "⚠️ [Mailer Warning]: EMAIL_USER or EMAIL_PASS environment variables are missing on the server."
+      "⚠️ [Mailer Warning]: No active email credentials or API keys found in environment."
     );
     return false;
   }
@@ -68,22 +160,18 @@ const sendMailFast = async (mailOptions) => {
     from: mailOptions.from || `"Woofy" <${user}>`,
   };
 
-  // 1. Primary Attempt: Reusable Warm Socket Pool (Sub-2 second delivery)
   try {
     const pool = getWarmTransporter();
     if (pool) {
       const info = await pool.sendMail(options);
-      console.log(`⚡ [Mailer Fast] Email dispatched via Warm Pool: ${info.messageId}`);
+      console.log(`⚡ [Mailer SMTP] Email dispatched via Direct SSL: ${info.messageId}`);
       return true;
     }
   } catch (err) {
-    console.warn(
-      `⚠️ [Mailer] Warm pool attempt warning (${err.code || err.message}). Retrying via direct connection...`
-    );
-    warmPoolTransporter = null; // reset pool
+    console.warn(`⚠️ [Mailer SMTP Pool Warning] (${err.message}). Trying direct port 587...`);
+    warmPoolTransporter = null;
   }
 
-  // 2. Fallback Attempt: Direct Port 587 STARTTLS
   try {
     const direct587 = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -95,24 +183,10 @@ const sendMailFast = async (mailOptions) => {
       connectionTimeout: 10000,
     });
     const info = await direct587.sendMail(options);
-    console.log(`✅ [Mailer] Email dispatched via Port 587: ${info.messageId}`);
+    console.log(`✅ [Mailer SMTP] Email dispatched via Port 587: ${info.messageId}`);
     return true;
   } catch (err2) {
-    console.warn(`⚠️ [Mailer] Port 587 attempt failed (${err2.message}). Trying standard service...`);
-  }
-
-  // 3. Fallback Attempt: Standard Service
-  try {
-    const serviceTransport = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user, pass },
-      tls: { rejectUnauthorized: false },
-    });
-    const info = await serviceTransport.sendMail(options);
-    console.log(`✅ [Mailer] Email dispatched via Gmail Service: ${info.messageId}`);
-    return true;
-  } catch (fatalErr) {
-    console.error("❌ [Mailer Fatal Error] All transport strategies failed:", fatalErr);
+    console.error("❌ [Mailer Fatal Error] SMTP failed:", err2.message);
     return false;
   }
 };
