@@ -156,7 +156,7 @@ const sendVaccinationReminderEmail = async ({
     })
     .join("");
 
-  const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
   const scheduleUrl = `${appBaseUrl}/api/vaccinations/${petId || ""}`;
 
   const htmlContent = `

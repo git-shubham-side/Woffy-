@@ -228,7 +228,7 @@ const getPetProfile = async (req, res) => {
     const completedDoses = vaccinations.filter((v) => v.status === "Completed").length;
     const nextDueVaccine = vaccinations.find((v) => v.status !== "Completed" && v.status !== "Skipped");
 
-    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
     const publicTagUrl = `${appBaseUrl}/pet/tag/${pet.collarId || pet._id}`;
 
     res.render("Pet-Profile/profile", {
@@ -454,7 +454,7 @@ const getPrintableTag = async (req, res) => {
     }
 
     await syncPetQrCode(pet);
-    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
     const publicUrl = `${appBaseUrl}/pet/tag/${pet.collarId || pet._id}`;
 
     res.render("Pet-Tag/printable-tag", {

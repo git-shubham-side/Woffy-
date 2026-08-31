@@ -22,7 +22,7 @@ const generateCollarId = (petName) => {
  */
 const generatePetQrCode = async (identifier) => {
   try {
-    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
     const publicUrl = `${appBaseUrl}/pet/tag/${identifier}`;
 
     const qrDataUrl = await QRCode.toDataURL(publicUrl, {

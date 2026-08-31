@@ -188,7 +188,7 @@ const postForgotPassword = async (req, res) => {
 
     await user.save();
 
-    const appBaseUrl = process.env.BASE_URL || "http://localhost:3000";
+    const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
     const resetUrl = `${appBaseUrl}/api/reset-password/${rawToken}`;
 
     // Dispatch Email with 1-Click Link and OTP
