@@ -15,15 +15,7 @@
   </head>
   <body>
     <!-- Navbar -->
-    <header id="navbar">
-      <div class="container nav-container">
-        <div class="logo">Woofy.</div>
-        <nav class="nav-links">
-          <a href="/api/dashboard">Home</a>
-          <a href="/My-Pets/my-pets.html">My Pets</a>
-        </nav>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
     <!-- Main Content -->
     <section class="pets-page">

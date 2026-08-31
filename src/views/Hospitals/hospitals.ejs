@@ -19,34 +19,7 @@
   </head>
   <body>
     <!-- Top Sticky Glassmorphism Navigation -->
-    <header id="navbar">
-      <div class="nav-container">
-        <a href="/api/dashboard" class="logo">
-          Woofy<span>.</span>
-        </a>
-
-        <nav class="nav-center-links">
-          <a href="/api/dashboard">Dashboard</a>
-          <a href="/api/pet-profiles">My Pets</a>
-          <a href="/services/hospitals" class="active">Hospitals</a>
-          <a href="/services/rescue">Rescue NGOs</a>
-          <a href="/shop">Shop</a>
-        </nav>
-
-        <div class="nav-actions">
-          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-          <a href="/admin" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
-            <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
-            <span>Admin Portal <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
-          </a>
-          <% } %>
-          <a href="/services/hospitals/add" class="btn btn-primary btn-sm">
-            <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
-            <span>Add Your Hospital</span>
-          </a>
-        </div>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'hospitals' }) %>
 
     <!-- Hospitals Page Main Content -->
     <main class="hospitals-page">

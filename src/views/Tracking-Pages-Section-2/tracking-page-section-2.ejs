@@ -339,18 +339,7 @@
   </head>
   <body>
     <!-- Top Navigation -->
-    <header class="dashboard-nav">
-      <div class="nav-container">
-        <a href="/dashboard" class="logo">Woofy.</a>
-        <div class="nav-actions">
-          <a href="/api/pet-profiles" class="pet-profile-btn">
-            <span class="avatar"><i data-lucide="paw-print"></i></span>
-            <span>My Pets</span>
-          </a>
-          <a href="/logout" class="btn btn-secondary btn-sm">Log out</a>
-        </div>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
     <main class="dashboard-main container">
       <!-- Breadcrumb & Header -->

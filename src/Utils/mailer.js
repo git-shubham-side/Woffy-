@@ -2,32 +2,117 @@ const nodemailer = require("nodemailer");
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "rathodshubham7711@gmail.com";
 
-// Create reusable transporter
-const createTransporter = () => {
-  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-    return nodemailer.createTransport({
-      service: process.env.EMAIL_SERVICE || "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+/**
+ * Get sanitized email credentials
+ */
+const getCredentials = () => {
+  let user = process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : "";
+  let pass = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.trim() : "";
+
+  // Strip leading and trailing quotes (both single and double) from Railway / cloud dashboards
+  user = user.replace(/^["']+|["']+$/g, "").replace(/\s+/g, "");
+  pass = pass.replace(/^["']+|["']+$/g, "").replace(/\s+/g, "");
+
+  return { user, pass };
+};
+
+/**
+ * Send an email with automatic Multi-Strategy Fallback:
+ * Strategy 1: Direct SSL via Port 465 (smtp.gmail.com)
+ * Strategy 2: STARTTLS via Port 587 (smtp.gmail.com)
+ * Strategy 3: Standard Gmail Service Transport
+ */
+const sendMailWithFallback = async (mailOptions) => {
+  const { user, pass } = getCredentials();
+
+  if (!user || !pass) {
+    console.warn(
+      "⚠️ [Mailer Configuration Warning]: EMAIL_USER or EMAIL_PASS environment variables are missing on the server. Please ensure they are set in Railway Variables."
+    );
+    return false;
   }
 
-  // Fallback if custom SMTP host is provided
+  // Define transport strategies in order of cloud platform reliability
+  const strategies = [
+    {
+      name: "Gmail Direct SSL (Port 465)",
+      config: {
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: { user, pass },
+        tls: { rejectUnauthorized: false },
+        connectionTimeout: 12000,
+        greetingTimeout: 12000,
+        socketTimeout: 15000,
+      },
+    },
+    {
+      name: "Gmail STARTTLS (Port 587)",
+      config: {
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: { user, pass },
+        tls: { ciphers: "SSLv3", rejectUnauthorized: false },
+        connectionTimeout: 12000,
+        greetingTimeout: 12000,
+        socketTimeout: 15000,
+      },
+    },
+    {
+      name: "Nodemailer Built-in Service (Gmail)",
+      config: {
+        service: "gmail",
+        auth: { user, pass },
+        tls: { rejectUnauthorized: false },
+      },
+    },
+  ];
+
+  // Try custom SMTP if specified
   if (process.env.SMTP_HOST && process.env.SMTP_PORT) {
-    return nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === "true",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+    strategies.unshift({
+      name: "Custom SMTP",
+      config: {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT),
+        secure: process.env.SMTP_SECURE === "true",
+        auth: {
+          user: process.env.SMTP_USER || user,
+          pass: process.env.SMTP_PASS || pass,
+        },
+        tls: { rejectUnauthorized: false },
       },
     });
   }
 
-  return null;
+  let lastError = null;
+
+  for (const strategy of strategies) {
+    try {
+      const transporter = nodemailer.createTransport(strategy.config);
+      const options = {
+        ...mailOptions,
+        from: mailOptions.from || `"Woofy" <${user}>`,
+      };
+
+      const info = await transporter.sendMail(options);
+      console.log(
+        `✅ [Mailer] Email sent successfully via ${strategy.name}: ${info.messageId}`
+      );
+      return true;
+    } catch (err) {
+      lastError = err;
+      console.warn(
+        `⚠️ [Mailer] Attempt via ${strategy.name} failed (${err.code || err.message}). Trying next fallback...`
+      );
+    }
+  }
+
+  console.error("❌ [Mailer Fatal Error] All SMTP strategies failed to send email:", lastError);
+  return false;
 };
 
 /**
@@ -36,8 +121,8 @@ const createTransporter = () => {
  * @returns {Promise<boolean>}
  */
 const sendContactEmail = async ({ name, email, message, subject }) => {
+  const { user } = getCredentials();
   const emailSubject = subject || `New Contact Message on Woofy from ${name}`;
-  const transporter = createTransporter();
 
   const htmlContent = `
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
@@ -81,33 +166,14 @@ const sendContactEmail = async ({ name, email, message, subject }) => {
     </div>
   `;
 
-  if (!transporter) {
-    console.log("--------------------------------------------------");
-    console.log("ℹ️ [EMAIL NOTIFICATION SIMULATION]");
-    console.log(`To: ${ADMIN_EMAIL}`);
-    console.log(`From: ${name} <${email}>`);
-    console.log(`Subject: ${emailSubject}`);
-    console.log(`Message: ${message}`);
-    console.log("Tip: Add EMAIL_USER and EMAIL_PASS to your .env to send real emails via Gmail SMTP.");
-    console.log("--------------------------------------------------");
-    return true;
-  }
-
-  try {
-    const info = await transporter.sendMail({
-      from: `"${name} (via Woofy)" <${process.env.EMAIL_USER || email}>`,
-      replyTo: email,
-      to: ADMIN_EMAIL,
-      subject: emailSubject,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-      html: htmlContent,
-    });
-    console.log("[Mailer] Contact email sent successfully:", info.messageId);
-    return true;
-  } catch (error) {
-    console.error("[Mailer] Failed to send contact email via SMTP:", error.message);
-    return false;
-  }
+  return await sendMailWithFallback({
+    from: `"${name} (via Woofy)" <${user || ADMIN_EMAIL}>`,
+    replyTo: email,
+    to: ADMIN_EMAIL,
+    subject: emailSubject,
+    text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+    html: htmlContent,
+  });
 };
 
 /**
@@ -124,7 +190,7 @@ const sendVaccinationReminderEmail = async ({
 }) => {
   if (!userEmail || !vaccines || vaccines.length === 0) return false;
 
-  const transporter = createTransporter();
+  const { user } = getCredentials();
   const petDisplayName = petName || "Your Pet";
   const emailSubject = `💉 Vaccination Reminder: Immunization Due for ${petDisplayName}`;
 
@@ -207,31 +273,12 @@ const sendVaccinationReminderEmail = async ({
     </div>
   `;
 
-  if (!transporter) {
-    console.log("--------------------------------------------------");
-    console.log("💉 [VACCINATION EMAIL REMINDER SIMULATION]");
-    console.log(`To: ${userEmail} (${userName})`);
-    console.log(`Pet: ${petDisplayName}`);
-    console.log(`Subject: ${emailSubject}`);
-    console.log(`Due Vaccines:`, vaccines.map((v) => `${v.vaccineName} (${v.dueDate})`).join(", "));
-    console.log("Tip: Add EMAIL_USER and EMAIL_PASS to your .env to send real emails via Gmail SMTP.");
-    console.log("--------------------------------------------------");
-    return true;
-  }
-
-  try {
-    const info = await transporter.sendMail({
-      from: `"Woofy Health Reminders" <${process.env.EMAIL_USER || ADMIN_EMAIL}>`,
-      to: userEmail,
-      subject: emailSubject,
-      html: htmlContent,
-    });
-    console.log("[Mailer] Vaccination reminder email sent successfully:", info.messageId);
-    return true;
-  } catch (error) {
-    console.error("[Mailer] Failed to send vaccination reminder email:", error.message);
-    return false;
-  }
+  return await sendMailWithFallback({
+    from: `"Woofy Health Reminders" <${user || ADMIN_EMAIL}>`,
+    to: userEmail,
+    subject: emailSubject,
+    html: htmlContent,
+  });
 };
 
 /**
@@ -247,7 +294,7 @@ const sendPasswordResetEmail = async ({
 }) => {
   if (!userEmail) return false;
 
-  const transporter = createTransporter();
+  const { user } = getCredentials();
   const emailSubject = `🔐 Password Reset Request for Your Woofy Account`;
 
   const htmlContent = `
@@ -289,31 +336,12 @@ const sendPasswordResetEmail = async ({
     </div>
   `;
 
-  if (!transporter) {
-    console.log("--------------------------------------------------");
-    console.log("🔐 [PASSWORD RESET EMAIL SIMULATION]");
-    console.log(`To: ${userEmail} (${userName})`);
-    console.log(`Subject: ${emailSubject}`);
-    console.log(`6-Digit OTP: ${otp}`);
-    console.log(`Reset Link: ${resetUrl}`);
-    console.log("Tip: Add EMAIL_USER and EMAIL_PASS to your .env to send real emails via Gmail SMTP.");
-    console.log("--------------------------------------------------");
-    return true;
-  }
-
-  try {
-    const info = await transporter.sendMail({
-      from: `"Woofy Security" <${process.env.EMAIL_USER || ADMIN_EMAIL}>`,
-      to: userEmail,
-      subject: emailSubject,
-      html: htmlContent,
-    });
-    console.log("[Mailer] Password reset email sent successfully:", info.messageId);
-    return true;
-  } catch (error) {
-    console.error("[Mailer] Failed to send password reset email:", error.message);
-    return false;
-  }
+  return await sendMailWithFallback({
+    from: `"Woofy Security" <${user || ADMIN_EMAIL}>`,
+    to: userEmail,
+    subject: emailSubject,
+    html: htmlContent,
+  });
 };
 
 module.exports = {

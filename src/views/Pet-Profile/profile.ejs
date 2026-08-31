@@ -131,29 +131,7 @@
   </head>
   <body>
     <!-- Navigation -->
-    <header id="navbar">
-      <div class="nav-container">
-        <a href="/api/dashboard" class="logo">
-          Woofy<span>.</span>
-        </a>
-
-        <nav class="nav-center-links">
-          <a href="/api/dashboard">Dashboard</a>
-          <a href="/api/pet-profiles" class="active">My Pets</a>
-          <a href="/api/vaccinations">Vaccinations</a>
-          <a href="/services/hospitals">Hospitals</a>
-          <a href="/services/rescue">Rescue NGOs</a>
-          <a href="/shop">Shop</a>
-        </nav>
-
-        <div class="nav-actions">
-          <a href="/api/pet-profiles" class="btn btn-secondary btn-sm">
-            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
-            <span>Back to My Pets</span>
-          </a>
-        </div>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
     <main class="profile-page">
       <div class="container" id="profileContainer">

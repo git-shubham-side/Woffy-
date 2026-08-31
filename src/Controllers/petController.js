@@ -261,7 +261,7 @@ const getEditPetPage = async (req, res) => {
       return res.redirect("/api/pet-profiles");
     }
 
-    res.render("Edit-Pet/edit-pet", { pet });
+    res.render("Profile-Creation/edit-profile", { pet });
   } catch (err) {
     console.error("Edit pet page error:", err);
     res.redirect("/api/pet-profiles");

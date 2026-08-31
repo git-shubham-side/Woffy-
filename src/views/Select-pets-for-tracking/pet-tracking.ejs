@@ -23,43 +23,7 @@
     <div class="ambient-glow glow-2"></div>
 
     <!-- Navigation -->
-    <header id="navbar">
-      <div class="container nav-container">
-        <a href="/api/dashboard" class="logo">
-          Woofy<span>.</span>
-        </a>
-
-        <nav class="nav-center-links">
-          <a href="/api/dashboard">
-            <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
-            <span>Dashboard</span>
-          </a>
-          <a href="/api/pet-profiles">
-            <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
-            <span>My Pets</span>
-          </a>
-          <a href="/services/hospitals">
-            <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
-            <span>Hospitals</span>
-          </a>
-          <a href="/services/rescue">
-            <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
-            <span>Rescue NGOs</span>
-          </a>
-          <a href="/shop">
-            <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
-            <span>Shop</span>
-          </a>
-        </nav>
-
-        <div class="nav-actions">
-          <a href="/api/dashboard" class="btn btn-secondary btn-sm">
-            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
-            <span>Back to Dashboard</span>
-          </a>
-        </div>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
     <main class="pets-page">
       <div class="container">

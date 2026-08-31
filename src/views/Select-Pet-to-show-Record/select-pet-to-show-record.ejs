@@ -11,14 +11,7 @@
     />
   </head>
   <body>
-    <header id="navbar">
-      <div class="container nav-container">
-        <a href="/api/dashboard" class="logo">Woofy.</a>
-        <nav class="nav-links">
-          <a href="/api/dashboard">Home</a>
-        </nav>
-      </div>
-    </header>
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
     <section class="pets-page">
       <div class="container">
