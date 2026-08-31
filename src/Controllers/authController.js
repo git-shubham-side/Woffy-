@@ -191,13 +191,13 @@ const postForgotPassword = async (req, res) => {
     const appBaseUrl = process.env.BASE_URL || "https://woffy.up.railway.app";
     const resetUrl = `${appBaseUrl}/api/reset-password/${rawToken}`;
 
-    // Dispatch Email with 1-Click Link and OTP
-    await sendPasswordResetEmail({
+    // Dispatch Email with 1-Click Link and OTP (using warm pool)
+    sendPasswordResetEmail({
       userEmail: user.email,
       userName: user.fullName,
       resetUrl,
       otp,
-    });
+    }).catch((e) => console.error("Async reset email error:", e));
 
     req.flash(
       "success",

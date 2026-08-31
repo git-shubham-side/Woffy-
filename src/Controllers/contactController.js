@@ -30,18 +30,20 @@ const postContactForm = async (req, res) => {
       message: message.trim(),
     });
 
-    // 2. Send email notification to rathodshubham7711@gmail.com
-    const emailSent = await sendContactEmail({
+    // 2. Send email notification asynchronously via warm pool
+    sendContactEmail({
       name: name.trim(),
       email: email.toLowerCase().trim(),
       subject: contactRecord.subject,
       message: message.trim(),
-    });
-
-    if (emailSent) {
-      contactRecord.emailSent = true;
-      await contactRecord.save();
-    }
+    })
+      .then(async (sent) => {
+        if (sent) {
+          contactRecord.emailSent = true;
+          await contactRecord.save();
+        }
+      })
+      .catch((e) => console.error("Async contact email error:", e));
 
     if (
       req.xhr ||

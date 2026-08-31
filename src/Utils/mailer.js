@@ -1,4 +1,10 @@
 const nodemailer = require("nodemailer");
+const dns = require("node:dns");
+
+// Optimize DNS lookup for cloud platforms (Railway, Render, AWS) by prioritizing IPv4
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder("ipv4first");
+}
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "rathodshubham7711@gmail.com";
 
@@ -9,110 +15,106 @@ const getCredentials = () => {
   let user = process.env.EMAIL_USER ? process.env.EMAIL_USER.trim() : "";
   let pass = process.env.EMAIL_PASS ? process.env.EMAIL_PASS.trim() : "";
 
-  // Strip leading and trailing quotes (both single and double) from Railway / cloud dashboards
+  // Strip leading and trailing quotes from Railway / cloud dashboards
   user = user.replace(/^["']+|["']+$/g, "").replace(/\s+/g, "");
   pass = pass.replace(/^["']+|["']+$/g, "").replace(/\s+/g, "");
 
   return { user, pass };
 };
 
+// Reusable warm connection pool (avoids reconnecting & TLS handshakes on every single email)
+let warmPoolTransporter = null;
+
+const getWarmTransporter = () => {
+  const { user, pass } = getCredentials();
+  if (!user || !pass) return null;
+
+  if (!warmPoolTransporter) {
+    warmPoolTransporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Direct SSL
+      pool: true, // Keep socket alive in background
+      maxConnections: 5,
+      maxMessages: 100,
+      rateLimit: 5,
+      rateDelta: 1000,
+      auth: { user, pass },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    });
+  }
+
+  return warmPoolTransporter;
+};
+
 /**
- * Send an email with automatic Multi-Strategy Fallback:
- * Strategy 1: Direct SSL via Port 465 (smtp.gmail.com)
- * Strategy 2: STARTTLS via Port 587 (smtp.gmail.com)
- * Strategy 3: Standard Gmail Service Transport
+ * Send an email with warm socket pooling and fast automatic fallback
  */
-const sendMailWithFallback = async (mailOptions) => {
+const sendMailFast = async (mailOptions) => {
   const { user, pass } = getCredentials();
 
   if (!user || !pass) {
     console.warn(
-      "⚠️ [Mailer Configuration Warning]: EMAIL_USER or EMAIL_PASS environment variables are missing on the server. Please ensure they are set in Railway Variables."
+      "⚠️ [Mailer Warning]: EMAIL_USER or EMAIL_PASS environment variables are missing on the server."
     );
     return false;
   }
 
-  // Define transport strategies in order of cloud platform reliability
-  const strategies = [
-    {
-      name: "Gmail Direct SSL (Port 465)",
-      config: {
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: { user, pass },
-        tls: { rejectUnauthorized: false },
-        connectionTimeout: 12000,
-        greetingTimeout: 12000,
-        socketTimeout: 15000,
-      },
-    },
-    {
-      name: "Gmail STARTTLS (Port 587)",
-      config: {
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: { user, pass },
-        tls: { ciphers: "SSLv3", rejectUnauthorized: false },
-        connectionTimeout: 12000,
-        greetingTimeout: 12000,
-        socketTimeout: 15000,
-      },
-    },
-    {
-      name: "Nodemailer Built-in Service (Gmail)",
-      config: {
-        service: "gmail",
-        auth: { user, pass },
-        tls: { rejectUnauthorized: false },
-      },
-    },
-  ];
+  const options = {
+    ...mailOptions,
+    from: mailOptions.from || `"Woofy" <${user}>`,
+  };
 
-  // Try custom SMTP if specified
-  if (process.env.SMTP_HOST && process.env.SMTP_PORT) {
-    strategies.unshift({
-      name: "Custom SMTP",
-      config: {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT),
-        secure: process.env.SMTP_SECURE === "true",
-        auth: {
-          user: process.env.SMTP_USER || user,
-          pass: process.env.SMTP_PASS || pass,
-        },
-        tls: { rejectUnauthorized: false },
-      },
-    });
-  }
-
-  let lastError = null;
-
-  for (const strategy of strategies) {
-    try {
-      const transporter = nodemailer.createTransport(strategy.config);
-      const options = {
-        ...mailOptions,
-        from: mailOptions.from || `"Woofy" <${user}>`,
-      };
-
-      const info = await transporter.sendMail(options);
-      console.log(
-        `✅ [Mailer] Email sent successfully via ${strategy.name}: ${info.messageId}`
-      );
+  // 1. Primary Attempt: Reusable Warm Socket Pool (Sub-2 second delivery)
+  try {
+    const pool = getWarmTransporter();
+    if (pool) {
+      const info = await pool.sendMail(options);
+      console.log(`⚡ [Mailer Fast] Email dispatched via Warm Pool: ${info.messageId}`);
       return true;
-    } catch (err) {
-      lastError = err;
-      console.warn(
-        `⚠️ [Mailer] Attempt via ${strategy.name} failed (${err.code || err.message}). Trying next fallback...`
-      );
     }
+  } catch (err) {
+    console.warn(
+      `⚠️ [Mailer] Warm pool attempt warning (${err.code || err.message}). Retrying via direct connection...`
+    );
+    warmPoolTransporter = null; // reset pool
   }
 
-  console.error("❌ [Mailer Fatal Error] All SMTP strategies failed to send email:", lastError);
-  return false;
+  // 2. Fallback Attempt: Direct Port 587 STARTTLS
+  try {
+    const direct587 = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: { user, pass },
+      tls: { ciphers: "SSLv3", rejectUnauthorized: false },
+      connectionTimeout: 10000,
+    });
+    const info = await direct587.sendMail(options);
+    console.log(`✅ [Mailer] Email dispatched via Port 587: ${info.messageId}`);
+    return true;
+  } catch (err2) {
+    console.warn(`⚠️ [Mailer] Port 587 attempt failed (${err2.message}). Trying standard service...`);
+  }
+
+  // 3. Fallback Attempt: Standard Service
+  try {
+    const serviceTransport = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user, pass },
+      tls: { rejectUnauthorized: false },
+    });
+    const info = await serviceTransport.sendMail(options);
+    console.log(`✅ [Mailer] Email dispatched via Gmail Service: ${info.messageId}`);
+    return true;
+  } catch (fatalErr) {
+    console.error("❌ [Mailer Fatal Error] All transport strategies failed:", fatalErr);
+    return false;
+  }
 };
 
 /**
@@ -166,7 +168,7 @@ const sendContactEmail = async ({ name, email, message, subject }) => {
     </div>
   `;
 
-  return await sendMailWithFallback({
+  return await sendMailFast({
     from: `"${name} (via Woofy)" <${user || ADMIN_EMAIL}>`,
     replyTo: email,
     to: ADMIN_EMAIL,
@@ -273,7 +275,7 @@ const sendVaccinationReminderEmail = async ({
     </div>
   `;
 
-  return await sendMailWithFallback({
+  return await sendMailFast({
     from: `"Woofy Health Reminders" <${user || ADMIN_EMAIL}>`,
     to: userEmail,
     subject: emailSubject,
@@ -336,7 +338,7 @@ const sendPasswordResetEmail = async ({
     </div>
   `;
 
-  return await sendMailWithFallback({
+  return await sendMailFast({
     from: `"Woofy Security" <${user || ADMIN_EMAIL}>`,
     to: userEmail,
     subject: emailSubject,
