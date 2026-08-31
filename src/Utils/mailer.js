@@ -371,7 +371,8 @@ const sendPasswordResetEmail = async ({
   if (!userEmail) return false;
 
   const { user } = getCredentials();
-  const emailSubject = `🔐 Password Reset Request for Your Woofy Account`;
+  const emailSubject = `Woofy Security: Your Verification Code is ${otp}`;
+  const textContent = `Hi ${userName || "Pet Parent"},\n\nYour 6-digit verification code is: ${otp}\n\nThis OTP is valid for 15 minutes.\n\nAlternatively, reset your password directly with this secure 1-click link:\n${resetUrl}\n\nIf you did not request this, please ignore this email.\n\n- Woofy Security Team`;
 
   const htmlContent = `
     <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
@@ -416,6 +417,7 @@ const sendPasswordResetEmail = async ({
     from: `"Woofy Security" <${user || ADMIN_EMAIL}>`,
     to: userEmail,
     subject: emailSubject,
+    text: textContent,
     html: htmlContent,
   });
 };
