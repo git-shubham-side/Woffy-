@@ -13,6 +13,11 @@ const productSchema = new mongoose.Schema(
       default: "Food",
       index: true,
     },
+    brandName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     price: {
       type: Number,
       required: true,
@@ -63,6 +68,38 @@ const productSchema = new mongoose.Schema(
       type: [String],
       default: ["Dog Care", "Best Seller"],
     },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+      index: true,
+    },
+    submittedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+      index: true,
+    },
+    submitterName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    submitterEmail: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    submitterPhone: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    rejectionReason: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,
@@ -73,8 +110,10 @@ productSchema.index({
   name: "text",
   category: "text",
   description: "text",
+  brandName: "text",
 });
 
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;
+

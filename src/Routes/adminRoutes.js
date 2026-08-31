@@ -62,6 +62,9 @@ router.post(
   "/products/toggle-stock/:id",
   adminController.postToggleProductStock,
 );
+router.post("/products/approve/:id", adminController.postApproveProduct);
+router.post("/products/reject/:id", adminController.postRejectProduct);
 router.post("/products/delete/:id", adminController.postDeleteProduct);
 
 module.exports = router;
+

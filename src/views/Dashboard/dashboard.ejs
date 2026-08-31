@@ -365,8 +365,66 @@
           <p>No products available currently. Check back soon!</p>
         </div>
         <% } %>
+
+        <!-- Product Partner / "Want to Add Your Product?" Callout Banner -->
+        <div class="product-request-banner">
+          <div class="request-banner-left">
+            <div class="banner-icon-badge">
+              <i data-lucide="package-plus"></i>
+            </div>
+            <div class="banner-text-content">
+              <h3>Want to Sell or List Your Pet Product?</h3>
+              <p>Are you a pet food brand, clinic pharmacy, or pet accessory seller? Submit your product listing request to get featured across Woofy!</p>
+            </div>
+          </div>
+          <div class="request-banner-right">
+            <a href="/products/list-product" class="btn btn-primary btn-md">
+              <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+              <span>List Your Product</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- User Submitted Product Requests Tracker (If Any) -->
+        <% if (typeof userProductRequests !== 'undefined' && userProductRequests && userProductRequests.length > 0) { %>
+        <div class="user-requests-tracker">
+          <div class="tracker-header">
+            <h4><i data-lucide="clock" style="width: 16px; height: 16px; color: #2563eb;"></i> Your Product Listing Submissions (<%= userProductRequests.length %>)</h4>
+            <a href="/products/list-product" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> List Another Product
+            </a>
+          </div>
+          <div class="requests-grid">
+            <% userProductRequests.forEach(reqItem => { %>
+            <div class="request-status-card">
+              <div class="req-card-img">
+                <img src="<%= reqItem.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>" alt="<%= reqItem.name %>" onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'" />
+              </div>
+              <div class="req-card-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+                  <strong><%= reqItem.name %></strong>
+                  <% if (reqItem.status === 'pending') { %>
+                  <span class="req-badge req-badge-pending">⏳ Under Review</span>
+                  <% } else if (reqItem.status === 'approved') { %>
+                  <span class="req-badge req-badge-approved">✅ Live in Catalog</span>
+                  <% } else if (reqItem.status === 'rejected') { %>
+                  <span class="req-badge req-badge-rejected">❌ Rejected</span>
+                  <% } %>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);"><%= reqItem.category %> • ₹<%= reqItem.price %></span>
+                <% if (reqItem.status === 'rejected' && reqItem.rejectionReason) { %>
+                <p style="font-size: 0.775rem; color: #b91c1c; margin-top: 0.25rem;">Note: <%= reqItem.rejectionReason %></p>
+                <% } %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
       </section>
     </main>
+
+
 
     <!-- Footer -->
     <footer class="dash-footer">

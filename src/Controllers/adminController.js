@@ -15,13 +15,21 @@ const getAdminDashboard = async (req, res) => {
       approvedHospitals,
       rejectedApplications,
       rescueServices,
-      products,
+      approvedProducts,
+      pendingProductRequests,
+      rejectedProductRequests,
     ] = await Promise.all([
       Hospital.find({ status: "pending" }).sort({ createdAt: -1 }),
       Hospital.find({ status: "approved" }).sort({ updatedAt: -1 }),
       Hospital.find({ status: "rejected" }).sort({ updatedAt: -1 }),
       RescueService.find().sort({ createdAt: -1 }),
-      Product.find().sort({ createdAt: -1 }),
+      Product.find({ status: { $ne: "pending" } }).sort({ createdAt: -1 }),
+      Product.find({ status: "pending" })
+        .populate("submittedBy", "fullName email")
+        .sort({ createdAt: -1 }),
+      Product.find({ status: "rejected" })
+        .populate("submittedBy", "fullName email")
+        .sort({ updatedAt: -1 }),
     ]);
 
     const stats = {
@@ -33,8 +41,14 @@ const getAdminDashboard = async (req, res) => {
       approvedHospitals: approvedHospitals.length,
       rejectedHospitals: rejectedApplications.length,
       rescueTotal: rescueServices.length,
-      productsTotal: products.length,
-      inStockProducts: products.filter((p) => p.inStock).length,
+      productsTotal:
+        approvedProducts.length +
+        pendingProductRequests.length +
+        rejectedProductRequests.length,
+      approvedProductsCount: approvedProducts.length,
+      pendingProductsCount: pendingProductRequests.length,
+      rejectedProductsCount: rejectedProductRequests.length,
+      inStockProducts: approvedProducts.filter((p) => p.inStock).length,
     };
 
     res.render("Admin/admin-dashboard", {
@@ -46,7 +60,9 @@ const getAdminDashboard = async (req, res) => {
       approvedHospitals,
       rejectedApplications,
       rescueServices,
-      products,
+      products: approvedProducts,
+      pendingProductRequests,
+      rejectedProductRequests,
       currentUser: req.user,
     });
   } catch (err) {
@@ -601,6 +617,73 @@ const postDeleteProduct = async (req, res) => {
   }
 };
 
+/**
+ * POST: Approve User Product Listing Request (Publish Live in Catalog)
+ */
+const postApproveProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByIdAndUpdate(
+      id,
+      {
+        status: "approved",
+        inStock: true,
+        rejectionReason: "",
+      },
+      { new: true },
+    );
+
+    if (!product) {
+      req.flash("error", "Product request not found.");
+      return res.redirect("/admin?section=products&tab=pending");
+    }
+
+    req.flash(
+      "success",
+      `Product "${product.name}" approved and published live in catalog!`,
+    );
+    res.redirect("/admin?section=products&tab=catalog");
+  } catch (err) {
+    console.error("Approve product error:", err);
+    req.flash("error", "Failed to approve product: " + err.message);
+    res.redirect("/admin?section=products&tab=pending");
+  }
+};
+
+/**
+ * POST: Reject User Product Listing Request
+ */
+const postRejectProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    const product = await Product.findByIdAndUpdate(
+      id,
+      {
+        status: "rejected",
+        rejectionReason: reason ? reason.trim() : "Product listing criteria not met.",
+      },
+      { new: true },
+    );
+
+    if (!product) {
+      req.flash("error", "Product request not found.");
+      return res.redirect("/admin?section=products&tab=pending");
+    }
+
+    req.flash(
+      "success",
+      `Product request for "${product.name}" marked as rejected.`,
+    );
+    res.redirect("/admin?section=products&tab=rejected");
+  } catch (err) {
+    console.error("Reject product error:", err);
+    req.flash("error", "Failed to reject product: " + err.message);
+    res.redirect("/admin?section=products&tab=pending");
+  }
+};
+
 module.exports = {
   getAdminDashboard,
   postApproveHospital,
@@ -614,4 +697,7 @@ module.exports = {
   postAddProduct,
   postToggleProductStock,
   postDeleteProduct,
+  postApproveProduct,
+  postRejectProduct,
 };
+

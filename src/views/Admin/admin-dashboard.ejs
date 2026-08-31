@@ -234,7 +234,7 @@
             <i data-lucide="layout-dashboard" style="width: 14px; height: 14px;"></i>
             <span>User Dashboard</span>
           </a>
-          <a href="/services/hospitals" target="_blank" class="btn btn-secondary btn-sm">
+          <a href="https://woffy.up.railway.app/api/dashboard" target="_blank" class="btn btn-secondary btn-sm">
             <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
             <span>Live Site</span>
           </a>
@@ -270,9 +270,9 @@
             <i data-lucide="heart-handshake"></i>
             <span>Rescue Services & NGOs (<%= stats.rescueTotal %>)</span>
           </a>
-          <a href="/admin?section=products" class="nav-tab-link <%= section === 'products' ? 'active' : '' %>">
+          <a href="/admin?section=products<%= (typeof stats.pendingProductsCount !== 'undefined' && stats.pendingProductsCount > 0) ? '&tab=pending' : '&tab=catalog' %>" class="nav-tab-link <%= section === 'products' ? 'active' : '' %>">
             <i data-lucide="shopping-bag"></i>
-            <span>Shop Products (<%= stats.productsTotal %>)</span>
+            <span>Shop Products <% if (typeof stats.pendingProductsCount !== 'undefined' && stats.pendingProductsCount > 0) { %>(<%= stats.pendingProductsCount %> Pending)<% } else { %>(<%= stats.productsTotal %>)<% } %></span>
           </a>
         </div>
 
@@ -857,157 +857,378 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
             <div>
               <h3>Shop & Pet Products Catalog</h3>
-              <p>Add new pet foods, grooming items, toys, and update stock availability.</p>
+              <p>Review incoming user product listing requests, manage live inventory, and manually add new products.</p>
             </div>
             <a href="#addProductForm" class="btn btn-primary btn-sm">
-              <i data-lucide="plus"></i> Add Product
+              <i data-lucide="plus"></i> Add Product Manually
             </a>
           </div>
 
-          <!-- Products Table -->
-          <% if (products && products.length > 0) { %>
-            <div class="table-container" style="margin-bottom: 2.5rem;">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock Status</th>
-                    <th>Rating</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% products.forEach(p => { %>
-                  <tr>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 0.75rem;">
-                        <img src="<%= p.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>" alt="<%= p.name %>" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
-                        <div>
-                          <strong><%= p.name %></strong>
-                          <p style="font-size: 0.8rem; color: var(--text-muted);"><%= p.description ? p.description.substring(0, 45) + '...' : '' %></p>
-                        </div>
-                      </div>
-                    </td>
-                    <td><%= p.category %></td>
-                    <td>
-                      <strong>₹<%= p.price %></strong>
-                      <% if (p.originalPrice) { %><span style="text-decoration: line-through; color: #94a3b8; font-size: 0.8rem;">₹<%= p.originalPrice %></span><% } %>
-                    </td>
-                    <td>
-                      <span class="app-status <%= p.inStock ? 'status-instock' : 'status-outofstock' %>">
-                        <%= p.inStock ? 'In Stock' : 'Out of Stock' %>
+          <!-- Products Sub-Tabs Navigation -->
+          <div class="sub-tabs-nav">
+            <a href="/admin?section=products&tab=catalog" class="sub-tab-btn <%= (activeTab === 'catalog' || activeTab === 'all') ? 'active' : '' %>">
+              <i data-lucide="package-check" style="width: 15px; height: 15px;"></i>
+              <span>Live Catalog</span>
+              <span class="tab-counter"><%= products.length %></span>
+            </a>
+            <a href="/admin?section=products&tab=pending" class="sub-tab-btn <%= (activeTab === 'pending' || activeTab === 'requests') ? 'active' : '' %>">
+              <i data-lucide="clock" style="width: 15px; height: 15px;"></i>
+              <span>Pending User Requests</span>
+              <% if (pendingProductRequests && pendingProductRequests.length > 0) { %>
+              <span class="tab-counter counter-alert"><%= pendingProductRequests.length %></span>
+              <% } else { %>
+              <span class="tab-counter">0</span>
+              <% } %>
+            </a>
+            <a href="/admin?section=products&tab=rejected" class="sub-tab-btn <%= activeTab === 'rejected' ? 'active' : '' %>">
+              <i data-lucide="x-circle" style="width: 15px; height: 15px;"></i>
+              <span>Rejected Requests</span>
+              <span class="tab-counter"><%= typeof rejectedProductRequests !== 'undefined' ? rejectedProductRequests.length : 0 %></span>
+            </a>
+          </div>
+
+          <!-- SUB-TAB 1: PENDING PRODUCT REQUESTS -->
+          <% if (activeTab === 'pending' || activeTab === 'requests') { %>
+            <% if (pendingProductRequests && pendingProductRequests.length > 0) { %>
+              <div style="margin-bottom: 2.5rem;">
+                <% pendingProductRequests.forEach(p => { %>
+                <div class="admin-card-item">
+                  <div class="admin-card-header">
+                    <div>
+                      <h4 style="font-size: 1.15rem; margin-bottom: 0.25rem;"><%= p.name %></h4>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);">
+                        Submitted on <%= new Date(p.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
                       </span>
-                    </td>
-                    <td>⭐ <%= p.rating ? p.rating.toFixed(1) : '4.8' %></td>
-                    <td>
-                      <div style="display: flex; gap: 0.4rem; align-items: center;">
-                        <a href="/admin/products/edit/<%= p._id %>" class="btn btn-secondary btn-sm" title="Edit Product">
-                          <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
-                          <span>Edit</span>
-                        </a>
-                        <form action="/admin/products/toggle-stock/<%= p._id %>" method="POST" style="display: inline;">
-                          <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Stock Status">
-                            <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
-                          </button>
-                        </form>
-                        <form action="/admin/products/delete/<%= p._id %>" method="POST" style="display: inline;">
-                          <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this product?');">
-                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
-                          </button>
-                        </form>
+                    </div>
+                    <span class="app-status status-pending">Pending Review</span>
+                  </div>
+
+                  <div class="admin-flex-grid">
+                    <img
+                      src="<%= p.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>"
+                      alt="<%= p.name %>"
+                      class="admin-item-thumb"
+                      onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'"
+                    />
+
+                    <div class="admin-info-list">
+                      <div class="info-row">
+                        <strong>Category:</strong>
+                        <span><%= p.category %></span>
                       </div>
-                    </td>
-                  </tr>
-                  <% }) %>
-                </tbody>
-              </table>
-            </div>
-          <% } else { %>
-            <div class="empty-state-box" style="margin-bottom: 2.5rem;">
-              <h3>No Products in Catalog Yet</h3>
-              <p>Add pet food, grooming supplies, and accessories using the form below.</p>
-            </div>
+                      <% if (p.brandName) { %>
+                      <div class="info-row">
+                        <strong>Brand / Store:</strong>
+                        <span><%= p.brandName %></span>
+                      </div>
+                      <% } %>
+                      <div class="info-row">
+                        <strong>Selling Price:</strong>
+                        <span style="color: #16a34a; font-weight: 700;">₹<%= p.price %></span>
+                        <% if (p.originalPrice) { %>
+                        <span style="text-decoration: line-through; color: #94a3b8; font-size: 0.85rem; margin-left: 0.35rem;">MRP ₹<%= p.originalPrice %></span>
+                        <% } %>
+                        <% if (p.discountPercent > 0) { %>
+                        <span style="color: #ea580c; font-size: 0.85rem; font-weight: 600; margin-left: 0.35rem;">(<%= p.discountPercent %>% OFF)</span>
+                        <% } %>
+                      </div>
+                      <div class="info-row">
+                        <strong>Submitted By:</strong>
+                        <span>
+                          <strong><%= p.submitterName || (p.submittedBy ? p.submittedBy.fullName : 'Registered User') %></strong>
+                          <% if (p.submitterEmail || (p.submittedBy && p.submittedBy.email)) { %>
+                          • <%= p.submitterEmail || p.submittedBy.email %>
+                          <% } %>
+                          <% if (p.submitterPhone) { %>
+                          • 📞 <%= p.submitterPhone %>
+                          <% } %>
+                        </span>
+                      </div>
+                      <% if (p.description) { %>
+                      <div class="info-row">
+                        <strong>Description:</strong>
+                        <span><%= p.description %></span>
+                      </div>
+                      <% } %>
+                      <% if (p.buyUrl) { %>
+                      <div class="info-row">
+                        <strong>Store / Buy Link:</strong>
+                        <a href="<%= p.buyUrl %>" target="_blank" rel="noopener" style="color: var(--accent-color); text-decoration: underline; word-break: break-all;">
+                          <%= p.buyUrl %> <i data-lucide="external-link" style="width: 12px; height: 12px; display: inline;"></i>
+                        </a>
+                      </div>
+                      <% } %>
+                      <% if (p.tags && p.tags.length > 0) { %>
+                      <div class="info-row">
+                        <strong>Tags:</strong>
+                        <span><%= p.tags.join(', ') %></span>
+                      </div>
+                      <% } %>
+                    </div>
+                  </div>
+
+                  <!-- Actions: Approve & Publish Live / Reject / Delete -->
+                  <div class="admin-action-row" style="margin-top: 1.25rem; display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap;">
+                    <!-- Approve Button -->
+                    <form action="/admin/products/approve/<%= p._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-primary btn-sm" style="background: #16a34a !important; border-color: #16a34a !important;">
+                        <i data-lucide="check-circle" style="width: 15px; height: 15px;"></i>
+                        <span>Accept & Publish Live</span>
+                      </button>
+                    </form>
+
+                    <!-- Reject Form -->
+                    <form action="/admin/products/reject/<%= p._id %>" method="POST" style="display: inline-flex; gap: 0.35rem; align-items: center;">
+                      <input
+                        type="text"
+                        name="reason"
+                        placeholder="Rejection reason (optional)"
+                        class="field-input"
+                        style="height: 36px; padding: 0 0.65rem; font-size: 0.85rem; width: 220px;"
+                      />
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ea580c !important;" onclick="return confirm('Reject this product request?');">
+                        <i data-lucide="x-circle" style="width: 14px; height: 14px;"></i>
+                        <span>Reject</span>
+                      </button>
+                    </form>
+
+                    <!-- Delete Form -->
+                    <form action="/admin/products/delete/<%= p._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this request permanently?');">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+                <div style="background: #ecfdf5; color: #10b981; width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                  <i data-lucide="check-check" style="width: 26px; height: 26px;"></i>
+                </div>
+                <h3>No Pending Product Requests</h3>
+                <p>All user submitted product listing requests have been reviewed and processed.</p>
+              </div>
+            <% } %>
           <% } %>
 
-          <!-- Add Product Form -->
-          <div id="addProductForm" class="form-wrapper-box" style="margin: 0;">
-            <div class="form-title-group">
-              <h3>Add Product to Catalog</h3>
-              <p>Enter comprehensive product details to list in the shop and recommended dashboard carousel.</p>
+          <!-- SUB-TAB 2: REJECTED PRODUCT REQUESTS -->
+          <% if (activeTab === 'rejected') { %>
+            <% if (typeof rejectedProductRequests !== 'undefined' && rejectedProductRequests.length > 0) { %>
+              <div style="margin-bottom: 2.5rem;">
+                <% rejectedProductRequests.forEach(p => { %>
+                <div class="admin-card-item" style="border-left: 4px solid #ef4444;">
+                  <div class="admin-card-header">
+                    <div>
+                      <h4 style="font-size: 1.15rem; margin-bottom: 0.25rem;"><%= p.name %></h4>
+                      <span style="font-size: 0.85rem; color: var(--text-muted);">
+                        Submitted by <%= p.submitterName || (p.submittedBy ? p.submittedBy.fullName : 'User') %>
+                      </span>
+                    </div>
+                    <span class="app-status status-rejected">Rejected</span>
+                  </div>
+
+                  <div class="admin-flex-grid">
+                    <img
+                      src="<%= p.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>"
+                      alt="<%= p.name %>"
+                      class="admin-item-thumb"
+                    />
+
+                    <div class="admin-info-list">
+                      <div class="info-row">
+                        <strong>Category:</strong>
+                        <span><%= p.category %></span>
+                      </div>
+                      <div class="info-row">
+                        <strong>Price:</strong>
+                        <span>₹<%= p.price %></span>
+                      </div>
+                      <div class="info-row">
+                        <strong>Reason:</strong>
+                        <span style="color: #b91c1c; font-weight: 600;"><%= p.rejectionReason || 'Criteria not met.' %></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="admin-action-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+                    <form action="/admin/products/approve/<%= p._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #16a34a !important;">
+                        <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Re-Approve
+                      </button>
+                    </form>
+                    <form action="/admin/products/delete/<%= p._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this record?');">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <% }) %>
+              </div>
+            <% } else { %>
+              <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+                <h3>No Rejected Product Requests</h3>
+                <p>No product applications are currently marked as rejected.</p>
+              </div>
+            <% } %>
+          <% } %>
+
+          <!-- SUB-TAB 3: LIVE CATALOG (DEFAULT) -->
+          <% if (activeTab === 'catalog' || activeTab === 'all' || (!activeTab || (activeTab !== 'pending' && activeTab !== 'requests' && activeTab !== 'rejected'))) { %>
+            <!-- Products Table -->
+            <% if (products && products.length > 0) { %>
+              <div class="table-container" style="margin-bottom: 2.5rem;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th>Stock Status</th>
+                      <th>Rating</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% products.forEach(p => { %>
+                    <tr>
+                      <td>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                          <img src="<%= p.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>" alt="<%= p.name %>" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover;" />
+                          <div>
+                            <strong><%= p.name %></strong>
+                            <% if (p.brandName) { %><span style="font-size: 0.75rem; color: #2563eb; display: block;"><%= p.brandName %></span><% } %>
+                            <p style="font-size: 0.8rem; color: var(--text-muted);"><%= p.description ? p.description.substring(0, 45) + '...' : '' %></p>
+                          </div>
+                        </div>
+                      </td>
+                      <td><%= p.category %></td>
+                      <td>
+                        <strong>₹<%= p.price %></strong>
+                        <% if (p.originalPrice) { %><span style="text-decoration: line-through; color: #94a3b8; font-size: 0.8rem;">₹<%= p.originalPrice %></span><% } %>
+                      </td>
+                      <td>
+                        <span class="app-status <%= p.inStock ? 'status-instock' : 'status-outofstock' %>">
+                          <%= p.inStock ? 'In Stock' : 'Out of Stock' %>
+                        </span>
+                      </td>
+                      <td>⭐ <%= p.rating ? p.rating.toFixed(1) : '4.8' %></td>
+                      <td>
+                        <div style="display: flex; gap: 0.4rem; align-items: center;">
+                          <a href="/admin/products/edit/<%= p._id %>" class="btn btn-secondary btn-sm" title="Edit Product">
+                            <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                            <span>Edit</span>
+                          </a>
+                          <form action="/admin/products/toggle-stock/<%= p._id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Stock Status">
+                              <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+                            </button>
+                          </form>
+                          <form action="/admin/products/delete/<%= p._id %>" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" onclick="return confirm('Delete this product?');">
+                              <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            <% } else { %>
+              <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+                <h3>No Products in Catalog Yet</h3>
+                <p>Add pet food, grooming supplies, and accessories using the form below.</p>
+              </div>
+            <% } %>
+
+            <!-- Add Product Form (Admin Manual Addition - Preserved & Enhanced!) -->
+            <div id="addProductForm" class="form-wrapper-box" style="margin: 0;">
+              <div class="form-title-group">
+                <h3>Directly Add Product to Catalog (Admin Manual Entry)</h3>
+                <p>Enter comprehensive product details to list directly in the shop and recommended dashboard carousel.</p>
+              </div>
+              <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
+                <div class="form-grid-layout">
+                  <div class="field-group full">
+                    <label class="field-label">Product Title *</label>
+                    <input type="text" name="name" class="field-input" placeholder="e.g. Royal Canin Maxi Adult Dog Food (3kg)" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Category *</label>
+                    <select name="category" class="field-select">
+                      <option value="Food">Pet Food & Nutrition</option>
+                      <option value="Grooming">Grooming & Shampoo</option>
+                      <option value="Healthcare">Healthcare & Supplements</option>
+                      <option value="Toys">Chew Toys & Balls</option>
+                      <option value="Accessories">Collars, Leashes & Bowls</option>
+                      <option value="Bedding & Bowls">Bedding & Bowls</option>
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Brand / Manufacturer</label>
+                    <input type="text" name="brandName" class="field-input" placeholder="e.g. Royal Canin / Pedigree / Woofy Essentials" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Stock Status *</label>
+                    <select name="inStock" class="field-select">
+                      <option value="true" selected>In Stock (Available)</option>
+                      <option value="false">Out of Stock</option>
+                    </select>
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Selling Price (₹) *</label>
+                    <input type="number" name="price" class="field-input" placeholder="e.g. 1499" min="0" required />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Original MRP Price (₹) (For discount badge)</label>
+                    <input type="number" name="originalPrice" class="field-input" placeholder="e.g. 1899" min="0" />
+                  </div>
+                  <div class="field-group">
+                    <label class="field-label">Rating (1.0 - 5.0)</label>
+                    <input type="number" name="rating" class="field-input" placeholder="4.8" step="0.1" min="1" max="5" value="4.8" />
+                  </div>
+                  <div class="field-group full">
+                    <label class="check-item" style="font-weight: 600; color: var(--primary-color);">
+                      <input type="checkbox" name="isFeatured" value="true" checked />
+                      <span>Featured Product (Show in Dashboard recommendations)</span>
+                    </label>
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Product Description</label>
+                    <input type="text" name="description" class="field-input" placeholder="e.g. High-protein complete adult nutrition for large breed dogs." />
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Search Tags (Comma separated)</label>
+                    <input type="text" name="tags" class="field-input" placeholder="Dog Food, Puppy, Adult, High Protein, Best Seller" />
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Product Image URL</label>
+                    <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Or Upload Product Image File</label>
+                    <input type="file" name="productImage" class="field-input" accept="image/*" style="padding-top: 0.5rem;" />
+                  </div>
+                  <div class="field-group full">
+                    <label class="field-label">Buy / Purchase Link</label>
+                    <input type="url" name="buyUrl" class="field-input" placeholder="https://amazon.in/..." />
+                  </div>
+                </div>
+                <div class="form-button-row">
+                  <button type="submit" class="btn btn-primary">
+                    <i data-lucide="plus"></i> Add Product Directly to Catalog
+                  </button>
+                </div>
+              </form>
             </div>
-            <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
-              <div class="form-grid-layout">
-                <div class="field-group full">
-                  <label class="field-label">Product Title *</label>
-                  <input type="text" name="name" class="field-input" placeholder="e.g. Royal Canin Maxi Adult Dog Food (3kg)" required />
-                </div>
-                <div class="field-group">
-                  <label class="field-label">Category *</label>
-                  <select name="category" class="field-select">
-                    <option value="Food">Pet Food & Nutrition</option>
-                    <option value="Grooming">Grooming & Shampoo</option>
-                    <option value="Healthcare">Healthcare & Supplements</option>
-                    <option value="Toys">Chew Toys & Balls</option>
-                    <option value="Accessories">Collars, Leashes & Bowls</option>
-                    <option value="Bedding & Bowls">Bedding & Bowls</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <label class="field-label">Stock Status *</label>
-                  <select name="inStock" class="field-select">
-                    <option value="true" selected>In Stock (Available)</option>
-                    <option value="false">Out of Stock</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <label class="field-label">Selling Price (₹) *</label>
-                  <input type="number" name="price" class="field-input" placeholder="e.g. 1499" min="0" required />
-                </div>
-                <div class="field-group">
-                  <label class="field-label">Original MRP Price (₹) (For discount badge)</label>
-                  <input type="number" name="originalPrice" class="field-input" placeholder="e.g. 1899" min="0" />
-                </div>
-                <div class="field-group">
-                  <label class="field-label">Rating (1.0 - 5.0)</label>
-                  <input type="number" name="rating" class="field-input" placeholder="4.8" step="0.1" min="1" max="5" value="4.8" />
-                </div>
-                <div class="field-group full">
-                  <label class="check-item" style="font-weight: 600; color: var(--primary-color);">
-                    <input type="checkbox" name="isFeatured" value="true" checked />
-                    <span>Featured Product (Show in Dashboard recommendations)</span>
-                  </label>
-                </div>
-                <div class="field-group full">
-                  <label class="field-label">Product Description</label>
-                  <input type="text" name="description" class="field-input" placeholder="e.g. High-protein complete adult nutrition for large breed dogs." />
-                </div>
-                <div class="field-group full">
-                  <label class="field-label">Search Tags (Comma separated)</label>
-                  <input type="text" name="tags" class="field-input" placeholder="Dog Food, Puppy, Adult, High Protein, Best Seller" />
-                </div>
-                <div class="field-group full">
-                  <label class="field-label">Product Image URL</label>
-                  <input type="url" name="photoUrl" class="field-input" placeholder="https://images.unsplash.com/..." />
-                </div>
-                <div class="field-group full">
-                  <label class="field-label">Or Upload Product Image File</label>
-                  <input type="file" name="productImage" class="field-input" accept="image/*" style="padding-top: 0.5rem;" />
-                </div>
-                <div class="field-group full">
-                  <label class="field-label">Buy / Purchase Link</label>
-                  <input type="url" name="buyUrl" class="field-input" placeholder="https://amazon.in/..." />
-                </div>
-              </div>
-              <div class="form-button-row">
-                <button type="submit" class="btn btn-primary">
-                  <i data-lucide="plus"></i> Add Product to Catalog
-                </button>
-              </div>
-            </form>
-          </div>
+          <% } %>
         <% } %>
+
       </div>
     </main>
 

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List Your Pet Product — Woofy Partner Program</title>
+    <meta
+      name="description"
+      content="Partner with Woofy to sell or recommend your pet food, grooming supplies, toys, and healthcare products to thousands of dedicated pet parents."
+    />
+
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Shop/list-product.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="list-product-body">
+    <!-- Subtle Background Ambient Light & Mesh -->
+    <div class="bg-mesh" aria-hidden="true">
+      <div class="mesh-blob blob-1"></div>
+      <div class="mesh-blob blob-2"></div>
+      <div class="mesh-grid-pattern"></div>
+    </div>
+
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <header class="dashboard-nav" id="navbar">
+      <div class="nav-container">
+        <a href="/api/dashboard" class="logo">
+          <span class="logo-icon-box">
+            <i data-lucide="paw-print"></i>
+          </span>
+          <span class="brand-name">Woofy<span class="dot">.</span></span>
+        </a>
+
+        <nav class="nav-center-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop" class="active">
+            <i data-lucide="shopping-bag"></i>
+            <span>Shop</span>
+          </a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="/api/dashboard" class="btn btn-secondary btn-sm">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="list-page-main">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <!-- Hero Header -->
+        <div class="page-hero-header">
+          <div class="announcement-pill">
+            <span class="live-pulse"></span>
+            <span class="pill-text">Seller & Brand Partner Program</span>
+          </div>
+          <h1 class="page-title">
+            List Your Pet Product on <span class="gradient-text">Woofy.</span>
+          </h1>
+          <p class="page-subtitle">
+            Reach over 2,500+ caring pet parents across India. Submit your product specifications below for quick administrative verification and catalog listing.
+          </p>
+        </div>
+
+        <!-- 2-Column Split: Form + Live Interactive Preview -->
+        <div class="listing-layout-grid">
+          <!-- Left Column: Comprehensive Listing Form -->
+          <div class="form-column">
+            <form
+              id="productListingForm"
+              action="/api/products/request"
+              method="POST"
+              enctype="multipart/form-data"
+              novalidate
+            >
+              <!-- SECTION 1: Product Essentials & Branding -->
+              <div class="form-card-section">
+                <div class="section-card-header">
+                  <div class="step-badge">1</div>
+                  <div>
+                    <h3>Product Essentials</h3>
+                    <p>Enter the fundamental title, brand identity, and category.</p>
+                  </div>
+                </div>
+
+                <div class="fields-grid">
+                  <!-- Product Title -->
+                  <div class="form-group full">
+                    <label for="productName">Product Title / Name <span class="req">*</span></label>
+                    <div class="input-wrap">
+                      <i data-lucide="tag" class="input-icon"></i>
+                      <input
+                        type="text"
+                        id="productName"
+                        name="name"
+                        class="form-control"
+                        placeholder="e.g. Royal Canin Maxi Adult Dry Dog Food (3kg)"
+                        required
+                        autocomplete="off"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Category -->
+                  <div class="form-group">
+                    <label for="productCategory">Category <span class="req">*</span></label>
+                    <div class="input-wrap">
+                      <i data-lucide="layers" class="input-icon"></i>
+                      <select id="productCategory" name="category" class="form-control" required>
+                        <option value="Food" selected>Pet Food & Nutrition</option>
+                        <option value="Grooming">Grooming & Shampoo</option>
+                        <option value="Healthcare">Healthcare & Supplements</option>
+                        <option value="Toys">Chew Toys & Balls</option>
+                        <option value="Accessories">Collars, Leashes & Bowls</option>
+                        <option value="Bedding & Bowls">Bedding & Bowls</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Brand / Store Name -->
+                  <div class="form-group">
+                    <label for="brandName">Brand / Seller Name</label>
+                    <div class="input-wrap">
+                      <i data-lucide="store" class="input-icon"></i>
+                      <input
+                        type="text"
+                        id="brandName"
+                        name="brandName"
+                        class="form-control"
+                        placeholder="e.g. Royal Canin / Bark & Bites"
+                        autocomplete="off"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 2: Pricing & Deals -->
+              <div class="form-card-section">
+                <div class="section-card-header">
+                  <div class="step-badge">2</div>
+                  <div>
+                    <h3>Pricing & Discounts</h3>
+                    <p>Set the selling price and optional MRP for discount badge display.</p>
+                  </div>
+                </div>
+
+                <div class="fields-grid">
+                  <!-- Selling Price -->
+                  <div class="form-group">
+                    <label for="productPrice">Selling Price (₹) <span class="req">*</span></label>
+                    <div class="input-wrap">
+                      <i data-lucide="indian-rupee" class="input-icon"></i>
+                      <input
+                        type="number"
+                        id="productPrice"
+                        name="price"
+                        class="form-control"
+                        placeholder="e.g. 1499"
+                        min="0"
+                        step="1"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Original MRP Price -->
+                  <div class="form-group">
+                    <label for="originalPrice">Original MRP Price (₹)</label>
+                    <div class="input-wrap">
+                      <i data-lucide="percent" class="input-icon"></i>
+                      <input
+                        type="number"
+                        id="originalPrice"
+                        name="originalPrice"
+                        class="form-control"
+                        placeholder="e.g. 1899"
+                        min="0"
+                        step="1"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Live Discount Calculation Banner -->
+                  <div class="discount-calc-banner" id="discountBanner" style="display: none;">
+                    <i data-lucide="sparkles"></i>
+                    <span>Calculated Discount: <strong id="discountPercentText">0% OFF</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 3: Visuals & Direct Store Link -->
+              <div class="form-card-section">
+                <div class="section-card-header">
+                  <div class="step-badge">3</div>
+                  <div>
+                    <h3>Media & Purchase Link</h3>
+                    <p>Add high quality product imagery and the direct online buying link.</p>
+                  </div>
+                </div>
+
+                <div class="fields-grid">
+                  <!-- File Upload Zone -->
+                  <div class="form-group full">
+                    <label>Upload Product Image File</label>
+                    <div class="file-dropzone" id="dropzone">
+                      <input
+                        type="file"
+                        id="productImageFile"
+                        name="productImage"
+                        class="dropzone-input"
+                        accept="image/jpeg,image/png,image/webp"
+                      />
+                      <div class="dropzone-content" id="dropzonePrompt">
+                        <div class="dropzone-icon">
+                          <i data-lucide="upload-cloud"></i>
+                        </div>
+                        <p class="dropzone-title">
+                          <strong>Click to upload</strong> or drag and drop image here
+                        </p>
+                        <span class="dropzone-hint">PNG, JPG, or WEBP (Recommended: 800x800px, max 5MB)</span>
+                      </div>
+                      <div class="dropzone-preview" id="dropzonePreview" style="display: none;">
+                        <img id="previewImg" src="" alt="Product Preview" />
+                        <button type="button" id="removeImgBtn" class="btn-remove-img" title="Remove image">
+                          <i data-lucide="trash-2"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Alternative Photo URL -->
+                  <div class="form-group full">
+                    <label for="photoUrl">Or Enter Public Image URL</label>
+                    <div class="input-wrap">
+                      <i data-lucide="link" class="input-icon"></i>
+                      <input
+                        type="url"
+                        id="photoUrl"
+                        name="photoUrl"
+                        class="form-control"
+                        placeholder="https://images.unsplash.com/... or cloud image link"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Buy / Store Link -->
+                  <div class="form-group full">
+                    <label for="buyUrl">Buy / Store Link URL</label>
+                    <div class="input-wrap">
+                      <i data-lucide="shopping-cart" class="input-icon"></i>
+                      <input
+                        type="url"
+                        id="buyUrl"
+                        name="buyUrl"
+                        class="form-control"
+                        placeholder="https://amazon.in/... / https://flipkart.com/... / your store link"
+                      />
+                    </div>
+                    <span class="field-hint">Where pet parents will be redirected when clicking 'Buy Now'.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 4: Description & Specifications -->
+              <div class="form-card-section">
+                <div class="section-card-header">
+                  <div class="step-badge">4</div>
+                  <div>
+                    <h3>Detailed Description</h3>
+                    <p>Describe product benefits, nutritional facts, and keywords.</p>
+                  </div>
+                </div>
+
+                <div class="fields-grid">
+                  <!-- Product Description -->
+                  <div class="form-group full">
+                    <label for="productDesc">Product Description & Key Benefits <span class="req">*</span></label>
+                    <textarea
+                      id="productDesc"
+                      name="description"
+                      class="form-control textarea"
+                      rows="4"
+                      placeholder="Detail the nutritional composition, suitable dog breeds, age group, storage instructions, and health benefits..."
+                      required
+                    ></textarea>
+                  </div>
+
+                  <!-- Search Tags -->
+                  <div class="form-group full">
+                    <label for="productTags">Search Keywords & Tags</label>
+                    <div class="input-wrap">
+                      <i data-lucide="hash" class="input-icon"></i>
+                      <input
+                        type="text"
+                        id="productTags"
+                        name="tags"
+                        class="form-control"
+                        placeholder="e.g. Dry Food, Puppy, Adult, High Protein, Dental Care"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SECTION 5: Submitter Contact Details -->
+              <div class="form-card-section">
+                <div class="section-card-header">
+                  <div class="step-badge">5</div>
+                  <div>
+                    <h3>Submitter & Seller Information</h3>
+                    <p>Our company team will use this to verify the listing.</p>
+                  </div>
+                </div>
+
+                <div class="fields-grid">
+                  <!-- Submitter Name -->
+                  <div class="form-group">
+                    <label for="submitterName">Your Full Name</label>
+                    <div class="input-wrap">
+                      <i data-lucide="user" class="input-icon"></i>
+                      <input
+                        type="text"
+                        id="submitterName"
+                        name="submitterName"
+                        class="form-control"
+                        value="<%= (typeof currentUser !== 'undefined' && currentUser && currentUser.fullName) ? currentUser.fullName : '' %>"
+                        placeholder="e.g. Shubham Rathod"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Submitter Phone / WhatsApp -->
+                  <div class="form-group">
+                    <label for="submitterPhone">Contact Phone / WhatsApp <span class="req">*</span></label>
+                    <div class="input-wrap">
+                      <i data-lucide="phone" class="input-icon"></i>
+                      <input
+                        type="tel"
+                        id="submitterPhone"
+                        name="submitterPhone"
+                        class="form-control"
+                        placeholder="e.g. +91 98200 12345"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Action Box -->
+              <div class="form-submit-card">
+                <div class="submit-info-text">
+                  <i data-lucide="shield-check"></i>
+                  <span>Your listing will be reviewed by the Woofy team within 24 hours.</span>
+                </div>
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-lg">
+                  <span id="btnText">Submit Product Listing Request</span>
+                  <i data-lucide="arrow-right" id="btnIcon"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right Column: Live Interactive Card Preview -->
+          <div class="preview-column">
+            <div class="sticky-preview-wrapper">
+              <div class="preview-header-bar">
+                <span class="preview-tag">
+                  <i data-lucide="eye"></i> Live Store Preview
+                </span>
+                <span class="preview-note">How it appears to pet parents</span>
+              </div>
+
+              <!-- Interactive Mockup Card -->
+              <div class="live-product-card">
+                <div class="live-img-container">
+                  <img
+                    id="cardPreviewImg"
+                    src="https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80"
+                    alt="Product Preview"
+                  />
+                  <span class="live-discount-badge" id="cardDiscountBadge" style="display: none;">
+                    0% OFF
+                  </span>
+                  <span class="live-category-badge" id="cardCategoryBadge">Food</span>
+                </div>
+
+                <div class="live-card-body">
+                  <span class="live-brand-name" id="cardBrandName">Brand Name</span>
+                  <h4 class="live-product-title" id="cardTitle">
+                    Your Product Title Will Appear Here
+                  </h4>
+                  <p class="live-product-desc" id="cardDesc">
+                    A comprehensive nutritional description and key benefits will be visible here.
+                  </p>
+
+                  <div class="live-price-row">
+                    <div class="price-group">
+                      <span class="live-price-current" id="cardPrice">₹0</span>
+                      <span class="live-price-original" id="cardOriginalPrice" style="display: none;">₹0</span>
+                    </div>
+                    <div class="live-rating">
+                      <i data-lucide="star" class="star-icon"></i>
+                      <span>4.8 (New)</span>
+                    </div>
+                  </div>
+
+                  <button type="button" class="btn btn-primary btn-full btn-sm preview-buy-btn">
+                    <i data-lucide="shopping-cart"></i>
+                    <span>Buy Now</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Listing Process Timeline -->
+              <div class="process-timeline-card">
+                <h5>Listing Process</h5>
+                <div class="timeline-step active">
+                  <div class="timeline-dot">1</div>
+                  <div class="timeline-text">
+                    <strong>Submit Specifications</strong>
+                    <span>Fill in product pricing, photos, and store link.</span>
+                  </div>
+                </div>
+                <div class="timeline-step">
+                  <div class="timeline-dot">2</div>
+                  <div class="timeline-text">
+                    <strong>Admin Verification</strong>
+                    <span>Our team reviews product safety & pricing.</span>
+                  </div>
+                </div>
+                <div class="timeline-step">
+                  <div class="timeline-dot">3</div>
+                  <div class="timeline-text">
+                    <strong>Published Live</strong>
+                    <span>Featured in Woofy Shop & Dashboard recommendations.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dash-footer">
+      <div class="container footer-container">
+        <div class="footer-brand">
+          <h3>Woofy.</h3>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+        </div>
+        <div class="footer-links">
+          <p>
+            Designed & Developed by
+            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
+              Shubham Rathod
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="/Shop/list-product.js"></script>
+  </body>
+</html>

@@ -56,12 +56,18 @@
             <h2>Pet Care Store & <span class="sketch-highlight">Essentials</span></h2>
             <p>Curated pet food, wellness supplements, grooming kits, and durable toys for Indian breeds.</p>
           </div>
-          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-          <a href="/admin?section=products#addProductForm" class="btn btn-primary">
-            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
-            <span>Add New Product</span>
-          </a>
-          <% } %>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <a href="/products/list-product" class="btn btn-secondary">
+              <i data-lucide="plus-circle" style="width: 16px; height: 16px; color: var(--accent-color);"></i>
+              <span>List Your Product</span>
+            </a>
+            <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+            <a href="/admin?section=products#addProductForm" class="btn btn-primary">
+              <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
+              <span>Admin Catalog</span>
+            </a>
+            <% } %>
+          </div>
         </div>
 
         <!-- Filter Categories & Search Panel -->

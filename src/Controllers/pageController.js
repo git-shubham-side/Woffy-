@@ -79,7 +79,7 @@ const getShopPage = async (req, res) => {
   try {
     const { category, search } = req.query;
 
-    const query = { inStock: true };
+    const query = { inStock: true, status: { $ne: "pending" } };
 
     if (category && category.trim() !== "" && category !== "All") {
       query.category = category.trim();

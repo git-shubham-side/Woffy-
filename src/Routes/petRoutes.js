@@ -65,4 +65,21 @@ router.post(
   petController.deletePet,
 );
 
+// Product Listing Request Page (User initiated)
+router.get(
+  ["/products/list-product", "/shop/list-product", "/api/products/request"],
+  isAuthenticated,
+  petController.getListingRequestPage,
+);
+
+// Submit Product Listing Request (User initiated)
+router.post(
+  "/api/products/request",
+  isAuthenticated,
+  upload.single("productImage"),
+  petController.postRequestProduct,
+);
+
 module.exports = router;
+
+

@@ -12,21 +12,28 @@ const getDashboard = async (req, res) => {
     const pets = await Pet.find({ user: req.session.userId }).sort({
       createdAt: -1,
     });
-    const products = await Product.find({ inStock: true })
+    const products = await Product.find({ inStock: true, status: { $ne: "pending" } })
       .sort({ isFeatured: -1, createdAt: -1 })
       .limit(6);
+    const userProductRequests = await Product.find({
+      submittedBy: req.session.userId,
+    }).sort({ createdAt: -1 });
 
     res.render("Dashboard/dashboard", {
       userName: user ? user.fullName : "Pet Parent",
+      currentUser: user,
       pets: pets || [],
       products: products || [],
+      userProductRequests: userProductRequests || [],
     });
   } catch (err) {
     console.error("Dashboard error:", err);
     res.render("Dashboard/dashboard", {
       userName: "Pet Parent",
+      currentUser: null,
       pets: [],
       products: [],
+      userProductRequests: [],
     });
   }
 };
@@ -316,6 +323,113 @@ const deletePet = async (req, res) => {
   }
 };
 
+/**
+ * POST: User Submit Product Listing Request (Pending Admin Approval)
+ */
+const postRequestProduct = async (req, res) => {
+  try {
+    const {
+      name,
+      category,
+      brandName,
+      price,
+      originalPrice,
+      description,
+      buyUrl,
+      submitterPhone,
+      photoUrl,
+      tags,
+    } = req.body;
+
+    if (!name || !price) {
+      req.flash("error", "Product name and price are required.");
+      return res.redirect("/api/dashboard");
+    }
+
+    const user = await User.findById(req.session.userId);
+
+    let photoPath = "";
+    if (req.file) {
+      photoPath =
+        req.file.path && req.file.path.startsWith("http")
+          ? req.file.path
+          : "/uploads/products/" + req.file.filename;
+    } else if (photoUrl && photoUrl.trim() !== "") {
+      photoPath = photoUrl.trim();
+    } else {
+      photoPath =
+        "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80";
+    }
+
+    const priceNum = parseFloat(price);
+    const originalPriceNum = originalPrice ? parseFloat(originalPrice) : null;
+    let discountPercent = 0;
+    if (originalPriceNum && originalPriceNum > priceNum) {
+      discountPercent = Math.round(
+        ((originalPriceNum - priceNum) / originalPriceNum) * 100,
+      );
+    }
+
+    let tagsList = ["Dog Care"];
+    if (tags && tags.trim() !== "") {
+      tagsList = tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+    }
+
+    const productRequest = await Product.create({
+      name: name.trim(),
+      category: category || "Food",
+      brandName: brandName ? brandName.trim() : "",
+      price: priceNum,
+      originalPrice: originalPriceNum,
+      discountPercent,
+      description: description ? description.trim() : "",
+      image: photoPath,
+      buyUrl: buyUrl ? buyUrl.trim() : "",
+      tags: tagsList,
+      rating: 4.8,
+      inStock: true,
+      isFeatured: false,
+      status: "pending",
+      submittedBy: req.session.userId,
+      submitterName: user ? user.fullName : "Pet Parent",
+      submitterEmail: user ? user.email : "",
+      submitterPhone: submitterPhone ? submitterPhone.trim() : "",
+    });
+
+    req.flash(
+      "success",
+      `Product request for "${productRequest.name}" submitted successfully! It will go live once reviewed and approved by our team.`,
+    );
+    res.redirect("/api/dashboard");
+  } catch (err) {
+    console.error("Product request error:", err);
+    req.flash(
+      "error",
+      "Failed to submit product request: " + (err.message || "Unknown error"),
+    );
+    res.redirect("/api/dashboard");
+  }
+};
+
+/**
+ * GET: Render Dedicated Product Listing Request Page
+ */
+const getListingRequestPage = async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    res.render("Shop/list-product", {
+      currentUser: user,
+      userName: user ? user.fullName : "Pet Parent",
+    });
+  } catch (err) {
+    console.error("Listing request page load error:", err);
+    res.redirect("/api/dashboard");
+  }
+};
+
 module.exports = {
   getDashboard,
   getCreatePetPage,
@@ -325,4 +439,8 @@ module.exports = {
   getEditPetPage,
   postEditPet,
   deletePet,
+  getListingRequestPage,
+  postRequestProduct,
 };
+
+

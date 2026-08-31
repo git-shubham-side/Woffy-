@@ -64,5 +64,80 @@ document.addEventListener("DOMContentLoaded", () => {
       navbar.classList.toggle("scrolled", window.scrollY > 20);
     });
   }
+
+  // Product Listing Request Modal Handling
+  const openProductModalBtn = document.getElementById("openProductModalBtn");
+  const closeProductModalBtn = document.getElementById("closeProductModalBtn");
+  const cancelProductModalBtn = document.getElementById("cancelProductModalBtn");
+  const productRequestModal = document.getElementById("productRequestModal");
+  const productRequestForm = document.getElementById("productRequestForm");
+  const submitProductReqBtn = document.getElementById("submitProductReqBtn");
+  const submitProductReqText = document.getElementById("submitProductReqText");
+
+  const openModal = () => {
+    if (productRequestModal) {
+      productRequestModal.classList.add("active");
+      productRequestModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+  };
+
+  const closeModal = () => {
+    if (productRequestModal) {
+      productRequestModal.classList.remove("active");
+      productRequestModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+  };
+
+  if (openProductModalBtn) {
+    openProductModalBtn.addEventListener("click", openModal);
+  }
+
+  if (closeProductModalBtn) {
+    closeProductModalBtn.addEventListener("click", closeModal);
+  }
+
+  if (cancelProductModalBtn) {
+    cancelProductModalBtn.addEventListener("click", closeModal);
+  }
+
+  // Close modal when clicking outside modal dialog
+  if (productRequestModal) {
+    productRequestModal.addEventListener("click", (e) => {
+      if (e.target === productRequestModal) {
+        closeModal();
+      }
+    });
+  }
+
+  // Close modal on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && productRequestModal && productRequestModal.classList.contains("active")) {
+      closeModal();
+    }
+  });
+
+  // Submit button loading state
+  if (productRequestForm && submitProductReqBtn) {
+    productRequestForm.addEventListener("submit", () => {
+      const nameInput = document.getElementById("reqProductName");
+      const priceInput = document.getElementById("reqPrice");
+      const descInput = document.getElementById("reqDescription");
+
+      if (!nameInput.value.trim() || !priceInput.value || !descInput.value.trim()) {
+        return; // Handled by HTML5 validation
+      }
+
+      submitProductReqBtn.disabled = true;
+      if (submitProductReqText) {
+        submitProductReqText.textContent = "Submitting Listing Request...";
+      }
+    });
+  }
 });
+
 
