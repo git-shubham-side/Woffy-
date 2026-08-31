@@ -1,115 +1,204 @@
-// Add a subtle border to the navbar when scrolling down
-document.addEventListener("DOMContentLoaded", () => {
-  const navbar = document.getElementById("navbar");
+/**
+ * Woofy Landing Page Interactive JavaScript
+ * Features: Mobile Drawer Toggle, Navbar Scroll Effects, Smooth Scroll,
+ * Scroll Reveal Animations, Lucide Icon Rendering, AJAX Contact Form
+ */
 
-  window.addEventListener("scroll", () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Initialize Lucide Icons
+  if (window.lucide) {
+    lucide.createIcons();
+  }
+
+  // 2. Sticky Navbar Blur & Scrolled State
+  const navbar = document.getElementById("navbar");
+  const handleNavbarScroll = () => {
     if (window.scrollY > 20) {
-      navbar.classList.add("scrolled");
+      navbar?.classList.add("scrolled");
     } else {
-      navbar.classList.remove("scrolled");
+      navbar?.classList.remove("scrolled");
+    }
+  };
+  window.addEventListener("scroll", handleNavbarScroll, { passive: true });
+  handleNavbarScroll();
+
+  // 3. Mobile Hamburger Menu Drawer Handlers
+  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+  const mobileDrawer = document.getElementById("mobileDrawer");
+  const mobileDrawerOverlay = document.getElementById("mobileDrawerOverlay");
+  const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+  const drawerLinks = document.querySelectorAll(".drawer-link");
+  const menuOpenIcon = document.getElementById("menuOpenIcon");
+  const menuCloseIcon = document.getElementById("menuCloseIcon");
+
+  const openDrawer = () => {
+    mobileDrawer?.classList.add("active");
+    mobileDrawerOverlay?.classList.add("active");
+    document.body.style.overflow = "hidden";
+    mobileMenuToggle?.setAttribute("aria-expanded", "true");
+    if (menuOpenIcon) menuOpenIcon.style.display = "none";
+    if (menuCloseIcon) menuCloseIcon.style.display = "inline-block";
+  };
+
+  const closeDrawer = () => {
+    mobileDrawer?.classList.remove("active");
+    mobileDrawerOverlay?.classList.remove("active");
+    document.body.style.overflow = "";
+    mobileMenuToggle?.setAttribute("aria-expanded", "false");
+    if (menuOpenIcon) menuOpenIcon.style.display = "inline-block";
+    if (menuCloseIcon) menuCloseIcon.style.display = "none";
+  };
+
+  mobileMenuToggle?.addEventListener("click", () => {
+    const isOpen = mobileDrawer?.classList.contains("active");
+    if (isOpen) {
+      closeDrawer();
+    } else {
+      openDrawer();
     }
   });
-});
-// Lucide icons render
-lucide.createIcons();
 
-// Navbar shadow on scroll
-const navbar = document.getElementById("navbar");
-window.addEventListener("scroll", () => {
-  navbar.classList.toggle("scrolled", window.scrollY > 20);
-});
+  drawerCloseBtn?.addEventListener("click", closeDrawer);
+  mobileDrawerOverlay?.addEventListener("click", closeDrawer);
 
-// Scroll-reveal animation
-const revealEls = document.querySelectorAll(".reveal");
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("active");
-        observer.unobserve(entry.target);
+  // Close drawer on link click
+  drawerLinks.forEach((link) => {
+    link.addEventListener("click", closeDrawer);
+  });
+
+  // Close drawer on Escape key press
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mobileDrawer?.classList.contains("active")) {
+      closeDrawer();
+    }
+  });
+
+  // 4. Scroll Reveal Animations with Intersection Observer
+  const revealElements = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    revealElements.forEach((el) => revealObserver.observe(el));
+  } else {
+    // Fallback for older browsers
+    revealElements.forEach((el) => el.classList.add("active"));
+  }
+
+  // 5. Active Nav Link Highlighter on Scroll
+  const navSections = document.querySelectorAll("main section[id]");
+  const navLinks = document.querySelectorAll(".nav-links .nav-link");
+
+  const highlightNav = () => {
+    const scrollY = window.pageYOffset;
+
+    navSections.forEach((section) => {
+      const sectionHeight = section.offsetHeight;
+      const sectionTop = section.offsetTop - 100;
+      const sectionId = section.getAttribute("id");
+
+      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+        navLinks.forEach((link) => {
+          if (link.getAttribute("href") === `#${sectionId}`) {
+            link.classList.add("active");
+          } else if (link.getAttribute("href")?.startsWith("#")) {
+            link.classList.remove("active");
+          }
+        });
       }
     });
-  },
-  { threshold: 0.15 },
-);
+  };
 
-revealEls.forEach((el) => observer.observe(el));
+  window.addEventListener("scroll", highlightNav, { passive: true });
 
-// Contact Form AJAX Submission
-const contactForm = document.getElementById("contactForm");
-const contactAlert = document.getElementById("contactAlert");
-const contactSubmitBtn = document.getElementById("contactSubmitBtn");
-const contactBtnText = document.getElementById("contactBtnText");
+  // 6. Contact Form AJAX Submission
+  const contactForm = document.getElementById("contactForm");
+  const contactAlert = document.getElementById("contactAlert");
+  const contactSubmitBtn = document.getElementById("contactSubmitBtn");
+  const contactBtnText = document.getElementById("contactBtnText");
 
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const name = document.getElementById("senderName").value.trim();
-    const email = document.getElementById("senderEmail").value.trim();
-    const message = document.getElementById("messageContent").value.trim();
+      const nameInput = document.getElementById("senderName");
+      const emailInput = document.getElementById("senderEmail");
+      const messageInput = document.getElementById("messageContent");
 
-    if (!name || !email || !message) {
-      if (contactAlert) {
-        contactAlert.style.display = "block";
-        contactAlert.style.backgroundColor = "#fee2e2";
-        contactAlert.style.color = "#991b1b";
-        contactAlert.style.border = "1px solid #f87171";
-        contactAlert.textContent = "Please fill in all fields.";
+      const name = nameInput ? nameInput.value.trim() : "";
+      const email = emailInput ? emailInput.value.trim() : "";
+      const message = messageInput ? messageInput.value.trim() : "";
+
+      if (!name || !email || !message) {
+        showAlert("Please fill in all required fields.", "error");
+        return;
       }
-      return;
-    }
 
-    if (contactSubmitBtn) {
-      contactSubmitBtn.disabled = true;
-      if (contactBtnText) contactBtnText.textContent = "Sending...";
-    }
+      // Email basic format check
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showAlert("Please enter a valid email address.", "error");
+        return;
+      }
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ name, email, message }),
-      });
+      // Set loading button state
+      if (contactSubmitBtn) {
+        contactSubmitBtn.disabled = true;
+        if (contactBtnText) contactBtnText.textContent = "Sending...";
+      }
 
-      const result = await response.json();
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ name, email, message }),
+        });
 
-      if (contactAlert) {
-        contactAlert.style.display = "block";
+        const result = await response.json();
+
         if (response.ok && result.success) {
-          contactAlert.style.backgroundColor = "#dcfce7";
-          contactAlert.style.color = "#166534";
-          contactAlert.style.border = "1px solid #86efac";
-          contactAlert.textContent =
-            "Thank you, " +
-            name +
-            "! Your message has been sent to Shubham (rathodshubham7711@gmail.com).";
+          showAlert(
+            `Thank you, ${name}! Your message has been sent successfully. We will get back to you shortly.`,
+            "success"
+          );
           contactForm.reset();
         } else {
-          contactAlert.style.backgroundColor = "#fee2e2";
-          contactAlert.style.color = "#991b1b";
-          contactAlert.style.border = "1px solid #f87171";
-          contactAlert.textContent =
-            result.error || "Failed to send message. Please try again.";
+          showAlert(result.error || "Failed to send message. Please try again.", "error");
+        }
+      } catch (err) {
+        showAlert("Network error occurred. Please check your internet connection.", "error");
+      } finally {
+        if (contactSubmitBtn) {
+          contactSubmitBtn.disabled = false;
+          if (contactBtnText) contactBtnText.textContent = "Send Message";
         }
       }
-    } catch (err) {
-      if (contactAlert) {
-        contactAlert.style.display = "block";
-        contactAlert.style.backgroundColor = "#fee2e2";
-        contactAlert.style.color = "#991b1b";
-        contactAlert.style.border = "1px solid #f87171";
-        contactAlert.textContent =
-          "Network error. Please check your connection.";
-      }
-    } finally {
-      if (contactSubmitBtn) {
-        contactSubmitBtn.disabled = false;
-        if (contactBtnText) contactBtnText.textContent = "Send Message";
-      }
-    }
-  });
-}
+    });
+  }
+
+  function showAlert(msg, type) {
+    if (!contactAlert) return;
+    contactAlert.style.display = "block";
+    contactAlert.className = `contact-alert ${type}`;
+    contactAlert.textContent = msg;
+
+    // Smooth scroll to alert if needed
+    contactAlert.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+});
+
