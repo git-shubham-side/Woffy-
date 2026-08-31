@@ -107,6 +107,19 @@
 
           <div class="form-row">
             <div class="form-group">
+              <label for="dob">Date of Birth (DOB) <span class="help-text" style="font-weight: 500; display: inline;">(Auto-calculates age)</span></label>
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                class="form-control"
+                max="<%= new Date().toISOString().split('T')[0] %>"
+                value="<%= pet.dob ? new Date(pet.dob).toISOString().split('T')[0] : '' %>"
+              />
+              <span class="help-text">Pick pet's birth date to calculate age automatically.</span>
+            </div>
+
+            <div class="form-group">
               <label for="age">Age (years)</label>
               <input
                 type="number"
@@ -118,8 +131,12 @@
                 value="<%= pet.age %>"
                 placeholder="e.g. 2.5"
               />
+              <div id="ageCalculatedFeedback" class="age-calculated-pill" style="display: none;"></div>
+              <span class="help-text">Auto-filled via DOB or entered manually.</span>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label for="weight">Weight (kg)</label>
               <input
@@ -133,9 +150,7 @@
                 placeholder="e.g. 28"
               />
             </div>
-          </div>
 
-          <div class="form-row">
             <div class="form-group">
               <label for="gender">Gender</label>
               <select id="gender" name="gender" class="form-select">
@@ -143,13 +158,19 @@
                 <option value="Female" <%= pet.gender === 'Female' ? 'selected' : '' %>>Female</option>
               </select>
             </div>
+          </div>
 
+          <div class="form-row">
             <div class="form-group">
               <label for="vaccinated">Vaccinated</label>
               <select id="vaccinated" name="vaccinated" class="form-select">
                 <option value="Yes" <%= pet.vaccinated === 'Yes' ? 'selected' : '' %>>Yes</option>
                 <option value="No" <%= pet.vaccinated === 'No' ? 'selected' : '' %>>No</option>
               </select>
+            </div>
+
+            <div class="form-group">
+              <!-- Empty spacer column for balanced layout -->
             </div>
           </div>
 
@@ -247,5 +268,7 @@
         <p>&copy; <%= new Date().getFullYear() %> Woofy. All rights reserved.</p>
       </div>
     </footer>
+    <!-- Scripts -->
+    <script src="/Create-Profile/create-profile.js"></script>
   </body>
 </html>

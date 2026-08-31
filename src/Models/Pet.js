@@ -26,6 +26,10 @@ const petSchema = new mongoose.Schema({
     trim: true,
     default: "Unknown",
   },
+  dob: {
+    type: Date,
+    default: null,
+  },
   age: {
     type: Number,
     default: 0,

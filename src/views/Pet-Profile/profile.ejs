@@ -88,6 +88,14 @@
                   <div class="value"><%= pet.age ? pet.age + ' yrs' : 'N/A' %></div>
                 </div>
 
+                <% if (pet.dob) { %>
+                <!-- Date of Birth -->
+                <div class="info-item">
+                  <div class="label">Date of Birth</div>
+                  <div class="value"><%= new Date(pet.dob).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></div>
+                </div>
+                <% } %>
+
                 <!-- Weight -->
                 <div class="info-item">
                   <div class="label">Weight</div>

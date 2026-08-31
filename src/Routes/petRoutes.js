@@ -32,7 +32,12 @@ router.get("/api/pet-profiles", isAuthenticated, petController.getAllPets);
 
 // Single Pet Profile
 router.get(
-  ["/api/pet-profile/:petId", "/api/pet-profile"],
+  [
+    "/api/pet-profile/:petId",
+    "/api/pet-profile",
+    "/api/profile/:petId",
+    "/profile/:petId",
+  ],
   isAuthenticated,
   petController.getPetProfile,
 );

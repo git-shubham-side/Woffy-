@@ -245,6 +245,29 @@ textarea.form-control {
   margin-top: 0.2rem;
 }
 
+/* Auto Age Calculated Pill */
+.age-calculated-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2563eb;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  margin-top: 0.35rem;
+  width: fit-content;
+  transition: var(--transition);
+}
+
+.age-calculated-pill.error {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border-color: #fecaca;
+}
+
 /* Photo Preview Box */
 .photo-preview-item {
   display: flex;

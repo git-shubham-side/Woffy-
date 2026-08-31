@@ -55,6 +55,7 @@ const postCreatePet = async (req, res) => {
       ownerName,
       species,
       breed,
+      dob,
       age,
       weight,
       gender,
@@ -66,6 +67,13 @@ const postCreatePet = async (req, res) => {
     if (!petName || petName.trim() === "") {
       req.flash("error", "Pet name is required.");
       return res.redirect("/api/create-pet-profile");
+    }
+
+    let parsedAge = age ? parseFloat(age) : 0;
+    const petDob = dob && dob.trim() !== "" ? new Date(dob) : null;
+    if ((!age || isNaN(parsedAge)) && petDob && !isNaN(petDob.getTime())) {
+      const diffMs = Date.now() - petDob.getTime();
+      parsedAge = Math.max(0, parseFloat((diffMs / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1)));
     }
 
     let mainPhoto = "";
@@ -102,7 +110,8 @@ const postCreatePet = async (req, res) => {
       ownerName: ownerName ? ownerName.trim() : "",
       species: species || "Dog",
       breed: breed ? breed.trim() : "Unknown",
-      age: age ? parseFloat(age) : 0,
+      dob: petDob,
+      age: isNaN(parsedAge) ? 0 : parsedAge,
       weight: weight ? parseFloat(weight) : 0,
       gender: gender || "Male",
       vaccinated: vaccinated || "Yes",
@@ -211,6 +220,7 @@ const postEditPet = async (req, res) => {
       ownerName,
       species,
       breed,
+      dob,
       age,
       weight,
       gender,
@@ -228,7 +238,15 @@ const postEditPet = async (req, res) => {
     pet.ownerName = ownerName ? ownerName.trim() : "";
     pet.species = species || "Dog";
     pet.breed = breed ? breed.trim() : "Unknown";
-    pet.age = age !== undefined && age !== "" ? parseFloat(age) : pet.age;
+    if (dob !== undefined) {
+      pet.dob = dob && dob.trim() !== "" ? new Date(dob) : null;
+    }
+    if (age !== undefined && age !== "") {
+      pet.age = parseFloat(age);
+    } else if (pet.dob && !isNaN(pet.dob.getTime())) {
+      const diffMs = Date.now() - pet.dob.getTime();
+      pet.age = Math.max(0, parseFloat((diffMs / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1)));
+    }
     pet.weight =
       weight !== undefined && weight !== "" ? parseFloat(weight) : pet.weight;
     pet.gender = gender || "Male";

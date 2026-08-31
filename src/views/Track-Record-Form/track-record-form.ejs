@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Track <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Activity" : 'Pet Activity' %> | Woofy</title>
 
     <!-- Google Fonts -->
@@ -18,27 +18,90 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
     <!-- Navigation -->
-    <header class="dashboard-nav">
+    <header class="dashboard-nav" id="navbar">
       <div class="nav-container">
         <a href="/api/dashboard" class="logo">
           Woofy<span>.</span>
         </a>
 
         <nav class="nav-center-links">
-          <a href="/api/dashboard">Dashboard</a>
-          <a href="/api/pet-profiles">My Pets</a>
-          <a href="/services/hospitals">Hospitals</a>
-          <a href="/services/rescue">Rescue NGOs</a>
-          <a href="/shop">Shop</a>
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 16px; height: 16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 16px; height: 16px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 16px; height: 16px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 16px; height: 16px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i>
+            <span>Shop</span>
+          </a>
         </nav>
 
         <div class="nav-actions">
           <a href="/api/select-pet-for-tracking" class="btn btn-secondary btn-sm">
             <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span class="btn-text">Switch Pet</span>
+          </a>
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+            <span class="icon-hamburger" aria-hidden="true">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </span>
+            <span class="icon-close" aria-hidden="true">
+              <i data-lucide="x" style="width: 22px; height: 22px;"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <nav class="mobile-nav-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 18px; height: 18px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 18px; height: 18px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+            <span>Shop</span>
+          </a>
+          <a href="/api/select-pet-for-tracking">
+            <i data-lucide="arrow-left" style="width: 18px; height: 18px;"></i>
             <span>Switch Pet</span>
           </a>
-        </div>
+          <a href="/logout" class="mobile-logout-link">
+            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+            <span>Log out</span>
+          </a>
+        </nav>
       </div>
     </header>
 
@@ -46,23 +109,27 @@
       <!-- Flash Messages -->
       <%- include('../partials/flash-messages') %>
 
-      <!-- Breadcrumb & Header -->
-      <a href="/api/select-pet-for-tracking" class="back-link">
-        <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
-        <span>Back to Pet Selection</span>
-      </a>
+      <!-- Top Header Navigation & Meta -->
+      <div class="track-page-header-bar">
+        <a href="/api/select-pet-for-tracking" class="back-link">
+          <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+          <span>Back to Pet Selection</span>
+        </a>
 
-      <div class="page-header">
-        <div>
-          <h1>Track <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Activity" : 'Pet Activity' %></h1>
-          <p>Log growth weight, medical checkups, prescriptions, grooming, and wash schedules.</p>
-        </div>
         <% if (typeof pet !== 'undefined' && pet) { %>
-        <a href="/api/show-records/<%= pet._id %>" class="btn btn-secondary btn-sm">
+        <a href="/api/show-records/<%= pet._id %>" class="btn btn-secondary btn-sm btn-header-records">
           <i data-lucide="clipboard-list" style="width: 15px; height: 15px;"></i>
           <span>View All <%= pet.petName %>'s Records</span>
         </a>
         <% } %>
+      </div>
+
+      <div class="page-header">
+        <div class="page-header-title">
+          <span class="page-badge-pill">Daily Wellness Logger</span>
+          <h1>Track <span class="sketch-highlight"><%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Activity" : 'Pet Activity' %></span></h1>
+          <p>Log weight progress, medical checks, medicine dosages, vet visits, and grooming routines.</p>
+        </div>
       </div>
 
       <!-- Main Layout Grid -->
@@ -70,7 +137,15 @@
         <!-- LEFT SIDE: CLEAN TRACK RECORD FORM -->
         <section class="create-record-section">
           <form class="form-card" action="/api/track/create" method="POST" enctype="multipart/form-data">
-            <h2>Add New Care Log</h2>
+            <div class="form-card-header">
+              <div class="form-card-icon">
+                <i data-lucide="plus-circle" style="width: 20px; height: 20px;"></i>
+              </div>
+              <div>
+                <h2>Add New Care Log</h2>
+                <p>Record medical, growth, or grooming details for <%= typeof pet !== 'undefined' && pet ? pet.petName : 'your pet' %>.</p>
+              </div>
+            </div>
 
             <% if (typeof pet !== 'undefined' && pet) { %>
               <input type="hidden" name="petId" value="<%= pet._id %>" />
@@ -79,15 +154,17 @@
             <!-- Activity Type -->
             <div class="form-group">
               <label class="form-label">Activity / Care Category *</label>
-              <select name="activityType" class="form-select" required>
-                <option value="" disabled selected>Select category...</option>
-                <option value="weight">⚖️ Weight (Track Growth & Diet)</option>
-                <option value="medical">🩺 Medical (Surgeries / Health check)</option>
-                <option value="medicine">💊 Medicine (Dosages / Treatments)</option>
-                <option value="vet_history">📋 Vet History (Doctor Slips & Prescriptions)</option>
-                <option value="grooming">✂️ Grooming (Fur trim, Nails, Spa)</option>
-                <option value="bath">💧 Bath (Wash schedule & Skin care)</option>
-              </select>
+              <div class="select-wrapper">
+                <select name="activityType" class="form-select" required>
+                  <option value="" disabled selected>Select category...</option>
+                  <option value="weight">⚖️ Weight (Track Growth & Diet)</option>
+                  <option value="medical">🩺 Medical (Surgeries / Health check)</option>
+                  <option value="medicine">💊 Medicine (Dosages / Treatments)</option>
+                  <option value="vet_history">📋 Vet History (Doctor Slips & Prescriptions)</option>
+                  <option value="grooming">✂️ Grooming (Fur trim, Nails, Spa)</option>
+                  <option value="bath">💧 Bath (Wash schedule & Skin care)</option>
+                </select>
+              </div>
             </div>
 
             <!-- Title / Measurement -->
@@ -120,11 +197,10 @@
               <input
                 type="file"
                 name="recordImage"
-                class="form-control"
+                class="form-control form-control-file"
                 accept="image/*"
-                style="padding-top: 0.45rem;"
               />
-              <span style="color: var(--text-muted); font-size: 0.775rem; display: block; margin-top: 0.25rem;">Upload prescription receipt, medicine packaging, or photo.</span>
+              <span class="form-hint">Upload prescription receipt, medicine packaging, or photo (JPG, PNG).</span>
             </div>
 
             <!-- Additional Notes -->
@@ -132,14 +208,15 @@
               <label class="form-label">Care Notes & Instructions</label>
               <textarea
                 name="notes"
-                class="form-control"
+                class="form-control form-textarea"
                 placeholder="e.g. Given 1 tab after meals for 5 days, doctor advised rest, used anti-tick shampoo..."
+                rows="3"
               ></textarea>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary btn-block">
-              <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+            <button type="submit" class="btn btn-primary btn-block btn-save-log">
+              <i data-lucide="check-circle-2" style="width: 18px; height: 18px;"></i>
               <span>Save Activity Log</span>
             </button>
           </form>
@@ -147,48 +224,56 @@
 
         <!-- RIGHT SIDE: RECENT LOGS TIMELINE -->
         <section class="view-records-section">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-            <h2 style="font-size: 1.25rem; margin: 0; color: var(--primary-color);">
-              Recent Activity Timeline
-            </h2>
+          <div class="timeline-header-flex">
+            <h2>Recent Activity Timeline</h2>
+            <% if (typeof records !== 'undefined' && records.length > 0) { %>
+              <span class="timeline-count-badge"><%= records.length %> <%= records.length === 1 ? 'Log' : 'Logs' %></span>
+            <% } %>
           </div>
 
           <div class="records-list">
             <% if (typeof records !== 'undefined' && records.length > 0) { %>
               <% records.forEach(function(rec) { %>
                 <div class="record-item">
-                  <div class="record-icon">
+                  <div class="record-icon icon-<%= rec.activityType %>">
                     <% if (rec.activityType === 'weight') { %>
-                      <i data-lucide="scale" style="color: #0284c7"></i>
+                      <i data-lucide="scale"></i>
                     <% } else if (rec.activityType === 'medical') { %>
-                      <i data-lucide="stethoscope" style="color: #dc2626"></i>
+                      <i data-lucide="stethoscope"></i>
                     <% } else if (rec.activityType === 'medicine') { %>
-                      <i data-lucide="pill" style="color: #2563eb"></i>
+                      <i data-lucide="pill"></i>
                     <% } else if (rec.activityType === 'vet_history') { %>
-                      <i data-lucide="clipboard-list" style="color: #16a34a"></i>
+                      <i data-lucide="clipboard-list"></i>
                     <% } else if (rec.activityType === 'grooming') { %>
-                      <i data-lucide="scissors" style="color: #9333ea"></i>
+                      <i data-lucide="scissors"></i>
                     <% } else { %>
-                      <i data-lucide="droplets" style="color: #0891b2"></i>
+                      <i data-lucide="droplets"></i>
                     <% } %>
                   </div>
                   <div class="record-content">
                     <div class="record-header">
                       <span class="record-title"><%= rec.title %></span>
                       <span class="record-date">
+                        <i data-lucide="calendar" style="width: 12px; height: 12px;"></i>
                         <%= new Date(rec.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %>
                       </span>
                     </div>
-                    <span class="badge badge-<%= rec.activityType %>"><%= rec.activityType.replace('_', ' ').toUpperCase() %></span>
+                    <div class="record-badge-row">
+                      <span class="badge badge-<%= rec.activityType %>"><%= rec.activityType.replace('_', ' ').toUpperCase() %></span>
+                    </div>
                     <% if (rec.notes) { %>
-                      <p class="record-desc" style="margin-top: 0.65rem">
+                      <p class="record-desc">
                         <%= rec.notes %>
                       </p>
                     <% } %>
                     <% if (rec.image) { %>
-                      <div style="margin-top: 0.65rem;">
-                        <a href="<%= rec.image %>" target="_blank" style="display: inline-block;">
-                          <img src="<%= rec.image %>" alt="Attached document" style="max-width: 140px; max-height: 90px; border-radius: 6px; border: 1px solid var(--border-color); object-fit: cover;" />
+                      <div class="record-attachment-wrap">
+                        <a href="<%= rec.image %>" target="_blank" class="attachment-preview-link">
+                          <img src="<%= rec.image %>" alt="Attached document" />
+                          <span class="attachment-label">
+                            <i data-lucide="external-link" style="width: 12px; height: 12px;"></i>
+                            <span>View Attachment</span>
+                          </span>
                         </a>
                       </div>
                     <% } %>
@@ -196,12 +281,12 @@
                 </div>
               <% }); %>
             <% } else { %>
-              <div style="text-align: center; padding: 3rem 1.5rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
-                <div style="color: var(--text-muted); margin-bottom: 0.75rem;">
+              <div class="empty-timeline-card">
+                <div class="empty-timeline-icon">
                   <i data-lucide="activity" style="width: 36px; height: 36px;"></i>
                 </div>
-                <h4 style="margin-bottom: 0.25rem; color: var(--primary-color);">No Activity Logs Yet</h4>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Fill out the form on the left to add <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s" : 'your pet\'s' %> first activity log.</p>
+                <h4>No Activity Logs Yet</h4>
+                <p>Fill out the form on the left to add <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s" : 'your pet\'s' %> first activity log.</p>
               </div>
             <% } %>
           </div>
@@ -227,7 +312,8 @@
       </div>
     </footer>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- Scripts -->
+    <script src="/Dashboard/dashboard.js"></script>
     <script>
       if (window.lucide) {
         lucide.createIcons();

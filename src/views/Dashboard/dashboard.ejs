@@ -18,13 +18,15 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body class="dashboard-body">
-    <!-- Ambient Background Lighting Mesh -->
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
-    <div class="ambient-glow glow-3"></div>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+      <div class="ambient-glow glow-3"></div>
+    </div>
 
     <!-- Top Sticky Glassmorphism Navigation -->
-    <header class="dashboard-nav">
+    <header class="dashboard-nav" id="navbar">
       <div class="nav-container">
         <a href="/api/dashboard" class="logo">
           Woofy<span>.</span>
@@ -55,16 +57,60 @@
 
         <div class="nav-actions">
           <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-          <a href="/admin" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+          <a href="/admin" class="btn btn-admin btn-sm">
             <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Admin <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
+          </a>
+          <% } %>
+          <a href="/logout" class="btn btn-secondary btn-sm btn-logout">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Log out</span>
+          </a>
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+            <span class="icon-hamburger" aria-hidden="true">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </span>
+            <span class="icon-close" aria-hidden="true">
+              <i data-lucide="x" style="width: 22px; height: 22px;"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <nav class="mobile-nav-links">
+          <a href="/api/dashboard" class="active">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles">
+            <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 18px; height: 18px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 18px; height: 18px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+            <span>Shop</span>
+          </a>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin">
+            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
             <span>Admin Portal <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
           </a>
           <% } %>
-          <a href="/logout" class="btn btn-secondary btn-sm">
-            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+          <a href="/logout" class="mobile-logout-link">
+            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
             <span>Log out</span>
           </a>
-        </div>
+        </nav>
       </div>
     </header>
 
@@ -72,52 +118,7 @@
       <!-- Flash Messages -->
       <%- include('../partials/flash-messages') %>
 
-      <!-- SECTION 0: Quick Stat Ribbon -->
-      <div class="quick-stats-row">
-        <!-- Stat 1: Registered Pets -->
-        <div class="stat-pill-card">
-          <div class="stat-pill-icon" style="background: #eff6ff; color: #2563eb;">
-            <i data-lucide="paw-print" style="width: 22px; height: 22px;"></i>
-          </div>
-          <div class="stat-pill-info">
-            <h4><%= (typeof pets !== 'undefined' && pets) ? pets.length : 0 %></h4>
-            <p>Registered Pets</p>
-          </div>
-        </div>
 
-        <!-- Stat 2: Care Trackers -->
-        <div class="stat-pill-card">
-          <div class="stat-pill-icon" style="background: #ecfdf5; color: #10b981;">
-            <i data-lucide="activity" style="width: 22px; height: 22px;"></i>
-          </div>
-          <div class="stat-pill-info">
-            <h4>6 Modules</h4>
-            <p>Health Loggers</p>
-          </div>
-        </div>
-
-        <!-- Stat 3: 24/7 Hospitals -->
-        <div class="stat-pill-card">
-          <div class="stat-pill-icon" style="background: #fff7ed; color: #ea580c;">
-            <i data-lucide="hospital" style="width: 22px; height: 22px;"></i>
-          </div>
-          <div class="stat-pill-info">
-            <h4>24/7 Care</h4>
-            <p>Verified Clinics</p>
-          </div>
-        </div>
-
-        <!-- Stat 4: Rescue NGOs -->
-        <div class="stat-pill-card">
-          <div class="stat-pill-icon" style="background: #f5f3ff; color: #8b5cf6;">
-            <i data-lucide="heart-handshake" style="width: 22px; height: 22px;"></i>
-          </div>
-          <div class="stat-pill-info">
-            <h4>Active Helpline</h4>
-            <p>Rescue Network</p>
-          </div>
-        </div>
-      </div>
 
       <!-- SECTION 1: Welcome & Pet Profile Switcher / Add Pet -->
       <section class="split-section">
@@ -147,7 +148,7 @@
           <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
           <div class="pets-preview-row">
             <% pets.forEach(p => { %>
-            <a href="/api/profile/<%= p._id %>" class="pet-preview-pill" title="View <%= p.petName %>'s Profile">
+            <a href="/api/pet-profile/<%= p._id %>" class="pet-preview-pill" title="View <%= p.petName %>'s Profile">
               <% if (p.photo) { %>
               <img src="<%= p.photo %>" alt="<%= p.petName %>" onerror="this.src='/uploads/pets/default-pet.png'" />
               <% } else { %>
@@ -385,7 +386,8 @@
       </div>
     </footer>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- Scripts -->
+    <script src="/Dashboard/dashboard.js"></script>
     <script>
       if (window.lucide) {
         lucide.createIcons();

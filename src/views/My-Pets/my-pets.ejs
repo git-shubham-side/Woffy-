@@ -18,9 +18,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Ambient Background Lighting Mesh -->
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
 
     <!-- Sticky Glassmorphic Navbar -->
     <header id="navbar">
@@ -54,16 +56,60 @@
 
         <div class="nav-actions">
           <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
-          <a href="/admin" class="btn btn-primary btn-sm" style="background: #0f172a; color: #ffffff;">
+          <a href="/admin" class="btn btn-admin btn-sm">
             <i data-lucide="shield-check" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Admin</span>
+          </a>
+          <% } %>
+          <a href="/logout" class="btn btn-secondary btn-sm btn-logout">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span class="btn-text">Log out</span>
+          </a>
+          <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu" aria-expanded="false" type="button">
+            <span class="icon-hamburger" aria-hidden="true">
+              <i data-lucide="menu" style="width: 22px; height: 22px;"></i>
+            </span>
+            <span class="icon-close" aria-hidden="true">
+              <i data-lucide="x" style="width: 22px; height: 22px;"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <nav class="mobile-nav-links">
+          <a href="/api/dashboard">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/api/pet-profiles" class="active">
+            <i data-lucide="paw-print" style="width: 18px; height: 18px;"></i>
+            <span>My Pets</span>
+          </a>
+          <a href="/services/hospitals">
+            <i data-lucide="hospital" style="width: 18px; height: 18px;"></i>
+            <span>Hospitals</span>
+          </a>
+          <a href="/services/rescue">
+            <i data-lucide="heart-handshake" style="width: 18px; height: 18px;"></i>
+            <span>Rescue NGOs</span>
+          </a>
+          <a href="/shop">
+            <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+            <span>Shop</span>
+          </a>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin">
+            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
             <span>Admin Portal</span>
           </a>
           <% } %>
-          <a href="/logout" class="btn btn-secondary btn-sm">
-            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+          <a href="/logout" class="mobile-logout-link">
+            <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
             <span>Log out</span>
           </a>
-        </div>
+        </nav>
       </div>
     </header>
 
@@ -73,15 +119,17 @@
         <%- include('../partials/flash-messages') %>
 
         <div class="pets-header">
-          <div>
+          <div class="pets-header-text">
             <span class="page-badge-pill">Pet Parent Workspace</span>
             <h2>My Registered <span class="sketch-highlight">Pets</span></h2>
-            <p>Manage individual pet profiles, growth charts, vaccination schedules, and photo galleries.</p>
+            <p>Manage individual pet profiles, growth charts, vaccination schedules, and medical tracking logs.</p>
           </div>
-          <a href="/api/create-pet-profile" class="btn btn-primary">
-            <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
-            <span>Add New Pet</span>
-          </a>
+          <div class="pets-header-actions">
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+              <span>Add New Pet</span>
+            </a>
+          </div>
         </div>
 
         <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
@@ -100,7 +148,11 @@
                   <% } %>
                   <div class="pet-header-info">
                     <h3><%= pet.petName %></h3>
-                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender || 'Pet' %></p>
+                    <p class="pet-sub">
+                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Pet' %></span>
+                      <span class="pet-dot-separator">•</span>
+                      <span class="pet-gender-tag"><%= pet.gender || 'Companion' %></span>
+                    </p>
                   </div>
                 </div>
 
@@ -115,29 +167,44 @@
                   </div>
                   <div class="stat">
                     <span class="stat-label">Vaccinated</span>
-                    <span class="stat-value" style="color: <%= pet.vaccinated === 'Yes' ? '#16a34a' : '#ea580c' %>;">
-                      <%= pet.vaccinated || 'Yes' %>
+                    <span class="stat-value stat-vax <%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'vax-yes' : 'vax-no' %>">
+                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle' : 'alert-circle' %>" style="width: 13px; height: 13px;"></i>
+                      <span><%= pet.vaccinated || 'Pending' %></span>
                     </span>
                   </div>
                 </div>
 
-                <div class="card-actions-row">
-                  <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-primary btn-sm" style="flex: 1.2;">
-                    <i data-lucide="eye" style="width: 15px; height: 15px;"></i>
-                    <span>Profile</span>
-                  </a>
-                  <a href="/api/track-record/<%= pet._id %>" class="btn btn-secondary btn-sm" title="Track Records">
-                    <i data-lucide="activity" style="width: 15px; height: 15px;"></i>
-                    <span>Track</span>
-                  </a>
-                  <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-secondary btn-sm" title="Edit Profile">
-                    <i data-lucide="edit-3" style="width: 15px; height: 15px;"></i>
-                  </a>
-                  <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile?');">
-                    <button type="submit" class="btn btn-danger btn-sm" title="Delete <%= pet.petName %>">
-                      <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
-                    </button>
-                  </form>
+                <!-- Structured Clear Action Buttons -->
+                <div class="pet-card-actions">
+                  <!-- Tier 1: Main Highlight Actions -->
+                  <div class="actions-tier-primary">
+                    <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-action-profile" title="View <%= pet.petName %>'s Full Profile">
+                      <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                      <span>View Profile</span>
+                    </a>
+                    <a href="/api/track/<%= pet._id %>" class="btn btn-action-track" title="Track <%= pet.petName %>'s Daily Health & Activity">
+                      <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                      <span>Track Activity</span>
+                    </a>
+                  </div>
+
+                  <!-- Tier 2: Quick Management Tools -->
+                  <div class="actions-tier-secondary">
+                    <a href="/api/show-records/<%= pet._id %>" class="btn btn-action-records" title="View Medical & Activity History">
+                      <i data-lucide="clipboard-list" style="width: 14px; height: 14px;"></i>
+                      <span>Records</span>
+                    </a>
+                    <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-action-edit" title="Edit <%= pet.petName %>'s Profile">
+                      <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                      <span>Edit</span>
+                    </a>
+                    <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile? This action will remove all recorded logs.');">
+                      <button type="submit" class="btn btn-action-delete" title="Delete <%= pet.petName %>">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </div>
             <% }); %>
@@ -145,12 +212,12 @@
         <% } else { %>
           <div class="empty-pets-box">
             <div class="empty-pets-icon">
-              <i data-lucide="paw-print" style="width: 32px; height: 32px;"></i>
+              <i data-lucide="paw-print" style="width: 36px; height: 36px;"></i>
             </div>
             <h3>No Pets Registered Yet</h3>
-            <p>Add your first furry companion to start tracking their growth, vaccination schedules, and medical prescriptions.</p>
-            <a href="/api/create-pet-profile" class="btn btn-primary">
-              <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+            <p>Add your first furry companion to start tracking their growth, vaccination schedules, daily activities, and medical prescriptions.</p>
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
               <span>Add Your First Pet</span>
             </a>
           </div>
@@ -165,7 +232,8 @@
       </div>
     </footer>
 
-    <!-- Initialize Lucide Icons -->
+    <!-- Scripts -->
+    <script src="/My-Pets/my-pets.js"></script>
     <script>
       if (window.lucide) {
         lucide.createIcons();
