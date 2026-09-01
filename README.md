@@ -77,7 +77,8 @@
 
 ---
 
-### 🔐 8. Authentication & Multi-Channel Password Recovery
+### 🔐 8. Authentication, Google OAuth 2.0 & Multi-Channel Recovery
+- **Google OAuth 2.0 Social Sign-In:** 1-Click login and instant registration with Google accounts without passwords.
 - **Session Security:** Persistent sessions with `express-session` and `connect-mongo` backed by MongoDB.
 - **Password Security:** Salted password hashing with `bcrypt`.
 - **Dual Reset Flow:**
@@ -153,11 +154,6 @@ Woffy/
     │   ├── Admin/                   # Admin dashboard & management views
     │   ├── Dashboard/               # Pet parent main dashboard
     │   ├── Forgot-Password/         # Password recovery, OTP, and Terms pages
-    │   ├── Hospitals/               # Hospital directory & hospital submission forms
-    │   ├── Landing/                 # Public landing page
-    │   ├── Login/                   # User login screen
-    │   ├── My-Pets/                 # User's pet profile overview grid
-    │   ├── Pet-Profile/             # Detailed pet bio and healthcare hub
     │   ├── Pet-Tag/                 # Public QR tag scan page & printable cards
     │   ├── Profile-Creation/        # Create & edit pet profile forms
     │   ├── Rescue/                  # 24/7 Rescue directory & helpline directory
@@ -202,6 +198,7 @@ Follow these steps to run Woffy on your local machine:
 - [Node.js](https://nodejs.org/) (v18.0.0 or higher recommended)
 - [MongoDB](https://www.mongodb.com/) (Local instance or free [MongoDB Atlas](https://www.mongodb.com/atlas) cluster)
 - [Cloudinary Account](https://cloudinary.com/) (Free tier for media uploads)
+- [Google Cloud Console Project](https://console.cloud.google.com/) (For Google OAuth 2.0 Client ID & Secret)
 
 ### 2. Clone the Repository
 ```bash
@@ -241,6 +238,11 @@ EMAIL_PASS=your_gmail_app_password
 
 # (Optional: Resend API for instant sub-second mail delivery)
 RESEND_API_KEY=re_your_api_key_here
+
+# Google OAuth 2.0 (Social Sign-In)
+GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
 ```
 
 ### 5. (Optional) Seed Sample Data
@@ -272,6 +274,8 @@ Open your browser and visit: `http://localhost:3000`
 | :--- | :--- | :--- | :---: |
 | `GET / POST` | `/signup` | Register a new pet parent account | ❌ |
 | `GET / POST` | `/login` | Log in and initialize session | ❌ |
+| `GET` | `/auth/google` | Initiate Google OAuth 2.0 Sign-in / Sign-up | ❌ |
+| `GET` | `/auth/google/callback` | Google OAuth 2.0 verification callback | ❌ |
 | `GET` | `/logout` | Destroy active session and log out | ✅ |
 | `GET / POST` | `/forgot-password` | Request password reset email / OTP | ❌ |
 | `GET / POST` | `/reset-password/:token` | Reset password using 1-Click Magic Link | ❌ |
@@ -351,6 +355,9 @@ Open your browser and visit: `http://localhost:3000`
 | `EMAIL_USER` | **Yes** | SMTP / Gmail sender email address | `mailer@woffy.com` |
 | `EMAIL_PASS` | **Yes** | SMTP password or Google App Password (16 chars) | `abcd efgh ijkl mnop` |
 | `RESEND_API_KEY` | Optional | API key for high-speed Resend transactional email API | `re_12345678` |
+| `GOOGLE_CLIENT_ID` | Optional | Google OAuth 2.0 Client ID for Social Sign-In | `xxx.apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | Optional | Google OAuth 2.0 Client Secret | `GOCSPX-xxx` |
+| `GOOGLE_CALLBACK_URL` | Optional | OAuth 2.0 Authorized Redirect URI (default: `/auth/google/callback`) | `http://localhost:3000/auth/google/callback` |
 
 ---
 

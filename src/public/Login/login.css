@@ -706,6 +706,57 @@ button, input, textarea {
   transform: translateY(-1px);
 }
 
+/* Google OAuth Social Button */
+.btn-google {
+  background-color: #ffffff;
+  color: var(--slate-800) !important;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 1.25rem;
+  text-decoration: none;
+}
+
+.btn-google:hover {
+  background-color: var(--slate-50);
+  border-color: var(--border-medium);
+  color: var(--slate-950) !important;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn-google:active {
+  transform: translateY(0);
+}
+
+.google-svg-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* OAuth Divider */
+.oauth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.oauth-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-subtle);
+}
+
+.oauth-divider .divider-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--slate-400);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
 .btn-full {
   width: 100%;
 }

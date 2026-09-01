@@ -10,6 +10,13 @@ router.post(["/signup", "/api/signup"], authController.postSignup);
 router.get(["/login", "/api/login"], authController.getLoginPage);
 router.post(["/login", "/api/login"], authController.postLogin);
 
+// Google OAuth 2.0 Flow
+router.get(["/auth/google", "/api/auth/google"], authController.getGoogleAuthRedirect);
+router.get(
+  ["/auth/google/callback", "/api/auth/google/callback"],
+  authController.handleGoogleCallback,
+);
+
 // Logout
 router.get(["/logout", "/api/logout"], authController.logout);
 
