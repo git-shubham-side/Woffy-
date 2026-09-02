@@ -53,6 +53,11 @@
       </a>
       <% } %>
 
+      <a href="/settings" class="global-nav-btn global-btn-settings <%= (typeof activePage !== 'undefined' && activePage === 'settings') ? 'active' : '' %>" title="Account Settings">
+        <i data-lucide="settings"></i>
+        <span>Settings</span>
+      </a>
+
       <a href="/logout" class="global-nav-btn global-btn-logout">
         <i data-lucide="log-out"></i>
         <span>Log out</span>
@@ -112,6 +117,11 @@
         <span>Admin Portal <% if (typeof pendingHospitalCount !== 'undefined' && pendingHospitalCount > 0) { %>(<%= pendingHospitalCount %>)<% } %></span>
       </a>
       <% } %>
+
+      <a href="/settings" class="<%= (typeof activePage !== 'undefined' && activePage === 'settings') ? 'active' : '' %>">
+        <i data-lucide="settings"></i>
+        <span>Account Settings</span>
+      </a>
 
       <a href="/logout" style="color: #ef4444; margin-top: 6px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
         <i data-lucide="log-out"></i>

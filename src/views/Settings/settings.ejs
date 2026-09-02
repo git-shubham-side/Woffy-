@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Settings | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Settings CSS -->
+    <link rel="stylesheet" href="/Settings/settings.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="settings-body">
+    <!-- Ambient Glow Background -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
+    <!-- Top Sticky Navbar -->
+    <%- include('../partials/navbar', { activePage: 'settings' }) %>
+
+    <main class="settings-main container">
+      <!-- Flash Messages Partial -->
+      <%- include('../partials/flash-messages') %>
+
+      <!-- Header Section -->
+      <header class="settings-header">
+        <div class="header-content">
+          <div class="header-badge">
+            <i data-lucide="sliders" class="badge-icon"></i>
+            <span>Preferences & Security</span>
+          </div>
+          <h1>Account Settings</h1>
+          <p>Manage your pet parent profile, account credentials, and data privacy options.</p>
+        </div>
+        <div class="header-actions">
+          <a href="/api/dashboard" class="btn btn-outline">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </a>
+        </div>
+      </header>
+
+      <div class="settings-grid">
+        <!-- LEFT COLUMN: Profile Overview & Quick Stats -->
+        <div class="settings-sidebar">
+          <!-- Profile Card -->
+          <div class="settings-card profile-card">
+            <div class="profile-avatar-container">
+              <% if (user.avatar) { %>
+              <img src="<%= user.avatar %>" alt="<%= user.fullName %>" class="profile-avatar-img" />
+              <% } else { %>
+              <div class="profile-avatar-initials">
+                <%= (user.fullName || 'U').charAt(0).toUpperCase() %>
+              </div>
+              <% } %>
+            </div>
+
+            <h2 class="profile-name"><%= user.fullName %></h2>
+            <p class="profile-email"><%= user.email %></p>
+
+            <div class="profile-badges">
+              <% if (user.authProvider === 'google' || user.googleId) { %>
+              <span class="badge badge-google" title="Signed in with Google">
+                <svg class="google-mini-icon" viewBox="0 0 24 24">
+                  <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                  <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+                  <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.8s.2-2.1.4-2.8L1.9 6.3C.7 8.7 0 10.3 0 12s.7 3.3 1.9 5.7l3.7-2.9z"/>
+                  <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16C3.7 19.7 7.5 23 12 23z"/>
+                </svg>
+                Google Connected
+              </span>
+              <% } else { %>
+              <span class="badge badge-local" title="Standard Password Account">
+                <i data-lucide="key-round"></i>
+                Password Account
+              </span>
+              <% } %>
+
+              <% if (user.role === 'admin' || user.isAdmin) { %>
+              <span class="badge badge-admin">
+                <i data-lucide="shield-check"></i>
+                Admin
+              </span>
+              <% } else { %>
+              <span class="badge badge-member">
+                <i data-lucide="heart"></i>
+                Pet Parent
+              </span>
+              <% } %>
+            </div>
+
+            <hr class="card-divider" />
+
+            <!-- Account Activity Stats -->
+            <div class="user-stats-grid">
+              <div class="stat-box">
+                <span class="stat-number"><%= typeof petCount !== 'undefined' ? petCount : 0 %></span>
+                <span class="stat-label">Registered Pets</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number"><%= typeof vaccineCount !== 'undefined' ? vaccineCount : 0 %></span>
+                <span class="stat-label">Vaccines Tracked</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-number"><%= typeof recordCount !== 'undefined' ? recordCount : 0 %></span>
+                <span class="stat-label">Daily Logs</span>
+              </div>
+            </div>
+
+            <div class="member-since">
+              <i data-lucide="calendar"></i>
+              <span>Member since <%= new Date(user.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) %></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Settings Forms & Danger Zone -->
+        <div class="settings-content">
+          <!-- CARD 1: Edit Profile -->
+          <section class="settings-card">
+            <div class="card-header">
+              <div class="card-header-icon bg-blue">
+                <i data-lucide="user"></i>
+              </div>
+              <div>
+                <h2>Personal Information</h2>
+                <p>Update your public pet parent name and view account details.</p>
+              </div>
+            </div>
+
+            <form action="/settings/update-profile" method="POST" class="settings-form">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <div class="input-with-icon">
+                  <i data-lucide="user" class="input-icon"></i>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    value="<%= user.fullName %>"
+                    required
+                    placeholder="Your Full Name"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-with-icon">
+                  <i data-lucide="mail" class="input-icon"></i>
+                  <input
+                    type="email"
+                    id="email"
+                    value="<%= user.email %>"
+                    disabled
+                    readonly
+                    class="form-control disabled-input"
+                  />
+                </div>
+                <small class="form-hint">
+                  Email is linked to your account identity and emergency tags and cannot be modified.
+                </small>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                  <i data-lucide="save"></i>
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- CARD 2: Security & Password -->
+          <section class="settings-card">
+            <div class="card-header">
+              <div class="card-header-icon bg-emerald">
+                <i data-lucide="lock"></i>
+              </div>
+              <div>
+                <h2><%= user.password ? 'Change Password' : 'Set Account Password' %></h2>
+                <p>
+                  <%= user.password
+                    ? 'Keep your pet health dashboard safe with a strong, updated password.'
+                    : 'Your account was created via Google. Set an optional password to also sign in with email.'
+                  %>
+                </p>
+              </div>
+            </div>
+
+            <form action="/settings/change-password" method="POST" class="settings-form">
+              <% if (user.password) { %>
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <div class="input-with-icon">
+                  <i data-lucide="key" class="input-icon"></i>
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    name="currentPassword"
+                    required
+                    placeholder="Enter current password"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <% } %>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="newPassword"><%= user.password ? 'New Password' : 'Create Password' %></label>
+                  <div class="input-with-icon">
+                    <i data-lucide="shield" class="input-icon"></i>
+                    <input
+                      type="password"
+                      id="newPassword"
+                      name="newPassword"
+                      required
+                      minlength="8"
+                      placeholder="Minimum 8 characters"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmPassword">Confirm Password</label>
+                  <div class="input-with-icon">
+                    <i data-lucide="shield-check" class="input-icon"></i>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      required
+                      minlength="8"
+                      placeholder="Re-enter password"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-secondary">
+                  <i data-lucide="check"></i>
+                  <span><%= user.password ? 'Update Password' : 'Set Password' %></span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- CARD 3: DANGER ZONE - Account Deletion -->
+          <section class="settings-card danger-card">
+            <div class="card-header">
+              <div class="card-header-icon bg-rose">
+                <i data-lucide="alert-triangle"></i>
+              </div>
+              <div>
+                <h2 class="danger-title">Danger Zone: Delete Account</h2>
+                <p class="danger-desc">
+                  Permanently remove your account, pet health records, WSAVA vaccination passports, and emergency QR collar tags.
+                </p>
+              </div>
+            </div>
+
+            <div class="danger-warning-box">
+              <div class="warning-icon-col">
+                <i data-lucide="shield-alert"></i>
+              </div>
+              <div class="warning-text-col">
+                <h4>This action is irreversible</h4>
+                <p>
+                  Deleting your account will immediately wipe all your data from our database, including
+                  <strong><%= typeof petCount !== 'undefined' ? petCount : 0 %> registered pets</strong>,
+                  <strong><%= typeof vaccineCount !== 'undefined' ? vaccineCount : 0 %> vaccination records</strong>, and
+                  <strong><%= typeof recordCount !== 'undefined' ? recordCount : 0 %> daily health logs</strong>.
+                  Public emergency QR tags will cease to display your contact info.
+                </p>
+              </div>
+            </div>
+
+            <div class="danger-actions">
+              <button type="button" class="btn btn-danger" id="openDeleteModalBtn">
+                <i data-lucide="trash-2"></i>
+                <span>Permanently Delete My Account</span>
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- ACCOUNT DELETION CONFIRMATION MODAL -->
+    <div class="modal-backdrop" id="deleteModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-icon-badge">
+            <i data-lucide="alert-octagon"></i>
+          </div>
+          <div class="modal-header-text">
+            <h3 id="deleteModalTitle">Confirm Account Deletion</h3>
+            <p>Please verify your identity to proceed with permanent deletion.</p>
+          </div>
+          <button type="button" class="modal-close-btn" id="closeDeleteModalBtn" aria-label="Close modal">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+
+        <form action="/settings/delete-account" method="POST" class="modal-form" id="deleteAccountForm">
+          <div class="modal-body">
+            <div class="modal-impact-summary">
+              <ul>
+                <li><i data-lucide="x-circle"></i> Permanent deletion of user account (<strong><%= user.email %></strong>)</li>
+                <li><i data-lucide="x-circle"></i> Removal of all <%= typeof petCount !== 'undefined' ? petCount : 0 %> pet profiles & photos</li>
+                <li><i data-lucide="x-circle"></i> Invalidation of all emergency collar QR tags</li>
+              </ul>
+            </div>
+
+            <% if (user.password) { %>
+            <div class="form-group" style="margin-top: 1.25rem;">
+              <label for="deletePassword">Confirm your current password:</label>
+              <div class="input-with-icon">
+                <i data-lucide="lock" class="input-icon"></i>
+                <input
+                  type="password"
+                  id="deletePassword"
+                  name="password"
+                  required
+                  placeholder="Enter your password"
+                  class="form-control"
+                  autocomplete="current-password"
+                />
+              </div>
+            </div>
+            <% } else { %>
+            <div class="form-group" style="margin-top: 1.25rem;">
+              <label for="confirmDelete">
+                Type <strong>DELETE</strong> or your registered email to confirm:
+              </label>
+              <div class="input-with-icon">
+                <i data-lucide="alert-circle" class="input-icon"></i>
+                <input
+                  type="text"
+                  id="confirmDelete"
+                  name="confirmDelete"
+                  required
+                  placeholder="Type DELETE to confirm"
+                  class="form-control"
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+            <% } %>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="cancelDeleteBtn">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-danger-solid" id="confirmDeleteSubmitBtn">
+              <i data-lucide="trash-2"></i>
+              <span>Delete Everything Forever</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/Settings/settings.js"></script>
+    <script>
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

@@ -5,6 +5,12 @@ const Product = require("../Models/Product");
  * GET: Render Landing Page
  */
 const getLandingPage = (req, res) => {
+  if (req.query && req.query.accountDeleted === "true") {
+    req.flash(
+      "success",
+      "Your account and all associated pet records have been permanently deleted. We are sorry to see you go!",
+    );
+  }
   res.render("Landing/index");
 };
 

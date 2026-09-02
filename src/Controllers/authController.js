@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const crypto = require("node:crypto");
 const User = require("../Models/User");
+const Pet = require("../Models/Pet");
+const Vaccination = require("../Models/Vaccination");
+const Record = require("../Models/Record");
 const { sendPasswordResetEmail } = require("../Utils/mailer");
 
 /**
@@ -78,16 +81,50 @@ const getLoginPage = (req, res) => {
   }
   res.render("Login/login");
 };
+
 /**
- * Helper to determine base application URL for Google callback
+ * Helper to determine the exact Google OAuth callback URL dynamically
+ * Prevents localhost redirect errors when running in production, and vice-versa
  */
-const getAppBaseUrl = (req) => {
-  if (process.env.BASE_URL && process.env.BASE_URL.trim() !== "") {
-    return process.env.BASE_URL.trim().replace(/\/+$/, "");
+const getGoogleCallbackUrl = (req) => {
+  const currentHost = (
+    req.get("x-forwarded-host") ||
+    req.get("host") ||
+    ""
+  ).toLowerCase();
+  const isLocalhost =
+    currentHost.includes("localhost") || currentHost.includes("127.0.0.1");
+
+  // 1. If running on localhost:
+  if (isLocalhost) {
+    if (
+      process.env.GOOGLE_CALLBACK_URL &&
+      process.env.GOOGLE_CALLBACK_URL.includes("localhost")
+    ) {
+      return process.env.GOOGLE_CALLBACK_URL.trim();
+    }
+    const port = process.env.PORT || 3000;
+    return `http://${currentHost || `localhost:${port}`}/auth/google/callback`;
   }
-  const host = req.get("host") || `localhost:${process.env.PORT || 3000}`;
-  const protocol = req.protocol || "http";
-  return `${protocol}://${host}`;
+
+  // 2. If running on production:
+  // Use GOOGLE_CALLBACK_URL only if it's a production URL (not localhost)
+  if (
+    process.env.GOOGLE_CALLBACK_URL &&
+    !process.env.GOOGLE_CALLBACK_URL.includes("localhost") &&
+    !process.env.GOOGLE_CALLBACK_URL.includes("127.0.0.1")
+  ) {
+    return process.env.GOOGLE_CALLBACK_URL.trim();
+  }
+
+  // Otherwise, use BASE_URL if set (e.g. https://woffy.up.railway.app)
+  if (process.env.BASE_URL && process.env.BASE_URL.trim() !== "") {
+    return `${process.env.BASE_URL.trim().replace(/\/+$/, "")}/auth/google/callback`;
+  }
+
+  // Fallback to request headers on production
+  const protocol = req.headers["x-forwarded-proto"] || req.protocol || "https";
+  return `${protocol}://${currentHost}/auth/google/callback`;
 };
 
 /**
@@ -106,8 +143,7 @@ const getGoogleAuthRedirect = (req, res) => {
       return res.redirect("/api/login");
     }
 
-    const appBaseUrl = getAppBaseUrl(req);
-    const callbackUrl = process.env.GOOGLE_CALLBACK_URL || `${appBaseUrl}/auth/google/callback`;
+    const callbackUrl = getGoogleCallbackUrl(req);
 
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
@@ -157,8 +193,7 @@ const handleGoogleCallback = async (req, res) => {
       return res.redirect("/api/login");
     }
 
-    const appBaseUrl = getAppBaseUrl(req);
-    const callbackUrl = process.env.GOOGLE_CALLBACK_URL || `${appBaseUrl}/auth/google/callback`;
+    const callbackUrl = getGoogleCallbackUrl(req);
 
     // 1. Exchange authorization code for tokens
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
@@ -558,6 +593,197 @@ const getTermsPage = (req, res) => {
   res.render("Forgot-Password/terms");
 };
 
+/**
+ * GET: Render User Settings Page
+ */
+const getSettingsPage = async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.redirect("/api/login");
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.flash("error", "User not found. Please log in again.");
+      return res.redirect("/api/login");
+    }
+
+    const [petCount, vaccineCount, recordCount] = await Promise.all([
+      Pet.countDocuments({ user: user._id }),
+      Vaccination.countDocuments({ user: user._id }),
+      Record.countDocuments({ user: user._id }),
+    ]);
+
+    res.render("Settings/settings", {
+      user,
+      petCount,
+      vaccineCount,
+      recordCount,
+      activePage: "settings",
+    });
+  } catch (err) {
+    console.error("Get settings error:", err);
+    req.flash("error", "Failed to load settings. Please try again.");
+    res.redirect("/api/dashboard");
+  }
+};
+
+/**
+ * POST: Update Profile Details
+ */
+const postUpdateProfile = async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.redirect("/api/login");
+    }
+
+    const { fullName } = req.body;
+    if (!fullName || fullName.trim().length === 0) {
+      req.flash("error", "Full name cannot be empty.");
+      return res.redirect("/settings");
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.flash("error", "User not found.");
+      return res.redirect("/api/login");
+    }
+
+    user.fullName = fullName.trim();
+    await user.save();
+
+    req.flash("success", "Profile updated successfully!");
+    res.redirect("/settings");
+  } catch (err) {
+    console.error("Update profile error:", err);
+    req.flash("error", "Failed to update profile.");
+    res.redirect("/settings");
+  }
+};
+
+/**
+ * POST: Change or Set Password
+ */
+const postChangePassword = async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.redirect("/api/login");
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.flash("error", "User not found.");
+      return res.redirect("/api/login");
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+
+    // If user already has a password, verify currentPassword
+    if (user.password) {
+      if (!currentPassword) {
+        req.flash("error", "Current password is required.");
+        return res.redirect("/settings");
+      }
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        req.flash("error", "Incorrect current password.");
+        return res.redirect("/settings");
+      }
+    }
+
+    if (!newPassword || newPassword.length < 8) {
+      req.flash("error", "New password must be at least 8 characters long.");
+      return res.redirect("/settings");
+    }
+
+    if (newPassword !== confirmPassword) {
+      req.flash("error", "New passwords do not match.");
+      return res.redirect("/settings");
+    }
+
+    user.password = newPassword; // Hashed via pre-save hook
+    await user.save();
+
+    req.flash("success", "Password updated successfully!");
+    res.redirect("/settings");
+  } catch (err) {
+    console.error("Change password error:", err);
+    req.flash("error", "Failed to update password.");
+    res.redirect("/settings");
+  }
+};
+
+/**
+ * POST: Permanently Delete User Account & All Associated Data
+ */
+const postDeleteAccount = async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.redirect("/api/login");
+    }
+
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      req.flash("error", "User not found.");
+      return res.redirect("/api/login");
+    }
+
+    const { password, confirmDelete } = req.body;
+
+    // Security Verification:
+    if (user.password) {
+      if (!password) {
+        req.flash("error", "Please enter your password to confirm account deletion.");
+        return res.redirect("/settings");
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        req.flash("error", "Incorrect password. Account deletion cancelled.");
+        return res.redirect("/settings");
+      }
+    } else {
+      // Google-only user without password: must type DELETE or their registered email
+      const cleanConfirm = (confirmDelete || "").trim().toUpperCase();
+      const userEmailUpper = (user.email || "").trim().toUpperCase();
+      if (cleanConfirm !== "DELETE" && cleanConfirm !== userEmailUpper) {
+        req.flash(
+          "error",
+          "Please type 'DELETE' or your registered email to confirm account deletion.",
+        );
+        return res.redirect("/settings");
+      }
+    }
+
+    const userId = user._id;
+
+    // Cascading deletion:
+    // 1. Delete all vaccinations belonging to user
+    await Vaccination.deleteMany({ user: userId });
+
+    // 2. Delete all daily records belonging to user
+    await Record.deleteMany({ user: userId });
+
+    // 3. Delete all pets belonging to user
+    await Pet.deleteMany({ user: userId });
+
+    // 4. Delete user account
+    await User.findByIdAndDelete(userId);
+
+    // 5. Destroy active session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Session destroy error during account deletion:", err);
+      }
+      res.clearCookie("connect.sid");
+      return res.redirect("/?accountDeleted=true");
+    });
+  } catch (err) {
+    console.error("Delete account error:", err);
+    req.flash("error", "Failed to delete account. Please try again.");
+    res.redirect("/settings");
+  }
+};
+
 module.exports = {
   getSignupPage,
   postSignup,
@@ -573,4 +799,8 @@ module.exports = {
   getVerifyOtpPage,
   postVerifyOtpAndReset,
   getTermsPage,
+  getSettingsPage,
+  postUpdateProfile,
+  postChangePassword,
+  postDeleteAccount,
 };

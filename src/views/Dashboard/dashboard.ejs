@@ -36,10 +36,16 @@
       <section class="split-section">
         <div class="split-content">
           <div class="welcome-text">
-            <h1>
-              Welcome back, <span class="sketch-highlight"><%= typeof userName !== 'undefined' && userName ? userName : 'Pet Parent' %></span>!
-            </h1>
-            <p>Monitor your companions' medical checkups, automated vaccination schedules, and emergency care all in one place.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <h1 style="margin: 0;">
+                Welcome back, <span class="sketch-highlight"><%= typeof userName !== 'undefined' && userName ? userName : 'Pet Parent' %></span>!
+              </h1>
+              <a href="/settings" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #2563eb; text-decoration: none; padding: 5px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; transition: all 0.2s ease;" title="Account Settings">
+                <i data-lucide="settings" style="width: 14px; height: 14px;"></i>
+                <span>Account Settings</span>
+              </a>
+            </div>
+            <p style="margin-top: 8px;">Monitor your companions' medical checkups, automated vaccination schedules, and emergency care all in one place.</p>
           </div>
 
           <!-- Add Pet Callout -->

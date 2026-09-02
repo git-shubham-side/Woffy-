@@ -120,6 +120,24 @@ header#navbar {
   background: #dbeafe;
 }
 
+.global-btn-settings {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.global-btn-settings:hover {
+  background: #f8fafc;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.global-btn-settings.active {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  border-color: #bfdbfe !important;
+}
+
 .global-btn-logout {
   background: #ffffff;
   border-color: #e2e8f0;

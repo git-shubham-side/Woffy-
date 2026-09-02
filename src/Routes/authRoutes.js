@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../Controllers/authController");
+const isAuthenticated = require("../Middlewares/isAuthenticated");
 
 // Signup
 router.get(["/signup", "/api/signup"], authController.getSignupPage);
@@ -19,6 +20,24 @@ router.get(
 
 // Logout
 router.get(["/logout", "/api/logout"], authController.logout);
+
+// User Settings & Profile
+router.get(["/settings", "/api/settings"], isAuthenticated, authController.getSettingsPage);
+router.post(
+  ["/settings/update-profile", "/api/settings/update-profile"],
+  isAuthenticated,
+  authController.postUpdateProfile,
+);
+router.post(
+  ["/settings/change-password", "/api/settings/change-password"],
+  isAuthenticated,
+  authController.postChangePassword,
+);
+router.post(
+  ["/settings/delete-account", "/api/settings/delete-account"],
+  isAuthenticated,
+  authController.postDeleteAccount,
+);
 
 // Forgot Password Request
 router.get(
