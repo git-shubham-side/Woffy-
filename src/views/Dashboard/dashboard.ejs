@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard | Woofy - Complete Pet Care Platform</title>
+    <title>Dashboard | Woofy | Complete Pet Care Platform</title>
 
     <!-- Google Fonts -->
     <link
@@ -12,7 +12,7 @@
     />
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="/Dashboard/dashboard.css" />
+    <link rel="stylesheet" href="/Dashboard/dashboard.css?v=2" />
 
     <!-- Lucide Icons Script -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -85,6 +85,38 @@
             src="https://www.annaroseheaton.com/uploads/4/7/0/2/47021893/anna-rose-heaton-professional-dog-photographer-east-midlands3_orig.jpg"
             alt="Pet parent bonding with dog"
           />
+        </div>
+      </section>
+
+      <!-- TOP SPOTLIGHT BANNER: Woffy for NGOs & Rescuers (Under Construction) -->
+      <section class="dashboard-section" style="margin-bottom: 2rem;">
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 22px 26px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.2); border: 1px solid #334155;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(253, 230, 138, 0.35); color: #f59e0b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="building-2" style="width: 26px; height: 26px;"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 5px;">
+                <strong style="font-size: 1.2rem; color: #ffffff; letter-spacing: -0.01em;">Woffy for NGOs & Rescuers</strong>
+                <span style="background: #fffbeb; color: #b45309; border: 1px solid #fde68a; font-size: 0.74rem; padding: 2px 10px; border-radius: 9999px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+                  <span class="pulse-dot-amber"></span> Under Construction &bull; Alpha Preview
+                </span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; color: #cbd5e1; max-width: 760px; line-height: 1.5;">
+                Managing <strong>100+ shelter animals or street rescues</strong> under one parent account? We are building an enterprise-grade shelter engine: bulk medical intake, ABC sterilization milestones, kennel ward triage, volunteer delegation, and donor transparency.
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="toggleNgoWaitlistModal(true)" style="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); color: #ffffff; font-weight: 700;">
+              <i data-lucide="bell" style="width: 15px; height: 15px; color: #f59e0b;"></i>
+              <span>Join Alpha Waitlist</span>
+            </button>
+            <a href="#ngo-hub" class="btn btn-primary btn-sm" style="background: #2563eb; border-color: #3b82f6; white-space: nowrap; font-weight: 700;">
+              <span>View Full NGO Hub Section</span>
+              <i data-lucide="arrow-down" style="width: 15px; height: 15px;"></i>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -305,6 +337,197 @@
         </div>
       </section>
 
+      <!-- SECTION: Woffy for NGOs & Rescuers (Alpha / Under Construction) -->
+      <section class="dashboard-section ngo-dash-section" id="ngo-hub">
+        <div class="ngo-dash-container">
+          <!-- Banner Header -->
+          <div class="ngo-dash-header">
+            <div class="ngo-dash-title-group">
+              <div class="ngo-dash-icon-box">
+                <i data-lucide="building-2"></i>
+              </div>
+              <div>
+                <div class="ngo-dash-badge-row">
+                  <h2 class="ngo-dash-heading">Woffy for NGOs & Rescuers</h2>
+                  <span class="ngo-under-construction-pill">
+                    <span class="pulse-dot-amber"></span>
+                    <span>Under Construction &bull; Alpha Preview</span>
+                  </span>
+                </div>
+                <p class="ngo-dash-subtext">
+                  A high-capacity institutional platform where one parent account manages and health-tracks <strong>100+ street rescues & shelter animals</strong>.
+                </p>
+              </div>
+            </div>
+            
+            <div class="ngo-dash-header-action">
+              <button type="button" class="btn btn-secondary btn-sm" id="ngoWaitlistBtn" onclick="toggleNgoWaitlistModal(true)">
+                <i data-lucide="bell" style="width: 15px; height: 15px; color: #d97706;"></i>
+                <span>Get Early Access Alerts</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Why it matters callout banner -->
+          <div class="ngo-dash-why-banner">
+            <div class="why-icon"><i data-lucide="info"></i></div>
+            <div class="why-text">
+              <strong>Why This Is Essential for NGOs & Shelters:</strong> Standard pet apps only support 1 or 2 pets per home. Animal welfare trusts, street feeder communities, and rescue foundations manage hundreds of animals simultaneously. Woffy NGO Suite replaces scattered paper cards with unified mass health triage.
+            </div>
+          </div>
+
+          <!-- Feature Highlights 6-Card Grid -->
+          <div class="ngo-dash-grid">
+            <!-- 1 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;">
+                <i data-lucide="database"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>100+ Rescues Under 1 Account</h4>
+                <p>Bulk register shelter cohorts, ear-notch IDs, collar QR tags, rescue GPS coordinates, and intake trauma logs.</p>
+                <span class="ngo-card-tag">High-Volume Roster</span>
+              </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #fffbeb; color: #d97706; border: 1px solid #fde68a;">
+                <i data-lucide="syringe"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Mass Vaccination & ABC Drives</h4>
+                <p>One-click batch updates for kennel-wide Rabies and DHPP boosters. Track Animal Birth Control (spay/neuter) pipelines.</p>
+                <span class="ngo-card-tag">Drive Automation</span>
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
+                <i data-lucide="git-merge"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Ward & Triage Care Tracking</h4>
+                <p>Organize by ICU, Isolation, Post-Op ABC, and General Kennel. Digital daily treatment sheets and saline drip schedules.</p>
+                <span class="ngo-card-tag">Clinical Wards</span>
+              </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe;">
+                <i data-lucide="users"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Multi-Volunteer & Staff Roles</h4>
+                <p>Assign team roles for ambulance drivers, feeding volunteers, kennel caretakers, and consulting vet surgeons.</p>
+                <span class="ngo-card-tag">Role Delegation</span>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                <i data-lucide="heart-handshake"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Case Sponsorship & Donor Trust</h4>
+                <p>Share public recovery links for donors who sponsor critical surgical cases, with bills and photo healing logs.</p>
+                <span class="ngo-card-tag">Transparency Hub</span>
+              </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #ecfeff; color: #0891b2; border: 1px solid #a5f3fc;">
+                <i data-lucide="package"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Pharmacy & Food Ration Inventory</h4>
+                <p>Track medicine vials, antibiotics, sterile bandages, and donated dog kibble bags with low-stock warnings.</p>
+                <span class="ngo-card-tag">Stock Management</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Status Strip -->
+          <div class="ngo-dash-footer-strip">
+            <div class="strip-left">
+              <i data-lucide="wrench" style="width: 18px; height: 18px; color: #b45309;"></i>
+              <span>Engineering Status: <strong>Alpha Backend Modeling in Progress</strong>. Working modules will be rolled out to pilot partners.</span>
+            </div>
+            <div class="strip-right">
+              <button type="button" class="btn btn-primary btn-sm" onclick="toggleNgoWaitlistModal(true)">
+                <i data-lucide="check-circle-2" style="width: 14px; height: 14px;"></i>
+                <span>Register Your Shelter for Alpha</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NGO Early Access Modal (Pure Frontend Dialog) -->
+      <div id="ngoWaitlistModal" class="ngo-modal-overlay" style="display: none;" onclick="if(event.target === this) toggleNgoWaitlistModal(false)">
+        <div class="ngo-modal-content">
+          <div class="ngo-modal-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #fffbeb; color: #d97706; display: flex; align-items: center; justify-content: center; border: 1px solid #fde68a;">
+                <i data-lucide="building-2" style="width: 20px; height: 20px;"></i>
+              </div>
+              <div>
+                <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a; font-weight: 800;">NGO & Shelter Pilot Waitlist</h3>
+                <span style="font-size: 0.78rem; color: #64748b;">Get invited to test our 100+ animal tracking workspace</span>
+              </div>
+            </div>
+            <button type="button" class="ngo-modal-close" onclick="toggleNgoWaitlistModal(false)" aria-label="Close modal">&times;</button>
+          </div>
+
+          <div class="ngo-modal-body">
+            <div id="ngoWaitlistSuccess" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; color: #065f46; font-size: 0.9rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #059669;"></i>
+                <span>Registration Received!</span>
+              </div>
+              <p style="margin: 4px 0 0 26px; font-size: 0.85rem;">Thank you! We've recorded your interest. When the NGO Multi-Animal Engine goes into beta testing, you will receive direct early access coordinates.</p>
+            </div>
+
+            <form id="ngoWaitlistForm" onsubmit="handleNgoWaitlistSubmit(event)">
+              <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">NGO / Shelter / Rescuer Name *</label>
+                <input type="text" id="ngoOrgName" required placeholder="e.g. Stray Care Foundation, Delhi" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Contact Email *</label>
+                  <input type="email" id="ngoEmail" required placeholder="shelter@ngo.org" value="<%= typeof currentUser !== 'undefined' && currentUser && currentUser.email ? currentUser.email : '' %>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Est. Animals Under Care</label>
+                  <select id="ngoAnimalCount" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: #ffffff;">
+                    <option value="20-50">20 - 50 Animals</option>
+                    <option value="50-100" selected>50 - 100 Animals</option>
+                    <option value="100-300">100 - 300 Animals</option>
+                    <option value="300+">300+ Rescues (Large Shelter)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Primary Feature Needed Most</label>
+                <input type="text" id="ngoNotes" placeholder="e.g. ABC sterilization records, mass rabies booster scheduling, daily ward chart" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleNgoWaitlistModal(false)">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm">
+                  <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+                  <span>Submit Interest</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!-- SECTION 4: Recommended Pet Products (Live from MongoDB) -->
       <section class="dashboard-section shop-section">
         <div class="section-header-flex">
@@ -422,29 +645,44 @@
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="dash-footer">
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Scripts -->
     <script src="/Dashboard/dashboard.js"></script>
     <script>
       if (window.lucide) {
         lucide.createIcons();
+      }
+
+      function toggleNgoWaitlistModal(show) {
+        const modal = document.getElementById('ngoWaitlistModal');
+        if (modal) {
+          modal.style.display = show ? 'flex' : 'none';
+          if (show && window.lucide) {
+            lucide.createIcons();
+          }
+        }
+      }
+
+      function handleNgoWaitlistSubmit(e) {
+        e.preventDefault();
+        const successBox = document.getElementById('ngoWaitlistSuccess');
+        const form = document.getElementById('ngoWaitlistForm');
+        if (successBox) {
+          successBox.style.display = 'block';
+        }
+        if (form) {
+          form.style.opacity = '0.6';
+          form.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+        }
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+        setTimeout(function() {
+          toggleNgoWaitlistModal(false);
+          alert('Thank you! Your shelter registration has been recorded for the Woffy NGO Suite alpha release.');
+        }, 2200);
       }
     </script>
   </body>

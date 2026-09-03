@@ -7,7 +7,7 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -18,6 +18,12 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Glows -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
     <!-- Top Sticky Glassmorphism Navigation -->
     <%- include('../partials/navbar', { activePage: 'hospitals' }) %>
 
@@ -121,8 +127,8 @@
         </div>
 
         <% if (userLat && userLng && hospitals.length > 0) { %>
-        <div style="background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600;">
-          <i data-lucide="navigation" style="width: 16px; height: 16px; color: #2563eb;"></i>
+        <div style="background: var(--brand-50); border: 1.5px solid var(--brand-200); color: var(--brand-600); border-radius: var(--radius-md); padding: 0.75rem 1.15rem; margin-bottom: 1.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 700;">
+          <i data-lucide="navigation" style="width: 16px; height: 16px; color: var(--brand-600);"></i>
           <span>Showing verified hospitals sorted closest to your GPS location.</span>
         </div>
         <% } %>
@@ -201,18 +207,18 @@
         </div>
         <% } else { %>
         <!-- Empty State -->
-        <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
-          <div style="width: 64px; height: 64px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #2563eb;">
+        <div style="text-align: center; padding: 4.5rem 2rem; background: var(--white); border: 2px dashed var(--brand-200); border-radius: var(--radius-xl);">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: var(--brand-50); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-600); border: 1px solid var(--brand-200);">
             <i data-lucide="hospital" style="width: 32px; height: 32px;"></i>
           </div>
-          <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">
+          <h3 style="font-size: 1.5rem; color: var(--slate-900); margin-bottom: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">
             <% if (selectedCity !== 'All') { %>
               No verified hospitals listed in <%= selectedCity %> yet
             <% } else { %>
               No verified hospitals listed yet
             <% } %>
           </h3>
-          <p style="max-width: 520px; margin: 0 auto 2rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          <p style="max-width: 520px; margin: 0 auto 2rem; color: var(--slate-500); font-size: 0.95rem; line-height: 1.6;">
             We verify all pet hospitals, veterinary clinics, and emergency centers before publishing to ensure pet safety and trust.
           </p>
           <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
@@ -231,23 +237,8 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Client Script -->
     <script src="/Hospitals/hospitals.js"></script>

@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         threshold: 0.12,
         rootMargin: "0px 0px -40px 0px",
-      }
+      },
     );
 
     revealElements.forEach((el) => revealObserver.observe(el));
@@ -174,14 +174,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok && result.success) {
           showAlert(
             `Thank you, ${name}! Your message has been sent successfully. We will get back to you shortly.`,
-            "success"
+            "success",
           );
           contactForm.reset();
         } else {
-          showAlert(result.error || "Failed to send message. Please try again.", "error");
+          showAlert(
+            result.error || "Failed to send message. Please try again.",
+            "error",
+          );
         }
       } catch (err) {
-        showAlert("Network error occurred. Please check your internet connection.", "error");
+        showAlert(
+          "Network error occurred. Please check your internet connection.",
+          "error",
+        );
       } finally {
         if (contactSubmitBtn) {
           contactSubmitBtn.disabled = false;
@@ -201,4 +207,3 @@ document.addEventListener("DOMContentLoaded", () => {
     contactAlert.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 });
-

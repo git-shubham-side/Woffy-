@@ -1,58 +1,73 @@
 /* ==========================================================================
-   WOFFY - PREMIUM VACCINATION & DEWORMING HUB STYLESHEET
-   Theme: Clean, Crisp, Spacious, Accessible & 100% Fully Responsive
+   WOFFY - VACCINATION & DEWORMING HUB STYLESHEET (WARM THEME)
+   Theme: Warm Terracotta Coral (#FA6638), Soft Cream Sand (#FAF7F2),
+   100% Fully Mobile Responsive Filter Tabs & Cards System
    ========================================================================== */
 
 :root {
-  --primary-color: #0f172a;       /* Deep Slate / Midnight Charcoal */
-  --accent-color: #2563eb;        /* Electric Royal Blue */
-  --accent-hover: #1d4ed8;
-  --accent-glow: rgba(37, 99, 235, 0.25);
-  
-  --emerald-color: #10b981;       /* Completed / Success */
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  --slate-950: #0f172a;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --white: #ffffff;
+
+  --emerald-color: #059669;
   --emerald-bg: #ecfdf5;
   --emerald-border: #a7f3d0;
-  
-  --amber-color: #d97706;         /* Due Soon */
+
+  --amber-color: #d97706;
   --amber-bg: #fffbeb;
   --amber-border: #fde68a;
-  
-  --rose-color: #e11d48;          /* Overdue / Alert */
+
+  --rose-color: #e11d48;
   --rose-bg: #fff1f2;
   --rose-border: #fecdd3;
 
-  --violet-color: #7c3aed;        /* Boosters */
-  --violet-bg: #f5f3ff;
-  --violet-border: #ddd6fe;
+  --indigo-color: #4f46e5;
+  --indigo-bg: #eef2ff;
+  --indigo-border: #c7d2fe;
 
-  --cyan-color: #0284c7;          /* Deworming */
+  --cyan-color: #0284c7;
   --cyan-bg: #f0f9ff;
   --cyan-border: #bae6fd;
-  
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --text-light: #94a3b8;
-  
-  --bg-light: #f8fafc;
-  --card-bg: #ffffff;
-  --border-color: #e2e8f0;
-  --border-dark: #cbd5e1;
+
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
 
   --radius-xl: 20px;
-  --radius-lg: 14px;
-  --radius-md: 10px;
-  --radius-sm: 6px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
   --radius-pill: 9999px;
 
-  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 20px 35px -8px rgba(15, 23, 42, 0.12);
-  
-  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px -4px rgba(250, 102, 56, 0.08);
+  --shadow-lg: 0 20px 35px -8px rgba(250, 102, 56, 0.14);
+  --shadow-coral: 0 6px 20px -2px rgba(250, 102, 56, 0.32);
+
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Global Reset & Base Setup */
+/* --------------------------------------------------------------------------
+   Global Reset & Base Setup
+   -------------------------------------------------------------------------- */
 html {
   box-sizing: border-box;
   overflow-x: hidden;
@@ -60,18 +75,16 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
 }
 
 body.vaccination-body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: var(--text-main);
-  background-color: var(--bg-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--slate-900);
+  background-color: var(--sand-50);
   line-height: 1.6;
   min-height: 100vh;
   position: relative;
@@ -93,49 +106,48 @@ body.vaccination-body {
 
 .ambient-glow {
   position: absolute;
-  width: 45vw;
-  height: 45vw;
-  max-width: 480px;
-  max-height: 480px;
+  width: 480px;
+  height: 480px;
   border-radius: 50%;
   filter: blur(140px);
-  opacity: 0.35;
+  opacity: 0.22;
 }
 
 .glow-1 {
   top: -80px;
   right: -60px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.35) 0%, rgba(124, 58, 237, 0.15) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.35) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
 }
 
 .glow-2 {
   top: 40%;
   left: -80px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(2, 132, 199, 0.15) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.25) 0%, rgba(255, 215, 195, 0.1) 70%, transparent 100%);
 }
 
 .glow-3 {
   bottom: -60px;
   right: -60px;
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(225, 29, 72, 0.1) 70%, transparent 100%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(255, 114, 68, 0.1) 70%, transparent 100%);
 }
 
 /* Main Container */
 .vaccine-container {
   width: 100%;
-  max-width: 1180px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 100px 1.5rem 60px 1.5rem;
+  padding: 2.25rem 1.5rem 5rem 1.5rem;
   position: relative;
   z-index: 1;
   flex: 1;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
    PAGE HERO HEADER
    ========================================================================== */
 .page-hero {
-  margin-bottom: 28px;
+  margin-bottom: 2rem;
 }
 
 .hero-top-row {
@@ -143,153 +155,230 @@ body.vaccination-body {
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .hero-title-group h1 {
-  font-size: clamp(1.75rem, 3.5vw, 2.4rem);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.65rem, 3.2vw, 2.25rem);
   font-weight: 800;
-  color: var(--primary-color);
-  letter-spacing: -0.03em;
-  margin-bottom: 6px;
+  color: var(--slate-900);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 0.75rem;
+  line-height: 1.25;
 }
 
 .hero-badge-protocol {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--emerald-bg);
+  color: var(--emerald-color);
+  border: 1px solid var(--emerald-border);
+  border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: linear-gradient(135deg, #1e293b, #0f172a);
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-xs);
-}
-
-.hero-badge-protocol i {
-  color: #60a5fa;
+  vertical-align: middle;
 }
 
 .hero-subtitle {
-  color: var(--text-muted);
-  font-size: 1rem;
-  max-width: 650px;
+  color: var(--slate-600);
+  font-size: 0.98rem;
+  margin-top: 0.35rem;
 }
 
 .hero-actions-bar {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   flex-wrap: wrap;
-  gap: 10px;
 }
 
-/* ==========================================================================
-   PET SWITCHER ROW
-   ========================================================================== */
+/* Universal Button Hub System */
+.btn-hub {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.btn-hub-sm {
+  padding: 0.5rem 0.95rem;
+  font-size: 0.825rem;
+  height: 36px;
+}
+
+.btn-hub-primary {
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  box-shadow: var(--shadow-coral);
+  border: none;
+}
+
+.btn-hub-primary:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(250, 102, 56, 0.45);
+}
+
+.btn-hub-secondary {
+  background: var(--white);
+  color: var(--slate-800);
+  border: 1.5px solid var(--border-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-hub-secondary:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+  background: var(--brand-50);
+  transform: translateY(-1px);
+}
+
+.btn-hub-success {
+  background: var(--emerald-bg);
+  color: var(--emerald-color);
+  border: 1.5px solid var(--emerald-border);
+}
+
+.btn-hub-success:hover {
+  background: #d1fae5;
+  color: #047857;
+  transform: translateY(-1px);
+}
+
+.btn-hub-danger-outline {
+  background: var(--rose-bg);
+  color: var(--rose-color);
+  border: 1.5px solid var(--rose-border);
+}
+
+.btn-hub-danger-outline:hover {
+  background: #ffe4e6;
+  color: #be123c;
+  transform: translateY(-1px);
+}
+
+.btn-hub-accent {
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  border: none;
+  box-shadow: var(--shadow-coral);
+}
+
+.btn-hub-accent:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-1px);
+}
+
+/* Pet Switcher Row */
 .pet-switcher-wrapper {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: var(--shadow-xs);
+  gap: 0.75rem;
+  padding: 0.75rem 1.15rem;
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   overflow-x: auto;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+.pet-switcher-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .pet-switcher-label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  white-space: nowrap;
-  display: flex;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.35rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pet-pills-list {
   display: flex;
   align-items: center;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 2px 0;
+  gap: 0.5rem;
 }
 
 .pet-nav-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  color: var(--text-main);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.88rem;
-  transition: var(--transition);
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--slate-700);
   white-space: nowrap;
+  transition: var(--transition);
+  flex-shrink: 0;
 }
 
-.pet-nav-pill img,
-.pet-nav-pill .pill-avatar-fallback {
-  width: 24px;
-  height: 24px;
+.pet-nav-pill img {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.pet-nav-pill .pill-avatar-fallback {
-  background: #e2e8f0;
-  color: #0f172a;
-  display: inline-flex;
+.pill-avatar-fallback {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: #fff;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 800;
 }
 
-.pet-nav-pill:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
-}
-
 .pet-nav-pill.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
-}
-
-.pet-nav-pill.active .pill-avatar-fallback {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: var(--brand-50);
+  border-color: var(--brand-500);
+  color: var(--brand-600);
 }
 
 /* ==========================================================================
-   PET IMMUNIZATION BANNER
+   PET SUMMARY & PROGRESS BANNER
    ========================================================================== */
 .pet-summary-banner {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: 24px 28px;
-  box-shadow: var(--shadow-md);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-sm);
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 28px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
 }
@@ -299,15 +388,15 @@ body.vaccination-body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--accent-color), var(--emerald-color));
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
 }
 
 .pet-meta-flex {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1.25rem;
 }
 
 .pet-avatar-wrapper {
@@ -316,87 +405,84 @@ body.vaccination-body {
 }
 
 .pet-avatar-img {
-  width: 88px;
-  height: 88px;
-  border-radius: var(--radius-lg);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+  border: 3px solid var(--brand-50);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.18);
 }
 
 .pet-avatar-fallback-lg {
-  width: 88px;
-  height: 88px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a4d, #fa6638);
   color: #fff;
+  font-size: 1.65rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
-  font-weight: 800;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.2);
+  border: 3px solid var(--brand-50);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.22);
 }
 
 .pet-details-col h2 {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem 0;
+  color: var(--slate-900);
 }
 
 .pet-tags-row {
   display: flex;
   align-items: center;
+  gap: 0.45rem;
   flex-wrap: wrap;
-  gap: 8px;
 }
 
 .pet-info-tag {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
-  padding: 3px 10px;
-  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.3rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background: var(--sand-50);
+  border: 1px solid var(--border-subtle);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  color: var(--slate-700);
 }
 
-.pet-info-tag.owner-tag {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1d4ed8;
+.owner-tag {
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border-color: var(--brand-200);
 }
 
-/* Progress Box */
 .progress-card-box {
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 1.25rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.65rem;
 }
 
 .progress-label-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
 }
 
 .progress-track {
   width: 100%;
-  height: 12px;
-  background: #e2e8f0;
+  height: 10px;
+  background: #e5e0d8;
   border-radius: var(--radius-pill);
   overflow: hidden;
   position: relative;
@@ -404,21 +490,21 @@ body.vaccination-body {
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #2563eb, #10b981);
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 60%, #10b981 100%);
   border-radius: var(--radius-pill);
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .next-due-callout {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: var(--text-main);
+  gap: 0.45rem;
+  font-size: 0.825rem;
+  color: var(--slate-700);
   background: #ffffff;
-  padding: 8px 12px;
+  padding: 0.5rem 0.85rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-subtle);
 }
 
 /* ==========================================================================
@@ -427,30 +513,31 @@ body.vaccination-body {
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 1.15rem;
+  margin-bottom: 2rem;
 }
 
 .stat-item-card {
   background: #ffffff;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 18px 20px;
-  box-shadow: var(--shadow-xs);
+  padding: 1.25rem 1.4rem;
+  box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
   transition: var(--transition);
 }
 
 .stat-item-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  border-color: var(--brand-200);
+  box-shadow: var(--shadow-md);
 }
 
 .stat-icon-box {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
@@ -458,164 +545,182 @@ body.vaccination-body {
   flex-shrink: 0;
 }
 
-.stat-icon-box.total { background: #eff6ff; color: #2563eb; }
+.stat-icon-box.total { background: var(--sand-100); color: var(--slate-800); }
 .stat-icon-box.done { background: var(--emerald-bg); color: var(--emerald-color); }
 .stat-icon-box.due { background: var(--amber-bg); color: var(--amber-color); }
 .stat-icon-box.overdue { background: var(--rose-bg); color: var(--rose-color); }
 
-.stat-content .stat-value {
+.stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 1.55rem;
   font-weight: 800;
-  color: var(--primary-color);
-  line-height: 1.1;
+  line-height: 1;
+  color: var(--slate-900);
 }
 
-.stat-content .stat-label {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-muted);
+.stat-label {
+  font-size: 0.775rem;
+  color: var(--slate-500);
+  font-weight: 700;
+  margin-top: 0.35rem;
 }
 
 /* ==========================================================================
-   FILTER TABS & SEARCH BAR
+   FILTER TABS & SEARCH BAR (100% RESPONSIVE PILL BAR)
    ========================================================================== */
 .schedule-control-bar {
   background: #ffffff;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 14px 18px;
-  box-shadow: var(--shadow-xs);
+  padding: 0.85rem 1.15rem;
+  box-shadow: var(--shadow-sm);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 
 .tab-filter-pills {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  gap: 8px;
 }
 
+/* CRITICAL RESPONSIVENESS FIX FOR "Due & Overdue", "Core Vaccines", ETC. */
 .tab-pill-btn {
-  padding: 8px 16px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.48rem 0.95rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.88rem;
+  color: var(--slate-700);
+  font-weight: 700;
+  font-size: 0.84rem;
   cursor: pointer;
   text-decoration: none;
   transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  white-space: nowrap !important; /* Never break text like 'Due & Overdue' into 2 lines */
+  flex-shrink: 0 !important;      /* Never crush or squeeze pill widths */
+  line-height: 1;
 }
 
 .tab-pill-btn:hover {
-  background: #e2e8f0;
-  color: var(--text-main);
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+  color: var(--brand-600);
 }
 
 .tab-pill-btn.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+  background: var(--brand-600) !important;
+  border-color: var(--brand-600) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.3);
 }
 
-/* Search input inside control bar */
+.tab-pill-btn.active i,
+.tab-pill-btn.active svg {
+  color: #ffffff !important;
+}
+
+.search-and-resync-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
 .search-control-wrap {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.search-control-wrap i {
+.search-control-wrap i,
+.search-control-wrap svg {
   position: absolute;
   left: 12px;
-  color: #94a3b8;
-  width: 16px;
-  height: 16px;
+  color: var(--slate-400);
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
 }
 
 .search-control-input {
-  padding: 8px 14px 8px 36px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem 0.5rem 2.25rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
   border-radius: var(--radius-pill);
-  font-size: 0.88rem;
-  color: var(--text-main);
+  font-size: 0.85rem;
+  color: var(--slate-900);
   outline: none;
   transition: var(--transition);
-  width: 220px;
+  width: 210px;
+  height: 36px;
+  box-sizing: border-box;
 }
 
 .search-control-input:focus {
   background: #ffffff;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-  width: 260px;
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
 }
 
 /* ==========================================================================
-   VACCINE TIMELINE LIST & CARDS
+   VACCINE ITEMS TIMELINE STACK
    ========================================================================== */
 .vaccine-list-stack {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .vaccine-item-card {
   background: #ffffff;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 22px 26px;
-  box-shadow: var(--shadow-xs);
+  padding: 1.25rem 1.65rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  align-items: center;
+  gap: 1.5rem;
   transition: var(--transition);
+  box-shadow: var(--shadow-xs);
   position: relative;
   overflow: hidden;
 }
 
 .vaccine-item-card:hover {
+  border-color: var(--brand-200);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
-  border-color: #cbd5e1;
 }
 
-/* Status-based Card Accents */
-.vaccine-item-card.status-completed {
-  border-left: 5px solid var(--emerald-color);
+/* Left Accent Stripe per status */
+.vaccine-item-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
 }
 
-.vaccine-item-card.status-due-soon {
-  border-left: 5px solid var(--amber-color);
-  background: linear-gradient(90deg, #fffbeb 0%, #ffffff 20%);
-}
-
-.vaccine-item-card.status-overdue {
-  border-left: 5px solid var(--rose-color);
-  background: linear-gradient(90deg, #fff1f2 0%, #ffffff 20%);
-}
-
-.vaccine-item-card.status-upcoming {
-  border-left: 5px solid #94a3b8;
-}
+.vaccine-item-card.status-completed::before { background: var(--emerald-color); }
+.vaccine-item-card.status-due-soon::before { background: var(--amber-color); }
+.vaccine-item-card.status-overdue::before { background: var(--rose-color); }
+.vaccine-item-card.status-upcoming::before { background: var(--slate-300); }
 
 .vaccine-card-left {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
+  gap: 1.15rem;
   flex: 1;
+  min-width: 0;
 }
 
 .category-icon-avatar {
@@ -626,309 +731,202 @@ body.vaccination-body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 2px;
+  border: 1px solid transparent;
 }
 
-.category-icon-avatar.core { background: #eff6ff; color: #2563eb; }
-.category-icon-avatar.deworming { background: var(--cyan-bg); color: var(--cyan-color); }
-.category-icon-avatar.booster { background: var(--violet-bg); color: var(--violet-color); }
-.category-icon-avatar.non-core { background: var(--amber-bg); color: var(--amber-color); }
-.category-icon-avatar.custom { background: #f1f5f9; color: #475569; }
+.category-icon-avatar.core { background: var(--indigo-bg); color: var(--indigo-color); border-color: var(--indigo-border); }
+.category-icon-avatar.deworming { background: var(--cyan-bg); color: var(--cyan-color); border-color: var(--cyan-border); }
+.category-icon-avatar.booster { background: #fdf4ff; color: #c026d3; border-color: #f5d0fe; }
+.category-icon-avatar.non-core { background: #fff7ed; color: #ea580c; border-color: #ffedd5; }
+.category-icon-avatar.custom { background: var(--sand-100); color: var(--slate-700); border-color: var(--border-medium); }
+
+.vaccine-meta-content {
+  flex: 1;
+  min-width: 0;
+}
 
 .vaccine-meta-content h3 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--primary-color);
-  margin-bottom: 6px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem 0;
+  color: var(--slate-900);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .target-stage-tag {
-  font-size: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.725rem;
   font-weight: 700;
-  color: #475569;
-  background: #f1f5f9;
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-
-.vaccine-notes-text {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.45;
-  margin-bottom: 10px;
-}
-
-/* Status Badges */
-.status-pill {
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 4px 12px;
+  background: var(--sand-100);
+  color: var(--slate-700);
+  padding: 0.15rem 0.55rem;
   border-radius: var(--radius-pill);
+}
+
+.status-pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.25rem;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.status-pill.completed {
-  background: var(--emerald-bg);
-  color: #065f46;
-  border: 1px solid var(--emerald-border);
+.status-pill.completed { background: var(--emerald-bg); color: var(--emerald-color); border: 1px solid var(--emerald-border); }
+.status-pill.due-soon { background: var(--amber-bg); color: var(--amber-color); border: 1px solid var(--amber-border); }
+.status-pill.overdue { background: var(--rose-bg); color: var(--rose-color); border: 1px solid var(--rose-border); }
+.status-pill.upcoming { background: var(--sand-100); color: var(--slate-600); border: 1px solid var(--border-subtle); }
+
+.vaccine-notes-text {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  margin: 0.25rem 0 0.55rem 0;
+  line-height: 1.45;
 }
 
-.status-pill.due-soon {
-  background: var(--amber-bg);
-  color: #92400e;
-  border: 1px solid var(--amber-border);
-  animation: pulse-amber 2s infinite;
-}
-
-.status-pill.overdue {
-  background: var(--rose-bg);
-  color: #9f1239;
-  border: 1px solid var(--rose-border);
-  animation: pulse-rose 2s infinite;
-}
-
-.status-pill.upcoming {
-  background: var(--bg-light);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
-}
-
-@keyframes pulse-amber {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4); }
-  50% { box-shadow: 0 0 0 5px rgba(217, 119, 6, 0); }
-}
-
-@keyframes pulse-rose {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
-  50% { box-shadow: 0 0 0 5px rgba(225, 29, 72, 0); }
-}
-
-/* Meta Pills Row */
 .details-pills-row {
   display: flex;
   align-items: center;
+  gap: 0.65rem;
   flex-wrap: wrap;
-  gap: 14px;
-  font-size: 0.84rem;
-  color: var(--text-muted);
+  margin-top: 0.4rem;
 }
 
 .detail-pill-item {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.3rem;
+  font-size: 0.775rem;
+  color: var(--slate-600);
+  background: var(--sand-50);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
 }
 
 .cert-proof-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 3px 10px;
-  border-radius: var(--radius-sm);
+  gap: 0.3rem;
+  color: var(--brand-600);
   text-decoration: none;
-  transition: var(--transition);
+  font-weight: 700;
 }
 
 .cert-proof-btn:hover {
-  background: #dbeafe;
-  color: #1d4ed8;
+  text-decoration: underline;
 }
 
-/* Actions Right */
 .vaccine-card-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.45rem;
   flex-shrink: 0;
 }
 
-/* Buttons */
-.btn-hub {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 9px 18px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: var(--transition);
-  line-height: 1.3;
-}
-
-.btn-hub-primary {
-  background: var(--primary-color);
-  color: #ffffff;
-}
-
-.btn-hub-primary:hover {
-  background: #1e293b;
-  box-shadow: var(--shadow-sm);
-}
-
-.btn-hub-accent {
-  background: var(--accent-color);
-  color: #ffffff;
-}
-
-.btn-hub-accent:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 4px 14px var(--accent-glow);
-}
-
-.btn-hub-success {
-  background: #059669;
-  color: #ffffff;
-}
-
-.btn-hub-success:hover {
-  background: #047857;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
-}
-
-.btn-hub-secondary {
-  background: #ffffff;
-  border-color: var(--border-color);
-  color: var(--text-main);
-}
-
-.btn-hub-secondary:hover {
-  background: var(--bg-light);
-  border-color: #cbd5e1;
-}
-
-.btn-hub-danger-outline {
-  background: transparent;
-  border-color: #fecdd3;
-  color: #e11d48;
-  padding: 8px 12px;
-}
-
-.btn-hub-danger-outline:hover {
-  background: #fff1f2;
-  border-color: #fda4af;
-}
-
-.btn-hub-sm {
-  padding: 7px 14px;
-  font-size: 0.82rem;
-}
-
-/* ==========================================================================
-   EMPTY STATE
-   ========================================================================== */
+/* Empty State */
 .empty-hub-state {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl);
-  padding: 60px 24px;
   text-align: center;
-  box-shadow: var(--shadow-sm);
+  padding: 4.5rem 1.5rem;
+  background: #ffffff;
+  border: 2px dashed var(--brand-200);
+  border-radius: var(--radius-xl);
 }
 
 .empty-icon-circle {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: #eff6ff;
-  color: var(--accent-color);
+  background: var(--brand-50);
+  color: var(--brand-600);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px auto;
+  margin: 0 auto 1.25rem;
+  border: 1px solid var(--brand-200);
 }
 
 .empty-hub-state h3 {
-  font-size: 1.3rem;
-  margin-bottom: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.35rem;
+  color: var(--slate-900);
+  margin-bottom: 0.5rem;
 }
 
 .empty-hub-state p {
-  color: var(--text-muted);
+  color: var(--slate-500);
+  font-size: 0.95rem;
   max-width: 480px;
-  margin: 0 auto 24px auto;
+  margin: 0 auto 1.75rem;
+  line-height: 1.5;
 }
 
 /* ==========================================================================
    MODAL DIALOGS
    ========================================================================== */
 .modal-overlay {
-  display: none;
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
   background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  z-index: 1100;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  z-index: 1050;
+  padding: 1.25rem;
+  box-sizing: border-box;
 }
 
 .modal-overlay.active {
   display: flex;
-  animation: modalFadeIn 0.2s ease-out;
-}
-
-@keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 .modal-card {
   background: #ffffff;
-  border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
-  max-width: 540px;
+  max-width: 520px;
   width: 100%;
-  padding: 30px;
+  padding: 2rem;
   box-shadow: var(--shadow-lg);
+  position: relative;
   max-height: 90vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .modal-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 14px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid var(--border-subtle);
 }
 
 .modal-header-row h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--primary-color);
+  margin: 0;
+  color: var(--slate-900);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.45rem;
 }
 
 .modal-close-btn {
-  background: #f1f5f9;
+  background: var(--sand-100);
   border: none;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  color: var(--text-muted);
+  color: var(--slate-500);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -938,30 +936,30 @@ body.vaccination-body {
 }
 
 .modal-close-btn:hover {
-  background: #e2e8f0;
-  color: var(--text-main);
+  background: var(--rose-bg);
+  color: var(--rose-color);
 }
 
 .modal-form-group {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .modal-form-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 6px;
+  color: var(--slate-800);
+  margin-bottom: 0.4rem;
 }
 
 .modal-form-control {
   width: 100%;
-  padding: 10px 14px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
+  padding: 0.65rem 0.95rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
   border-radius: var(--radius-md);
-  font-size: 0.92rem;
-  color: var(--text-main);
+  font-size: 0.9rem;
+  color: var(--slate-900);
   box-sizing: border-box;
   outline: none;
   transition: var(--transition);
@@ -969,33 +967,33 @@ body.vaccination-body {
 
 .modal-form-control:focus {
   background: #ffffff;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px var(--accent-glow);
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
 }
 
 .modal-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .modal-actions-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-  border-top: 1px solid var(--border-color);
-  padding-top: 18px;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  border-top: 1.5px solid var(--border-subtle);
+  padding-top: 1rem;
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS (TABLETS, MOBILES, DESKTOPS)
+   RESPONSIVE BREAKPOINTS (SMOOTH BUTTONS, CLEAN HORIZONTAL SWIPE)
    ========================================================================== */
-
 @media (max-width: 992px) {
   .pet-summary-banner {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 1.5rem;
+    padding: 1.5rem;
   }
 
   .stats-grid {
@@ -1005,30 +1003,62 @@ body.vaccination-body {
 
 @media (max-width: 768px) {
   .vaccine-container {
-    padding: 85px 1rem 40px 1rem;
+    padding: 1.75rem 1rem 4rem 1rem;
   }
 
   .hero-top-row {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
 
   .hero-actions-bar {
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .hero-actions-bar .btn-hub {
-    flex: 1;
-    font-size: 0.82rem;
-    padding: 8px 12px;
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 130px;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .schedule-control-bar {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.85rem;
+    padding: 0.85rem;
   }
 
-  .search-control-wrap,
+  /* CRITICAL: Smooth horizontal touch swipe for filter pills so buttons never break */
+  .tab-filter-pills {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 4px;
+  }
+
+  .tab-pill-btn {
+    flex: 0 0 auto !important; /* Never crush or stretch */
+    font-size: 0.8rem;
+    padding: 0.45rem 0.85rem;
+    white-space: nowrap !important;
+  }
+
+  .search-and-resync-bar {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .search-control-wrap {
+    flex: 1;
+  }
+
   .search-control-input {
     width: 100% !important;
   }
@@ -1036,13 +1066,14 @@ body.vaccination-body {
   .vaccine-item-card {
     flex-direction: column;
     align-items: stretch;
-    padding: 18px;
+    padding: 1.25rem;
+    gap: 1rem;
   }
 
   .vaccine-card-actions {
     justify-content: flex-end;
-    border-top: 1px solid var(--border-color);
-    padding-top: 14px;
+    border-top: 1.5px solid var(--sand-100);
+    padding-top: 0.75rem;
     width: 100%;
   }
 
@@ -1053,26 +1084,45 @@ body.vaccination-body {
 
 @media (max-width: 480px) {
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-item-card {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .stat-icon-box {
+    width: 38px;
+    height: 38px;
   }
 
   .pet-meta-flex {
     flex-direction: column;
     text-align: center;
+    gap: 0.85rem;
   }
 
   .pet-tags-row {
     justify-content: center;
   }
 
-  .tab-filter-pills {
-    width: 100%;
-  }
-
+  /* Filter buttons stay fully readable and un-squished */
   .tab-pill-btn {
-    flex: 1;
-    justify-content: center;
-    font-size: 0.8rem;
-    padding: 6px 10px;
+    flex: 0 0 auto !important;
+    font-size: 0.78rem;
+    padding: 0.42rem 0.75rem;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 }

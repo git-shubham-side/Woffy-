@@ -3,800 +3,351 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Woofy — Complete Pet Health & Emergency Care Platform</title>
-    <meta name="description" content="Manage your pet's medical records, upload prescriptions, locate verified 24/7 emergency pet hospitals near you, and connect with animal rescue helplines." />
+    <title>Woofy | Complete Pet Health & Emergency Care Platform</title>
+    <meta
+      name="description"
+      content="Smart, loving care for your dog. Manage digital medical records, generate printable QR collar tags, track vaccinations, and locate 24/7 emergency pet hospitals near you."
+    />
 
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/Landing/style.css" />
+    <link rel="stylesheet" href="/Landing/style.css?v=5" />
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Subtle Background Ambient Light (Minimalist & Non-intrusive) -->
-    <div class="bg-mesh" aria-hidden="true">
-      <div class="mesh-blob blob-1"></div>
-      <div class="mesh-blob blob-2"></div>
-      <div class="mesh-grid-pattern"></div>
-    </div>
-
-    <!-- Navigation Header -->
-    <header id="navbar">
-      <div class="container nav-container">
-        <a href="/" class="brand-logo" aria-label="Woofy Home">
-          <span class="logo-icon-box">
-            <i data-lucide="paw-print"></i>
-          </span>
-          <span class="brand-name">Woofy<span class="dot">.</span></span>
-        </a>
-
-        <!-- Desktop Navigation Links -->
-        <nav class="nav-links" aria-label="Main Navigation">
-          <a href="#home" class="nav-link active">Home</a>
-          <a href="#services" class="nav-link">Services</a>
-          <a href="#how-it-works" class="nav-link">How It Works</a>
-          <a href="#why-us" class="nav-link">Why Us</a>
-          <a href="/services/hospitals" class="nav-link">Hospitals</a>
-          <a href="/services/rescue" class="nav-link">Rescue NGO</a>
-          <a href="/shop" class="nav-link">Pet Shop</a>
-          <a href="#contact" class="nav-link">Contact</a>
-        </nav>
-
-        <!-- Right Side Auth CTA & Mobile Toggle -->
-        <div class="nav-actions">
-          <a href="/api/login" class="btn btn-ghost btn-sm">Log In</a>
-          <a href="/api/signup" class="btn btn-primary btn-sm btn-nav-cta">
-            <span>Get Started</span>
-            <i data-lucide="arrow-right" class="btn-icon"></i>
-          </a>
-
-          <!-- Mobile Hamburger Menu Button -->
-          <button
-            type="button"
-            class="mobile-menu-btn"
-            id="mobileMenuToggle"
-            aria-label="Toggle Navigation Menu"
-            aria-expanded="false"
-          >
-            <i data-lucide="menu" id="menuOpenIcon"></i>
-            <i data-lucide="x" id="menuCloseIcon" style="display: none;"></i>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Mobile Drawer Overlay & Menu -->
-    <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" aria-hidden="true"></div>
-    <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation">
-      <div class="mobile-drawer-header">
-        <a href="/" class="brand-logo">
-          <span class="logo-icon-box">
-            <i data-lucide="paw-print"></i>
-          </span>
-          <span class="brand-name">Woofy<span class="dot">.</span></span>
-        </a>
-        <button type="button" class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close menu">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <nav class="mobile-drawer-links">
-        <a href="#home" class="drawer-link"><i data-lucide="home"></i> <span>Home</span></a>
-        <a href="#services" class="drawer-link"><i data-lucide="grid"></i> <span>Services & Features</span></a>
-        <a href="#how-it-works" class="drawer-link"><i data-lucide="layers"></i> <span>How It Works</span></a>
-        <a href="#why-us" class="drawer-link"><i data-lucide="shield-check"></i> <span>Why Choose Us</span></a>
-        <a href="/services/hospitals" class="drawer-link"><i data-lucide="hospital"></i> <span>Nearby Hospitals</span></a>
-        <a href="/services/rescue" class="drawer-link"><i data-lucide="heart-handshake"></i> <span>Rescue Helplines</span></a>
-        <a href="/shop" class="drawer-link"><i data-lucide="shopping-bag"></i> <span>Pet Shop</span></a>
-        <a href="#contact" class="drawer-link"><i data-lucide="mail"></i> <span>Contact Us</span></a>
-      </nav>
-
-      <div class="mobile-drawer-footer">
-        <a href="/api/login" class="btn btn-secondary btn-full">Log In</a>
-        <a href="/api/signup" class="btn btn-primary btn-full">
-          <span>Create Free Account</span>
-          <i data-lucide="arrow-right"></i>
-        </a>
-      </div>
-    </aside>
+    <!-- Top Navigation Header Partial -->
+    <%- include('../partials/landing-navbar') %>
 
     <main>
-      <div class="container" style="padding-top: 1rem;">
-        <%- include('../partials/flash-messages') %>
-      </div>
-
-      <!-- Hero Section -->
+      <!-- ====================================================================
+           1. HERO SECTION (PDF Page 1: Warm Vibrant Coral Canvas)
+           ==================================================================== -->
       <section id="home" class="hero-section">
-        <div class="container hero-container">
-          <!-- Left Column: Copy & CTAs -->
-          <div class="hero-content">
-            <div class="announcement-pill">
-              <span class="live-pulse"></span>
-              <span class="pill-text">Live 24/7 Verified Vet & Rescue Network</span>
-              <i data-lucide="arrow-up-right" class="pill-arrow"></i>
+        <div class="container">
+          <div class="hero-content-wrapper">
+            <div class="hero-kicker-pill">
+              <i data-lucide="heart"></i>
+              <span>Smart Pet Health & Safety Platform</span>
             </div>
 
-            <h1 class="hero-title">
-              The Modern Platform for Your Pet's
-              <span class="gradient-text">Health & Wellbeing.</span>
+            <h1 class="hero-headline">
+              Smart care for happy, healthy dogs!
             </h1>
 
-            <p class="hero-subtitle">
-              Effortlessly track medical history, attach digital prescriptions, locate verified 24/7 emergency veterinary clinics, and access animal rescue helplines — all in one unified workspace.
+            <p class="hero-subtext">
+              Keep your furry friend's medical records, smart QR collar tag, vaccination reminders, and 24/7 emergency hospital network in one safe, beautiful place.
             </p>
 
-            <div class="hero-cta-group">
-              <a href="/api/signup" class="btn btn-primary btn-lg">
-                <span>Start Free Journey</span>
+            <div class="hero-btn-group">
+              <a href="/api/signup" class="btn-pill btn-pill-white">
+                <span>Get Started Free</span>
                 <i data-lucide="arrow-right"></i>
               </a>
-              <a href="/services/hospitals" class="btn btn-secondary btn-lg">
-                <i data-lucide="map-pin"></i>
-                <span>Find Nearby Hospitals</span>
+              <a href="#features" class="btn-pill btn-pill-outline">
+                <span>Explore Features</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Pet Visual (High-Res Cute Peeking / Sitting Pet Image) -->
+          <div class="hero-visual-center">
+            <img
+              src="/Images/Landing-Images/hero-puppy-peeking.png"
+              alt="Adorable Happy Dog"
+              class="hero-pet-image"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2. ABOUT & MISSION SECTION (PDF Page 2 Top: 2-Column Warm Story)
+           ==================================================================== -->
+      <section id="about" class="story-section">
+        <div class="container">
+          <div class="story-grid">
+            <!-- Left Column: Story Text & CTA -->
+            <div class="story-content">
+              <span class="story-kicker">More than a medical log</span>
+              <h2 class="story-title">
+                A True Companion for Every Step of Your Pet's Life
+              </h2>
+              <p class="story-desc">
+                Woofy is a dedicated pet health platform designed to help pet parents, rescuers, and animal shelters manage medical history, track essential vaccinations, and find emergency veterinary care in seconds.
+              </p>
+              <p class="story-desc">
+                No more lost paper slips, forgotten vaccine booster dates, or panic during midnight emergencies. Everything is organized, secure, and easily accessible from any device.
+              </p>
+
+              <ul class="story-points">
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span>Cloud vault for doctor prescriptions & clinic slips</span>
+                </li>
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span>Printable smart QR collar tag — instant scan to call owner</span>
+                </li>
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span>Real-time GPS geocoding for 24/7 verified pet hospitals</span>
+                </li>
+              </ul>
+
+              <a href="/api/signup" class="btn-pill btn-pill-coral">
+                <span>Create Free Pet Profile</span>
+                <i data-lucide="arrow-right"></i>
               </a>
             </div>
 
-            <!-- Social Proof Stack -->
-            <div class="hero-social-proof">
-              <div class="avatar-stack">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
-                <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80" alt="Pet Parent" />
-              </div>
-              <div class="proof-details">
-                <div class="star-rating">
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <i data-lucide="star"></i>
-                  <span class="rating-number">4.9 / 5.0</span>
-                </div>
-                <span class="proof-label">Trusted by 2,500+ pet parents across India</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: Sharp UI Preview Widget -->
-          <div class="hero-visual">
-            <div class="ui-mockup-frame">
-              <!-- Mockup Card Header -->
-              <div class="mockup-header">
-                <div class="mockup-controls">
-                  <span class="control red"></span>
-                  <span class="control yellow"></span>
-                  <span class="control green"></span>
-                </div>
-                <div class="mockup-title">woofy.app / pet / rocky</div>
-                <div class="mockup-status">
-                  <span class="status-dot online"></span>
-                  <span>Active Sync</span>
-                </div>
-              </div>
-
-              <!-- Main Pet Health Card Preview -->
-              <div class="mockup-body">
-                <!-- Pet Profile Snippet -->
-                <div class="mockup-pet-banner">
-                  <div class="mockup-pet-avatar">
-                    <img
-                      src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=300&q=80"
-                      alt="Golden Retriever - Rocky"
-                    />
+            <!-- Right Column: Warm Organic Photo Frame -->
+            <div class="story-visual-wrap">
+              <div class="story-image-card">
+                <img
+                  src="/Images/Landing-Images/story-parent-hugging.png"
+                  alt="Loving Pet Parent with Dog"
+                  loading="lazy"
+                />
+                <div class="floating-badge">
+                  <div class="floating-badge-icon">
+                    <i data-lucide="shield-check"></i>
                   </div>
-                  <div class="mockup-pet-info">
-                    <div class="pet-name-row">
-                      <h3>Rocky</h3>
-                      <span class="breed-tag">Golden Retriever</span>
-                    </div>
-                    <p class="pet-submeta">Male • 2 Years 4 Months • Microchipped</p>
-                  </div>
-                  <div class="health-badge-pill">
-                    <i data-lucide="check-circle-2"></i>
-                    <span>Vitals Optimal</span>
+                  <div class="floating-badge-text">
+                    <h6>Complete Health Vault</h6>
+                    <span>Essential Health & Emergency Care</span>
                   </div>
                 </div>
-
-                <!-- Quick Vitals Grid -->
-                <div class="mockup-vitals-grid">
-                  <div class="vital-card">
-                    <span class="vital-label">Weight</span>
-                    <span class="vital-val">28.4 <small>kg</small></span>
-                    <span class="vital-trend positive">↑ +0.3 kg this month</span>
-                  </div>
-                  <div class="vital-card">
-                    <span class="vital-label">Rabies Booster</span>
-                    <span class="vital-val">Up to date</span>
-                    <span class="vital-trend neutral">Next: Nov 2026</span>
-                  </div>
-                  <div class="vital-card">
-                    <span class="vital-label">Daily Diet</span>
-                    <span class="vital-val">420 <small>kcal/day</small></span>
-                    <span class="vital-trend positive">✓ On Schedule</span>
-                  </div>
-                </div>
-
-                <!-- Live Notification Preview -->
-                <div class="mockup-alert-chip">
-                  <div class="alert-chip-icon">
-                    <i data-lucide="file-check-2"></i>
-                  </div>
-                  <div class="alert-chip-content">
-                    <strong>Prescription Attached</strong>
-                    <span>Dr. Sharma • Apollo Pet Care Clinic</span>
-                  </div>
-                  <span class="chip-time">Today, 11:30 AM</span>
-                </div>
-
-                <!-- Emergency SOS Quick Access -->
-                <div class="mockup-emergency-bar">
-                  <div class="emergency-text">
-                    <i data-lucide="ambulance"></i>
-                    <span>Nearest Verified 24/7 Vet Hospital: <strong>1.8 km away</strong></span>
-                  </div>
-                  <a href="/services/hospitals" class="emergency-action-btn">
-                    <span>Call Vet</span>
-                    <i data-lucide="phone-call"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <!-- Floating Micro Accent Badges -->
-            <div class="floating-chip chip-top">
-              <div class="chip-icon bg-blue">
-                <i data-lucide="shield-check"></i>
-              </div>
-              <div class="chip-text">
-                <strong>100% Verified</strong>
-                <span>Authentic Veterinary Data</span>
-              </div>
-            </div>
-
-            <div class="floating-chip chip-bottom">
-              <div class="chip-icon bg-emerald">
-                <i data-lucide="activity"></i>
-              </div>
-              <div class="chip-text">
-                <strong>Instant Geocoding</strong>
-                <span>Auto-detects closest clinic</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Key Metrics Ribbon Banner -->
-      <section class="stats-section">
+      <!-- ====================================================================
+           3. CORE FEATURES SECTION (PDF Page 2 Bottom: 3 Warm Cards)
+           ==================================================================== -->
+      <section id="features" class="features-section">
         <div class="container">
-          <div class="stats-ribbon reveal">
-            <div class="stats-grid">
-              <div class="stat-item">
-                <div class="stat-number">100<span class="stat-symbol">%</span></div>
-                <div class="stat-label">Verified Pet Hospitals</div>
-                <div class="stat-desc">Authentic contact numbers & GPS pins</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">24<span class="stat-symbol">/7</span></div>
-                <div class="stat-label">Emergency Helpline</div>
-                <div class="stat-desc">Rapid animal rescue NGO access</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">30<span class="stat-symbol">+</span></div>
-                <div class="stat-label">Indian Cities</div>
-                <div class="stat-desc">Pan-India coverage & expansion</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-number">4.9<span class="stat-symbol">★</span></div>
-                <div class="stat-label">Pet Parent Rating</div>
-                <div class="stat-desc">Based on verified user feedback</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Platform Core Services & Bento Features Grid -->
-      <section id="services" class="section services-section">
-        <div class="container">
-          <div class="section-header reveal">
-            <span class="section-badge">Platform Capabilities</span>
-            <h2 class="section-title">Built for Every Stage of Your Pet's Life</h2>
-            <p class="section-description">
-              A complete suite of modern pet care tools designed with clean aesthetics, instant accessibility, and zero clutter.
+          <div class="section-header-center">
+            <span class="section-kicker">Core Platform Features</span>
+            <h2 class="section-title">
+              Everything Your Companion Needs to Thrive
+            </h2>
+            <p class="section-subtitle">
+              Simple, beautiful tools built with love to keep your dog healthy, happy, and protected at every life stage.
             </p>
           </div>
 
-          <div class="bento-services-grid">
-            <!-- Bento Card 1: Health Tracking (Large Feature) -->
-            <div class="bento-card bento-hero-card reveal">
-              <div class="bento-card-content">
-                <div class="bento-icon icon-blue">
-                  <i data-lucide="clipboard-plus"></i>
+          <div class="cards-grid-3">
+            <!-- Feature Card 1: Digital Medical Passport -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-coral">Medical</span>
+                  <span class="pill-tag pill-tag-coral">Cloud Vault</span>
                 </div>
-                <span class="card-kicker">Health & Growth Vault</span>
-                <h3 class="card-heading">Digital Pet Medical Passport</h3>
-                <p class="card-paragraph">
-                  Log routine vaccinations, allergy histories, medication schedules, weight logs, and attach official doctor prescription slips directly to cloud records.
+                <img
+                  src="/Images/Landing-Images/feature-card-passport.png"
+                  alt="Dog Medical Passport"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Digital Medical Passport</h3>
+                <p class="card-desc">
+                  Store official veterinary prescriptions, allergy profiles, surgery history, and weight growth charts in one organized digital record.
                 </p>
-                <div class="card-feature-list">
-                  <span class="feature-chip"><i data-lucide="check"></i> Prescription Scans</span>
-                  <span class="feature-chip"><i data-lucide="check"></i> Weight Charts</span>
-                  <span class="feature-chip"><i data-lucide="check"></i> Vaccine History</span>
-                </div>
-                <a href="/api/signup" class="bento-link">
+                <a href="/api/signup" class="card-action-link">
                   <span>Start Tracking Health</span>
                   <i data-lucide="arrow-right"></i>
                 </a>
               </div>
-              <div class="bento-visual visual-health">
-                <div class="mini-ui-card">
-                  <div class="mini-ui-row">
-                    <span class="mini-tag">Vaccination Record</span>
-                    <span class="mini-status done">Completed</span>
-                  </div>
-                  <div class="mini-medicine">DHPP Booster & Rabies</div>
-                  <div class="mini-meta">Attached: <span class="text-blue">prescription_dr_roy.pdf</span></div>
+            </div>
+
+            <!-- Feature Card 2: Smart QR Pet Collar Tag -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-amber">Safety</span>
+                  <span class="pill-tag pill-tag-amber">Lost & Found</span>
                 </div>
+                <img
+                  src="/Images/Landing-Images/feature-card-qrtag.png"
+                  alt="Dog with Smart Collar Tag"
+                  loading="lazy"
+                />
               </div>
-            </div>
-
-            <!-- Bento Card 2: 24/7 Verified Hospitals -->
-            <div class="bento-card reveal">
-              <div class="bento-icon icon-amber">
-                <i data-lucide="hospital"></i>
-              </div>
-              <span class="card-kicker">Geocoded Directory</span>
-              <h3 class="card-heading">24/7 Verified Hospitals</h3>
-              <p class="card-paragraph">
-                Auto-detect your real-time coordinates and discover verified veterinary clinics and emergency hospitals sorted by proximity in kilometers with instant call & GPS directions.
-              </p>
-              <a href="/services/hospitals" class="bento-link">
-                <span>Explore Nearby Hospitals</span>
-                <i data-lucide="arrow-right"></i>
-              </a>
-            </div>
-
-            <!-- Bento Card 3: Animal Rescue Helplines -->
-            <div class="bento-card reveal">
-              <div class="bento-icon icon-emerald">
-                <i data-lucide="heart-handshake"></i>
-              </div>
-              <span class="card-kicker">Emergency Network</span>
-              <h3 class="card-heading">Rescue NGOs & Helplines</h3>
-              <p class="card-paragraph">
-                Find contact numbers for verified animal rescue NGOs, stray ambulances, shelter homes, and adoption coordinates filtered by Indian metropolitan regions.
-              </p>
-              <a href="/services/rescue" class="bento-link">
-                <span>View Rescue Directory</span>
-                <i data-lucide="arrow-right"></i>
-              </a>
-            </div>
-
-            <!-- Bento Card 4: Curated Pet Essentials Store -->
-            <div class="bento-card bento-wide-card reveal">
-              <div class="bento-card-content">
-                <div class="bento-icon icon-violet">
-                  <i data-lucide="shopping-bag"></i>
-                </div>
-                <span class="card-kicker">Curated Marketplace</span>
-                <h3 class="card-heading">Pet Essentials & Nutrition Shop</h3>
-                <p class="card-paragraph">
-                  Browse veterinarian-recommended nutrition kibbles, grooming care, tough chew toys, and wellness supplements tailored for Indian breeds.
+              <div class="card-body">
+                <h3 class="card-title">Smart QR Pet Collar Tag</h3>
+                <p class="card-desc">
+                  Generate a printable smart QR collar tag. If your dog ever gets lost, anyone who scans the tag can call you directly and view emergency notes.
                 </p>
-                <div class="card-feature-list">
-                  <span class="feature-chip"><i data-lucide="check"></i> Verified Brands</span>
-                  <span class="feature-chip"><i data-lucide="check"></i> Breed-Specific Diet</span>
-                  <span class="feature-chip"><i data-lucide="check"></i> Direct Order</span>
+                <a href="/api/signup" class="card-action-link">
+                  <span>Generate Free Tag</span>
+                  <i data-lucide="arrow-right"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Feature Card 3: Automated Vaccines & Deworming -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-rose">Health</span>
+                  <span class="pill-tag pill-tag-rose">Auto-Alerts</span>
                 </div>
-                <a href="/shop" class="bento-link">
-                  <span>Browse Pet Shop Catalog</span>
+                <img
+                  src="/Images/Landing-Images/feature-card-vaccine.png"
+                  alt="Vaccinated Healthy Puppy"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Automated Vaccine Hub</h3>
+                <p class="card-desc">
+                  Auto-calculated booster schedules for Rabies, 7-in-1 DHPP, and deworming cycles with clear Due Soon and Overdue alert badges.
+                </p>
+                <a href="/api/signup" class="card-action-link">
+                  <span>View Vaccine Plan</span>
                   <i data-lucide="arrow-right"></i>
                 </a>
               </div>
             </div>
           </div>
+
+          <div class="features-center-cta">
+            <a href="/api/signup" class="btn-pill btn-pill-coral">
+              <span>Create Free Account</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+          </div>
         </div>
       </section>
 
-      <!-- 3-Step "How It Works" Section -->
-      <section id="how-it-works" class="section how-it-works-section">
+      <!-- ====================================================================
+           4. CARE ECOSYSTEM & SHELTERS (PDF Page 3 Top: 4 Round Columns)
+           ==================================================================== -->
+      <section class="ecosystem-section">
         <div class="container">
-          <div class="section-header reveal">
-            <span class="section-badge">Simple Workflow</span>
-            <h2 class="section-title">How Woofy Powers Your Pet Care</h2>
-            <p class="section-description">
-              Getting started takes less than 60 seconds. Set up your pet profile and gain instant control over their health.
+          <div class="section-header-center">
+            <span class="section-kicker">Connected Care Ecosystem</span>
+            <h2 class="section-title">
+              Built for Real Life Emergencies & Shelters
+            </h2>
+            <p class="section-subtitle">
+              From midnight emergency vet visits to stray rescue ambulances and institutional shelter management.
             </p>
           </div>
 
-          <div class="workflow-steps-grid">
-            <div class="step-card reveal">
-              <div class="step-header">
-                <span class="step-number">01</span>
-                <div class="step-icon">
-                  <i data-lucide="user-check"></i>
-                </div>
+          <div class="ecosystem-grid-4">
+            <!-- Pillar 1: 24/7 Hospitals -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img src="/Images/Landing-Images/ecosystem-hospital.png" alt="24/7 Emergency Hospitals" loading="lazy" />
               </div>
-              <h3 class="step-title">Create Pet Profile</h3>
-              <p class="step-desc">
-                Register your dog's breed, birthday, weight, allergies, and upload high-resolution profile avatars and memories.
+              <h4 class="ecosystem-title">24/7 Pet Hospitals</h4>
+              <p class="ecosystem-desc">
+                Auto-detect your location and discover verified emergency veterinary clinics sorted by GPS km distance with one-tap dialing.
               </p>
+              <a href="/services/hospitals" class="ecosystem-link">
+                <span>Explore Nearby</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
             </div>
 
-            <div class="step-card reveal">
-              <div class="step-header">
-                <span class="step-number">02</span>
-                <div class="step-icon">
-                  <i data-lucide="file-spreadsheet"></i>
-                </div>
+            <!-- Pillar 2: Animal Rescue Helplines -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img src="/Images/Landing-Images/ecosystem-rescue.png" alt="Rescue NGOs & Ambulances" loading="lazy" />
               </div>
-              <h3 class="step-title">Log Vitals & Records</h3>
-              <p class="step-desc">
-                Record routine medical checkups, attach scanned prescriptions, set upcoming vaccine reminders, and log daily progress.
+              <h4 class="ecosystem-title">Rescue NGOs & Ambulances</h4>
+              <p class="ecosystem-desc">
+                Emergency contact numbers for animal welfare NGOs, stray dog rescue ambulances, and shelter teams across 30+ Indian cities.
               </p>
+              <a href="/services/rescue" class="ecosystem-link">
+                <span>Rescue Helplines</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
             </div>
 
-            <div class="step-card reveal">
-              <div class="step-header">
-                <span class="step-number">03</span>
-                <div class="step-icon">
-                  <i data-lucide="crosshair"></i>
-                </div>
+            <!-- Pillar 3: Woffy for NGOs -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img src="/Images/Landing-Images/ecosystem-shelter.png" alt="Woffy for NGOs Shelter Hub" loading="lazy" />
               </div>
-              <h3 class="step-title">Access 24/7 Verified Care</h3>
-              <p class="step-desc">
-                Instantly discover emergency clinics near your current city with one-tap dialing and turnkey turn-by-turn directions.
+              <h4 class="ecosystem-title">Woffy for NGOs (100+ Rescues)</h4>
+              <p class="ecosystem-desc">
+                Dedicated multi-animal workspace for shelters to track triage wards, mass ABC sterilizations, and donor transparency under 1 account.
               </p>
+              <a href="/api/dashboard#ngo-hub" class="ecosystem-link">
+                <span>NGO Workspace [Alpha]</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Pillar 4: Curated Pet Shop -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img src="/Images/Landing-Images/ecosystem-shop.png" alt="Pet Essentials Store" loading="lazy" />
+              </div>
+              <h4 class="ecosystem-title">Pet Essentials Store</h4>
+              <p class="ecosystem-desc">
+                Veterinarian-recommended nutrition kibbles, grooming care, chew toys, and wellness supplements tailored for Indian pets.
+              </p>
+              <a href="/shop" class="ecosystem-link">
+                <span>Browse Store</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Why Us / Core Platform Pillars -->
-      <section id="why-us" class="section why-us-section">
+      <!-- ====================================================================
+           5. CALL-TO-ACTION BANNER (PDF Page 3 Bottom: Warm Coral Corgi Card)
+           ==================================================================== -->
+      <section class="cta-banner-section">
         <div class="container">
-          <div class="section-header reveal">
-            <span class="section-badge">Engineered for Reliability</span>
-            <h2 class="section-title">Why Serious Pet Parents Choose Woofy</h2>
-            <p class="section-description">
-              Modern cloud architecture engineered with speed, bulletproof security, and seamless mobile usability.
-            </p>
-          </div>
-
-          <div class="pillars-grid">
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="map-pinned"></i></div>
-              <h4>Smart GPS Geocoding</h4>
-              <p>Reverse geocodes your device coordinates to calculate accurate distances to veterinary centers in real-time.</p>
+          <div class="warm-cta-card">
+            <!-- Left Side Dog Visual -->
+            <div class="warm-cta-dog-wrap">
+              <img
+                src="/Images/Landing-Images/cta-corgi-puppy.png"
+                alt="Happy Corgi Dog"
+                loading="lazy"
+              />
             </div>
 
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="file-up"></i></div>
-              <h4>Cloud Prescription Vault</h4>
-              <p>Never lose a physical clinic slip again. Store high-resolution medical invoices and prescriptions on secure cloud storage.</p>
-            </div>
-
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="layers"></i></div>
-              <h4>Multi-Pet Management</h4>
-              <p>Switch between multiple pets in a single tap with individualized health records and distinct timelines.</p>
-            </div>
-
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="lock"></i></div>
-              <h4>Enterprise Security</h4>
-              <p>State-of-the-art bcrypt password hashing, MongoDB security, and isolated user sessions keep data private.</p>
-            </div>
-
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="shield-alert"></i></div>
-              <h4>Direct Emergency Helpline</h4>
-              <p>Direct access to verified NGOs and ambulance providers without intermediaries when seconds count.</p>
-            </div>
-
-            <div class="pillar-card reveal">
-              <div class="pillar-icon"><i data-lucide="smartphone"></i></div>
-              <h4>Zero App Store Friction</h4>
-              <p>Full PWA responsiveness that loads instantly on any iPhone, Android, tablet, or desktop browser.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Testimonials / Pet Parent Reviews -->
-      <section class="section testimonials-section">
-        <div class="container">
-          <div class="section-header reveal">
-            <span class="section-badge">Community Trust</span>
-            <h2 class="section-title">Loved by Dog Owners Everywhere</h2>
-            <p class="section-description">
-              Hear from genuine pet parents who trust Woofy for their companion's daily health tracking and emergency care.
-            </p>
-          </div>
-
-          <div class="testimonials-grid">
-            <div class="testimonial-card reveal">
-              <div class="testimonial-rating">
-                <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
-              </div>
-              <p class="testimonial-quote">
-                "During a midnight emergency with my Labrador, Woofy's hospital finder showed me a verified 24/7 clinic just 2 km away with one-tap calling. It was a lifesaver."
+            <!-- Right Side CTA Copy -->
+            <div class="warm-cta-content">
+              <h2 class="warm-cta-title">
+                Ready to make a real difference in your pet's life?
+              </h2>
+              <p class="warm-cta-sub">
+                Join thousands of loving dog parents across India. Manage essential health records, smart QR collar tags, and access emergency veterinary care with confidence.
               </p>
-              <div class="testimonial-author">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Ananya Deshmukh" />
-                <div>
-                  <h5>Ananya Deshmukh</h5>
-                  <span>Mumbai • Labrador Parent</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card reveal">
-              <div class="testimonial-rating">
-                <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
-              </div>
-              <p class="testimonial-quote">
-                "Being able to attach doctor prescription photos directly to my beagle's vaccine records means I never scramble for old paper slips at vet visits anymore."
-              </p>
-              <div class="testimonial-author">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Rohit Verma" />
-                <div>
-                  <h5>Rohit Verma</h5>
-                  <span>Bengaluru • Beagle Parent</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="testimonial-card reveal">
-              <div class="testimonial-rating">
-                <i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i><i data-lucide="star"></i>
-              </div>
-              <p class="testimonial-quote">
-                "The UI is exceptionally crisp and fast on mobile. Finding rescue helplines for injured strays in our locality took just two taps. Outstanding work!"
-              </p>
-              <div class="testimonial-author">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80" alt="Pooja Mehta" />
-                <div>
-                  <h5>Pooja Mehta</h5>
-                  <span>Pune • Indie Dog Parent</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Us & Creator Showcase Section -->
-      <section id="contact" class="section contact-section">
-        <div class="container">
-          <div class="section-header reveal">
-            <span class="section-badge">Get in Touch</span>
-            <h2 class="section-title">Let's Connect & Collaborate</h2>
-            <p class="section-description">
-              Have feedback, hospital listing inquiries, feature requests, or partnership proposals? We are always here to help.
-            </p>
-          </div>
-
-          <div class="contact-grid">
-            <!-- Creator Profile Card -->
-            <div class="creator-card reveal">
-              <div class="creator-header">
-                <div class="creator-avatar-wrap">
-                  <img
-                    src="/Images/Shubham.jpeg"
-                    alt="Shubham Rathod"
-                    class="creator-avatar"
-                    onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'"
-                  />
-                  <span class="creator-status-badge" title="Active Developer">
-                    <span class="pulse-dot"></span>
-                  </span>
-                </div>
-                <div class="creator-title-block">
-                  <span class="creator-kicker">Platform Creator</span>
-                  <h3>Shubham Rathod</h3>
-                  <p class="creator-subtitle">Full-Stack Web Developer & Dog Lover</p>
-                </div>
-              </div>
-
-              <p class="creator-bio">
-                Passionate about engineering high-performance web applications, modern UI/UX design systems, and thoughtful animal welfare technology. Open for collaborations and feedback!
-              </p>
-
-              <div class="creator-social-list">
-                <a
-                  href="https://github.com/git-shubham-side"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="social-link-btn github"
-                >
-                  <i data-lucide="github"></i>
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href="https://linkedin.com/in/shubham-rathod-tech"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="social-link-btn linkedin"
-                >
-                  <i data-lucide="linkedin"></i>
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href="mailto:rathodshubham7711@gmail.com"
-                  class="social-link-btn email"
-                >
-                  <i data-lucide="mail"></i>
-                  <span>Email</span>
-                </a>
-              </div>
-            </div>
-
-            <!-- Contact Message Form Card -->
-            <div class="contact-form-card reveal">
-              <div class="form-header">
-                <h3>Send a Direct Message</h3>
-                <p>Fill in the details below and our team will get back to you promptly.</p>
-              </div>
-
-              <div id="contactAlert" class="contact-alert" style="display: none;" role="alert"></div>
-
-              <form id="contactForm" action="/api/contact" method="POST" novalidate>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="senderName">Your Full Name <span class="req">*</span></label>
-                    <div class="input-wrap">
-                      <i data-lucide="user" class="input-icon"></i>
-                      <input
-                        type="text"
-                        id="senderName"
-                        name="name"
-                        class="form-control"
-                        placeholder="e.g. John Doe"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="senderEmail">Email Address <span class="req">*</span></label>
-                    <div class="input-wrap">
-                      <i data-lucide="mail" class="input-icon"></i>
-                      <input
-                        type="email"
-                        id="senderEmail"
-                        name="email"
-                        class="form-control"
-                        placeholder="e.g. john@example.com"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label for="messageContent">Message Details <span class="req">*</span></label>
-                  <div class="input-wrap textarea-wrap">
-                    <i data-lucide="message-square" class="input-icon textarea-icon"></i>
-                    <textarea
-                      id="messageContent"
-                      name="message"
-                      class="form-control"
-                      placeholder="Tell us about your query, hospital listing request, or feedback..."
-                      rows="4"
-                      required
-                    ></textarea>
-                  </div>
-                </div>
-
-                <button type="submit" id="contactSubmitBtn" class="btn btn-primary btn-full">
-                  <i data-lucide="send" id="contactBtnIcon"></i>
-                  <span id="contactBtnText">Send Message</span>
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Bottom Call To Action Banner -->
-      <section class="section bottom-cta-section">
-        <div class="container">
-          <div class="cta-banner reveal">
-            <div class="cta-content">
-              <h2>Give Your Companion the Care They Deserve.</h2>
-              <p>Join thousands of loving pet parents across India. Free forever for essential health records and emergency access.</p>
-              <div class="cta-buttons">
-                <a href="/api/signup" class="btn btn-primary btn-lg">
-                  <span>Create Free Account</span>
-                  <i data-lucide="arrow-right"></i>
-                </a>
-                <a href="/services/hospitals" class="btn btn-secondary-white btn-lg">
-                  <i data-lucide="hospital"></i>
-                  <span>Find 24/7 Hospitals</span>
-                </a>
-              </div>
+              <a href="/api/signup" class="btn-pill btn-pill-white">
+                <span>Get Started Free</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Professional Clean Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-top">
-          <div class="footer-brand-col">
-            <a href="/" class="brand-logo footer-logo">
-              <span class="logo-icon-box">
-                <i data-lucide="paw-print"></i>
-              </span>
-              <span class="brand-name">Woofy<span class="dot">.</span></span>
-            </a>
-            <p class="footer-desc">
-              All-in-one modern pet health management, prescription repository, and emergency veterinary network.
-            </p>
-            <div class="footer-system-status">
-              <span class="status-indicator-dot"></span>
-              <span>All Systems Operational</span>
-            </div>
-          </div>
-
-          <div class="footer-links-grid">
-            <div class="footer-col">
-              <h5>Platform</h5>
-              <a href="#services">Health Records</a>
-              <a href="/services/hospitals">Verified Hospitals</a>
-              <a href="/services/rescue">Rescue Directory</a>
-              <a href="/shop">Pet Essentials Shop</a>
-            </div>
-
-            <div class="footer-col">
-              <h5>Account</h5>
-              <a href="/api/login">Sign In</a>
-              <a href="/api/signup">Create Account</a>
-              <a href="/dashboard">Pet Dashboard</a>
-              <a href="/services/hospitals/add">Add Hospital</a>
-            </div>
-
-            <div class="footer-col">
-              <h5>Connect</h5>
-              <a href="https://github.com/git-shubham-side" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">LinkedIn</a>
-              <a href="mailto:rathodshubham7711@gmail.com">Developer Email</a>
-              <a href="#contact">Contact Support</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p class="copyright">
-            &copy; <%= new Date().getFullYear() %> Woofy Platform. Engineered & Crafted by
-            <a
-              href="https://linkedin.com/in/shubham-rathod-tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="footer-author-link"
-            >
-              Shubham Rathod
-            </a>
-          </p>
-          <div class="footer-legal">
-            <span>Built with Node.js, Express & MongoDB</span>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Interactive Scripts -->
     <script src="/Landing/script.js"></script>

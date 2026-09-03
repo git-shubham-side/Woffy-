@@ -3,17 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= currentPet.petName %> - Vaccination & Deworming Hub | Woofy</title>
+    <title><%= currentPet.petName %> | Vaccination & Deworming Hub | Woofy</title>
     <meta name="description" content="Manage personalized veterinary vaccination timelines, deworming cycles, batch numbers, and digital passport for <%= currentPet.petName %>." />
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/Dashboard/dashboard.css" />
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="/Vaccinations/vaccinations.css" />
 
     <!-- Lucide Icons -->
@@ -241,7 +240,7 @@
           </a>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <div class="search-and-resync-bar">
           <div class="search-control-wrap">
             <i data-lucide="search"></i>
             <input
@@ -424,23 +423,8 @@
       </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="dash-footer">
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- ==========================================================================
          MODAL: MARK VACCINE AS ADMINISTERED / COMPLETED

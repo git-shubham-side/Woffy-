@@ -116,6 +116,7 @@ app.use("/", hospitalRoutes);
 app.use("/admin", adminRoutes);
 
 // Error Handling Middlewares
+
 app.use(notFoundHandler);
 app.use(globalErrorHandler);
 

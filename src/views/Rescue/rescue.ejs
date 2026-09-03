@@ -125,6 +125,30 @@
           <% } %>
         </div>
 
+        <!-- Feature Spotlight Banner: Woffy for NGOs & Rescuers (Under Construction) -->
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 14px; padding: 20px 24px; margin-bottom: 1.75rem; color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);">
+          <div style="display: flex; align-items: flex-start; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(253, 230, 138, 0.3); color: #f59e0b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="building-2" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+                <strong style="font-size: 1.1rem; color: #ffffff;">Woffy for NGOs & Rescuers</strong>
+                <span style="background: #fffbeb; color: #b45309; border: 1px solid #fde68a; font-size: 0.72rem; padding: 1px 8px; border-radius: 9999px; font-weight: 800;">🚧 Under Construction • Alpha Preview</span>
+              </div>
+              <p style="margin: 0; font-size: 0.88rem; color: #cbd5e1; max-width: 720px; line-height: 1.45;">
+                Need to track <strong>100+ shelter animals or street rescues</strong> under one parent organization? We are developing an enterprise-grade shelter and rescuer hub tailored for batch health logs, kennel wards, volunteer delegation, and donor reports.
+              </p>
+            </div>
+          </div>
+          <div style="flex-shrink: 0;">
+            <a href="/api/dashboard#ngo-hub" class="btn btn-primary" style="background: #2563eb; border-color: #3b82f6; white-space: nowrap;">
+              <span>View Features & Highlights</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
+          </div>
+        </div>
+
         <!-- Emergency Quick Notice -->
         <div class="emergency-call-banner">
           <i data-lucide="heart-handshake" style="width: 20px; height: 20px; color: #059669; flex-shrink: 0;"></i>
@@ -251,23 +275,8 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Initialize Lucide Icons -->
     <script>

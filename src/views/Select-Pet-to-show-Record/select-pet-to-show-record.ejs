@@ -1,105 +1,127 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Woofy | Premium Pet Management</title>
-    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+    <title>Select Pet for Records | Woofy | Pet Health Platform</title>
+
+    <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
+    <!-- Navigation -->
     <%- include('../partials/navbar', { activePage: 'pets' }) %>
 
-    <section class="pets-page">
+    <main class="pets-page">
       <div class="container">
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
 
-        <div class="pets-header reveal">
-          <div>
-            <h2>Select Pet to Show Records</h2>
-            <p>Select which pet's complete history, health, and care records you want to view.</p>
+        <div class="pets-header">
+          <div class="pets-header-text">
+            <span class="page-badge-pill">Health History Vault</span>
+            <h2>Select Pet to Show <span class="sketch-highlight">Records</span></h2>
+            <p>Select which companion's complete medical history, vaccination logs, and doctor prescriptions you want to view.</p>
+          </div>
+          <div class="pets-header-actions">
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
+              <span>Add Another Pet</span>
+            </a>
           </div>
         </div>
 
-        <% if (typeof pets !== 'undefined' && pets.length > 0) { %>
+        <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
           <div class="pets-grid">
             <% pets.forEach(function(pet) { %>
-              <div class="pet-card reveal">
+              <div class="pet-card">
                 <div class="pet-card-top">
                   <% if (pet.photo) { %>
-                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
                   <% } else if (pet.photoUrl) { %>
-                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" />
+                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
                   <% } else { %>
                     <div class="profile-avatar-fallback">
                       <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
                     </div>
                   <% } %>
-                  <div>
+                  <div class="pet-header-info">
                     <h3><%= pet.petName %></h3>
-                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender %></p>
+                    <p class="pet-sub">
+                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Pet' %></span>
+                      <span class="pet-dot-separator">•</span>
+                      <span class="pet-gender-tag"><%= pet.gender || 'Companion' %></span>
+                    </p>
                   </div>
                 </div>
+
                 <div class="pet-card-stats">
                   <div class="stat">
                     <span class="stat-label">Age</span>
-                    <span class="stat-value"><%= pet.age %> yrs</span>
+                    <span class="stat-value"><%= pet.age ? pet.age + ' yrs' : 'N/A' %></span>
                   </div>
                   <div class="stat">
                     <span class="stat-label">Weight</span>
-                    <span class="stat-value"><%= pet.weight %> kg</span>
+                    <span class="stat-value"><%= pet.weight ? pet.weight + ' kg' : 'N/A' %></span>
                   </div>
                   <div class="stat">
                     <span class="stat-label">Vaccinated</span>
-                    <span class="stat-value"><%= pet.vaccinated %></span>
+                    <span class="stat-value stat-vax <%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'vax-yes' : 'vax-no' %>">
+                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle' : 'alert-circle' %>"></i>
+                      <span><%= pet.vaccinated || 'Pending' %></span>
+                    </span>
                   </div>
                 </div>
-                <a
-                  href="/api/show-records/<%= pet._id %>"
-                  class="btn btn-primary pet-card-btn"
-                  ><i data-lucide="clipboard-list"></i> View <%= pet.petName %>'s Records</a
-                >
+
+                <div class="card-actions-row">
+                  <a href="/api/show-records/<%= pet._id %>" class="btn btn-primary btn-block" title="View Medical & Activity Records for <%= pet.petName %>">
+                    <i data-lucide="clipboard-list"></i>
+                    <span>View <%= pet.petName %>'s Records &rarr;</span>
+                  </a>
+                </div>
               </div>
             <% }); %>
           </div>
         <% } else { %>
-          <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius); margin-top: 1.5rem;">
-            <h3 style="margin-bottom: 0.5rem; color: var(--primary-color);">No pets found</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You need to create a pet profile first before viewing records.</p>
-            <a href="/api/create-pet-profile" class="btn btn-primary">
-              <i data-lucide="plus"></i> Add New Pet
+          <div class="empty-pets-box">
+            <div class="empty-pets-icon">
+              <i data-lucide="paw-print"></i>
+            </div>
+            <h3>No Pets Found</h3>
+            <p>You need to create a pet profile first before viewing medical and care history records.</p>
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
+              <span>Create Pet Profile</span>
             </a>
           </div>
         <% } %>
       </div>
-    </section>
+    </main>
 
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h2>Woofy.</h2>
-          <p>Premium PetCare.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            <b>Created By</b>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
-            <a
-              class="linkedin"
-              href="https://linkedin.com/in/shubham-rathod-tech"
-            >
-              Shubham Rathod - Jimmy
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
-
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Initialize Lucide Icons -->
     <script src="/My-Pets/my-pets.js"></script>
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
   </body>
 </html>

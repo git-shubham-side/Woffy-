@@ -1,5 +1,5 @@
 <!-- Global Universal Navbar Partial -->
-<link rel="stylesheet" href="/partials/navbar.css" />
+<link rel="stylesheet" href="/partials/navbar.css?v=2" />
 
 <header class="dashboard-nav" id="navbar">
   <div class="global-nav-container">
@@ -104,6 +104,11 @@
       <a href="/services/rescue" class="<%= (typeof activePage !== 'undefined' && activePage === 'rescue') ? 'active' : '' %>">
         <i data-lucide="heart-handshake"></i>
         <span>Rescue NGOs</span>
+      </a>
+
+      <a href="/api/dashboard#ngo-hub">
+        <i data-lucide="building-2"></i>
+        <span>Woffy for NGOs</span>
       </a>
 
       <a href="/shop" class="<%= (typeof activePage !== 'undefined' && activePage === 'shop') ? 'active' : '' %>">

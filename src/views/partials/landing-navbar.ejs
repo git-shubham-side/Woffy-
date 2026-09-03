@@ -1,0 +1,105 @@
+<!-- Landing Page Top Navigation Header -->
+<header id="navbar">
+  <div class="container nav-container">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-logo" aria-label="Woofy Home">
+      <div class="brand-icon-wrap">
+        <i data-lucide="paw-print"></i>
+      </div>
+      <span class="brand-name">Woofy<span class="brand-dot">.</span></span>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-links" aria-label="Main Navigation">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="/services/hospitals" class="nav-link">Hospitals</a>
+      <a href="/services/rescue" class="nav-link">Rescue NGOs</a>
+      <a href="/shop" class="nav-link">Pet Shop</a>
+    </nav>
+
+    <!-- Right Side Nav Actions -->
+    <div class="nav-actions">
+      <a href="/api/login" class="btn-pill btn-pill-ghost-nav">Log In</a>
+      <a href="/api/signup" class="btn-pill btn-pill-nav-cta">
+        <span>Get Started</span>
+        <i data-lucide="arrow-right"></i>
+      </a>
+
+      <!-- Mobile Hamburger Menu Button -->
+      <button
+        type="button"
+        class="mobile-menu-btn"
+        id="mobileMenuToggle"
+        aria-label="Toggle Navigation Menu"
+        aria-expanded="false"
+      >
+        <i data-lucide="menu" id="menuOpenIcon"></i>
+        <i data-lucide="x" id="menuCloseIcon" style="display: none"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Slide-out Drawer Navigation -->
+<div
+  class="mobile-drawer-overlay"
+  id="mobileDrawerOverlay"
+  aria-hidden="true"
+></div>
+<aside
+  class="mobile-drawer"
+  id="mobileDrawer"
+  aria-label="Mobile Navigation"
+>
+  <div class="mobile-drawer-header">
+    <div class="brand-logo">
+      <div class="brand-icon-wrap">
+        <i data-lucide="paw-print"></i>
+      </div>
+      <span class="brand-name">Woofy</span>
+    </div>
+    <button
+      type="button"
+      class="drawer-close-btn"
+      id="drawerCloseBtn"
+      aria-label="Close menu"
+    >
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <nav class="mobile-drawer-links">
+    <a href="#about" class="drawer-link">
+      <i data-lucide="info"></i>
+      <span>About Us</span>
+    </a>
+    <a href="#features" class="drawer-link">
+      <i data-lucide="sparkles"></i>
+      <span>Core Features</span>
+    </a>
+    <a href="/services/hospitals" class="drawer-link">
+      <i data-lucide="hospital"></i>
+      <span>24/7 Hospitals</span>
+    </a>
+    <a href="/services/rescue" class="drawer-link">
+      <i data-lucide="heart-handshake"></i>
+      <span>Rescue Helplines</span>
+    </a>
+    <a href="/api/dashboard#ngo-hub" class="drawer-link">
+      <i data-lucide="building-2"></i>
+      <span>Woffy for NGOs</span>
+    </a>
+    <a href="/shop" class="drawer-link">
+      <i data-lucide="shopping-bag"></i>
+      <span>Pet Shop</span>
+    </a>
+  </nav>
+
+  <div class="mobile-drawer-footer">
+    <a href="/api/login" class="btn-pill btn-pill-coral">Log In</a>
+    <a href="/api/signup" class="btn-pill btn-pill-outline" style="background: var(--slate-100); color: var(--slate-900); border-color: var(--slate-200);">
+      Create Free Account
+    </a>
+  </div>
+</aside>

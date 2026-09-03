@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Pets | Woofy - Pet Health & Management Platform</title>
+    <title>My Pets | Woofy | Pet Health & Management Platform</title>
 
     <!-- Google Fonts -->
     <link
@@ -93,36 +93,36 @@
                   <!-- Tier 1: Main Highlight Actions -->
                   <div class="actions-tier-primary">
                     <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-action-profile" title="View <%= pet.petName %>'s Full Profile">
-                      <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                      <i data-lucide="eye"></i>
                       <span>Profile</span>
                     </a>
-                    <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-action-track" style="background: #4f46e5; color: #fff;" title="View <%= pet.petName %>'s Automated Vaccination Schedule">
-                      <i data-lucide="syringe" style="width: 16px; height: 16px;"></i>
+                    <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-action-vaccines" title="View <%= pet.petName %>'s Automated Vaccination Schedule">
+                      <i data-lucide="syringe"></i>
                       <span>Vaccines</span>
                     </a>
                     <a href="/api/track/<%= pet._id %>" class="btn btn-action-track" title="Track <%= pet.petName %>'s Daily Health & Activity">
-                      <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                      <i data-lucide="activity"></i>
                       <span>Track</span>
                     </a>
                   </div>
 
                   <!-- Tier 2: Quick Management Tools -->
                   <div class="actions-tier-secondary">
-                    <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="btn btn-action-records" title="Print Smart QR Collar Tag">
-                      <i data-lucide="qr-code" style="width: 14px; height: 14px; color: #2563eb;"></i>
+                    <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="btn btn-action-tag" title="Print Smart QR Collar Tag">
+                      <i data-lucide="qr-code"></i>
                       <span>QR Tag</span>
                     </a>
                     <a href="/api/show-records/<%= pet._id %>" class="btn btn-action-records" title="View Medical & Activity History">
-                      <i data-lucide="clipboard-list" style="width: 14px; height: 14px;"></i>
+                      <i data-lucide="clipboard-list"></i>
                       <span>Records</span>
                     </a>
                     <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-action-edit" title="Edit <%= pet.petName %>'s Profile">
-                      <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+                      <i data-lucide="edit-3"></i>
                       <span>Edit</span>
                     </a>
                     <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile? This action will remove all recorded logs.');">
                       <button type="submit" class="btn btn-action-delete" title="Delete <%= pet.petName %>">
-                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <i data-lucide="trash-2"></i>
                         <span>Delete</span>
                       </button>
                     </form>
@@ -134,25 +134,21 @@
         <% } else { %>
           <div class="empty-pets-box">
             <div class="empty-pets-icon">
-              <i data-lucide="paw-print" style="width: 36px; height: 36px;"></i>
+              <i data-lucide="paw-print"></i>
             </div>
             <h3>No Pets Registered Yet</h3>
             <p>Add your first furry companion to start tracking their growth, automated vaccination schedules, daily activities, and medical prescriptions.</p>
             <a href="/api/create-pet-profile" class="btn btn-add-pet">
-              <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
-              <span>Add Your First Pet</span>
+              <i data-lucide="plus-circle"></i>
+              <span>Add Your First Furry Companion</span>
             </a>
           </div>
         <% } %>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <p>&copy; <%= new Date().getFullYear() %> Woofy. Complete Pet Care & Health Tracking Platform.</p>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Scripts -->
     <script src="/My-Pets/my-pets.js"></script>

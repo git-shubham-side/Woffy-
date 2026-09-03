@@ -4,23 +4,24 @@
    ========================================================================== */
 
 :root {
-  --primary-color: #0f172a; /* Deep Slate / Midnight Charcoal */
-  --accent-color: #2563eb; /* Electric Royal Blue */
-  --accent-hover: #1d4ed8;
-  --coral-accent: #f97316; /* Warm Sunset Coral / Amber */
+  --primary-color: #181c24; /* Deep Slate / Midnight Charcoal */
+  --accent-color: #fa6638; /* Warm Terracotta Coral */
+  --accent-hover: #e04f21;
+  --coral-accent: #ff7244; /* Warm Sunset Coral */
   --emerald-accent: #10b981; /* Fresh Emerald Green */
-  --violet-accent: #8b5cf6; /* Radiant Violet */
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --bg-light: #fafbfc;
+  --violet-accent: #f59e0b; /* Warm Radiant Amber */
+  --text-main: #181c24;
+  --text-muted: #6b7280;
+  --bg-light: #faf7f2; /* Soft Warm Cream Sand */
   --white: #ffffff;
-  --border-color: #e2e8f0;
-  --border-radius: 16px;
-  --border-radius-sm: 8px;
-  --border-radius-pill: 999px;
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
+  --border-color: #f0e9df;
+  --border-radius: 20px;
+  --border-radius-sm: 10px;
+  --border-radius-pill: 9999px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.08);
+  --shadow-coral: 0 8px 24px -4px rgba(250, 102, 56, 0.35);
   --transition: all 0.2s ease-in-out;
 }
 
@@ -73,14 +74,14 @@ body.dashboard-body {
 
 .ambient-glow {
   position: absolute;
-  width: 50vw; /* Using viewport width for mobile performance */
+  width: 50vw;
   height: 50vw;
   max-width: 500px;
   max-height: 500px;
   border-radius: 50%;
   filter: blur(140px);
   pointer-events: none;
-  opacity: 0.25;
+  opacity: 0.22;
 }
 
 .glow-1 {
@@ -88,8 +89,8 @@ body.dashboard-body {
   right: -80px;
   background: radial-gradient(
     circle,
-    rgba(37, 99, 235, 0.4) 0%,
-    rgba(139, 92, 246, 0.2) 70%,
+    rgba(255, 114, 68, 0.35) 0%,
+    rgba(245, 158, 11, 0.15) 70%,
     transparent 100%
   );
 }
@@ -99,8 +100,8 @@ body.dashboard-body {
   left: -100px;
   background: radial-gradient(
     circle,
-    rgba(249, 115, 22, 0.3) 0%,
-    rgba(16, 185, 129, 0.15) 70%,
+    rgba(250, 102, 56, 0.25) 0%,
+    rgba(255, 220, 205, 0.1) 70%,
     transparent 100%
   );
 }
@@ -381,16 +382,18 @@ h2.section-title {
 }
 
 .btn-primary {
-  background-color: var(--primary-color) !important;
+  background-color: var(--accent-color) !important;
   color: var(--white) !important;
-  border-color: var(--primary-color) !important;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+  border-color: var(--accent-color) !important;
+  border-radius: var(--border-radius-pill) !important;
+  box-shadow: 0 4px 14px rgba(250, 102, 56, 0.35);
 }
 
 .btn-primary:hover {
-  background-color: #1e293b !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(250, 102, 56, 0.45);
 }
 
 .btn-accent {
@@ -1555,6 +1558,343 @@ footer.dash-footer {
   }
   .form-grid-modal {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Woffy for NGOs & Rescuers Dashboard Section Styles
+   ========================================================================== */
+.ngo-dash-section {
+  margin-bottom: 2.5rem;
+}
+
+.ngo-dash-container {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  padding: 24px 28px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.ngo-dash-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f59e0b 0%, #3b82f6 50%, #10b981 100%);
+}
+
+.ngo-dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ngo-dash-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ngo-dash-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ngo-dash-icon-box i {
+  width: 26px;
+  height: 26px;
+}
+
+.ngo-dash-badge-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.ngo-dash-heading {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.ngo-under-construction-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.pulse-dot-amber {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+  animation: pulseDotAmber 1.8s infinite;
+}
+
+@keyframes pulseDotAmber {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+  70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.ngo-dash-subtext {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.ngo-dash-subtext strong {
+  color: #0f172a;
+}
+
+.ngo-dash-header-action {
+  flex-shrink: 0;
+}
+
+/* Why It Matters Callout Banner */
+.ngo-dash-why-banner {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #2563eb;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.ngo-dash-why-banner .why-icon {
+  color: #2563eb;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ngo-dash-why-banner .why-icon i {
+  width: 18px;
+  height: 18px;
+}
+
+.ngo-dash-why-banner .why-text {
+  font-size: 0.85rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.ngo-dash-why-banner .why-text strong {
+  color: #0f172a;
+}
+
+/* 6-Card Highlights Grid */
+.ngo-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ngo-dash-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.ngo-dash-card:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  transform: translateY(-2px);
+}
+
+.ngo-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ngo-card-icon i {
+  width: 20px;
+  height: 20px;
+}
+
+.ngo-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ngo-card-body h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.ngo-card-body p {
+  margin: 0 0 8px 0;
+  font-size: 0.825rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.ngo-card-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 1px 7px;
+  border-radius: 4px;
+}
+
+/* Bottom Strip */
+.ngo-dash-footer-strip {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.strip-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #92400e;
+}
+
+.strip-left strong {
+  color: #78350f;
+}
+
+.strip-right {
+  flex-shrink: 0;
+}
+
+/* NGO Waitlist Modal */
+.ngo-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.ngo-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+  animation: modalScaleUp 0.2s ease-out;
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ngo-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.ngo-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.ngo-modal-close:hover {
+  color: #0f172a;
+}
+
+.ngo-modal-body {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .ngo-dash-container {
+    padding: 18px;
+  }
+  .ngo-dash-header {
+    flex-direction: column;
+  }
+  .ngo-dash-title-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ngo-dash-grid {
+    grid-template-columns: 1fr;
+  }
+  .ngo-dash-footer-strip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ngo-dash-footer-strip .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

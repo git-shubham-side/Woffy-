@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Track <%= typeof pet !== 'undefined' && pet ? pet.petName + "'s Activity" : 'Pet Activity' %> | Woofy</title>
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -216,23 +216,8 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="dash-footer">
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Scripts -->
     <script src="/Dashboard/dashboard.js"></script>

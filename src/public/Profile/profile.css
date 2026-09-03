@@ -1,187 +1,266 @@
 /* ==========================================================================
-   Woofy - Pet Profile Stylesheet
-   Theme: Professional, Sharp, Clean & Fully Responsive
+   Woofy - Pet Profile Details Stylesheet (Warm & Elegant Theme)
+   Theme: Warm Cream Sand (#FAF7F2), Soft Warm Borders (#F0E9DF),
+   Retaining Original Button Colors (Slate, Indigo, White, Crimson),
+   Pill Action Controls & 100% Mobile Ready
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   1. Design Tokens & CSS Variables
+   -------------------------------------------------------------------------- */
 :root {
-  --primary-color: #0f172a;       /* Deep Slate / Midnight Charcoal */
-  --accent-color: #2563eb;        /* Electric Royal Blue */
-  --accent-hover: #1d4ed8;
-  --coral-accent: #f97316;        /* Warm Sunset Coral / Amber */
-  --emerald-accent: #10b981;      /* Fresh Emerald Green */
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --bg-light: #f8fafc;
+  /* Warm Terracotta Coral Accents */
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+
+  /* Warm Sand & Cream Surfaces */
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  /* Authentic Button Colors (RETAINED AS REQUESTED) */
+  --btn-primary-bg: #0f172a;       /* Deep Midnight Slate */
+  --btn-primary-hover: #1e293b;
+  --btn-indigo-bg: #4f46e5;        /* WSAVA Syringe Indigo */
+  --btn-indigo-hover: #4338ca;
+  --btn-secondary-bg: #ffffff;     /* Crisp White */
+  --btn-secondary-border: #cbd5e1;
+  --btn-secondary-hover: #f8fafc;
+  --btn-danger-bg: #ef4444;        /* Crimson Red */
+  --btn-danger-hover: #dc2626;
+
+  /* Neutrals & Slate */
+  --slate-950: #0f172a;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
   --white: #ffffff;
-  --border-color: #e2e8f0;
-  --border-radius: 14px;
-  --border-radius-sm: 8px;
-  --border-radius-pill: 999px;
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
-  --transition: all 0.2s ease-in-out;
+
+  /* Status Tokens */
+  --emerald-50: #ecfdf5;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+  --emerald-border: #a7f3d0;
+
+  --amber-50: #fffbeb;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-border: #fde68a;
+
+  --rose-50: #fff1f2;
+  --rose-500: #f43f5e;
+  --rose-600: #e11d48;
+  --rose-border: #fecdd3;
+
+  /* Borders & Radii */
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 9999px;
+
+  /* Elevations */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 36px -8px rgba(0, 0, 0, 0.08);
+
+  --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-* {
+/* --------------------------------------------------------------------------
+   2. Global Reset & Body Setup
+   -------------------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  color: var(--text-main);
-  background-color: var(--bg-light);
+  color: var(--slate-900);
+  background-color: var(--sand-50);
   line-height: 1.6;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* --------------------------------------------------------------------------
+   3. Ambient Background Lighting (Warm Glow Spheres)
+   -------------------------------------------------------------------------- */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.22;
+}
+
+.glow-1 {
+  top: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.35) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
+}
+
+.glow-2 {
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.25) 0%, rgba(255, 215, 195, 0.1) 70%, transparent 100%);
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout Container & Typography
+   -------------------------------------------------------------------------- */
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-/* Typography */
 h1, h2, h3, h4 {
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 800;
   line-height: 1.2;
-  color: var(--primary-color);
-  letter-spacing: -0.02em;
+  color: var(--slate-900);
+  letter-spacing: -0.025em;
 }
 
-/* Header & Glassmorphism Nav */
-header#navbar {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
-  z-index: 1000;
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 70px;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: #000000 !important;
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-
-.logo span {
-  color: var(--accent-color);
-}
-
-.nav-center-links {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.nav-center-links a {
-  text-decoration: none;
-  color: var(--text-main);
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: var(--transition);
-}
-
-.nav-center-links a:hover,
-.nav-center-links a.active {
-  color: var(--accent-color);
-}
-
-/* Buttons */
+/* --------------------------------------------------------------------------
+   5. Button System (COLORS RETAINED EXACTLY AS REQUESTED)
+   -------------------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  padding: 0.75rem 1.35rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1.45rem;
   font-weight: 700;
   text-decoration: none;
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-pill);
   transition: var(--transition);
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   border: 1.5px solid transparent;
   font-family: inherit;
   line-height: 1;
+  white-space: nowrap;
 }
 
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Primary Button: Deep Slate Charcoal */
 .btn-primary {
-  background-color: var(--primary-color) !important;
+  background-color: var(--btn-primary-bg) !important;
   color: var(--white) !important;
-  border-color: var(--primary-color) !important;
+  border-color: var(--btn-primary-bg) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
 }
 
 .btn-primary:hover {
-  background-color: #1e293b !important;
-  transform: translateY(-1px);
+  background-color: var(--btn-primary-hover) !important;
+  border-color: var(--btn-primary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.28);
 }
 
+/* Secondary Button: Crisp White */
 .btn-secondary {
-  background-color: var(--white) !important;
-  color: var(--primary-color) !important;
-  border: 1.5px solid var(--border-color) !important;
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--slate-900) !important;
+  border: 1.5px solid var(--btn-secondary-border) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .btn-secondary:hover {
-  border-color: var(--primary-color) !important;
-  background-color: #f8fafc !important;
+  border-color: var(--slate-400) !important;
+  background-color: var(--btn-secondary-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* Danger Button: Crimson Red */
 .btn-danger {
-  background-color: #ef4444 !important;
+  background-color: var(--btn-danger-bg) !important;
   color: var(--white) !important;
-  border-color: #ef4444 !important;
+  border-color: var(--btn-danger-bg) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
 }
 
 .btn-danger:hover {
-  background-color: #dc2626 !important;
+  background-color: var(--btn-danger-hover) !important;
+  border-color: var(--btn-danger-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
 }
 
 .btn-sm {
-  padding: 0.5rem 0.95rem;
-  font-size: 0.875rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
 }
 
-/* Profile Showcase Page */
+/* --------------------------------------------------------------------------
+   6. Profile Page & Card Container
+   -------------------------------------------------------------------------- */
 .profile-page {
-  padding: 3.5rem 0 5rem;
+  padding: 3rem 0 5.5rem;
   flex: 1;
 }
 
 .profile-card {
   background-color: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+  position: relative;
 }
 
-/* Hero Banner */
+/* --------------------------------------------------------------------------
+   7. Hero Banner (Midnight Slate Canvas with Warm Sunrise Accent)
+   -------------------------------------------------------------------------- */
 .profile-banner {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, #151921 0%, #1e2532 100%);
+  padding: 2.75rem 2.25rem;
   display: flex;
   align-items: center;
   gap: 1.75rem;
@@ -194,64 +273,296 @@ header#navbar {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #2563eb, #38bdf8, #10b981);
+  height: 4.5px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
 }
 
 .profile-avatar {
-  width: 90px;
-  height: 90px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--white);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 3.5px solid var(--brand-50);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   flex-shrink: 0;
 }
 
 .profile-avatar-fallback {
-  width: 90px;
-  height: 90px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  background: linear-gradient(135deg, #ff7a4d, #fa6638);
   color: var(--white);
-  border: 3px solid var(--white);
+  border: 3.5px solid var(--brand-50);
+  box-shadow: 0 6px 20px rgba(250, 102, 56, 0.3);
   flex-shrink: 0;
 }
 
 .profile-banner-info h2 {
   color: var(--white);
-  font-size: 1.85rem;
-  margin-bottom: 0.25rem;
+  font-size: 2.1rem;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.03em;
 }
 
 .profile-banner-info p {
-  color: #94a3b8;
+  color: #cbd5e1;
   font-size: 0.95rem;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
+/* --------------------------------------------------------------------------
+   8. Profile Body & Smart QR Digital Collar Tag Widget
+   -------------------------------------------------------------------------- */
 .profile-body {
-  padding: 2rem;
+  padding: 2.25rem 2.25rem;
 }
 
-/* Info Grid */
+.tag-widget-box {
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.65rem;
+  margin-bottom: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.65rem;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.tag-widget-box:hover {
+  border-color: var(--brand-200);
+}
+
+.tag-widget-qr {
+  width: 124px;
+  height: 124px;
+  padding: 8px;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tag-widget-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.tag-pill-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.tag-pill-safe {
+  background: var(--emerald-50);
+  color: var(--emerald-600);
+  border: 1px solid var(--emerald-border);
+}
+
+.tag-pill-lost {
+  background: var(--rose-50);
+  color: var(--rose-600);
+  border: 1px solid var(--rose-border);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(0.98); }
+}
+
+.tag-widget-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tag-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: var(--transition);
+  justify-content: center;
+}
+
+/* Lost Pet Action Button Colors (RETAINED) */
+.btn-lost-toggle {
+  background: var(--rose-50);
+  border-color: var(--rose-border);
+  color: var(--rose-600);
+}
+
+.btn-lost-toggle:hover {
+  background: #ffe4e6;
+  transform: translateY(-1px);
+}
+
+.btn-lost-active {
+  background: var(--rose-600);
+  color: var(--white);
+}
+
+.btn-lost-active:hover {
+  background: var(--rose-500);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   9. Vaccination Passport Preview Banner
+   -------------------------------------------------------------------------- */
+.vaccine-preview-card {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(250, 102, 56, 0.05) 100%);
+  border: 1.5px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.65rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.vaccine-preview-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 260px;
+}
+
+.vaccine-preview-badge-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: #4f46e5;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.28);
+}
+
+.vaccine-preview-badge-icon i,
+.vaccine-preview-badge-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.vaccine-preview-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.vaccine-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.vaccine-title-row h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--slate-900);
+  line-height: 1.3;
+}
+
+/* Clear, Vibrant Doses Badge (Never Clipped or Squeezed) */
+.vaccine-doses-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1.5px solid #a7f3d0;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.15);
+}
+
+.vaccine-doses-pill i,
+.vaccine-doses-pill svg {
+  width: 13px;
+  height: 13px;
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.vaccine-subtitle {
+  margin: 0.35rem 0 0 0;
+  color: var(--slate-600);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.vaccine-preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.vaccine-preview-actions .btn {
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   10. Pet Medical & Vitals Info Grid
+   -------------------------------------------------------------------------- */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: 1.15rem;
   margin-bottom: 2rem;
 }
 
 .info-item {
-  background: #f8fafc;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  padding: 1rem 1.15rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.15rem 1.25rem;
+  transition: var(--transition);
+}
+
+.info-item:hover {
+  border-color: var(--brand-200);
+  transform: translateY(-2px);
 }
 
 .info-item.full {
@@ -259,50 +570,56 @@ header#navbar {
 }
 
 .info-item .label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-size: 0.725rem;
+  font-weight: 800;
+  color: var(--slate-500);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
 }
 
 .info-item .value {
-  font-size: 1.05rem;
+  font-size: 1.075rem;
   font-weight: 800;
-  color: var(--primary-color);
+  color: var(--slate-900);
 }
 
 .info-item .value.notes {
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--text-main);
-  line-height: 1.5;
+  color: var(--slate-700);
+  line-height: 1.6;
 }
 
-/* Pet Gallery Section */
+/* --------------------------------------------------------------------------
+   11. Pet Multi-Photo Gallery
+   -------------------------------------------------------------------------- */
 .pet-gallery-section {
   margin: 2rem 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid #f1f5f9;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .pet-gallery-section h3 {
-  font-size: 1.15rem;
-  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .pet-gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .gallery-img-item {
-  height: 120px;
-  border-radius: 8px;
+  height: 125px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-subtle);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .gallery-img-item img {
@@ -313,96 +630,161 @@ header#navbar {
 }
 
 .gallery-img-item:hover img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
-/* Action Buttons Bar */
+/* --------------------------------------------------------------------------
+   12. Action Buttons Row (Retaining Button Colors)
+   -------------------------------------------------------------------------- */
 .profile-actions-bar {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
   align-items: center;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  padding-top: 1.75rem;
+  border-top: 1.5px solid var(--border-subtle);
 }
 
-/* Clean Footer */
-footer {
-  background-color: var(--primary-color);
-  color: var(--white);
-  padding: 2.25rem 0;
-  border-top: 1px solid #1e293b;
-  margin-top: auto;
-}
-
-.footer-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.25rem;
-  display: flex;
-  justify-content: space-between;
+/* --------------------------------------------------------------------------
+   13. Modals (Clean & Polished)
+   -------------------------------------------------------------------------- */
+.custom-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  justify-content: center;
+  padding: 1.25rem;
 }
 
-.footer-brand h3 {
-  color: var(--white);
-  font-size: 1.25rem;
-  margin-bottom: 0.15rem;
+.custom-modal-overlay.active {
+  display: flex;
 }
 
-.footer-brand p {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin: 0;
+.custom-modal-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--border-subtle);
+  max-width: 520px;
+  width: 100%;
+  padding: 2.25rem;
+  box-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.25);
+  animation: modalScaleUp 0.2s ease-out;
 }
 
-.footer-links p {
-  color: #94a3b8;
-  font-size: 0.85rem;
-  margin: 0;
+@keyframes modalScaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.footer-links a {
-  color: #38bdf8;
-  text-decoration: none;
-  font-weight: 600;
+.custom-modal-card input[type="text"],
+.custom-modal-card input[type="tel"],
+.custom-modal-card textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  background: var(--sand-50);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--slate-900);
+  transition: var(--transition);
+  box-sizing: border-box;
 }
 
-.footer-links a:hover {
-  text-decoration: underline;
+.custom-modal-card input:focus,
+.custom-modal-card textarea:focus {
+  outline: none;
+  border-color: var(--brand-500);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .nav-center-links {
-    display: none;
-  }
+/* --------------------------------------------------------------------------
+   14. Responsive Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
   .profile-banner {
     flex-direction: column;
     text-align: center;
-    padding: 2rem 1.25rem;
+    padding: 2.25rem 1.5rem;
+  }
+  .tag-widget-box {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .tag-widget-qr {
+    margin: 0 auto;
+  }
+  .tag-widget-info h3 {
+    justify-content: center;
+  }
+  .tag-widget-actions {
+    width: 100%;
+  }
+  .vaccine-preview-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.25rem;
+    gap: 1rem;
+  }
+  .vaccine-preview-left {
+    width: 100%;
+    min-width: 0;
+  }
+  .vaccine-preview-actions {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .vaccine-preview-actions .btn {
+    flex: 1;
+    text-align: center;
   }
   .info-grid {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  .profile-body {
-    padding: 1.5rem 1.25rem;
+    gap: 0.85rem;
   }
   .profile-actions-bar {
     flex-direction: column;
   }
   .profile-actions-bar .btn,
-  .profile-actions-bar form {
-    width: 100%;
-  }
+  .profile-actions-bar form,
   .profile-actions-bar form button {
     width: 100%;
   }
-  .footer-container {
+}
+
+@media (max-width: 540px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .profile-body {
+    padding: 1.25rem 1rem;
+  }
+  .vaccine-preview-left {
     flex-direction: column;
-    text-align: center;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .vaccine-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  .vaccine-preview-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .vaccine-preview-actions .btn {
+    width: 100%;
+  }
+  .profile-banner-info h2 {
+    font-size: 1.65rem;
   }
 }

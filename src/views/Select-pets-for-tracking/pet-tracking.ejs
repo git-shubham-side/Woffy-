@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Select Pet for Tracking | Woofy</title>
+    <title>Select Pet for Tracking | Woofy | Pet Care Platform</title>
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -18,9 +18,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Ambient Background Lighting Mesh -->
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
 
     <!-- Navigation -->
     <%- include('../partials/navbar', { activePage: 'pets' }) %>
@@ -31,15 +33,17 @@
         <%- include('../partials/flash-messages') %>
 
         <div class="pets-header">
-          <div>
-            <span class="page-badge-pill">Activity & Health Logger</span>
+          <div class="pets-header-text">
+            <span class="page-badge-pill">Daily Care & Activity Logger</span>
             <h2>Select Pet to <span class="sketch-highlight">Track</span></h2>
-            <p>Choose which companion's weight, medical checkup, medicines, or grooming you want to log today.</p>
+            <p>Choose which companion's weight, medical checkup, medicines, or daily grooming you want to log today.</p>
           </div>
-          <a href="/api/create-pet-profile" class="btn btn-secondary">
-            <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
-            <span>Add Another Pet</span>
-          </a>
+          <div class="pets-header-actions">
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
+              <span>Add Another Pet</span>
+            </a>
+          </div>
         </div>
 
         <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
@@ -58,7 +62,11 @@
                   <% } %>
                   <div class="pet-header-info">
                     <h3><%= pet.petName %></h3>
-                    <p class="pet-sub"><%= pet.breed || pet.species %> • <%= pet.gender || 'Pet' %></p>
+                    <p class="pet-sub">
+                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Pet' %></span>
+                      <span class="pet-dot-separator">•</span>
+                      <span class="pet-gender-tag"><%= pet.gender || 'Companion' %></span>
+                    </p>
                   </div>
                 </div>
 
@@ -73,15 +81,16 @@
                   </div>
                   <div class="stat">
                     <span class="stat-label">Vaccinated</span>
-                    <span class="stat-value" style="color: <%= pet.vaccinated === 'Yes' ? '#16a34a' : '#ea580c' %>;">
-                      <%= pet.vaccinated || 'Yes' %>
+                    <span class="stat-value stat-vax <%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'vax-yes' : 'vax-no' %>">
+                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle' : 'alert-circle' %>"></i>
+                      <span><%= pet.vaccinated || 'Pending' %></span>
                     </span>
                   </div>
                 </div>
 
                 <div class="card-actions-row">
-                  <a href="/api/track/<%= pet._id %>" class="btn btn-primary btn-block">
-                    <i data-lucide="activity" style="width: 16px; height: 16px;"></i>
+                  <a href="/api/track/<%= pet._id %>" class="btn btn-primary btn-block" title="Log Daily Health & Activity for <%= pet.petName %>">
+                    <i data-lucide="activity"></i>
                     <span>Log Activity for <%= pet.petName %> &rarr;</span>
                   </a>
                 </div>
@@ -91,12 +100,12 @@
         <% } else { %>
           <div class="empty-pets-box">
             <div class="empty-pets-icon">
-              <i data-lucide="paw-print" style="width: 32px; height: 32px;"></i>
+              <i data-lucide="paw-print"></i>
             </div>
             <h3>No Pets Found</h3>
-            <p>You need to create a pet profile first before logging health and care activities.</p>
-            <a href="/api/create-pet-profile" class="btn btn-primary">
-              <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+            <p>You need to create a pet profile first before logging daily health and care activities.</p>
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
               <span>Create Pet Profile</span>
             </a>
           </div>
@@ -104,14 +113,11 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <p>&copy; <%= new Date().getFullYear() %> Woofy. Complete Pet Care & Health Tracking Platform.</p>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Initialize Lucide Icons -->
+    <script src="/My-Pets/my-pets.js"></script>
     <script>
       if (window.lucide) {
         lucide.createIcons();

@@ -7,21 +7,27 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+    <link rel="stylesheet" href="/Shop/shop.css" />
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <!-- Ambient Background Lighting Mesh -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
     <!-- Top Sticky Glassmorphism Navigation -->
     <%- include('../partials/navbar', { activePage: 'shop' }) %>
 
-    <main class="hospitals-page">
+    <main class="shop-page">
       <div class="container">
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
@@ -50,7 +56,7 @@
         <!-- Filter Categories & Search Panel -->
         <div class="search-filter-panel">
           <form method="GET" action="/shop">
-            <div class="search-form-row" style="grid-template-columns: 1fr auto;">
+            <div class="search-form-row">
               <div class="search-input-wrap">
                 <i data-lucide="search"></i>
                 <input
@@ -174,35 +180,20 @@
           <% }) %>
         </div>
         <% } else { %>
-        <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
-          <div style="width: 64px; height: 64px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #2563eb;">
+        <div style="text-align: center; padding: 4.5rem 2rem; background: var(--white); border: 2px dashed var(--brand-200); border-radius: var(--radius-xl);">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: var(--brand-50); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-600); border: 1px solid var(--brand-200);">
             <i data-lucide="shopping-bag" style="width: 32px; height: 32px;"></i>
           </div>
-          <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">No Products Found in <%= selectedCategory !== 'All' ? selectedCategory : 'Store' %></h3>
-          <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--text-muted); font-size: 0.95rem;">No pet supplies matched your filter or search query. Check back soon or view all products.</p>
+          <h3 style="font-size: 1.5rem; color: var(--slate-900); margin-bottom: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">No Products Found in <%= selectedCategory !== 'All' ? selectedCategory : 'Store' %></h3>
+          <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--slate-500); font-size: 0.95rem;">No pet supplies matched your filter or search query. Check back soon or view all products.</p>
           <a href="/shop" class="btn btn-secondary">View All Products</a>
         </div>
         <% } %>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
-        </div>
-        <div class="footer-links">
-          <p>
-            Designed & Developed by
-            <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">
-              Shubham Rathod
-            </a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
 
     <!-- Initialize Lucide Icons -->
     <script>
