@@ -3,6 +3,7 @@ const Pet = require("../Models/Pet");
 const Record = require("../Models/Record");
 const Product = require("../Models/Product");
 const Vaccination = require("../Models/Vaccination");
+const ShelterRequest = require("../Models/ShelterRequest");
 const {
   generateScheduleForPet,
   getUpcomingVaccinesForUser,
@@ -591,6 +592,80 @@ const getListingRequestPage = async (req, res) => {
   }
 };
 
+/**
+ * POST: Submit Shelter / NGO Alpha Waitlist Registration
+ */
+const postShelterWaitlist = async (req, res) => {
+  try {
+    const { orgName, email, phone, city, animalCount, neededFeatures } = req.body;
+
+    if (!orgName || !orgName.trim() || !email || !email.trim()) {
+      if (req.xhr || req.headers.accept?.includes("json")) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide both Organization/Shelter Name and Contact Email.",
+        });
+      }
+      req.flash("error", "Please provide both Organization/Shelter Name and Contact Email.");
+      return res.redirect("/api/dashboard#ngo-hub");
+    }
+
+    let submittedBy = null;
+    let submitterName = "";
+    let submitterEmail = "";
+
+    if (req.session && req.session.userId) {
+      try {
+        const user = await User.findById(req.session.userId);
+        if (user) {
+          submittedBy = user._id;
+          submitterName = user.fullName;
+          submitterEmail = user.email;
+        }
+      } catch (e) {
+        console.warn("Could not fetch user for shelter request:", e.message);
+      }
+    }
+
+    const newRequest = await ShelterRequest.create({
+      orgName: orgName.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone ? phone.trim() : "",
+      city: city ? city.trim() : "",
+      animalCount: animalCount || "50-100",
+      neededFeatures: neededFeatures ? neededFeatures.trim() : "",
+      status: "pending",
+      submittedBy,
+      submitterName,
+      submitterEmail,
+    });
+
+    if (req.xhr || req.headers.accept?.includes("json") || req.is("json")) {
+      return res.status(201).json({
+        success: true,
+        message: "Thank you! Your shelter registration has been submitted for the Woffy NGO Suite alpha release.",
+        data: newRequest,
+      });
+    }
+
+    req.flash(
+      "success",
+      `Thank you! "${newRequest.orgName}" has been successfully registered for the Woffy NGO Suite alpha release. Our team will review your application soon.`,
+    );
+    res.redirect("/api/dashboard#ngo-hub");
+  } catch (err) {
+    console.error("Shelter waitlist submission error:", err);
+    if (req.xhr || req.headers.accept?.includes("json") || req.is("json")) {
+      return res.status(500).json({
+        success: false,
+        message: "Failed to submit shelter registration: " + (err.message || "Server error"),
+      });
+    }
+    req.flash("error", "Failed to submit shelter registration. Please try again.");
+    res.redirect("/api/dashboard#ngo-hub");
+  }
+};
+
 module.exports = {
   getDashboard,
   getCreatePetPage,
@@ -605,4 +680,5 @@ module.exports = {
   deletePet,
   getListingRequestPage,
   postRequestProduct,
+  postShelterWaitlist,
 };

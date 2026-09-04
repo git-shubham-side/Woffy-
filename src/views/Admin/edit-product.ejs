@@ -5,91 +5,527 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Product | Woofy Admin Suite</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter (Landing Theme) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-      .admin-badge-pill {
-        background: #0f172a;
-        color: #ffffff;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.25rem 0.65rem;
-        border-radius: 4px;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+      :root {
+        --coral-500: #ff7244;
+        --coral-600: #e85d30;
+        --coral-700: #cb461b;
+        --coral-50: #fff5f2;
+        --coral-100: #ffe8e2;
+        --coral-200: #ffcaba;
+        --primary-color: #ff7244;
+        --accent-color: #ff7244;
+        --border-radius: 12px;
+
+        --sand-50: #faf7f2;
+        --sand-100: #f4efe6;
+        --sand-200: #e8e1d7;
+
+        --slate-900: #151921;
+        --slate-800: #1f242f;
+        --slate-700: #333a48;
+        --slate-600: #515b6d;
+        --slate-500: #717d93;
+
+        --white: #ffffff;
+        --border-color: #e8e1d7;
+        --border-subtle: #f0eae0;
+
+        --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+        --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+
+        --r-pill: 9999px;
+        --r-card: 20px;
+        --r-inner: 12px;
+
+        --shadow-sm: 0 2px 8px rgba(21, 25, 33, 0.04);
+        --shadow-md: 0 8px 24px rgba(21, 25, 33, 0.08);
+        --shadow-coral: 0 8px 24px rgba(255, 114, 68, 0.25);
+        --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background-color: var(--sand-50);
+        color: var(--slate-900);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Navbar */
+      #adminNavbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1.5px solid var(--sand-200);
+      }
+
+      .admin-nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        gap: 1rem;
+      }
+
+      .admin-brand-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .admin-brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+      }
+
+      .admin-brand-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(255, 114, 68, 0.32);
+        flex-shrink: 0;
+      }
+
+      .admin-brand-name {
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.03em;
+      }
+
+      .admin-brand-dot {
+        color: var(--coral-500);
+      }
+
+      .admin-badge-pill {
+        background: var(--coral-50);
+        color: var(--coral-700);
+        border: 1px solid var(--coral-200);
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 0.28rem 0.7rem;
+        border-radius: var(--r-pill);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .admin-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-pill-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.95rem;
+        border-radius: var(--r-pill);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition);
+        white-space: nowrap;
+      }
+
+      .btn-pill-nav-secondary {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        color: var(--slate-700);
+      }
+
+      .btn-pill-nav-secondary:hover {
+        background: var(--coral-50);
+        color: var(--coral-600);
+        border-color: var(--coral-200);
+        transform: translateY(-1px);
+      }
+
+      .btn-pill-nav-danger {
+        background: #fff1f2;
+        border: 1.5px solid #fecdd3;
+        color: #e11d48;
+      }
+
+      .btn-pill-nav-danger:hover {
+        background: #e11d48;
+        color: var(--white);
+        border-color: #e11d48;
+        transform: translateY(-1px);
+      }
+
+      .hospitals-page {
+        padding: 2.25rem 0 5rem;
+        flex: 1;
+      }
+
+      .form-wrapper-box {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-card);
+        padding: 2.25rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .form-title-group {
+        margin-bottom: 1.75rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1.5px solid var(--sand-100);
+      }
+
+      .form-title-group h2 {
+        font-family: var(--font-heading);
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--slate-900);
+      }
+
+      .form-title-group p {
+        color: var(--slate-600);
+        font-size: 0.92rem;
+      }
+
+      .form-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .field-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .field-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--slate-800);
+        margin-bottom: 0.45rem;
+      }
+
+      .field-input,
+      .field-select {
+        width: 100%;
+        padding: 0.72rem 1rem;
+        background: var(--sand-50);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
+        font-family: inherit;
+        font-size: 0.92rem;
+        color: var(--slate-900);
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .field-input:focus,
+      .field-select:focus {
+        background: var(--white);
+        border-color: var(--coral-500);
+        box-shadow: 0 0 0 3.5px rgba(255, 114, 68, 0.15);
+      }
+
+      .app-status {
+        padding: 0.3rem 0.85rem;
+        border-radius: var(--r-pill);
+        font-size: 0.74rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .status-approved { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+      .status-rejected { background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; }
+
       .stock-toggle-box {
         display: flex;
         gap: 1.5rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border: 1.5px solid var(--border-color);
-        border-radius: var(--border-radius);
+        padding: 0.85rem 1.15rem;
+        background: var(--sand-50);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
       }
+
       .stock-radio-label {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.95rem;
-        font-weight: 600;
+        font-size: 0.92rem;
+        font-weight: 700;
         cursor: pointer;
       }
+
       .stock-radio-label input[type="radio"] {
         width: 18px;
         height: 18px;
-        accent-color: #2563eb;
+        accent-color: var(--coral-500);
       }
+
       .image-preview-box {
         display: flex;
         align-items: center;
         gap: 1.25rem;
         margin-top: 0.5rem;
-        padding: 0.75rem;
-        background: #f8fafc;
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
+        padding: 0.85rem 1rem;
+        background: var(--sand-50);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
       }
+
       .preview-thumb {
         width: 80px;
         height: 80px;
-        border-radius: 6px;
+        border-radius: var(--r-inner);
         object-fit: cover;
-        background: #e2e8f0;
+        background: var(--sand-200);
+        border: 1px solid var(--sand-200);
+      }
+
+      .check-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--slate-700);
+        cursor: pointer;
+      }
+
+      .check-item input[type="checkbox"] {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--coral-500);
+      }
+
+      .form-button-row {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.88rem;
+        border-radius: var(--r-pill);
+        padding: 0.6rem 1.35rem;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: var(--transition);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%) !important;
+        color: var(--white) !important;
+        box-shadow: 0 4px 14px rgba(255, 114, 68, 0.28);
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 6px 20px rgba(255, 114, 68, 0.38);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: var(--white) !important;
+        color: var(--slate-700) !important;
+        border: 1.5px solid var(--sand-200) !important;
+      }
+
+      .btn-secondary:hover {
+        background: var(--coral-50) !important;
+        color: var(--coral-600) !important;
+        border-color: var(--coral-200) !important;
+        transform: translateY(-1px);
+      }
+
+      /* Footer */
+      footer.admin-footer {
+        background: #151921;
+        color: #9ca3af;
+        padding: 2.25rem 0;
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .admin-footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .admin-footer-brand h4 {
+        font-family: var(--font-heading);
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--white);
+        margin-bottom: 0.25rem;
+      }
+
+      .admin-footer-brand h4 span {
+        color: var(--coral-500);
+      }
+
+      .admin-footer-brand p {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      .admin-footer-links p {
+        font-size: 0.875rem;
+        margin: 0;
+      }
+
+      .admin-footer-links a {
+        color: var(--coral-200);
+        text-decoration: underline;
+        font-weight: 600;
+      }
+
+      .admin-footer-links a:hover {
+        color: var(--coral-500);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 1rem;
+        }
+
+        .admin-nav-container {
+          height: auto;
+          padding: 0.75rem 0;
+        }
+
+        .nav-btn-text {
+          display: none;
+        }
+
+        .btn-pill-nav {
+          padding: 0.5rem;
+          width: 36px;
+          height: 36px;
+          justify-content: center;
+          border-radius: 50%;
+        }
+
+        .form-grid-layout {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .form-wrapper-box {
+          padding: 1.5rem 1.15rem;
+        }
+
+        .form-button-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .form-button-row .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stock-toggle-box {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .admin-footer-container {
+          flex-direction: column;
+          text-align: center;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- Top Navigation Header -->
-    <header id="navbar">
-      <div class="container nav-container">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <a href="/admin" class="logo">
-            Woofy<span>.</span>
+    <!-- Top Navigation Header (Landing Theme) -->
+    <header id="adminNavbar">
+      <div class="container admin-nav-container">
+        <div class="admin-brand-group">
+          <a href="/admin" class="admin-brand-logo" aria-label="Woofy Admin Portal">
+            <div class="admin-brand-icon">
+              <i data-lucide="paw-print"></i>
+            </div>
+            <span class="admin-brand-name">Woofy<span class="admin-brand-dot">.</span></span>
           </a>
-          <span class="admin-badge-pill">Company Admin</span>
+          <span class="admin-badge-pill">
+            <i data-lucide="shield-check" style="width: 13px; height: 13px;"></i>
+            <span>Company Admin</span>
+          </span>
         </div>
-        <div class="nav-actions">
-          <a href="/admin?section=products" class="btn btn-secondary btn-sm">
-            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
-            <span>Back to Products</span>
+        <div class="admin-nav-actions">
+          <a href="/admin?section=products" class="btn-pill-nav btn-pill-nav-secondary" title="Back to Products Catalog">
+            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">Back to Products</span>
           </a>
-          <a href="/shop" target="_blank" class="btn btn-secondary btn-sm">
-            <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
-            <span>Live Shop</span>
+          <a href="/shop" target="_blank" class="btn-pill-nav btn-pill-nav-secondary" title="Live Shop">
+            <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">Live Shop</span>
           </a>
-          <a href="/logout" class="btn btn-primary btn-sm" style="background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important;">
-            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
-            <span>Logout</span>
+          <a href="/logout" class="btn-pill-nav btn-pill-nav-danger" title="Logout">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">Logout</span>
           </a>
         </div>
       </div>
@@ -308,14 +744,14 @@
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+    <!-- Footer (Landing Theme) -->
+    <footer class="admin-footer">
+      <div class="container admin-footer-container">
+        <div class="admin-footer-brand">
+          <h4>Woofy<span>.</span></h4>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform. All rights reserved.</p>
         </div>
-        <div class="footer-links">
+        <div class="admin-footer-links">
           <p>
             Designed & Developed by
             <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">

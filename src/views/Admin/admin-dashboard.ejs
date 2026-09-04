@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Company Admin Suite | Woofy</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Inter & Plus Jakarta Sans (Landing Theme) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800;900&display=swap"
       rel="stylesheet"
     />
 
@@ -18,229 +20,1016 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-      .admin-badge-pill {
-        background: #0f172a;
-        color: #ffffff;
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.25rem 0.65rem;
-        border-radius: 4px;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
+      /* ====================================================================
+         WOFFY COMPANY ADMIN SUITE - WARM LANDING PAGE THEME
+         Inspired by the warm terracotta coral, sand cream, and modern
+         pill-badge design language of the Woofy Landing Page.
+         ==================================================================== */
+      :root {
+        /* Landing Brand Warm Coral Palette */
+        --coral-500: #ff7244;
+        --coral-600: #f05a28;
+        --coral-700: #d94819;
+        --coral-50: #fff5f0;
+        --coral-100: #ffe8dd;
+        --coral-200: #ffd2c0;
+
+        --primary-color: #ff7244;
+        --primary-hover: #f05a28;
+
+        /* Accent Colors */
+        --amber-500: #f59e0b;
+        --amber-600: #d97706;
+        --amber-50: #fffbeb;
+        --amber-100: #fef3c7;
+        --amber-200: #fde68a;
+
+        --emerald-500: #10b981;
+        --emerald-600: #059669;
+        --emerald-50: #ecfdf5;
+        --emerald-100: #d1fae5;
+        --emerald-200: #a7f3d0;
+
+        --rose-500: #f43f5e;
+        --rose-600: #e11d48;
+        --rose-50: #fff1f2;
+        --rose-100: #ffe4e6;
+        --rose-200: #fecdd3;
+
+        --blue-500: #3b82f6;
+        --blue-600: #2563eb;
+        --blue-50: #eff6ff;
+        --blue-100: #dbeafe;
+        --blue-200: #bfdbfe;
+
+        --purple-500: #8b5cf6;
+        --purple-600: #7c3aed;
+        --purple-50: #f5f3ff;
+        --purple-100: #ede9fe;
+
+        /* Neutral Sand & Slate (Landing-consistent) */
+        --sand-50: #faf7f2;
+        --sand-100: #f3eee7;
+        --sand-200: #e8e1d7;
+        --border-color: #e8e1d7;
+        --border-subtle: #f0e9df;
+        --white: #ffffff;
+
+        --slate-900: #181c24;
+        --slate-800: #1f2937;
+        --slate-700: #374151;
+        --slate-600: #4b5563;
+        --slate-500: #6b7280;
+        --slate-400: #9ca3af;
+        --slate-300: #cbd5e1;
+        --slate-200: #e2e8f0;
+        --slate-100: #f1f5f9;
+
+        --text-main: #181c24;
+        --text-body: #334155;
+        --text-muted: #64748b;
+
+        /* Typography */
+        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+
+        /* Radii */
+        --r-pill: 9999px;
+        --r-card: 18px;
+        --r-inner: 12px;
+        --r-sm: 8px;
+
+        /* Shadows */
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 12px 32px rgba(255, 114, 68, 0.08);
+        --shadow-coral: 0 6px 18px rgba(255, 114, 68, 0.32);
+
+        /* Transitions */
+        --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
       }
+
+      /* Global resets & typography */
+      body {
+        background-color: var(--sand-50) !important;
+        font-family: var(--font-body) !important;
+        color: var(--text-body) !important;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-heading) !important;
+        color: var(--slate-900) !important;
+        letter-spacing: -0.025em;
+      }
+
+      /* Header / Navbar (Landing style) */
+      header#adminNavbar {
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1.5px solid var(--sand-200);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      }
+
+      .admin-nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+        gap: 1rem;
+      }
+
+      .admin-brand-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .admin-brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none;
+      }
+
+      .admin-brand-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%);
+        color: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(255, 114, 68, 0.32);
+        flex-shrink: 0;
+      }
+
+      .admin-brand-icon i, .admin-brand-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .admin-brand-name {
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.03em;
+      }
+
+      .admin-brand-dot {
+        color: var(--coral-500);
+      }
+
+      .admin-badge-pill {
+        background: var(--coral-50);
+        color: var(--coral-700);
+        border: 1px solid var(--coral-200);
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 0.28rem 0.7rem;
+        border-radius: var(--r-pill);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+      }
+
+      .admin-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .btn-pill-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.5rem 0.95rem;
+        border-radius: var(--r-pill);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: var(--transition);
+        white-space: nowrap;
+      }
+
+      .btn-pill-nav-secondary {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        color: var(--slate-700);
+      }
+
+      .btn-pill-nav-secondary:hover {
+        background: var(--coral-50);
+        color: var(--coral-600);
+        border-color: var(--coral-200);
+        transform: translateY(-1px);
+      }
+
+      .btn-pill-nav-danger {
+        background: var(--rose-50);
+        border: 1.5px solid var(--rose-200);
+        color: var(--rose-600);
+      }
+
+      .btn-pill-nav-danger:hover {
+        background: var(--rose-600);
+        color: var(--white);
+        border-color: var(--rose-600);
+        transform: translateY(-1px);
+      }
+
+      /* Main Content Page */
+      .hospitals-page {
+        padding: 2.25rem 0 5rem;
+        flex: 1;
+      }
+
+      /* Page Intro Header */
+      .page-intro-header {
+        margin-bottom: 2rem;
+      }
+
+      .page-intro-header h2 {
+        font-size: clamp(1.65rem, 3.2vw, 2.3rem);
+        font-weight: 900;
+        margin-bottom: 0.35rem;
+      }
+
+      .page-intro-header p {
+        color: var(--slate-600);
+        font-size: 0.96rem;
+      }
+
+      /* Top Navigation Section Tabs (Landing Pill Bar) */
       .admin-top-nav-tabs {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.45rem;
         background: var(--white);
-        border: 1px solid var(--border-color);
-        padding: 0.5rem;
-        border-radius: 8px;
+        border: 1.5px solid var(--sand-200);
+        padding: 0.45rem;
+        border-radius: var(--r-card);
         margin-bottom: 2rem;
-        flex-wrap: wrap;
+        box-shadow: var(--shadow-sm);
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
       }
+
+      .admin-top-nav-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
       .nav-tab-link {
-        padding: 0.65rem 1.25rem;
-        font-size: 0.95rem;
-        font-weight: 600;
+        padding: 0.65rem 1.15rem;
+        font-size: 0.9rem;
+        font-weight: 700;
         text-decoration: none;
-        color: var(--text-muted);
-        border-radius: 6px;
+        color: var(--slate-600);
+        border-radius: 12px;
         transition: var(--transition);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
+
       .nav-tab-link:hover {
-        color: var(--primary-color);
-        background: #f1f5f9;
+        color: var(--coral-600);
+        background: var(--coral-50);
       }
+
       .nav-tab-link.active {
-        background: var(--primary-color);
-        color: #ffffff !important;
+        background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%) !important;
+        color: var(--white) !important;
+        box-shadow: var(--shadow-coral);
       }
-      .admin-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      .admin-stat-card {
-        background: var(--white);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 1.25rem;
-      }
-      .admin-stat-card .stat-num {
-        font-size: 2.25rem;
+
+      /* Tab Counters */
+      .tab-counter {
+        background: var(--sand-100);
+        color: var(--slate-700);
+        font-size: 0.725rem;
         font-weight: 800;
-        color: var(--primary-color);
-        line-height: 1.1;
+        padding: 0.15rem 0.5rem;
+        border-radius: var(--r-pill);
+        transition: var(--transition);
       }
-      .admin-stat-card .stat-label {
-        font-size: 0.875rem;
-        color: var(--text-muted);
-        margin-top: 0.35rem;
-        font-weight: 500;
+
+      .tab-counter.counter-alert {
+        background: var(--rose-100);
+        color: var(--rose-600);
       }
+
+      .nav-tab-link.active .tab-counter {
+        background: rgba(255, 255, 255, 0.25);
+        color: var(--white);
+      }
+
+      .nav-tab-link.active .tab-counter.counter-alert {
+        background: var(--white);
+        color: var(--rose-600);
+      }
+
+      /* Sub-tabs Navigation (Filter tabs) */
       .sub-tabs-nav {
         display: flex;
         gap: 0.5rem;
-        border-bottom: 2px solid var(--border-color);
+        border-bottom: 2px solid var(--sand-200);
         margin-bottom: 1.75rem;
-        flex-wrap: wrap;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
       }
+
+      .sub-tabs-nav::-webkit-scrollbar {
+        display: none;
+      }
+
       .sub-tab-btn {
-        padding: 0.65rem 1.25rem;
-        font-weight: 600;
-        font-size: 0.9rem;
+        padding: 0.65rem 1.15rem;
+        font-weight: 700;
+        font-size: 0.88rem;
         text-decoration: none;
-        color: var(--text-muted);
-        border-bottom: 2px solid transparent;
-        margin-bottom: -2px;
+        color: var(--slate-600);
+        border-bottom: 3px solid transparent;
+        margin-bottom: -4px;
         transition: var(--transition);
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
+        gap: 0.45rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-radius: 8px 8px 0 0;
       }
+
       .sub-tab-btn:hover {
-        color: var(--primary-color);
+        color: var(--coral-600);
+        background: var(--coral-50);
       }
+
       .sub-tab-btn.active {
-        color: var(--primary-color);
-        border-bottom-color: var(--primary-color);
+        color: var(--coral-600);
+        border-bottom-color: var(--coral-600);
+        background: transparent;
       }
-      .tab-counter {
-        background: #f1f5f9;
-        color: var(--text-main);
-        font-size: 0.75rem;
-        font-weight: 700;
-        padding: 0.15rem 0.5rem;
-        border-radius: 999px;
+
+      /* Stat Cards Grid (Overview) */
+      .admin-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2.25rem;
       }
-      .tab-counter.counter-alert {
-        background: #fee2e2;
-        color: #ef4444;
+
+      /* Overview Action Cards Grid */
+      .admin-overview-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+        margin-top: 0.5rem;
+        margin-bottom: 2.25rem;
       }
+
+      /* Auto Flow Grid (Rescue & Shelters) */
+      .admin-auto-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2.25rem;
+      }
+
+      .admin-stat-card {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-card);
+        padding: 1.35rem 1.5rem;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+      }
+
+      .admin-stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--coral-200);
+      }
+
+      .admin-stat-card .stat-num {
+        font-family: var(--font-heading);
+        font-size: 2.35rem;
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.025em;
+      }
+
+      .admin-stat-card .stat-label {
+        font-size: 0.85rem;
+        color: var(--slate-600);
+        margin-top: 0.35rem;
+        font-weight: 600;
+      }
+
+      /* Admin Cards & List Items */
       .admin-card-item {
         background: var(--white);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-card);
         padding: 1.5rem;
         margin-bottom: 1.25rem;
-        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
       }
+
+      .admin-card-item:hover {
+        border-color: var(--coral-200);
+        box-shadow: var(--shadow-md);
+      }
+
       .admin-card-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.75rem;
         margin-bottom: 1rem;
         padding-bottom: 1rem;
-        border-bottom: 1px solid #f1f5f9;
+        border-bottom: 1px solid var(--border-subtle);
       }
+
+      /* Status Badges */
       .app-status {
-        padding: 0.25rem 0.65rem;
-        border-radius: 4px;
-        font-size: 0.75rem;
-        font-weight: 700;
+        padding: 0.3rem 0.85rem;
+        border-radius: var(--r-pill);
+        font-size: 0.74rem;
+        font-weight: 800;
         text-transform: uppercase;
+        letter-spacing: 0.04em;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
       }
-      .status-pending { background: #fef3c7; color: #b45309; }
-      .status-approved { background: #dcfce7; color: #15803d; }
-      .status-rejected { background: #fee2e2; color: #b91c1c; }
-      .status-instock { background: #dbeafe; color: #1e40af; }
-      .status-outofstock { background: #f1f5f9; color: #64748b; }
+
+      .status-pending { background: var(--amber-50); color: var(--amber-600); border: 1px solid var(--amber-200); }
+      .status-approved { background: var(--emerald-50); color: var(--emerald-600); border: 1px solid var(--emerald-200); }
+      .status-rejected { background: var(--rose-50); color: var(--rose-600); border: 1px solid var(--rose-200); }
+      .status-instock { background: var(--blue-50); color: var(--blue-600); border: 1px solid var(--blue-200); }
+      .status-outofstock { background: var(--sand-100); color: var(--slate-500); border: 1px solid var(--sand-200); }
+
+      /* Flex Grid for item details */
       .admin-flex-grid {
         display: grid;
         grid-template-columns: 140px 1fr;
         gap: 1.5rem;
+        align-items: start;
       }
+
       .admin-item-thumb {
         width: 140px;
         height: 140px;
-        border-radius: 6px;
+        border-radius: var(--r-inner);
         object-fit: cover;
-        background: #f1f5f9;
+        background: var(--sand-100);
+        border: 1.5px solid var(--sand-200);
       }
+
       .admin-info-list {
         display: flex;
         flex-direction: column;
         gap: 0.45rem;
       }
+
       .info-row {
         display: flex;
         gap: 0.5rem;
         font-size: 0.9rem;
+        flex-wrap: wrap;
       }
+
       .info-row strong {
-        color: var(--primary-color);
+        color: var(--slate-900);
         min-width: 130px;
+        font-weight: 700;
       }
+
       .admin-action-row {
         display: flex;
         gap: 0.65rem;
         margin-top: 1.25rem;
         padding-top: 1rem;
-        border-top: 1px solid #f1f5f9;
+        border-top: 1px solid var(--border-subtle);
         flex-wrap: wrap;
+        align-items: center;
       }
+
+      /* Buttons (Landing Pill Style) */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.88rem;
+        border-radius: var(--r-pill);
+        padding: 0.55rem 1.15rem;
+        cursor: pointer;
+        text-decoration: none;
+        border: none;
+        transition: var(--transition);
+      }
+
+      .btn-sm {
+        padding: 0.45rem 0.95rem;
+        font-size: 0.82rem;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--coral-500) 0%, var(--coral-600) 100%) !important;
+        color: var(--white) !important;
+        border: none !important;
+        box-shadow: 0 4px 14px rgba(255, 114, 68, 0.28);
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 6px 20px rgba(255, 114, 68, 0.38);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: var(--white) !important;
+        color: var(--slate-700) !important;
+        border: 1.5px solid var(--sand-200) !important;
+      }
+
+      .btn-secondary:hover {
+        background: var(--coral-50) !important;
+        color: var(--coral-600) !important;
+        border-color: var(--coral-200) !important;
+        transform: translateY(-1px);
+      }
+
+      /* Tables */
       .table-container {
         background: var(--white);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-card);
         overflow-x: auto;
+        box-shadow: var(--shadow-sm);
+        -webkit-overflow-scrolling: touch;
       }
+
       .admin-table {
         width: 100%;
         border-collapse: collapse;
         font-size: 0.9rem;
         text-align: left;
+        min-width: 650px;
       }
+
       .admin-table th {
-        background: #f8fafc;
-        padding: 0.85rem 1rem;
-        font-weight: 600;
-        color: var(--primary-color);
-        border-bottom: 1px solid var(--border-color);
+        background: var(--sand-50);
+        padding: 0.95rem 1.15rem;
+        font-weight: 800;
+        font-family: var(--font-heading);
+        font-size: 0.8rem;
+        color: var(--slate-800);
+        border-bottom: 1.5px solid var(--sand-200);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
+
       .admin-table td {
-        padding: 0.85rem 1rem;
-        border-bottom: 1px solid var(--border-color);
+        padding: 0.95rem 1.15rem;
+        border-bottom: 1px solid var(--border-subtle);
         vertical-align: middle;
       }
+
       .admin-table tr:last-child td {
         border-bottom: none;
       }
+
+      /* Form Box & Fields */
+      .form-wrapper-box {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-card);
+        padding: 2.25rem;
+        box-shadow: var(--shadow-sm);
+      }
+
+      .form-title-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-title-group h3 {
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 0.35rem;
+      }
+
+      .form-title-group p {
+        color: var(--slate-600);
+        font-size: 0.92rem;
+      }
+
+      .form-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .field-group.full {
+        grid-column: 1 / -1;
+      }
+
+      .field-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--slate-800);
+        margin-bottom: 0.45rem;
+      }
+
+      .field-input,
+      .field-select {
+        width: 100%;
+        padding: 0.72rem 1rem;
+        background: var(--sand-50);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
+        font-family: inherit;
+        font-size: 0.92rem;
+        color: var(--slate-900);
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .field-input:focus,
+      .field-select:focus {
+        background: var(--white);
+        border-color: var(--coral-500);
+        box-shadow: 0 0 0 3.5px rgba(255, 114, 68, 0.15);
+      }
+
+      /* Checkbox grids & items */
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+        background: var(--sand-50);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
+        padding: 1rem;
+      }
+
+      .checkbox-item,
+      .check-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--slate-700);
+        cursor: pointer;
+      }
+
+      .checkbox-item input[type="checkbox"],
+      .check-item input[type="checkbox"] {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--coral-500);
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .form-button-row {
+        margin-top: 1.75rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        align-items: center;
+      }
+
+      .admin-reject-form {
+        display: inline-flex;
+        gap: 0.35rem;
+        align-items: center;
+      }
+
+      /* Shelter Registration Cards */
+      .shelter-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 1rem;
+        padding: 1.15rem 1.25rem;
+        background: var(--sand-50);
+        border-radius: var(--r-inner);
+        border: 1.5px solid var(--sand-200);
+      }
+
+      .shelter-feature-highlight {
+        background: var(--white);
+        border: 1.5px solid var(--sand-200);
+        border-radius: var(--r-inner);
+        padding: 0.9rem 1.15rem;
+        margin-bottom: 1rem;
+      }
+
+      .shelter-admin-notes {
+        background: var(--sand-100);
+        border-left: 3.5px solid var(--coral-500);
+        padding: 0.65rem 1rem;
+        border-radius: 0 var(--r-inner) var(--r-inner) 0;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: var(--slate-700);
+      }
+
+      /* Empty States */
+      .empty-state-box {
+        background: var(--white);
+        border: 1.5px dashed var(--sand-200);
+        border-radius: var(--r-card);
+        padding: 3rem 1.5rem;
+        text-align: center;
+        color: var(--slate-600);
+      }
+
+      .empty-state-box h3 {
+        margin: 0.5rem 0 0.25rem 0;
+        font-size: 1.25rem;
+      }
+
+      /* Footer (Landing Dark Slate) */
+      footer.admin-footer {
+        background: #151921;
+        color: #9ca3af;
+        padding: 2.25rem 0;
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .admin-footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .admin-footer-brand h4 {
+        font-family: var(--font-heading);
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--white);
+        margin-bottom: 0.25rem;
+      }
+
+      .admin-footer-brand h4 span {
+        color: var(--coral-500);
+      }
+
+      .admin-footer-brand p {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      .admin-footer-links p {
+        font-size: 0.875rem;
+        margin: 0;
+      }
+
+      .admin-footer-links a {
+        color: var(--coral-200);
+        text-decoration: underline;
+        font-weight: 600;
+      }
+
+      .admin-footer-links a:hover {
+        color: var(--coral-500);
+      }
+
+      /* ====================================================================
+         RESPONSIVE BREAKPOINTS (Mobile, Tablet, Desktop)
+         ==================================================================== */
+      @media (max-width: 1024px) {
+        .admin-stats-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
       @media (max-width: 768px) {
+        .container {
+          padding: 0 1rem;
+        }
+
+        .admin-nav-container {
+          height: auto;
+          padding: 0.75rem 0;
+          gap: 0.5rem;
+        }
+
+        .admin-brand-name {
+          font-size: 1.25rem;
+        }
+
+        .admin-brand-icon {
+          width: 34px;
+          height: 34px;
+        }
+
+        .admin-badge-pill {
+          font-size: 0.65rem;
+          padding: 0.2rem 0.55rem;
+        }
+
+        .nav-btn-text {
+          display: none;
+        }
+
+        .btn-pill-nav {
+          padding: 0.5rem;
+          width: 36px;
+          height: 36px;
+          justify-content: center;
+          border-radius: 50%;
+        }
+
+        .admin-stats-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 0.75rem;
+        }
+
+        .admin-stat-card {
+          padding: 1rem 1.15rem;
+        }
+
+        .admin-stat-card .stat-num {
+          font-size: 1.85rem;
+        }
+
         .admin-flex-grid {
           grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .admin-item-thumb {
+          width: 100%;
+          height: 180px;
+        }
+
+        .form-grid-layout {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .form-wrapper-box {
+          padding: 1.5rem 1.15rem;
+        }
+
+        .admin-card-item {
+          padding: 1.15rem;
+        }
+
+        .admin-card-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .admin-action-row {
+          gap: 0.5rem;
+        }
+
+        .admin-action-row button,
+        .admin-action-row a {
+          font-size: 0.8rem;
+        }
+
+        .admin-overview-cards-grid,
+        .admin-auto-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .checkbox-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .admin-reject-form {
+          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0.5rem;
+        }
+
+        .admin-reject-form input {
+          width: 100% !important;
+        }
+
+        .form-button-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .form-button-row .btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .shelter-details-grid {
+          grid-template-columns: 1fr;
+          padding: 0.95rem;
+        }
+
+        .info-row {
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+
+        .info-row strong {
+          min-width: unset;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .admin-stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .page-intro-header h2 {
+          font-size: 1.5rem;
+        }
+
+        .admin-action-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .admin-action-row form,
+        .admin-action-row a,
+        .admin-action-row button {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .admin-footer-container {
+          flex-direction: column;
+          text-align: center;
         }
       }
     </style>
   </head>
   <body>
-    <!-- Top Navigation Header -->
-    <header id="navbar">
-      <div class="container nav-container">
-        <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <a href="/admin" class="logo">
-            Woofy<span>.</span>
+    <!-- Top Navigation Header (Landing Theme) -->
+    <header id="adminNavbar">
+      <div class="container admin-nav-container">
+        <div class="admin-brand-group">
+          <a href="/admin" class="admin-brand-logo" aria-label="Woofy Admin Portal">
+            <div class="admin-brand-icon">
+              <i data-lucide="paw-print"></i>
+            </div>
+            <span class="admin-brand-name">Woofy<span class="admin-brand-dot">.</span></span>
           </a>
-          <span class="admin-badge-pill">Company Admin</span>
+          <span class="admin-badge-pill">
+            <i data-lucide="shield-check" style="width: 13px; height: 13px;"></i>
+            <span>Company Admin</span>
+          </span>
         </div>
-        <div class="nav-actions">
-          <a href="/api/dashboard" class="btn btn-secondary btn-sm">
-            <i data-lucide="layout-dashboard" style="width: 14px; height: 14px;"></i>
-            <span>User Dashboard</span>
+        <div class="admin-nav-actions">
+          <a href="/api/dashboard" class="btn-pill-nav btn-pill-nav-secondary" title="Switch to Pet Parent Dashboard">
+            <i data-lucide="layout-dashboard" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">User Dashboard</span>
           </a>
-          <a href="https://woffy.up.railway.app/api/dashboard" target="_blank" class="btn btn-secondary btn-sm">
-            <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
-            <span>Live Site</span>
+          <a href="https://woffy.up.railway.app/api/dashboard" target="_blank" class="btn-pill-nav btn-pill-nav-secondary" title="View Live Production Site">
+            <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">Live Site</span>
           </a>
-          <a href="/logout" class="btn btn-primary btn-sm" style="background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important;">
-            <i data-lucide="log-out" style="width: 14px; height: 14px;"></i>
-            <span>Logout</span>
+          <a href="/logout" class="btn-pill-nav btn-pill-nav-danger" title="Logout of Admin Portal">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span class="nav-btn-text">Logout</span>
           </a>
         </div>
       </div>
@@ -251,9 +1040,9 @@
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
 
-        <div style="margin-bottom: 1.5rem;">
+        <div class="page-intro-header">
           <h2>Company Admin Suite</h2>
-          <p>Manage platform-wide resources: review pet hospital applications, add rescue services/NGOs, and maintain shop products.</p>
+          <p>Manage platform-wide resources: review pet hospital applications, verify shelter alpha registrations, add rescue services/NGOs, and maintain shop products.</p>
         </div>
 
         <!-- Section Navigation Tabs -->
@@ -269,6 +1058,10 @@
           <a href="/admin?section=rescue" class="nav-tab-link <%= section === 'rescue' ? 'active' : '' %>">
             <i data-lucide="heart-handshake"></i>
             <span>Rescue Services & NGOs (<%= stats.rescueTotal %>)</span>
+          </a>
+          <a href="/admin?section=shelters" class="nav-tab-link <%= section === 'shelters' ? 'active' : '' %>">
+            <i data-lucide="building-2"></i>
+            <span>Shelter Alpha Registrations <% if (typeof stats.pendingSheltersCount !== 'undefined' && stats.pendingSheltersCount > 0) { %><span class="tab-counter counter-alert" style="margin-left: 4px;"><%= stats.pendingSheltersCount %> New</span><% } else { %>(<%= stats.sheltersTotal %>)<% } %></span>
           </a>
           <a href="/admin?section=products<%= (typeof stats.pendingProductsCount !== 'undefined' && stats.pendingProductsCount > 0) ? '&tab=pending' : '&tab=catalog' %>" class="nav-tab-link <%= section === 'products' ? 'active' : '' %>">
             <i data-lucide="shopping-bag"></i>
@@ -297,9 +1090,13 @@
               <div class="stat-num" style="color: #9333ea;"><%= stats.productsTotal %></div>
               <div class="stat-label">Shop Products Listed</div>
             </div>
+            <div class="admin-stat-card">
+              <div class="stat-num" style="color: #d97706;"><%= stats.sheltersTotal %></div>
+              <div class="stat-label">Shelter Alpha Requests (<%= stats.pendingSheltersCount %> Pending)</div>
+            </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+          <div class="admin-overview-cards-grid">
             <!-- Hospital Management Card -->
             <div class="admin-card-item">
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
@@ -331,6 +1128,23 @@
               <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Register emergency animal rescue helplines, shelter centers, and 24/7 ambulances.</p>
               <a href="/admin?section=rescue" class="btn btn-primary btn-sm">
                 Manage Rescue Services <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Shelter Alpha Applications Card -->
+            <div class="admin-card-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <div style="background: #fffbeb; color: #d97706; width: 42px; height: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid #fde68a;">
+                  <i data-lucide="building-2"></i>
+                </div>
+                <div>
+                  <h3 style="font-size: 1.15rem;">Shelter Alpha Waitlist</h3>
+                  <p style="font-size: 0.85rem;"><%= stats.pendingSheltersCount %> requests awaiting onboarding review</p>
+                </div>
+              </div>
+              <p style="font-size: 0.9rem; margin-bottom: 1.25rem;">Review NGOs and animal rescue shelters that registered interest from the dashboard for the 100+ animal tracking workspace.</p>
+              <a href="/admin?section=shelters" class="btn btn-primary btn-sm" style="background: #d97706; border-color: #d97706;">
+                Review Shelter Requests <i data-lucide="arrow-right"></i>
               </a>
             </div>
 
@@ -571,9 +1385,24 @@
             </a>
           </div>
 
+          <% if (typeof stats.pendingSheltersCount !== 'undefined' && stats.pendingSheltersCount > 0) { %>
+          <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 18px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; color: #92400e;">
+              <i data-lucide="bell" style="width: 20px; height: 20px; color: #d97706; flex-shrink: 0;"></i>
+              <div>
+                <strong><%= stats.pendingSheltersCount %> Incoming Shelter Alpha Request(s)</strong>
+                <p style="margin: 0; font-size: 0.85rem; color: #b45309;">Shelters and animal welfare trusts submitted pilot waitlist requests from the User Dashboard.</p>
+              </div>
+            </div>
+            <a href="/admin?section=shelters" class="btn btn-primary btn-sm" style="background: #d97706; border-color: #d97706;">
+              Review Shelter Requests (<%= stats.pendingSheltersCount %>) <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+          <% } %>
+
           <!-- Existing Rescue Services List -->
           <% if (rescueServices && rescueServices.length > 0) { %>
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem;">
+            <div class="admin-auto-grid">
               <% rescueServices.forEach(r => { %>
               <div class="admin-card-item" style="margin-bottom: 0;">
                 <div class="admin-card-header">
@@ -978,15 +1807,15 @@
                     </form>
 
                     <!-- Reject Form -->
-                    <form action="/admin/products/reject/<%= p._id %>" method="POST" style="display: inline-flex; gap: 0.35rem; align-items: center;">
+                    <form action="/admin/products/reject/<%= p._id %>" method="POST" class="admin-reject-form">
                       <input
                         type="text"
                         name="reason"
                         placeholder="Rejection reason (optional)"
                         class="field-input"
-                        style="height: 36px; padding: 0 0.65rem; font-size: 0.85rem; width: 220px;"
+                        style="height: 36px; padding: 0 0.75rem; font-size: 0.85rem; min-width: 180px;"
                       />
-                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ea580c !important;" onclick="return confirm('Reject this product request?');">
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ea580c !important; white-space: nowrap;" onclick="return confirm('Reject this product request?');">
                         <i data-lucide="x-circle" style="width: 14px; height: 14px;"></i>
                         <span>Reject</span>
                       </button>
@@ -1229,17 +2058,237 @@
           <% } %>
         <% } %>
 
+        <!-- ==================================================================
+             SECTION 5: SHELTER ALPHA PILOT REQUESTS
+             ================================================================== -->
+        <% if (section === 'shelters') { %>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3>Shelter & NGO Alpha Pilot Registrations</h3>
+              <p>Review animal rescue shelters, foundations, and community caregivers who submitted interest for Woffy's 100+ animal tracking workspace.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <a href="/admin?section=rescue" class="btn btn-secondary btn-sm">
+                <i data-lucide="heart-handshake" style="width: 14px; height: 14px;"></i>
+                <span>View Live Rescue Directory (<%= stats.rescueTotal %>)</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Sub-tabs nav -->
+          <div class="sub-tabs-nav">
+            <a href="/admin?section=shelters&tab=all" class="sub-tab-btn <%= (activeTab === 'all' || activeTab === 'all-requests' || !activeTab) ? 'active' : '' %>">
+              <i data-lucide="list"></i>
+              <span>All Registrations</span>
+              <span class="tab-counter"><%= stats.sheltersTotal %></span>
+            </a>
+            <a href="/admin?section=shelters&tab=pending" class="sub-tab-btn <%= activeTab === 'pending' ? 'active' : '' %>">
+              <i data-lucide="clock"></i>
+              <span>Pending Review</span>
+              <span class="tab-counter <%= stats.pendingSheltersCount > 0 ? 'counter-alert' : '' %>"><%= stats.pendingSheltersCount %></span>
+            </a>
+            <a href="/admin?section=shelters&tab=contacted" class="sub-tab-btn <%= activeTab === 'contacted' ? 'active' : '' %>">
+              <i data-lucide="phone-call"></i>
+              <span>Contacted</span>
+              <span class="tab-counter"><%= stats.contactedSheltersCount %></span>
+            </a>
+            <a href="/admin?section=shelters&tab=approved" class="sub-tab-btn <%= activeTab === 'approved' ? 'active' : '' %>">
+              <i data-lucide="check-circle-2"></i>
+              <span>Approved / Pilot Partners</span>
+              <span class="tab-counter"><%= stats.approvedSheltersCount %></span>
+            </a>
+            <a href="/admin?section=shelters&tab=rejected" class="sub-tab-btn <%= activeTab === 'rejected' ? 'active' : '' %>">
+              <i data-lucide="x-circle"></i>
+              <span>Rejected</span>
+              <span class="tab-counter"><%= stats.rejectedSheltersCount %></span>
+            </a>
+          </div>
+
+          <%
+            let displayShelters = shelterRequests || [];
+            if (activeTab === 'pending') {
+              displayShelters = displayShelters.filter(s => s.status === 'pending');
+            } else if (activeTab === 'contacted') {
+              displayShelters = displayShelters.filter(s => s.status === 'contacted');
+            } else if (activeTab === 'approved') {
+              displayShelters = displayShelters.filter(s => s.status === 'approved');
+            } else if (activeTab === 'rejected') {
+              displayShelters = displayShelters.filter(s => s.status === 'rejected');
+            }
+          %>
+
+          <% if (displayShelters && displayShelters.length > 0) { %>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem;">
+              <% displayShelters.forEach(shelter => { %>
+                <div class="admin-card-item" style="margin-bottom: 0;">
+                  <div class="admin-card-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                      <div style="width: 44px; height: 44px; border-radius: 10px; background: #fffbeb; color: #d97706; display: flex; align-items: center; justify-content: center; border: 1px solid #fde68a; flex-shrink: 0;">
+                        <i data-lucide="building-2" style="width: 22px; height: 22px;"></i>
+                      </div>
+                      <div>
+                        <h3 style="font-size: 1.2rem; margin: 0 0 4px 0;"><%= shelter.orgName %></h3>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+                          Registered: <%= new Date(shelter.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+                          <% if (shelter.city) { %> &bull; <i data-lucide="map-pin" style="width: 13px; height: 13px; display: inline-block; vertical-align: middle;"></i> <%= shelter.city %><% } %>
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <% if (shelter.status === 'pending') { %>
+                        <span class="app-status status-pending">⏳ Pending Review</span>
+                      <% } else if (shelter.status === 'contacted') { %>
+                        <span class="app-status status-instock">📞 Contacted</span>
+                      <% } else if (shelter.status === 'approved') { %>
+                        <span class="app-status status-approved">✅ Approved / Pilot Partner</span>
+                      <% } else if (shelter.status === 'rejected') { %>
+                        <span class="app-status status-rejected">❌ Rejected</span>
+                      <% } %>
+                    </div>
+                  </div>
+
+                  <div class="shelter-details-grid">
+                    <div>
+                      <div class="info-row" style="margin-bottom: 0.5rem;">
+                        <strong>Email Address:</strong>
+                        <a href="mailto:<%= shelter.email %>" style="color: var(--coral-600); text-decoration: underline; word-break: break-all; font-weight: 600;">
+                          <%= shelter.email %>
+                        </a>
+                      </div>
+                      <div class="info-row" style="margin-bottom: 0.5rem;">
+                        <strong>Phone / WhatsApp:</strong>
+                        <% if (shelter.phone) { %>
+                          <span style="display: inline-flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                            <a href="tel:<%= shelter.phone %>" style="color: var(--slate-900); font-weight: 700;"><%= shelter.phone %></a>
+                            <% const cleanPhone = shelter.phone.replace(/[^0-9]/g, ''); %>
+                            <% if (cleanPhone) { %>
+                              <a href="https://wa.me/<%= cleanPhone %>" target="_blank" class="btn btn-sm" style="background: #25d366; color: white; padding: 2px 8px; font-size: 0.75rem; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 4px;">
+                                <i data-lucide="message-circle" style="width: 12px; height: 12px;"></i> WhatsApp
+                              </a>
+                            <% } %>
+                          </span>
+                        <% } else { %>
+                          <span style="color: var(--text-muted);">Not provided</span>
+                        <% } %>
+                      </div>
+                      <div class="info-row">
+                        <strong>Animals Under Care:</strong>
+                        <span style="background: var(--coral-50); color: var(--coral-700); padding: 2px 10px; border-radius: var(--r-pill); font-weight: 800; font-size: 0.8rem; border: 1px solid var(--coral-200);">
+                          <%= shelter.animalCount %> Rescues
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="info-row" style="margin-bottom: 0.5rem;">
+                        <strong>Submitted By:</strong>
+                        <% if (shelter.submittedBy || shelter.submitterName) { %>
+                          <span><%= shelter.submitterName || 'Registered User' %> (<%= shelter.submitterEmail || 'N/A' %>)</span>
+                        <% } else { %>
+                          <span style="color: var(--text-muted);">Guest / Anonymous Submitter</span>
+                        <% } %>
+                      </div>
+                      <div class="info-row" style="margin-bottom: 0.5rem;">
+                        <strong>City / Location:</strong>
+                        <span><%= shelter.city || 'Not specified' %></span>
+                      </div>
+                      <div class="info-row">
+                        <strong>Last Updated:</strong>
+                        <span style="color: var(--text-muted);"><%= new Date(shelter.updatedAt).toLocaleDateString('en-IN') %></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <% if (shelter.neededFeatures) { %>
+                    <div class="shelter-feature-highlight">
+                      <div style="font-size: 0.8rem; font-weight: 800; color: var(--coral-700); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 5px;">
+                        <i data-lucide="sparkles" style="width: 14px; height: 14px; color: var(--coral-500);"></i> Primary Feature Needed Most
+                      </div>
+                      <p style="margin: 0; font-size: 0.92rem; color: var(--slate-800); line-height: 1.5;"><%= shelter.neededFeatures %></p>
+                    </div>
+                  <% } %>
+
+                  <% if (shelter.adminNotes) { %>
+                    <div class="shelter-admin-notes">
+                      <strong>Admin Notes:</strong> <%= shelter.adminNotes %>
+                    </div>
+                  <% } %>
+
+                  <!-- Admin Actions Strip -->
+                  <div class="admin-action-row" style="margin-top: 0.75rem;">
+                    <!-- Quick Status Updates -->
+                    <% if (shelter.status !== 'contacted') { %>
+                      <form action="/admin/shelters/update-status/<%= shelter._id %>" method="POST" style="display: inline;">
+                        <input type="hidden" name="status" value="contacted" />
+                        <button type="submit" class="btn btn-secondary btn-sm" title="Mark this shelter as contacted">
+                          <i data-lucide="phone" style="width: 14px; height: 14px; color: #2563eb;"></i>
+                          <span>Mark Contacted</span>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <% if (shelter.status !== 'approved') { %>
+                      <form action="/admin/shelters/update-status/<%= shelter._id %>" method="POST" style="display: inline;">
+                        <input type="hidden" name="status" value="approved" />
+                        <button type="submit" class="btn btn-secondary btn-sm" style="color: #15803d !important;" title="Approve this shelter for Alpha Access">
+                          <i data-lucide="check" style="width: 14px; height: 14px; color: #16a34a;"></i>
+                          <span>Approve Pilot Partner</span>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <!-- 1-Click Convert & Publish to Rescue Directory -->
+                    <form action="/admin/shelters/convert-to-rescue/<%= shelter._id %>" method="POST" style="display: inline;" onsubmit="return confirm('Promote this shelter into the live public Animal Rescue NGOs & Shelters directory?');">
+                      <button type="submit" class="btn btn-primary btn-sm" style="background: #059669 !important; border-color: #059669 !important;" title="Publish this shelter to public directory">
+                        <i data-lucide="heart-handshake" style="width: 14px; height: 14px;"></i>
+                        <span>Promote to Live Rescue Directory</span>
+                      </button>
+                    </form>
+
+                    <% if (shelter.status !== 'rejected') { %>
+                      <form action="/admin/shelters/update-status/<%= shelter._id %>" method="POST" style="display: inline;">
+                        <input type="hidden" name="status" value="rejected" />
+                        <button type="submit" class="btn btn-secondary btn-sm" style="color: #b91c1c !important;" title="Mark this request as rejected">
+                          <i data-lucide="x" style="width: 14px; height: 14px; color: #dc2626;"></i>
+                          <span>Reject</span>
+                        </button>
+                      </form>
+                    <% } %>
+
+                    <!-- Delete Request -->
+                    <form action="/admin/shelters/delete/<%= shelter._id %>" method="POST" style="display: inline; margin-left: auto;" onsubmit="return confirm('Are you sure you want to delete this shelter registration request?');">
+                      <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444 !important;" title="Permanently delete this registration">
+                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="empty-state-box" style="margin-bottom: 2.5rem;">
+              <i data-lucide="building-2" style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 0.75rem;"></i>
+              <h3>No Shelter Alpha Registrations Found</h3>
+              <p>When users or rescue coordinators click "Register Your Shelter for Alpha" from their dashboard and submit the form, their applications will instantly appear right here.</p>
+              <a href="/api/dashboard#ngo-hub" target="_blank" class="btn btn-secondary btn-sm" style="margin-top: 0.75rem;">
+                <i data-lucide="external-link" style="width: 14px; height: 14px;"></i> View Form on User Dashboard
+              </a>
+            </div>
+          <% } %>
+        <% } %>
+
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <h3>Woofy.</h3>
-          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform.</p>
+    <!-- Footer (Landing Theme) -->
+    <footer class="admin-footer">
+      <div class="container admin-footer-container">
+        <div class="admin-footer-brand">
+          <h4>Woofy<span>.</span></h4>
+          <p>&copy; <%= new Date().getFullYear() %> Complete Pet Care & Health Tracking Platform. All rights reserved.</p>
         </div>
-        <div class="footer-links">
+        <div class="admin-footer-links">
           <p>
             Designed & Developed by
             <a href="https://linkedin.com/in/shubham-rathod-tech" target="_blank" rel="noopener">

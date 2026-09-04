@@ -7,14 +7,16 @@ const upload = require("../Middlewares/upload");
 // Protect all admin routes
 router.use(isAdmin);
 
-// Unified Admin Dashboard (Overview, Hospitals, Rescue Services, Products)
-router.get(["/", "/dashboard", "/hospitals", "/rescue", "/products"], (req, res, next) => {
+// Unified Admin Dashboard (Overview, Hospitals, Rescue Services, Products, Shelters)
+router.get(["/", "/dashboard", "/hospitals", "/rescue", "/products", "/shelters"], (req, res, next) => {
   if (req.path.startsWith("/hospitals")) {
     req.query.section = "hospitals";
   } else if (req.path.startsWith("/rescue")) {
     req.query.section = "rescue";
   } else if (req.path.startsWith("/products")) {
     req.query.section = "products";
+  } else if (req.path.startsWith("/shelters")) {
+    req.query.section = "shelters";
   }
   adminController.getAdminDashboard(req, res, next);
 });
@@ -66,5 +68,19 @@ router.post("/products/approve/:id", adminController.postApproveProduct);
 router.post("/products/reject/:id", adminController.postRejectProduct);
 router.post("/products/delete/:id", adminController.postDeleteProduct);
 
+/* ==========================================================================
+   SHELTER ALPHA PILOT REQUESTS ROUTES
+   ========================================================================== */
+router.post(
+  "/shelters/update-status/:id",
+  adminController.postUpdateShelterStatus,
+);
+router.post(
+  "/shelters/convert-to-rescue/:id",
+  adminController.postConvertShelterToRescue,
+);
+router.post("/shelters/delete/:id", adminController.postDeleteShelterRequest);
+
 module.exports = router;
+
 

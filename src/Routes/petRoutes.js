@@ -108,4 +108,11 @@ router.post(
   petController.postRequestProduct,
 );
 
+// Shelter / NGO Alpha Waitlist Registration
+router.post(
+  ["/api/shelter-waitlist", "/api/shelters/register"],
+  petController.postShelterWaitlist,
+);
+
 module.exports = router;
+

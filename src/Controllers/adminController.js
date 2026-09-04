@@ -2,6 +2,7 @@ const Hospital = require("../Models/Hospital");
 const RescueService = require("../Models/RescueService");
 const Product = require("../Models/Product");
 const User = require("../Models/User");
+const ShelterRequest = require("../Models/ShelterRequest");
 
 /**
  * GET: Admin Dashboard (Unified Platform Management Portal)
@@ -18,6 +19,7 @@ const getAdminDashboard = async (req, res) => {
       approvedProducts,
       pendingProductRequests,
       rejectedProductRequests,
+      shelterRequests,
     ] = await Promise.all([
       Hospital.find({ status: "pending" }).sort({ createdAt: -1 }),
       Hospital.find({ status: "approved" }).sort({ updatedAt: -1 }),
@@ -30,6 +32,9 @@ const getAdminDashboard = async (req, res) => {
       Product.find({ status: "rejected" })
         .populate("submittedBy", "fullName email")
         .sort({ updatedAt: -1 }),
+      ShelterRequest.find()
+        .populate("submittedBy", "fullName email")
+        .sort({ createdAt: -1 }),
     ]);
 
     const stats = {
@@ -49,6 +54,11 @@ const getAdminDashboard = async (req, res) => {
       pendingProductsCount: pendingProductRequests.length,
       rejectedProductsCount: rejectedProductRequests.length,
       inStockProducts: approvedProducts.filter((p) => p.inStock).length,
+      sheltersTotal: shelterRequests.length,
+      pendingSheltersCount: shelterRequests.filter((s) => s.status === "pending").length,
+      contactedSheltersCount: shelterRequests.filter((s) => s.status === "contacted").length,
+      approvedSheltersCount: shelterRequests.filter((s) => s.status === "approved").length,
+      rejectedSheltersCount: shelterRequests.filter((s) => s.status === "rejected").length,
     };
 
     res.render("Admin/admin-dashboard", {
@@ -63,6 +73,7 @@ const getAdminDashboard = async (req, res) => {
       products: approvedProducts,
       pendingProductRequests,
       rejectedProductRequests,
+      shelterRequests: shelterRequests || [],
       currentUser: req.user,
     });
   } catch (err) {
@@ -684,6 +695,104 @@ const postRejectProduct = async (req, res) => {
   }
 };
 
+/* ==========================================================================
+   SHELTER ALPHA PILOT REQUESTS MANAGEMENT
+   ========================================================================== */
+
+/**
+ * POST: Update Shelter Alpha Pilot Request Status (Pending / Contacted / Approved / Rejected)
+ */
+const postUpdateShelterStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, adminNotes } = req.body;
+
+    const updateData = {};
+    if (status) updateData.status = status;
+    if (typeof adminNotes !== "undefined") updateData.adminNotes = adminNotes.trim();
+
+    const updated = await ShelterRequest.findByIdAndUpdate(id, updateData, { new: true });
+    if (!updated) {
+      req.flash("error", "Shelter registration request not found.");
+      return res.redirect("/admin?section=shelters");
+    }
+
+    req.flash("success", `Shelter "${updated.orgName}" status updated to "${updated.status}".`);
+    res.redirect(`/admin?section=shelters&tab=${updated.status}`);
+  } catch (err) {
+    console.error("Update shelter status error:", err);
+    req.flash("error", "Failed to update shelter status: " + err.message);
+    res.redirect("/admin?section=shelters");
+  }
+};
+
+/**
+ * POST: 1-Click Promote Shelter Registration to Live Rescue NGOs & Shelters Directory
+ */
+const postConvertShelterToRescue = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const shelter = await ShelterRequest.findById(id);
+
+    if (!shelter) {
+      req.flash("error", "Shelter registration request not found.");
+      return res.redirect("/admin?section=shelters");
+    }
+
+    // Create live RescueService document
+    const rescueEntry = await RescueService.create({
+      name: shelter.orgName,
+      orgType: "Shelter",
+      contactPerson: shelter.submitterName || "Shelter Representative",
+      city: shelter.city || "Mumbai",
+      state: "Maharashtra",
+      address: shelter.city ? `${shelter.city}, India` : "Registered Shelter Partner",
+      phone: shelter.phone || "Helpline on Request",
+      emergencyHelpline: shelter.phone || "",
+      email: shelter.email,
+      services: ["24/7 Stray Rescue", "Shelter", "Multi-Animal Care"],
+      isVerified: true,
+      notes: `Alpha Pilot Partner (Animals under care: ${shelter.animalCount}). Features requested: ${shelter.neededFeatures || "N/A"}`,
+    });
+
+    shelter.status = "approved";
+    shelter.adminNotes = `Promoted to live Rescue NGOs Directory (ID: ${rescueEntry._id})`;
+    await shelter.save();
+
+    req.flash(
+      "success",
+      `"${shelter.orgName}" successfully promoted and added to Live Rescue NGOs & Shelters Directory!`,
+    );
+    res.redirect("/admin?section=rescue");
+  } catch (err) {
+    console.error("Convert shelter to rescue error:", err);
+    req.flash("error", "Failed to promote shelter: " + err.message);
+    res.redirect("/admin?section=shelters");
+  }
+};
+
+/**
+ * POST: Delete Shelter Registration Request
+ */
+const postDeleteShelterRequest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await ShelterRequest.findByIdAndDelete(id);
+
+    if (!deleted) {
+      req.flash("error", "Shelter registration request not found.");
+      return res.redirect("/admin?section=shelters");
+    }
+
+    req.flash("success", `Shelter request for "${deleted.orgName}" removed.`);
+    res.redirect("/admin?section=shelters");
+  } catch (err) {
+    console.error("Delete shelter request error:", err);
+    req.flash("error", "Failed to delete shelter request: " + err.message);
+    res.redirect("/admin?section=shelters");
+  }
+};
+
 module.exports = {
   getAdminDashboard,
   postApproveHospital,
@@ -699,5 +808,8 @@ module.exports = {
   postDeleteProduct,
   postApproveProduct,
   postRejectProduct,
+  postUpdateShelterStatus,
+  postConvertShelterToRescue,
+  postDeleteShelterRequest,
 };
 

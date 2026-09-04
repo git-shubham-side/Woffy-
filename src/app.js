@@ -59,6 +59,7 @@ app.use(flash());
 const User = require("./Models/User");
 const Hospital = require("./Models/Hospital");
 const Vaccination = require("./Models/Vaccination");
+const ShelterRequest = require("./Models/ShelterRequest");
 
 // Global Flash Messages, Session User & Notification Badge Middleware
 app.use(async (req, res, next) => {
@@ -67,6 +68,7 @@ app.use(async (req, res, next) => {
   res.locals.userId = req.session ? req.session.userId : null;
   res.locals.isAdminUser = false;
   res.locals.pendingHospitalCount = 0;
+  res.locals.pendingShelterCount = 0;
   res.locals.dueVaccineCount = 0;
   res.locals.currentUser = null;
 
@@ -88,6 +90,9 @@ app.use(async (req, res, next) => {
 
         if (isCompanyAdmin) {
           res.locals.pendingHospitalCount = await Hospital.countDocuments({
+            status: "pending",
+          });
+          res.locals.pendingShelterCount = await ShelterRequest.countDocuments({
             status: "pending",
           });
         }

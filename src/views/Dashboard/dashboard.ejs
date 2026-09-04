@@ -487,24 +487,32 @@
             <div id="ngoWaitlistSuccess" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; color: #065f46; font-size: 0.9rem; margin-bottom: 1rem;">
               <div style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
                 <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #059669;"></i>
-                <span>Registration Received!</span>
+                <span id="ngoSuccessTitle">Registration Submitted Successfully!</span>
               </div>
-              <p style="margin: 4px 0 0 26px; font-size: 0.85rem;">Thank you! We've recorded your interest. When the NGO Multi-Animal Engine goes into beta testing, you will receive direct early access coordinates.</p>
+              <p id="ngoSuccessMsg" style="margin: 4px 0 0 26px; font-size: 0.85rem;">Thank you! Your shelter registration has been routed directly to our team and is visible in the Company Admin Suite for priority pilot onboarding.</p>
             </div>
 
-            <form id="ngoWaitlistForm" onsubmit="handleNgoWaitlistSubmit(event)">
+            <div id="ngoWaitlistError" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px; color: #991b1b; font-size: 0.9rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                <i data-lucide="alert-circle" style="width: 18px; height: 18px; color: #dc2626;"></i>
+                <span>Submission Error</span>
+              </div>
+              <p id="ngoErrorMsg" style="margin: 4px 0 0 26px; font-size: 0.85rem;">Failed to submit registration. Please check required fields and try again.</p>
+            </div>
+
+            <form id="ngoWaitlistForm" onsubmit="handleNgoWaitlistSubmit(event)" method="POST" action="/api/shelter-waitlist">
               <div style="margin-bottom: 12px;">
                 <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">NGO / Shelter / Rescuer Name *</label>
-                <input type="text" id="ngoOrgName" required placeholder="e.g. Stray Care Foundation, Delhi" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                <input type="text" name="orgName" id="ngoOrgName" required placeholder="e.g. Stray Care Foundation, Delhi" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
               </div>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                 <div>
                   <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Contact Email *</label>
-                  <input type="email" id="ngoEmail" required placeholder="shelter@ngo.org" value="<%= typeof currentUser !== 'undefined' && currentUser && currentUser.email ? currentUser.email : '' %>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                  <input type="email" name="email" id="ngoEmail" required placeholder="shelter@ngo.org" value="<%= typeof currentUser !== 'undefined' && currentUser && currentUser.email ? currentUser.email : '' %>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
                 </div>
                 <div>
                   <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Est. Animals Under Care</label>
-                  <select id="ngoAnimalCount" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: #ffffff;">
+                  <select name="animalCount" id="ngoAnimalCount" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: #ffffff;">
                     <option value="20-50">20 - 50 Animals</option>
                     <option value="50-100" selected>50 - 100 Animals</option>
                     <option value="100-300">100 - 300 Animals</option>
@@ -512,15 +520,25 @@
                   </select>
                 </div>
               </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Phone / WhatsApp (Optional)</label>
+                  <input type="tel" name="phone" id="ngoPhone" placeholder="e.g. +91 98765 43210" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">City / State (Optional)</label>
+                  <input type="text" name="city" id="ngoCity" placeholder="e.g. Pune, Maharashtra" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+              </div>
               <div style="margin-bottom: 16px;">
                 <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Primary Feature Needed Most</label>
-                <input type="text" id="ngoNotes" placeholder="e.g. ABC sterilization records, mass rabies booster scheduling, daily ward chart" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                <input type="text" name="neededFeatures" id="ngoNotes" placeholder="e.g. ABC sterilization records, mass rabies booster scheduling, daily ward chart" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
               </div>
               <div style="display: flex; justify-content: flex-end; gap: 10px;">
                 <button type="button" class="btn btn-secondary btn-sm" onclick="toggleNgoWaitlistModal(false)">Close</button>
-                <button type="submit" class="btn btn-primary btn-sm">
+                <button type="submit" class="btn btn-primary btn-sm" id="ngoSubmitBtn">
                   <i data-lucide="send" style="width: 14px; height: 14px;"></i>
-                  <span>Submit Interest</span>
+                  <span id="ngoSubmitBtnText">Submit Interest</span>
                 </button>
               </div>
             </form>
@@ -665,24 +683,87 @@
         }
       }
 
-      function handleNgoWaitlistSubmit(e) {
+      async function handleNgoWaitlistSubmit(e) {
         e.preventDefault();
-        const successBox = document.getElementById('ngoWaitlistSuccess');
         const form = document.getElementById('ngoWaitlistForm');
-        if (successBox) {
-          successBox.style.display = 'block';
+        const successBox = document.getElementById('ngoWaitlistSuccess');
+        const errorBox = document.getElementById('ngoWaitlistError');
+        const errorMsg = document.getElementById('ngoErrorMsg');
+        const submitBtn = document.getElementById('ngoSubmitBtn');
+        const submitBtnText = document.getElementById('ngoSubmitBtnText');
+
+        if (successBox) successBox.style.display = 'none';
+        if (errorBox) errorBox.style.display = 'none';
+
+        const orgName = document.getElementById('ngoOrgName')?.value.trim();
+        const email = document.getElementById('ngoEmail')?.value.trim();
+        const phone = document.getElementById('ngoPhone')?.value.trim();
+        const city = document.getElementById('ngoCity')?.value.trim();
+        const animalCount = document.getElementById('ngoAnimalCount')?.value;
+        const neededFeatures = document.getElementById('ngoNotes')?.value.trim();
+
+        if (!orgName || !email) {
+          if (errorBox && errorMsg) {
+            errorMsg.textContent = 'Please provide both Shelter/Organization Name and Contact Email.';
+            errorBox.style.display = 'block';
+          }
+          return;
         }
-        if (form) {
-          form.style.opacity = '0.6';
-          form.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+
+        // Loading state
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitBtnText) submitBtnText.textContent = 'Submitting...';
+
+        try {
+          const response = await fetch('/api/shelter-waitlist', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+              orgName,
+              email,
+              phone,
+              city,
+              animalCount,
+              neededFeatures,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            if (successBox) {
+              successBox.style.display = 'block';
+            }
+            if (form) {
+              form.reset();
+            }
+            if (window.lucide) {
+              lucide.createIcons();
+            }
+            setTimeout(function() {
+              toggleNgoWaitlistModal(false);
+              if (successBox) successBox.style.display = 'none';
+              alert('Thank you! Your shelter registration has been successfully recorded and sent to the Company Admin Suite.');
+            }, 2000);
+          } else {
+            throw new Error(data.message || 'Server returned an error.');
+          }
+        } catch (err) {
+          console.error('Waitlist submission failed:', err);
+          if (errorBox && errorMsg) {
+            errorMsg.textContent = err.message || 'Failed to submit registration. Please try again.';
+            errorBox.style.display = 'block';
+          }
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitBtnText) submitBtnText.textContent = 'Submit Interest';
+          if (window.lucide) {
+            lucide.createIcons();
+          }
         }
-        if (window.lucide) {
-          lucide.createIcons();
-        }
-        setTimeout(function() {
-          toggleNgoWaitlistModal(false);
-          alert('Thank you! Your shelter registration has been recorded for the Woffy NGO Suite alpha release.');
-        }, 2200);
       }
     </script>
   </body>
