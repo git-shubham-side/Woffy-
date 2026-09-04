@@ -7,7 +7,7 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -17,88 +17,391 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+      /* --- Responsive Rescue Grid --- */
       .rescue-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-        gap: 1.75rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.65rem;
+        width: 100%;
+        box-sizing: border-box;
       }
+
+      /* --- Rescue Card Container --- */
       .rescue-card {
-        background: var(--white);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
+        background: var(--white, #ffffff);
+        border: 1.5px solid var(--border-subtle, #f0e9df);
+        border-radius: var(--radius-xl, 22px);
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: var(--transition);
-        box-shadow: var(--shadow-sm);
+        height: 100%;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        transition: var(--transition, all 0.22s ease);
+        box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));
+        position: relative;
       }
       .rescue-card:hover {
-        border-color: #cbd5e1;
-        box-shadow: var(--shadow-md);
+        border-color: var(--brand-200, #ffd2c0);
+        box-shadow: 0 14px 32px -6px rgba(250, 102, 56, 0.14);
         transform: translateY(-4px);
       }
+
+      /* --- Card Media & Badges --- */
       .rescue-img-box {
         position: relative;
-        height: 190px;
-        background: #f8fafc;
+        width: 100%;
+        height: 195px;
+        background: var(--sand-100, #f3eee7);
         overflow: hidden;
       }
       .rescue-img-box img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
         transition: transform 0.4s ease;
       }
       .rescue-card:hover .rescue-img-box img {
-        transform: scale(1.04);
+        transform: scale(1.05);
       }
+      .rescue-img-gradient {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, transparent 45%, rgba(15, 23, 42, 0.2) 100%);
+        pointer-events: none;
+      }
+
+      /* Left Badge: Org Type */
       .org-type-badge {
         position: absolute;
-        top: 0.75rem;
-        left: 0.75rem;
-        background: #059669;
+        top: 12px;
+        left: 12px;
+        background: rgba(5, 150, 105, 0.95);
         color: #ffffff;
-        font-size: 0.75rem;
+        font-size: 0.725rem;
         font-weight: 800;
-        padding: 0.25rem 0.6rem;
-        border-radius: 4px;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill, 9999px);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 2;
+        max-width: calc(100% - 145px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+
+      /* Right Badge: 24/7 Helpline - Override hospitals.css left: 12px */
+      .rescue-card .badge-247 {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        left: auto !important;
+        background: rgba(225, 29, 72, 0.95);
+        color: #ffffff;
+        font-size: 0.725rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill, 9999px);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(6px);
+        z-index: 2;
+        white-space: nowrap;
+      }
+
+      /* --- Card Content --- */
       .rescue-card-content {
-        padding: 1.5rem;
+        padding: 1.35rem 1.4rem;
         flex: 1;
         display: flex;
         flex-direction: column;
+        min-width: 0;
+        box-sizing: border-box;
       }
       .rescue-card-content h3 {
-        font-size: 1.2rem;
-        margin-bottom: 0.4rem;
-        line-height: 1.3;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1.35;
+        color: var(--slate-900, #181c24);
+        margin: 0 0 0.65rem 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
       }
+
+      /* --- Info Lines --- */
       .rescue-info-line {
-        font-size: 0.875rem;
-        color: var(--text-muted);
+        font-size: 0.85rem;
+        color: var(--slate-600, #4b5563);
         display: flex;
         align-items: flex-start;
-        gap: 0.45rem;
-        margin-bottom: 0.4rem;
+        gap: 0.5rem;
+        margin-bottom: 0.55rem;
+        line-height: 1.45;
+        min-width: 0;
       }
-      .rescue-info-line i {
+      .rescue-info-line i,
+      .rescue-info-line svg {
         flex-shrink: 0;
-        margin-top: 0.2rem;
-        color: #94a3b8;
+        width: 15px;
+        height: 15px;
+        margin-top: 3px;
+        color: var(--brand-600, #fa6638);
       }
+      .rescue-info-text {
+        flex: 1;
+        min-width: 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .helpline-group {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .helpline-group + .helpline-group {
+        margin-top: 0.25rem;
+      }
+      .helpline-tag {
+        font-size: 0.775rem;
+        color: var(--slate-500, #6b7280);
+        font-weight: 700;
+      }
+      .helpline-group.emergency-num .helpline-tag {
+        color: #dc2626;
+        font-weight: 800;
+      }
+      .helpline-num {
+        font-weight: 700;
+        color: var(--slate-900, #181c24);
+        text-decoration: none;
+        transition: color 0.18s ease;
+      }
+      .helpline-num:hover {
+        color: var(--brand-600, #fa6638);
+        text-decoration: underline;
+      }
+      .helpline-group.emergency-num .helpline-num {
+        color: #dc2626;
+      }
+
+      /* --- Chips --- */
+      .rescue-card .hospital-services-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1.15rem;
+      }
+      .rescue-card .service-chip {
+        font-size: 0.725rem;
+        font-weight: 700;
+        background: var(--sand-50, #faf7f2);
+        color: var(--slate-700, #374151);
+        border: 1px solid var(--border-subtle, #f0e9df);
+        padding: 3px 9px;
+        border-radius: var(--radius-pill, 9999px);
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* --- Action Buttons --- */
+      .rescue-card-actions {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1.5px solid var(--sand-100, #f3eee7);
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: 1.15fr 1fr;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .rescue-card-actions.has-website {
+        grid-template-columns: 1fr 1fr;
+      }
+      .rescue-card-actions.has-website .btn-call {
+        grid-column: 1 / -1;
+      }
+      .rescue-card-actions .btn {
+        min-width: 0;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.825rem;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        box-sizing: border-box;
+      }
+      .rescue-card-actions .btn span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .rescue-card-actions .btn i,
+      .rescue-card-actions .btn svg {
+        flex-shrink: 0;
+      }
+
+      /* --- Emergency Call Notice Banner --- */
       .emergency-call-banner {
         background: #ecfdf5;
         border: 1px solid #a7f3d0;
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
+        border-radius: var(--radius-md, 12px);
+        padding: 0.85rem 1.15rem;
         margin-bottom: 1.75rem;
         display: flex;
-        align-items: center;
-        gap: 0.65rem;
+        align-items: flex-start;
+        gap: 0.75rem;
         color: #065f46;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 600;
+        line-height: 1.45;
+      }
+      .emergency-call-banner i,
+      .emergency-call-banner svg {
+        width: 20px;
+        height: 20px;
+        color: #059669;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* --- Feature Spotlight Banner --- */
+      .ngo-feature-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: var(--radius-lg, 14px);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.75rem;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);
+      }
+      .ngo-feature-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        flex: 1;
+        min-width: 280px;
+      }
+      .ngo-feature-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: rgba(245, 158, 11, 0.2);
+        border: 1px solid rgba(253, 230, 138, 0.3);
+        color: #f59e0b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .ngo-feature-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .ngo-feature-title-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .ngo-feature-title-row strong {
+        font-size: 1.05rem;
+        color: #ffffff;
+      }
+      .preview-badge {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+        font-size: 0.72rem;
+        padding: 1px 8px;
+        border-radius: 9999px;
+        font-weight: 800;
+      }
+      .ngo-feature-text p {
+        margin: 0;
+        font-size: 0.88rem;
+        color: #cbd5e1;
+        line-height: 1.45;
+        word-break: break-word;
+      }
+      .ngo-feature-cta {
+        flex-shrink: 0;
+      }
+
+      /* --- Breakpoints for Tablet & Mobile --- */
+      @media (max-width: 1080px) {
+        .rescue-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.35rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .ngo-feature-banner {
+          padding: 1.15rem;
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .ngo-feature-cta {
+          width: 100%;
+        }
+        .ngo-feature-cta .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .rescue-grid {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 1.2rem;
+        }
+        .hospitals-header .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        .rescue-card-content {
+          padding: 1.15rem 1rem;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .rescue-card-actions,
+        .rescue-card-actions.has-website {
+          grid-template-columns: 1fr;
+        }
+        .rescue-card-actions .btn {
+          height: 38px;
+          font-size: 0.85rem;
+        }
+        .emergency-call-banner {
+          padding: 0.75rem 0.9rem;
+          font-size: 0.84rem;
+        }
+        .rescue-img-box {
+          height: 175px;
+        }
       }
     </style>
   </head>
@@ -126,22 +429,22 @@
         </div>
 
         <!-- Feature Spotlight Banner: Woffy for NGOs & Rescuers (Under Construction) -->
-        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 14px; padding: 20px 24px; margin-bottom: 1.75rem; color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);">
-          <div style="display: flex; align-items: flex-start; gap: 14px;">
-            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(253, 230, 138, 0.3); color: #f59e0b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <div class="ngo-feature-banner">
+          <div class="ngo-feature-left">
+            <div class="ngo-feature-icon">
               <i data-lucide="building-2" style="width: 24px; height: 24px;"></i>
             </div>
-            <div>
-              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
-                <strong style="font-size: 1.1rem; color: #ffffff;">Woffy for NGOs & Rescuers</strong>
-                <span style="background: #fffbeb; color: #b45309; border: 1px solid #fde68a; font-size: 0.72rem; padding: 1px 8px; border-radius: 9999px; font-weight: 800;">🚧 Under Construction • Alpha Preview</span>
+            <div class="ngo-feature-text">
+              <div class="ngo-feature-title-row">
+                <strong>Woffy for NGOs & Rescuers</strong>
+                <span class="preview-badge">🚧 Under Construction • Alpha Preview</span>
               </div>
-              <p style="margin: 0; font-size: 0.88rem; color: #cbd5e1; max-width: 720px; line-height: 1.45;">
+              <p>
                 Need to track <strong>100+ shelter animals or street rescues</strong> under one parent organization? We are developing an enterprise-grade shelter and rescuer hub tailored for batch health logs, kennel wards, volunteer delegation, and donor reports.
               </p>
             </div>
           </div>
-          <div style="flex-shrink: 0;">
+          <div class="ngo-feature-cta">
             <a href="/api/dashboard#ngo-hub" class="btn btn-primary" style="background: #2563eb; border-color: #3b82f6; white-space: nowrap;">
               <span>View Features & Highlights</span>
               <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
@@ -208,6 +511,7 @@
                 alt="<%= r.name %>"
                 onerror="this.src='https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80'"
               />
+              <div class="rescue-img-gradient"></div>
               <span class="org-type-badge"><%= r.orgType || 'NGO Trust' %></span>
               
               <% if (r.is24x7) { %>
@@ -222,23 +526,43 @@
               <h3><%= r.name %></h3>
               
               <div class="rescue-info-line">
-                <i data-lucide="map-pin" style="width: 15px; height: 15px;"></i>
-                <span><%= r.address %>, <%= r.city %></span>
+                <i data-lucide="map-pin"></i>
+                <div class="rescue-info-text">
+                  <span><%= r.address %>, <%= r.city %></span>
+                </div>
               </div>
 
               <div class="rescue-info-line">
-                <i data-lucide="phone" style="width: 15px; height: 15px;"></i>
-                <span>Helpline: <strong><%= r.phone %></strong> <%= r.emergencyHelpline ? ' | Emergency: ' + r.emergencyHelpline : '' %></span>
+                <i data-lucide="phone"></i>
+                <div class="rescue-info-text">
+                  <% if (r.emergencyHelpline && r.emergencyHelpline !== r.phone) { %>
+                    <div class="helpline-group">
+                      <span class="helpline-tag">Helpline:</span>
+                      <a href="tel:<%= r.phone %>" class="helpline-num"><%= r.phone %></a>
+                    </div>
+                    <div class="helpline-group emergency-num">
+                      <span class="helpline-tag">24/7 Helpline:</span>
+                      <a href="tel:<%= r.emergencyHelpline %>" class="helpline-num"><%= r.emergencyHelpline %></a>
+                    </div>
+                  <% } else { %>
+                    <div class="helpline-group">
+                      <span class="helpline-tag">Helpline:</span>
+                      <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="helpline-num"><%= r.emergencyHelpline || r.phone %></a>
+                    </div>
+                  <% } %>
+                </div>
               </div>
 
-              <div class="hospital-services-chips" style="margin-top: 0.75rem; margin-bottom: 1.25rem;">
-                <% (r.services || []).forEach(service => { %>
+              <% if (r.services && r.services.length > 0) { %>
+              <div class="hospital-services-chips">
+                <% r.services.forEach(service => { %>
                 <span class="service-chip"><%= service %></span>
                 <% }) %>
               </div>
+              <% } %>
 
-              <div class="hospital-card-actions" style="margin-top: auto;">
-                <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="btn btn-primary btn-sm">
+              <div class="rescue-card-actions <%= r.website ? 'has-website' : '' %>">
+                <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="btn btn-primary btn-sm btn-call">
                   <i data-lucide="phone-call" style="width: 14px; height: 14px;"></i>
                   <span>Call Helpline</span>
                 </a>
@@ -263,13 +587,27 @@
           <% }) %>
         </div>
         <% } else { %>
-        <div style="text-align: center; padding: 4rem 2rem; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--border-radius);">
-          <div style="width: 64px; height: 64px; border-radius: 50%; background: #ecfdf5; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: #059669;">
+        <div style="text-align: center; padding: 4.5rem 2rem; background: var(--white, #ffffff); border: 2px dashed var(--brand-200, #ffd2c0); border-radius: var(--radius-xl, 22px);">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: var(--brand-50, #fff5f0); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-600, #fa6638); border: 1px solid var(--brand-200, #ffd2c0);">
             <i data-lucide="heart-handshake" style="width: 32px; height: 32px;"></i>
           </div>
-          <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem;">No Rescue Organizations Listed in <%= selectedCity !== 'All' ? selectedCity : 'This Area' %></h3>
-          <p style="max-width: 500px; margin: 0 auto 1.5rem; color: var(--text-muted); font-size: 0.95rem;">We are actively onboarding verified animal rescue NGOs, shelter trusts, and stray dog ambulance teams.</p>
-          <a href="/services/rescue" class="btn btn-secondary">View All Cities</a>
+          <h3 style="font-size: 1.5rem; color: var(--slate-900, #181c24); margin-bottom: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <% if (selectedCity !== 'All') { %>
+              No rescue organizations listed in <%= selectedCity %> yet
+            <% } else { %>
+              No rescue organizations listed yet
+            <% } %>
+          </h3>
+          <p style="max-width: 520px; margin: 0 auto 1.75rem; color: var(--slate-500, #6b7280); font-size: 0.95rem; line-height: 1.6;">
+            We are actively onboarding verified animal rescue NGOs, shelter trusts, and stray dog ambulance teams.
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <% if (selectedCity !== 'All') { %>
+            <a href="/services/rescue" class="btn btn-secondary">
+              <span>View All Cities</span>
+            </a>
+            <% } %>
+          </div>
         </div>
         <% } %>
       </div>
