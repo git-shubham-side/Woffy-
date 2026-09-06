@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
+Disallow: /settings
+
+Sitemap: https://woffy.up.railway.app/sitemap.xml
