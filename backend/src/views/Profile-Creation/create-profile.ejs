@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Pet Profile | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Create-Profile/create-profile.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <%- include('../partials/navbar', { activePage: 'create-pet' }) %>
+
+    <main class="profile-page">
+      <div class="container">
+        <form class="form-card" id="petForm" method="POST" action="/api/create-pet-profile" enctype="multipart/form-data">
+          <!-- Form Header -->
+          <div class="form-header-area">
+            <h2>Create Pet Profile</h2>
+            <p>Fill in your companion's details, growth stats, and photos.</p>
+          </div>
+
+          <!-- Flash Messages -->
+          <%- include('../partials/flash-messages') %>
+
+          <!-- Section 1: Basic Information -->
+          <div class="form-section-title">1. Basic Information</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="petName">Pet Name *</label>
+              <input
+                type="text"
+                id="petName"
+                name="petName"
+                class="form-control"
+                required
+                placeholder="e.g. Bruno"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="ownerName">Owner / Pet Parent Name *</label>
+              <input
+                type="text"
+                id="ownerName"
+                name="ownerName"
+                class="form-control"
+                value="<%= typeof ownerName !== 'undefined' ? ownerName : '' %>"
+                required
+                placeholder="e.g. Shubham Rathod"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="species">Species *</label>
+              <select id="species" name="species" class="form-select" required>
+                <option value="Dog" selected>Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Bird">Bird</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="breed">Breed</label>
+              <input
+                type="text"
+                id="breed"
+                name="breed"
+                class="form-control"
+                placeholder="e.g. Golden Retriever, Indie, Persian"
+              />
+            </div>
+          </div>
+
+          <!-- Section 2: Health & Growth Metrics -->
+          <div class="form-section-title">2. Health & Growth Metrics</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dob">Date of Birth (DOB) <span class="help-text" style="font-weight: 500; display: inline;">(Auto-calculates age)</span></label>
+              <input
+                type="date"
+                id="dob"
+                name="dob"
+                class="form-control"
+                max="<%= new Date().toISOString().split('T')[0] %>"
+              />
+              <span class="help-text">Pick pet's birth date to calculate age automatically.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="age">Age (years)</label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                class="form-control"
+                min="0"
+                step="0.1"
+                placeholder="e.g. 2.5"
+              />
+              <div id="ageCalculatedFeedback" class="age-calculated-pill" style="display: none;"></div>
+              <span class="help-text">Auto-filled via DOB or entered manually.</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="weight">Weight (kg)</label>
+              <input
+                type="number"
+                id="weight"
+                name="weight"
+                class="form-control"
+                min="0"
+                step="0.1"
+                placeholder="e.g. 28"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" class="form-select">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="vaccinated">Vaccinated</label>
+              <select id="vaccinated" name="vaccinated" class="form-select">
+                <option value="Yes" selected>Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <!-- Empty spacer column for balanced layout -->
+            </div>
+          </div>
+
+          <!-- Section 3: Profile Photo & Gallery -->
+          <div class="form-section-title">3. Profile Photo & Gallery</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="petImage">Upload Profile Photo</label>
+              <input
+                type="file"
+                id="petImage"
+                name="petImage"
+                class="form-control"
+                accept="image/*"
+                style="padding-top: 0.5rem;"
+              />
+              <span class="help-text">Main photo shown on pet card and dashboard.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="photoUrl">Or Photo URL (optional)</label>
+              <input
+                type="url"
+                id="photoUrl"
+                name="photoUrl"
+                class="form-control"
+                placeholder="https://images.unsplash.com/..."
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="galleryImages">Gallery Photos (Select Multiple)</label>
+            <input
+              type="file"
+              id="galleryImages"
+              name="galleryImages"
+              class="form-control"
+              accept="image/*"
+              multiple
+              style="padding-top: 0.5rem;"
+            />
+            <span class="help-text">Select multiple pictures to add to your pet's photo gallery.</span>
+          </div>
+
+          <!-- Section 4: Notes -->
+          <div class="form-section-title">4. Additional Notes</div>
+
+          <div class="form-group">
+            <label for="notes">Care & Behaviour Notes</label>
+            <textarea
+              id="notes"
+              name="notes"
+              class="form-control"
+              placeholder="Allergies, favourite food, behaviour notes, medication timings..."
+            ></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <a href="/api/pet-profiles" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Pet Profile</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container footer-container">
+        <p>&copy; <%= new Date().getFullYear() %> Woofy. All rights reserved.</p>
+      </div>
+    </footer>
+    <!-- Scripts -->
+    <script src="/Create-Profile/create-profile.js"></script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

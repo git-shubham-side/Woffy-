@@ -1,0 +1,788 @@
+/* ==========================================================================
+   WOFFY - VERIFIED PET HOSPITALS & EMERGENCY DIRECTORY STYLESHEET
+   Theme: Warm Terracotta Coral (#FA6638), Soft Cream Sand (#FAF7F2),
+   100% Fully Responsive Modern Card Grid & Search Experience
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & CSS Variables
+   -------------------------------------------------------------------------- */
+:root {
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  --slate-950: #0f172a;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --white: #ffffff;
+
+  --emerald-color: #059669;
+  --emerald-bg: #ecfdf5;
+  --emerald-border: #a7f3d0;
+
+  --amber-color: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+
+  --rose-color: #e11d48;
+  --rose-bg: #fff1f2;
+  --rose-border: #fecdd3;
+
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
+
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(250, 102, 56, 0.08);
+  --shadow-lg: 0 16px 36px -8px rgba(250, 102, 56, 0.12);
+  --shadow-coral: 0 8px 24px -4px rgba(250, 102, 56, 0.35);
+
+  --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Global Reset & Layout
+   -------------------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--slate-900);
+  background-color: var(--sand-50);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ambient Background Lights */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.22;
+}
+
+.glow-1 {
+  top: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.35) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
+}
+
+.glow-2 {
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.25) 0%, rgba(255, 215, 195, 0.1) 70%, transparent 100%);
+}
+
+.container {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.hospitals-page {
+  padding: 2.5rem 0 5rem;
+  flex: 1;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--slate-900);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+}
+
+.sketch-highlight {
+  position: relative;
+  color: var(--brand-600);
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   3. Page Header Section
+   -------------------------------------------------------------------------- */
+.hospitals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.25rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1.75rem;
+}
+
+.page-badge-pill {
+  display: inline-block;
+  padding: 0.35rem 0.95rem;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border-radius: var(--radius-pill);
+  font-size: 0.775rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--brand-200);
+}
+
+.hospitals-header p {
+  color: var(--slate-600);
+  font-size: 1.025rem;
+  margin: 0.4rem 0 0 0;
+  max-width: 650px;
+  line-height: 1.55;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  transition: var(--transition);
+  border: 1.5px solid transparent;
+  line-height: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.btn-sm {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.825rem;
+  height: 34px;
+}
+
+.btn-primary {
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  padding: 0.65rem 1.35rem;
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-coral);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -4px rgba(250, 102, 56, 0.45);
+}
+
+.btn-secondary {
+  background: var(--white) !important;
+  color: var(--slate-800) !important;
+  border: 1.5px solid var(--border-medium) !important;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  border-color: var(--brand-500) !important;
+  color: var(--brand-600) !important;
+  background: var(--brand-50) !important;
+  transform: translateY(-1px);
+}
+
+.location-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1.25rem;
+  background: var(--white);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--slate-800);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+.location-btn:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+  background: var(--brand-50);
+  transform: translateY(-1px);
+}
+
+.location-btn i,
+.location-btn svg {
+  color: var(--brand-600);
+  width: 16px;
+  height: 16px;
+}
+
+.location-btn.locating {
+  background: var(--brand-50);
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+}
+
+/* --------------------------------------------------------------------------
+   4. Search & Filter Panel
+   -------------------------------------------------------------------------- */
+.search-filter-panel {
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrap i,
+.search-input-wrap svg {
+  position: absolute;
+  left: 14px;
+  color: var(--slate-400);
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem 0 2.6rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  color: var(--slate-900);
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  background: var(--white);
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
+}
+
+.city-select-wrap {
+  position: relative;
+  min-width: 170px;
+}
+
+.city-select-wrap::after {
+  content: "▼";
+  font-size: 10px;
+  color: var(--slate-400);
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.city-select {
+  width: 100%;
+  height: 48px;
+  padding: 0 2.2rem 0 1.25rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--slate-800);
+  outline: none;
+  transition: var(--transition);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.city-select:focus {
+  background: var(--white);
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
+}
+
+.search-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 1.65rem;
+  height: 48px;
+  background: var(--brand-600);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-coral);
+  white-space: nowrap;
+}
+
+.search-btn:hover {
+  background: var(--brand-700);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -4px rgba(250, 102, 56, 0.45);
+}
+
+.filter-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1.5px solid var(--sand-100);
+}
+
+.filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--slate-700);
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+  color: var(--brand-600);
+}
+
+.filter-pill.active {
+  background: var(--brand-600) !important;
+  border-color: var(--brand-600) !important;
+  color: var(--white) !important;
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.28);
+}
+
+.filter-pill.active i,
+.filter-pill.active svg {
+  color: var(--white) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Hospitals 3-Column Cards Grid
+   -------------------------------------------------------------------------- */
+.hospitals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.65rem;
+}
+
+.hospital-card {
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+}
+
+.hospital-card:hover {
+  border-color: var(--brand-200);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px -6px rgba(250, 102, 56, 0.14);
+}
+
+.hospital-card-media {
+  position: relative;
+  width: 100%;
+  height: 185px;
+  overflow: hidden;
+  background: var(--sand-100);
+}
+
+.hospital-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.hospital-card:hover .hospital-card-media img {
+  transform: scale(1.05);
+}
+
+/* Card Media Badges */
+.badge-247 {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(225, 29, 72, 0.95);
+  color: var(--white);
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+}
+
+.badge-distance {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  color: var(--white);
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Card Content */
+.hospital-card-content {
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.hospital-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.hospital-title-row h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--slate-900);
+  line-height: 1.35;
+}
+
+.hospital-rating-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #fef3c7;
+  color: #b45309;
+  font-size: 0.775rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+
+.hospital-address-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  color: var(--slate-600);
+  margin-bottom: 0.85rem;
+  line-height: 1.45;
+}
+
+.hospital-address-line i,
+.hospital-address-line svg {
+  color: var(--brand-600);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* Services Chips */
+.hospital-services-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.service-chip {
+  font-size: 0.725rem;
+  font-weight: 700;
+  background: var(--sand-50);
+  color: var(--slate-700);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.hospital-card-actions {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1.5px solid var(--sand-100);
+}
+
+/* --------------------------------------------------------------------------
+   6. Add Hospital Application Form Box (For add-hospital.ejs)
+   -------------------------------------------------------------------------- */
+.form-wrapper-box {
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 2.75rem 2.5rem;
+  max-width: 820px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-wrapper-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4.5px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
+}
+
+.form-title-group {
+  margin-bottom: 2rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+  padding-bottom: 1.5rem;
+}
+
+.form-title-group h2 {
+  font-size: 1.65rem;
+  margin: 0.4rem 0 0.35rem 0;
+}
+
+.form-title-group p {
+  color: var(--slate-600);
+  font-size: 0.95rem;
+}
+
+.form-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-group.full {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin-bottom: 0.45rem;
+}
+
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--slate-900);
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  background: var(--white);
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 1040px) {
+  .hospitals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.35rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .hospitals-page {
+    padding: 2rem 0 4rem;
+  }
+
+  .hospitals-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .search-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .city-select-wrap,
+  .search-btn {
+    width: 100%;
+  }
+
+  .search-btn {
+    justify-content: center;
+  }
+
+  .form-grid-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-wrapper-box {
+    padding: 2rem 1.4rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .hospitals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hospital-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .hospital-card-actions .btn {
+    width: 100%;
+  }
+
+  .filter-controls-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-pills {
+    width: 100%;
+  }
+
+  .filter-pill {
+    flex: 1;
+    justify-content: center;
+  }
+}

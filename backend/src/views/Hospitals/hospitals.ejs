@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find 24/7 Verified Pet Hospitals & Emergency Vet Clinics | Woofy</title>
+    <meta
+      name="description"
+      content="Search 24/7 emergency pet hospitals, animal clinics, and certified veterinarians across India. Filter by ICU facilities, ambulance service, and open now."
+    />
+    <meta
+      name="keywords"
+      content="pet hospitals, emergency vet near me, 24/7 dog clinic, veterinary hospital india, pet ambulance, animal clinic"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://woffy.up.railway.app/services/hospitals" />
+
+    <!-- Brand Identity & Mobile Meta -->
+    <meta name="theme-color" content="#ea580c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="apple-touch-icon" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://woffy.up.railway.app/services/hospitals" />
+    <meta property="og:site_name" content="Woofy" />
+    <meta property="og:title" content="Find 24/7 Verified Pet Hospitals & Emergency Vet Clinics | Woofy" />
+    <meta property="og:description" content="Search verified pet hospitals, 24/7 ICU clinics, and emergency veterinary doctors near you across India." />
+    <meta property="og:image" content="https://woffy.up.railway.app/Images/Landing-Images/ecosystem-hospital.png" />
+    <meta property="og:image:alt" content="Verified Pet Hospitals & Emergency Vet Directory" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Find 24/7 Verified Pet Hospitals & Emergency Vet Clinics | Woofy" />
+    <meta name="twitter:description" content="Locate top-rated emergency clinics, ICU pet hospitals, and verified veterinary doctors near you." />
+    <meta name="twitter:image" content="https://woffy.up.railway.app/Images/Landing-Images/ecosystem-hospital.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalWebPage",
+      "name": "Verified Pet Hospitals & Emergency Care Directory",
+      "url": "https://woffy.up.railway.app/services/hospitals",
+      "description": "Directory of verified veterinary hospitals, emergency clinics, and pet trauma centers.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Woofy",
+        "url": "https://woffy.up.railway.app/",
+        "logo": "https://woffy.up.railway.app/favicon.svg"
+      }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Ambient Background Glows -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <%- include('../partials/navbar', { activePage: 'hospitals' }) %>
+
+    <!-- Hospitals Page Main Content -->
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <!-- Page Header -->
+        <div class="hospitals-header">
+          <div>
+            <span class="page-badge-pill">24/7 Verified Veterinary Network</span>
+            <h2>Find Verified Pet <span class="sketch-highlight">Hospitals</span></h2>
+            <p>Locate top-rated emergency clinics, ICU pet hospitals, and verified veterinary doctors near you.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" id="detectLocationBtn" class="location-btn">
+              <i data-lucide="crosshair" style="width: 16px; height: 16px;"></i>
+              <span><%= userLat && userLng ? 'Location Active (' + (selectedCity !== 'All' ? selectedCity : 'GPS') + ')' : 'Detect My Location' %></span>
+            </button>
+            <a href="/services/hospitals/add" class="btn btn-primary">
+              <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+              <span>Want to add your hospital?</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Search & Filter Panel -->
+        <div class="search-filter-panel">
+          <form
+            id="hospitalSearchForm"
+            method="GET"
+            action="/services/hospitals"
+          >
+            <% if (userLat && userLng) { %>
+            <input type="hidden" name="lat" value="<%= userLat %>" />
+            <input type="hidden" name="lng" value="<%= userLng %>" />
+            <% } %>
+
+            <div class="search-form-row">
+              <div class="search-input-wrap">
+                <i data-lucide="search"></i>
+                <input
+                  type="text"
+                  name="search"
+                  id="searchInput"
+                  class="search-input"
+                  placeholder="Search verified clinics by name, doctor, or treatment..."
+                  value="<%= searchQuery %>"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="city-select-wrap">
+                <select name="city" id="citySelect" class="city-select">
+                  <option value="All" <%= selectedCity === 'All' ? 'selected' : '' %>>
+                    All Cities
+                  </option>
+                  <% cities.forEach(city => { %>
+                  <option
+                    value="<%= city %>"
+                    <%= selectedCity.toLowerCase() === city.toLowerCase() ? 'selected' : '' %>
+                  >
+                    <%= city %>
+                  </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <button type="submit" class="search-btn">
+                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                <span>Search</span>
+              </button>
+            </div>
+
+            <!-- Filter Controls Row -->
+            <div class="filter-controls-row">
+              <div class="filter-pills">
+                <a
+                  href="/services/hospitals<%= selectedCity !== 'All' ? '?city=' + selectedCity : '' %>"
+                  class="filter-pill <%= !is24x7Only ? 'active' : '' %>"
+                >
+                  All Clinics
+                </a>
+                <a
+                  href="/services/hospitals?is24x7=true<%= selectedCity !== 'All' ? '&city=' + selectedCity : '' %>"
+                  class="filter-pill <%= is24x7Only ? 'active' : '' %>"
+                >
+                  <i data-lucide="clock" style="width: 14px; height: 14px;"></i>
+                  <span>24/7 Emergency Only</span>
+                </a>
+              </div>
+
+              <span style="font-size: 0.875rem; color: var(--text-muted);">
+                Showing <strong><%= hospitals.length %></strong> verified hospital<%= hospitals.length === 1 ? '' : 's' %>
+                <% if (selectedCity !== 'All') { %> in <strong><%= selectedCity %></strong><% } %>
+              </span>
+            </div>
+          </form>
+        </div>
+
+        <% if (userLat && userLng && hospitals.length > 0) { %>
+        <div style="background: var(--brand-50); border: 1.5px solid var(--brand-200); color: var(--brand-600); border-radius: var(--radius-md); padding: 0.75rem 1.15rem; margin-bottom: 1.75rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 700;">
+          <i data-lucide="navigation" style="width: 16px; height: 16px; color: var(--brand-600);"></i>
+          <span>Showing verified hospitals sorted closest to your GPS location.</span>
+        </div>
+        <% } %>
+
+        <!-- Hospitals Grid -->
+        <% if (hospitals && hospitals.length > 0) { %>
+        <div class="hospitals-grid">
+          <% hospitals.forEach(hospital => { %>
+          <div class="hospital-card">
+            <div class="hospital-card-media">
+              <img
+                src="<%= hospital.photo || 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= hospital.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?auto=format&fit=crop&w=600&q=80'"
+              />
+
+              <% if (hospital.is24x7) { %>
+              <div class="badge-247">
+                <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                <span>24/7 Care</span>
+              </div>
+              <% } %>
+
+              <% if (hospital.distanceKm !== undefined && hospital.distanceKm !== null) { %>
+              <div class="badge-distance">
+                <i data-lucide="navigation" style="width: 12px; height: 12px;"></i>
+                <span><%= hospital.distanceKm %> km away</span>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="hospital-card-content">
+              <div class="hospital-title-row">
+                <h3><%= hospital.name %></h3>
+                <div class="hospital-rating-box">
+                  <i data-lucide="star" style="width: 13px; height: 13px; fill: #f59e0b;"></i>
+                  <span><%= hospital.rating ? hospital.rating.toFixed(1) : '4.8' %></span>
+                </div>
+              </div>
+
+              <div class="hospital-address-line">
+                <i data-lucide="map-pin" style="width: 15px; height: 15px;"></i>
+                <span><%= hospital.address %>, <%= hospital.city %> <%= hospital.pincode ? '- ' + hospital.pincode : '' %></span>
+              </div>
+
+              <div class="hospital-services-chips">
+                <% (hospital.services || []).slice(0, 4).forEach(service => { %>
+                <span class="service-chip"><%= service %></span>
+                <% }) %>
+                <% if (hospital.services && hospital.services.length > 4) { %>
+                <span class="service-chip">+<%= hospital.services.length - 4 %> more</span>
+                <% } %>
+              </div>
+
+              <div class="hospital-card-actions">
+                <a
+                  href="tel:<%= hospital.emergencyPhone || hospital.phone %>"
+                  class="btn btn-primary btn-sm"
+                >
+                  <i data-lucide="phone" style="width: 14px; height: 14px;"></i>
+                  <span>Call Hospital</span>
+                </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent(hospital.name + ' ' + hospital.address + ' ' + hospital.city) %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i data-lucide="map" style="width: 14px; height: 14px;"></i>
+                  <span>Directions</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 4.5rem 2rem; background: var(--white); border: 2px dashed var(--brand-200); border-radius: var(--radius-xl);">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: var(--brand-50); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-600); border: 1px solid var(--brand-200);">
+            <i data-lucide="hospital" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 style="font-size: 1.5rem; color: var(--slate-900); margin-bottom: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <% if (selectedCity !== 'All') { %>
+              No verified hospitals listed in <%= selectedCity %> yet
+            <% } else { %>
+              No verified hospitals listed yet
+            <% } %>
+          </h3>
+          <p style="max-width: 520px; margin: 0 auto 2rem; color: var(--slate-500); font-size: 0.95rem; line-height: 1.6;">
+            We verify all pet hospitals, veterinary clinics, and emergency centers before publishing to ensure pet safety and trust.
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/services/hospitals/add" class="btn btn-primary">
+              <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+              <span>Want to add your hospital? Contact Us</span>
+            </a>
+            <% if (selectedCity !== 'All') { %>
+            <a href="/services/hospitals" class="btn btn-secondary">
+              <span>View All Cities</span>
+            </a>
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
+
+    <!-- Client Script -->
+    <script src="/Hospitals/hospitals.js"></script>
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

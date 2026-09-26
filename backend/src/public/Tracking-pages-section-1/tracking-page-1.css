@@ -1,0 +1,259 @@
+/* ==========================================================================
+   Woofy - Select Pet Tracking Stylesheet
+   Theme: Professional, Sharp, Colourful & Animated (Sketch + Classy UI)
+   ========================================================================== */
+
+:root {
+  --primary-color: #0f172a;       /* Deep Slate / Midnight Charcoal */
+  --accent-color: #2563eb;        /* Electric Royal Blue */
+  --accent-hover: #1d4ed8;
+  --coral-accent: #f97316;        /* Warm Sunset Coral / Amber */
+  --emerald-accent: #10b981;      /* Fresh Emerald Green */
+  --violet-accent: #8b5cf6;       /* Radiant Violet */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-light: #fafbfc;
+  --white: #ffffff;
+  --border-color: #e2e8f0;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --border-radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  background-color: #fafbfc;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--primary-color);
+  letter-spacing: -0.03em;
+}
+
+/* Navigation */
+header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 74px;
+}
+
+.logo,
+.logo a,
+a.logo {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-main);
+  margin: 0 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  font-size: 0.95rem;
+  border: 1.5px solid transparent;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--white) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
+}
+
+/* Main Layout */
+.pets-page {
+  padding: 3rem 0 5rem;
+  min-height: 100vh;
+}
+
+.pets-header {
+  margin-bottom: 2.5rem;
+}
+
+.form-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.35rem;
+  margin-bottom: 1.75rem;
+  color: var(--primary-color);
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.form-control {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background-color: #ffffff;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* History Cards */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.history-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.history-card:hover {
+  border-color: var(--accent-color);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.history-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 3rem 0;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-brand h2 {
+  color: var(--white);
+  margin-bottom: 0.25rem;
+}
+
+.footer-brand p {
+  color: #94a3b8;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

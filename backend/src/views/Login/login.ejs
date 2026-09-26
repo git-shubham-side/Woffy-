@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in | Woofy Pet Health & Care Platform</title>
+    <meta name="description" content="Sign in to your Woofy account to manage pet medical records, track vaccinations, view prescriptions, and access 24/7 verified emergency care." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://woffy.up.railway.app/login" />
+
+    <!-- Brand Identity & Mobile Meta -->
+    <meta name="theme-color" content="#ea580c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="apple-touch-icon" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Login/login.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Subtle Background Ambient Light -->
+    <div class="bg-mesh" aria-hidden="true">
+      <div class="mesh-blob blob-1"></div>
+      <div class="mesh-blob blob-2"></div>
+      <div class="mesh-grid-pattern"></div>
+    </div>
+
+    <div class="login-layout">
+      <!-- Left Side: Brand Showcase Panel (Desktop & Tablet) -->
+      <aside class="login-showcase" aria-label="Woofy Platform Overview">
+        <div class="showcase-inner">
+          <!-- Top Bar -->
+          <div class="showcase-top">
+            <a href="/" class="brand-logo" aria-label="Woofy Home">
+              <span class="logo-icon-box">
+                <i data-lucide="paw-print"></i>
+              </span>
+              <span class="brand-name">Woofy<span class="dot">.</span></span>
+            </a>
+
+            <a href="/" class="btn-back-home">
+              <i data-lucide="arrow-left"></i>
+              <span>Back to Home</span>
+            </a>
+          </div>
+
+          <!-- Showcase Center Content -->
+          <div class="showcase-content">
+            <div class="announcement-pill">
+              <span class="live-pulse"></span>
+              <span class="pill-text">Secure Pet Parent Portal</span>
+            </div>
+
+            <h1 class="showcase-title">
+              Manage Your Pet's Entire Health
+              <span class="gradient-text">Ecosystem.</span>
+            </h1>
+
+            <p class="showcase-desc">
+              Access digital medical histories, attach doctor prescriptions, and find verified 24/7 emergency veterinary hospitals near you in seconds.
+            </p>
+
+            <!-- Feature Highlight List -->
+            <div class="feature-card-list">
+              <div class="feature-item">
+                <div class="feature-icon icon-coral">
+                  <i data-lucide="clipboard-check"></i>
+                </div>
+                <div class="feature-text">
+                  <strong>Digital Health Passport</strong>
+                  <span>Vaccine booster schedules, prescriptions, and allergy logs</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon icon-amber">
+                  <i data-lucide="hospital"></i>
+                </div>
+                <div class="feature-text">
+                  <strong>24/7 Verified Emergency Hospitals</strong>
+                  <span>Auto-detect GPS distance with 1-tap direct dialing</span>
+                </div>
+              </div>
+
+              <div class="feature-item">
+                <div class="feature-icon icon-emerald">
+                  <i data-lucide="qr-code"></i>
+                </div>
+                <div class="feature-text">
+                  <strong>Smart QR Pet Collar Tag</strong>
+                  <span>Instant scan to call owner if your pet ever gets lost</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Showcase Trust Badge -->
+          <div class="showcase-trust-badge">
+            <div class="trust-badge-icon">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <div class="trust-badge-text">
+              <strong>Dedicated Pet Health & Safety</strong>
+              <span>Encrypted health records, verified hospitals & safety tags</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Side: Login Form -->
+      <main class="login-form-section">
+        <div class="form-container">
+          <!-- Mobile Brand Header (Visible only on mobile screens) -->
+          <div class="mobile-brand-bar">
+            <a href="/" class="brand-logo">
+              <span class="logo-icon-box">
+                <i data-lucide="paw-print"></i>
+              </span>
+              <span class="brand-name">Woofy<span class="dot">.</span></span>
+            </a>
+            <a href="/" class="btn-back-home mobile-back">
+              <i data-lucide="arrow-left"></i>
+              <span>Home</span>
+            </a>
+          </div>
+
+          <!-- Form Header -->
+          <div class="form-header">
+            <span class="section-badge">Welcome Back</span>
+            <h2 class="form-title">Sign in to your account</h2>
+            <p class="form-subtitle">Enter your credentials to access your pet dashboard.</p>
+          </div>
+
+          <!-- Flash Notification Messages -->
+          <%- include('../partials/flash-messages') %>
+
+          <!-- Google OAuth Quick Button -->
+          <a href="/auth/google" class="btn btn-google btn-full btn-lg" id="googleLoginBtn" aria-label="Sign in with Google">
+            <svg class="google-svg-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </a>
+
+          <!-- Social Divider -->
+          <div class="oauth-divider" aria-hidden="true">
+            <span class="divider-line"></span>
+            <span class="divider-text">or sign in with email</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <!-- Login Form -->
+          <form id="loginForm" method="POST" action="/api/login" novalidate>
+            <!-- Email Field -->
+            <div class="form-group">
+              <label for="email">Email Address <span class="req">*</span></label>
+              <div class="input-wrap">
+                <i data-lucide="mail" class="input-icon"></i>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="name@example.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+              <div class="label-row">
+                <label for="password">Password <span class="req">*</span></label>
+                <a href="/api/forget-pass" class="forgot-link">Forgot password?</a>
+              </div>
+              <div class="input-wrap">
+                <i data-lucide="lock" class="input-icon"></i>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  required
+                  autocomplete="current-password"
+                />
+                <button
+                  type="button"
+                  id="togglePasswordBtn"
+                  class="toggle-password-btn"
+                  aria-label="Toggle password visibility"
+                  tabindex="-1"
+                >
+                  <i data-lucide="eye" id="eyeIcon"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Remember Me Row -->
+            <div class="form-options">
+              <label class="custom-checkbox">
+                <input type="checkbox" name="remember" id="rememberMe" checked />
+                <span class="checkbox-box"></span>
+                <span class="checkbox-text">Keep me logged in for 30 days</span>
+              </label>
+            </div>
+
+            <!-- Submit CTA -->
+            <button type="submit" id="submitBtn" class="btn btn-primary btn-full btn-lg">
+              <span id="btnText">Sign In to Dashboard</span>
+              <i data-lucide="arrow-right" id="btnIcon"></i>
+            </button>
+          </form>
+
+          <!-- Form Footer -->
+          <div class="form-footer">
+            <p>
+              Don't have an account yet?
+              <a href="/api/signup" class="signup-link">
+                <span>Create free account</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </p>
+          </div>
+
+          <!-- Security Badge -->
+          <div class="security-note">
+            <i data-lucide="shield-check"></i>
+            <span>End-to-end 256-bit encrypted & secure authentication</span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script src="/Login/login.js"></script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>
+

@@ -1,0 +1,21 @@
+{
+  "name": "Woofy - Complete Pet Health & Emergency Care",
+  "short_name": "Woofy",
+  "description": "Smart pet health records, smart QR collar tags, vaccination reminders, and 24/7 emergency pet hospital locator.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ea580c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

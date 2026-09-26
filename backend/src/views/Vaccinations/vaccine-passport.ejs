@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Official Pet Health & Vaccination Passport | <%= pet.petName %> | Woofy</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Vaccinations/passport.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Ambient Background Lighting Mesh (Contained - Hidden on Print) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
+    <!-- Top Action Bar (Hidden during Print) -->
+    <div class="passport-action-bar">
+      <a href="/api/vaccinations/<%= pet._id %>" class="btn-back-link">
+        <i data-lucide="arrow-left"></i>
+        <span>Back to Vaccine Hub</span>
+      </a>
+      <div class="action-bar-right">
+        <button type="button" onclick="window.print();" class="btn-print-cta">
+          <i data-lucide="printer"></i>
+          <span>Print / Save as PDF</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Official Printable Sheet -->
+    <div class="passport-sheet">
+      <div class="watermark" aria-hidden="true">WOOFY IMMUNIZED</div>
+
+      <!-- Passport Header -->
+      <div class="passport-header">
+        <div class="passport-title-box">
+          <h1>Digital Pet Health Passport</h1>
+          <p class="passport-subtitle">
+            <i data-lucide="shield-check" style="width: 14px; height: 14px; color: var(--brand-600);"></i>
+            <span>Official Vaccination & Immunization Record</span>
+          </p>
+        </div>
+        <div class="passport-badge">
+          <div class="badge-logo">Woofy<span>.</span></div>
+          <div class="passport-id-pill">ID: WF-<%= pet._id.toString().slice(-8).toUpperCase() %></div>
+        </div>
+      </div>
+
+      <!-- Pet Profile Summary Grid -->
+      <div class="pet-profile-grid">
+        <div class="pet-photo-wrap">
+          <% if (pet.photo) { %>
+            <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-photo" onerror="this.src='/uploads/pets/default-pet.png'" />
+          <% } else if (pet.photoUrl) { %>
+            <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-photo" onerror="this.src='/uploads/pets/default-pet.png'" />
+          <% } else { %>
+            <div class="pet-photo-fallback">
+              <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="info-column">
+          <div class="info-field">
+            <span class="info-label">Pet Name</span>
+            <span class="info-value"><%= pet.petName %></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Species & Breed</span>
+            <span class="info-value"><%= pet.species %> &bull; <%= pet.breed || 'Companion Dog' %></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Gender & Weight</span>
+            <span class="info-value"><%= pet.gender || 'Pet' %> &bull; <%= pet.weight ? pet.weight + ' kg' : 'N/A' %></span>
+          </div>
+        </div>
+
+        <div class="info-column">
+          <div class="info-field">
+            <span class="info-label">Owner / Guardian</span>
+            <span class="info-value"><%= pet.ownerName || (typeof user !== 'undefined' && user ? user.fullName : 'Registered Owner') %></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Owner Contact Email</span>
+            <span class="info-value"><%= typeof user !== 'undefined' && user ? user.email : 'N/A' %></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Date of Birth / Age</span>
+            <span class="info-value">
+              <% if (pet.dob) { %>
+                <%= new Date(pet.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %> (<%= pet.age ? pet.age + ' yrs' : '' %>)
+              <% } else { %>
+                <%= pet.age ? pet.age + ' Years' : 'N/A' %>
+              <% } %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Immunization Section Heading -->
+      <div class="section-heading">
+        <span>Immunization & Deworming Schedule</span>
+        <span class="protocol-badge">
+          <i data-lucide="check-circle-2" style="width: 12px; height: 12px; display: inline-block; vertical-align: -1px;"></i>
+          <span>WSAVA Protocol Certified</span>
+        </span>
+      </div>
+
+      <!-- Table with Responsive Mobile Scroll Wrapper -->
+      <div class="table-responsive-wrapper">
+        <table class="record-table">
+          <thead>
+            <tr>
+              <th>Vaccine / Dose</th>
+              <th>Category</th>
+              <th>Due Date</th>
+              <th>Administered</th>
+              <th>Clinic / Vet</th>
+              <th>Batch / Vial #</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (typeof vaccinations !== 'undefined' && vaccinations && vaccinations.length > 0) { %>
+              <% vaccinations.forEach(function(v) { %>
+                <tr>
+                  <td><strong><%= v.vaccineName %></strong></td>
+                  <td><%= v.category %></td>
+                  <td><%= new Date(v.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></td>
+                  <td>
+                    <% if (v.administeredDate) { %>
+                      <%= new Date(v.administeredDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                    <% } else { %>
+                      &mdash;
+                    <% } %>
+                  </td>
+                  <td><%= v.clinicOrVetName || '—' %></td>
+                  <td><code><%= v.batchNumber || '—' %></code></td>
+                  <td>
+                    <% if (v.status === 'Completed') { %>
+                      <span class="badge-status done">
+                        <i data-lucide="check-circle" style="width: 11px; height: 11px;"></i>
+                        <span>Administered</span>
+                      </span>
+                    <% } else if (v.status === 'Overdue') { %>
+                      <span class="badge-status overdue">
+                        <i data-lucide="alert-circle" style="width: 11px; height: 11px;"></i>
+                        <span>Overdue</span>
+                      </span>
+                    <% } else { %>
+                      <span class="badge-status due">
+                        <i data-lucide="clock" style="width: 11px; height: 11px;"></i>
+                        <span><%= v.status || 'Due' %></span>
+                      </span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 24px; color: var(--slate-500);">
+                  No vaccination or deworming records found for this pet.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Verification Stamp & Signature -->
+      <div class="stamp-box">
+        <div class="stamp-verified-info">
+          <div class="verified-pill">
+            <i data-lucide="shield-check" style="width: 13px; height: 13px;"></i>
+            <span>Verified Official Woofy Certificate</span>
+          </div>
+          <div class="issue-date">
+            <strong>Date of Issue:</strong> <%= new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+          </div>
+        </div>
+        <div class="stamp-slot">
+          Veterinary Surgeon Signature & Stamp
+        </div>
+      </div>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

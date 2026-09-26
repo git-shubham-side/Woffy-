@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Woofy | Complete Pet Health, QR Tags & Emergency Care Platform</title>
+    <meta
+      name="description"
+      content="Smart, loving care for your dog. Manage digital medical records, generate printable QR collar tags, track vaccinations, and locate 24/7 emergency pet hospitals near you."
+    />
+    <meta
+      name="keywords"
+      content="dog care, pet health records, qr pet tag, pet vaccination tracker, emergency vet hospital near me, dog adoption, pet shop india, animal rescue helplines"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://woffy.up.railway.app/" />
+
+    <!-- Brand Identity & Mobile Meta -->
+    <meta name="theme-color" content="#ea580c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="apple-touch-icon" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://woffy.up.railway.app/" />
+    <meta property="og:site_name" content="Woofy" />
+    <meta property="og:title" content="Woofy | Complete Pet Health, QR Tags & Emergency Care Platform" />
+    <meta property="og:description" content="Smart, loving care for your dog. Manage digital medical records, generate printable QR collar tags, track vaccinations, and locate 24/7 emergency pet hospitals." />
+    <meta property="og:image" content="https://woffy.up.railway.app/Images/Landing-Images/hero-puppy-peeking.png" />
+    <meta property="og:image:alt" content="Woofy Smart Pet Health & Safety Platform" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Woofy | Complete Pet Health, QR Tags & Emergency Care Platform" />
+    <meta name="twitter:description" content="Keep your furry friend's medical records, smart QR collar tag, vaccination reminders, and emergency hospital network in one safe place." />
+    <meta name="twitter:image" content="https://woffy.up.railway.app/Images/Landing-Images/hero-puppy-peeking.png" />
+
+    <!-- Google Site Verification -->
+    <meta
+      name="google-site-verification"
+      content="XIN0-TMlHhgTyb5L07btaOedr-ICn-N0IMgYBcQP_xs"
+    />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://woffy.up.railway.app/#website",
+          "url": "https://woffy.up.railway.app/",
+          "name": "Woofy",
+          "description": "Complete Pet Health & Emergency Care Platform",
+          "publisher": {
+            "@id": "https://woffy.up.railway.app/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://woffy.up.railway.app/services/hospitals?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://woffy.up.railway.app/#organization",
+          "name": "Woofy",
+          "url": "https://woffy.up.railway.app/",
+          "logo": "https://woffy.up.railway.app/favicon.svg",
+          "description": "Smart, loving pet health & emergency care platform for pet parents, rescuers, and animal shelters.",
+          "sameAs": [
+            "https://github.com/git-shubham-side/Woffy-A-Dog-Care-Project"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "Woofy Pet Care",
+          "operatingSystem": "All",
+          "applicationCategory": "HealthApplication",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "description": "Free pet health tracker, vaccination scheduler, emergency QR collar tag generator, and verified hospital locator."
+        }
+      ]
+    }
+    </script>
+
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Landing/style.css?v=5" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Top Navigation Header Partial -->
+    <%- include('../partials/landing-navbar') %>
+
+    <main>
+      <!-- ====================================================================
+           1. HERO SECTION (PDF Page 1: Warm Vibrant Coral Canvas)
+           ==================================================================== -->
+      <section id="home" class="hero-section">
+        <div class="container">
+          <div class="hero-content-wrapper">
+            <div class="hero-kicker-pill">
+              <i data-lucide="heart"></i>
+              <span>Smart Pet Health & Safety Platform</span>
+            </div>
+
+            <h1 class="hero-headline">Smart care for happy, healthy dogs!</h1>
+
+            <p class="hero-subtext">
+              Keep your furry friend's medical records, smart QR collar tag,
+              vaccination reminders, and 24/7 emergency hospital network in one
+              safe, beautiful place.
+            </p>
+
+            <div class="hero-btn-group">
+              <a href="/api/signup" class="btn-pill btn-pill-white">
+                <span>Get Started Free</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+              <a href="#features" class="btn-pill btn-pill-outline">
+                <span>Explore Features</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Pet Visual (High-Res Cute Peeking / Sitting Pet Image) -->
+          <div class="hero-visual-center">
+            <img
+              src="/Images/Landing-Images/hero-puppy-peeking.png"
+              alt="Adorable Happy Dog"
+              class="hero-pet-image"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2. ABOUT & MISSION SECTION (PDF Page 2 Top: 2-Column Warm Story)
+           ==================================================================== -->
+      <section id="about" class="story-section">
+        <div class="container">
+          <div class="story-grid">
+            <!-- Left Column: Story Text & CTA -->
+            <div class="story-content">
+              <span class="story-kicker">More than a medical log</span>
+              <h2 class="story-title">
+                A True Companion for Every Step of Your Pet's Life
+              </h2>
+              <p class="story-desc">
+                Woofy is a dedicated pet health platform designed to help pet
+                parents, rescuers, and animal shelters manage medical history,
+                track essential vaccinations, and find emergency veterinary care
+                in seconds.
+              </p>
+              <p class="story-desc">
+                No more lost paper slips, forgotten vaccine booster dates, or
+                panic during midnight emergencies. Everything is organized,
+                secure, and easily accessible from any device.
+              </p>
+
+              <ul class="story-points">
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span
+                    >Cloud vault for doctor prescriptions & clinic slips</span
+                  >
+                </li>
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span
+                    >Printable smart QR collar tag — instant scan to call
+                    owner</span
+                  >
+                </li>
+                <li>
+                  <i data-lucide="check-circle-2"></i>
+                  <span
+                    >Real-time GPS geocoding for 24/7 verified pet
+                    hospitals</span
+                  >
+                </li>
+              </ul>
+
+              <a href="/api/signup" class="btn-pill btn-pill-coral">
+                <span>Create Free Pet Profile</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Right Column: Warm Organic Photo Frame -->
+            <div class="story-visual-wrap">
+              <div class="story-image-card">
+                <img
+                  src="/Images/Landing-Images/story-parent-hugging.png"
+                  alt="Loving Pet Parent with Dog"
+                  loading="lazy"
+                />
+                <div class="floating-badge">
+                  <div class="floating-badge-icon">
+                    <i data-lucide="shield-check"></i>
+                  </div>
+                  <div class="floating-badge-text">
+                    <h6>Complete Health Vault</h6>
+                    <span>Essential Health & Emergency Care</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           3. CORE FEATURES SECTION (PDF Page 2 Bottom: 3 Warm Cards)
+           ==================================================================== -->
+      <section id="features" class="features-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-kicker">Core Platform Features</span>
+            <h2 class="section-title">
+              Everything Your Companion Needs to Thrive
+            </h2>
+            <p class="section-subtitle">
+              Simple, beautiful tools built with love to keep your dog healthy,
+              happy, and protected at every life stage.
+            </p>
+          </div>
+
+          <div class="cards-grid-3">
+            <!-- Feature Card 1: Digital Medical Passport -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-coral">Medical</span>
+                  <span class="pill-tag pill-tag-coral">Cloud Vault</span>
+                </div>
+                <img
+                  src="/Images/Landing-Images/feature-card-passport.png"
+                  alt="Dog Medical Passport"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Digital Medical Passport</h3>
+                <p class="card-desc">
+                  Store official veterinary prescriptions, allergy profiles,
+                  surgery history, and weight growth charts in one organized
+                  digital record.
+                </p>
+                <a href="/api/signup" class="card-action-link">
+                  <span>Start Tracking Health</span>
+                  <i data-lucide="arrow-right"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Feature Card 2: Smart QR Pet Collar Tag -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-amber">Safety</span>
+                  <span class="pill-tag pill-tag-amber">Lost & Found</span>
+                </div>
+                <img
+                  src="/Images/Landing-Images/feature-card-qrtag.png"
+                  alt="Dog with Smart Collar Tag"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Smart QR Pet Collar Tag</h3>
+                <p class="card-desc">
+                  Generate a printable smart QR collar tag. If your dog ever
+                  gets lost, anyone who scans the tag can call you directly and
+                  view emergency notes.
+                </p>
+                <a href="/api/signup" class="card-action-link">
+                  <span>Generate Free Tag</span>
+                  <i data-lucide="arrow-right"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Feature Card 3: Automated Vaccines & Deworming -->
+            <div class="pet-feature-card">
+              <div class="card-media-wrap">
+                <div class="card-tags-overlay">
+                  <span class="pill-tag pill-tag-rose">Health</span>
+                  <span class="pill-tag pill-tag-rose">Auto-Alerts</span>
+                </div>
+                <img
+                  src="/Images/Landing-Images/feature-card-vaccine.png"
+                  alt="Vaccinated Healthy Puppy"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">Automated Vaccine Hub</h3>
+                <p class="card-desc">
+                  Auto-calculated booster schedules for Rabies, 7-in-1 DHPP, and
+                  deworming cycles with clear Due Soon and Overdue alert badges.
+                </p>
+                <a href="/api/signup" class="card-action-link">
+                  <span>View Vaccine Plan</span>
+                  <i data-lucide="arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="features-center-cta">
+            <a href="/api/signup" class="btn-pill btn-pill-coral">
+              <span>Create Free Account</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           4. CARE ECOSYSTEM & SHELTERS (PDF Page 3 Top: 4 Round Columns)
+           ==================================================================== -->
+      <section class="ecosystem-section">
+        <div class="container">
+          <div class="section-header-center">
+            <span class="section-kicker">Connected Care Ecosystem</span>
+            <h2 class="section-title">
+              Built for Real Life Emergencies & Shelters
+            </h2>
+            <p class="section-subtitle">
+              From midnight emergency vet visits to stray rescue ambulances and
+              institutional shelter management.
+            </p>
+          </div>
+
+          <div class="ecosystem-grid-4">
+            <!-- Pillar 1: 24/7 Hospitals -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img
+                  src="/Images/Landing-Images/ecosystem-hospital.png"
+                  alt="24/7 Emergency Hospitals"
+                  loading="lazy"
+                />
+              </div>
+              <h4 class="ecosystem-title">24/7 Pet Hospitals</h4>
+              <p class="ecosystem-desc">
+                Auto-detect your location and discover verified emergency
+                veterinary clinics sorted by GPS km distance with one-tap
+                dialing.
+              </p>
+              <a href="/services/hospitals" class="ecosystem-link">
+                <span>Explore Nearby</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Pillar 2: Animal Rescue Helplines -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img
+                  src="/Images/Landing-Images/ecosystem-rescue.png"
+                  alt="Rescue NGOs & Ambulances"
+                  loading="lazy"
+                />
+              </div>
+              <h4 class="ecosystem-title">Rescue NGOs & Ambulances</h4>
+              <p class="ecosystem-desc">
+                Emergency contact numbers for animal welfare NGOs, stray dog
+                rescue ambulances, and shelter teams across 30+ Indian cities.
+              </p>
+              <a href="/services/rescue" class="ecosystem-link">
+                <span>Rescue Helplines</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Pillar 3: Woffy for NGOs -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img
+                  src="/Images/Landing-Images/ecosystem-shelter.png"
+                  alt="Woffy for NGOs Shelter Hub"
+                  loading="lazy"
+                />
+              </div>
+              <h4 class="ecosystem-title">Woffy for NGOs (100+ Rescues)</h4>
+              <p class="ecosystem-desc">
+                Dedicated multi-animal workspace for shelters to track triage
+                wards, mass ABC sterilizations, and donor transparency under 1
+                account.
+              </p>
+              <a href="/api/dashboard#ngo-hub" class="ecosystem-link">
+                <span>NGO Workspace [Alpha]</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+
+            <!-- Pillar 4: Curated Pet Shop -->
+            <div class="ecosystem-item">
+              <div class="ecosystem-photo-circle">
+                <img
+                  src="/Images/Landing-Images/ecosystem-shop.png"
+                  alt="Pet Essentials Store"
+                  loading="lazy"
+                />
+              </div>
+              <h4 class="ecosystem-title">Pet Essentials Store</h4>
+              <p class="ecosystem-desc">
+                Veterinarian-recommended nutrition kibbles, grooming care, chew
+                toys, and wellness supplements tailored for Indian pets.
+              </p>
+              <a href="/shop" class="ecosystem-link">
+                <span>Browse Store</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           5. CALL-TO-ACTION BANNER (PDF Page 3 Bottom: Warm Coral Corgi Card)
+           ==================================================================== -->
+      <section class="cta-banner-section">
+        <div class="container">
+          <div class="warm-cta-card">
+            <!-- Left Side Dog Visual -->
+            <div class="warm-cta-dog-wrap">
+              <img
+                src="/Images/Landing-Images/cta-corgi-puppy.png"
+                alt="Happy Corgi Dog"
+                loading="lazy"
+              />
+            </div>
+
+            <!-- Right Side CTA Copy -->
+            <div class="warm-cta-content">
+              <h2 class="warm-cta-title">
+                Ready to make a real difference in your pet's life?
+              </h2>
+              <p class="warm-cta-sub">
+                Join thousands of loving dog parents across India. Manage
+                essential health records, smart QR collar tags, and access
+                emergency veterinary care with confidence.
+              </p>
+              <a href="/api/signup" class="btn-pill btn-pill-white">
+                <span>Get Started Free</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
+
+    <!-- Interactive Scripts -->
+    <script src="/Landing/script.js"></script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+      var sc_project = 13353492;
+      var sc_invisible = 1;
+      var sc_security = "b129a7bd";
+    </script>
+    <script
+      type="text/javascript"
+      src="https://www.statcounter.com/counter/counter.js"
+      async
+    ></script>
+    <noscript
+      ><div class="statcounter">
+        <a title="Web Analytics" href="https://statcounter.com/" target="_blank"
+          ><img
+            class="statcounter"
+            src="https://c.statcounter.com/13353492/0/b129a7bd/1/"
+            alt="Web Analytics"
+            referrerPolicy="no-referrer-when-downgrade"
+        /></a></div
+    ></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

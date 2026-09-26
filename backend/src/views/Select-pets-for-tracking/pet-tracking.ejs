@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Select Pet for Tracking | Woofy | Pet Care Platform</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <%- include('../partials/navbar', { activePage: 'pets' }) %>
+
+    <main class="pets-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div class="pets-header">
+          <div class="pets-header-text">
+            <span class="page-badge-pill">Daily Care & Activity Logger</span>
+            <h2>Select Pet to <span class="sketch-highlight">Track</span></h2>
+            <p>Choose which companion's weight, medical checkup, medicines, or daily grooming you want to log today.</p>
+          </div>
+          <div class="pets-header-actions">
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
+              <span>Add Another Pet</span>
+            </a>
+          </div>
+        </div>
+
+        <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
+          <div class="pets-grid">
+            <% pets.forEach(function(pet) { %>
+              <div class="pet-card">
+                <div class="pet-card-top">
+                  <% if (pet.photo) { %>
+                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
+                  <% } else if (pet.photoUrl) { %>
+                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
+                  <% } else { %>
+                    <div class="profile-avatar-fallback">
+                      <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
+                    </div>
+                  <% } %>
+                  <div class="pet-header-info">
+                    <h3><%= pet.petName %></h3>
+                    <p class="pet-sub">
+                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Pet' %></span>
+                      <span class="pet-dot-separator">•</span>
+                      <span class="pet-gender-tag"><%= pet.gender || 'Companion' %></span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pet-card-stats">
+                  <div class="stat">
+                    <span class="stat-label">Age</span>
+                    <span class="stat-value"><%= pet.age ? pet.age + ' yrs' : 'N/A' %></span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Weight</span>
+                    <span class="stat-value"><%= pet.weight ? pet.weight + ' kg' : 'N/A' %></span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-label">Vaccinated</span>
+                    <span class="stat-value stat-vax <%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'vax-yes' : 'vax-no' %>">
+                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle' : 'alert-circle' %>"></i>
+                      <span><%= pet.vaccinated || 'Pending' %></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="card-actions-row">
+                  <a href="/api/track/<%= pet._id %>" class="btn btn-primary btn-block" title="Log Daily Health & Activity for <%= pet.petName %>">
+                    <i data-lucide="activity"></i>
+                    <span>Log Activity for <%= pet.petName %> &rarr;</span>
+                  </a>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="empty-pets-box">
+            <div class="empty-pets-icon">
+              <i data-lucide="paw-print"></i>
+            </div>
+            <h3>No Pets Found</h3>
+            <p>You need to create a pet profile first before logging daily health and care activities.</p>
+            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+              <i data-lucide="plus-circle"></i>
+              <span>Create Pet Profile</span>
+            </a>
+          </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
+
+    <!-- Initialize Lucide Icons -->
+    <script src="/My-Pets/my-pets.js"></script>
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

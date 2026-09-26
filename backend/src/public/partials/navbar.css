@@ -1,0 +1,246 @@
+/* ==========================================================================
+   WOFFY - GLOBAL UNIVERSAL NAVBAR STYLESHEET (WARM THEME)
+   Warm Terracotta Coral (#FA6638), Cream Glass & Rounded Pill Nav
+   ========================================================================== */
+
+header.dashboard-nav,
+header#navbar {
+  position: sticky;
+  top: 0;
+  background-color: rgba(250, 247, 242, 0.96) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid #f0e9df !important;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.global-nav-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+  box-sizing: border-box;
+}
+
+.global-nav-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #181c24 !important;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.global-nav-logo span {
+  color: #fa6638;
+}
+
+.global-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.global-nav-links a {
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 600;
+  font-size: 0.92rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 9999px;
+}
+
+.global-nav-links a i,
+.global-nav-links a svg {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.global-nav-links a:hover {
+  color: #fa6638;
+  background-color: #fff5f0;
+}
+
+.global-nav-links a.active {
+  color: #fa6638 !important;
+  background-color: #fff5f0 !important;
+  font-weight: 700;
+}
+
+.global-nav-badge {
+  background: #fa6638;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  line-height: 1.4;
+}
+
+.global-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.global-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.global-nav-btn i,
+.global-nav-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.global-btn-admin {
+  background: #fff5f0;
+  border-color: #ffd2c0;
+  color: #fa6638;
+}
+
+.global-btn-admin:hover {
+  background: #ffe8dd;
+}
+
+.global-btn-settings {
+  background: #ffffff;
+  border-color: #e2d9cd;
+  color: #4b5563;
+}
+
+.global-btn-settings:hover {
+  background: #fff5f0;
+  color: #fa6638;
+  border-color: #ffd2c0;
+}
+
+.global-btn-settings.active {
+  background: #fff5f0 !important;
+  color: #fa6638 !important;
+  border-color: #ffd2c0 !important;
+}
+
+.global-btn-logout {
+  background: #ffffff;
+  border-color: #fecdd3;
+  color: #e11d48;
+}
+
+.global-btn-logout:hover {
+  background: #fff1f2;
+  border-color: #fda4af;
+}
+
+/* Mobile Toggle Hamburger */
+.global-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: #181c24;
+  border-radius: 8px;
+}
+
+.global-mobile-toggle .icon-close {
+  display: none;
+}
+
+.global-mobile-toggle.is-active .icon-hamburger {
+  display: none;
+}
+
+.global-mobile-toggle.is-active .icon-close {
+  display: block;
+}
+
+/* Mobile Slide-out Drawer */
+.global-mobile-drawer {
+  display: none;
+  position: absolute;
+  top: 72px;
+  left: 0;
+  width: 100%;
+  background: #faf7f2;
+  border-bottom: 1px solid #f0e9df;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  padding: 1.25rem 1.5rem;
+  box-sizing: border-box;
+}
+
+.global-mobile-drawer.open {
+  display: block;
+}
+
+.global-mobile-links-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.global-mobile-links-stack a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.global-mobile-links-stack a i,
+.global-mobile-links-stack a svg {
+  width: 18px;
+  height: 18px;
+  color: #fa6638;
+}
+
+.global-mobile-links-stack a:hover,
+.global-mobile-links-stack a.active {
+  background: #fff5f0;
+  color: #fa6638;
+}
+
+@media (max-width: 900px) {
+  .global-nav-links {
+    display: none;
+  }
+  .global-nav-btn {
+    display: none;
+  }
+  .global-mobile-toggle {
+    display: block;
+  }
+}

@@ -1,0 +1,152 @@
+/* ==========================================================================
+   Woofy - 404 Route Not Found Stylesheet
+   Theme: Professional, Sharp, Colourful & Animated (Sketch + Classy UI)
+   ========================================================================== */
+
+:root {
+  --primary-color: #0f172a;       /* Deep Slate / Midnight Charcoal */
+  --accent-color: #2563eb;        /* Electric Royal Blue */
+  --accent-hover: #1d4ed8;
+  --coral-accent: #f97316;        /* Warm Sunset Coral / Amber */
+  --emerald-accent: #10b981;      /* Fresh Emerald Green */
+  --violet-accent: #8b5cf6;       /* Radiant Violet */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-light: #fafbfc;
+  --white: #ffffff;
+  --border-color: #e2e8f0;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --border-radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 35px -10px rgba(15, 23, 42, 0.12);
+  --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #fafbfc;
+  color: var(--text-main);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-nav {
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 74px;
+}
+
+.logo,
+.logo a,
+a.logo {
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: #000000 !important;
+  text-decoration: none !important;
+}
+
+.dashboard-main.container {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+  flex: 1;
+  text-align: center;
+}
+
+.not-found-box {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 4rem 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.not-found-box h1 {
+  font-size: 5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.05em;
+}
+
+.not-found-box h2 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+}
+
+.not-found-box p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
+  cursor: pointer;
+  font-size: 1rem;
+  border: 1.5px solid transparent;
+  font-family: inherit;
+  line-height: 1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--white) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
+}
+
+.dash-footer {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+  font-size: 0.875rem;
+}

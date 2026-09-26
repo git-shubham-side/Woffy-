@@ -1,0 +1,1128 @@
+/* ==========================================================================
+   WOFFY - VACCINATION & DEWORMING HUB STYLESHEET (WARM THEME)
+   Theme: Warm Terracotta Coral (#FA6638), Soft Cream Sand (#FAF7F2),
+   100% Fully Mobile Responsive Filter Tabs & Cards System
+   ========================================================================== */
+
+:root {
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  --slate-950: #0f172a;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --white: #ffffff;
+
+  --emerald-color: #059669;
+  --emerald-bg: #ecfdf5;
+  --emerald-border: #a7f3d0;
+
+  --amber-color: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-border: #fde68a;
+
+  --rose-color: #e11d48;
+  --rose-bg: #fff1f2;
+  --rose-border: #fecdd3;
+
+  --indigo-color: #4f46e5;
+  --indigo-bg: #eef2ff;
+  --indigo-border: #c7d2fe;
+
+  --cyan-color: #0284c7;
+  --cyan-bg: #f0f9ff;
+  --cyan-border: #bae6fd;
+
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
+
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px -4px rgba(250, 102, 56, 0.08);
+  --shadow-lg: 0 20px 35px -8px rgba(250, 102, 56, 0.14);
+  --shadow-coral: 0 6px 20px -2px rgba(250, 102, 56, 0.32);
+
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Global Reset & Base Setup
+   -------------------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body.vaccination-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--slate-900);
+  background-color: var(--sand-50);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ambient Background Lights */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.22;
+}
+
+.glow-1 {
+  top: -80px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.35) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
+}
+
+.glow-2 {
+  top: 40%;
+  left: -80px;
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.25) 0%, rgba(255, 215, 195, 0.1) 70%, transparent 100%);
+}
+
+.glow-3 {
+  bottom: -60px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(255, 114, 68, 0.1) 70%, transparent 100%);
+}
+
+/* Main Container */
+.vaccine-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.25rem 1.5rem 5rem 1.5rem;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   PAGE HERO HEADER
+   ========================================================================== */
+.page-hero {
+  margin-bottom: 2rem;
+}
+
+.hero-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-title-group h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.65rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  color: var(--slate-900);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  line-height: 1.25;
+}
+
+.hero-badge-protocol {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--emerald-bg);
+  color: var(--emerald-color);
+  border: 1px solid var(--emerald-border);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.hero-subtitle {
+  color: var(--slate-600);
+  font-size: 0.98rem;
+  margin-top: 0.35rem;
+}
+
+.hero-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* Universal Button Hub System */
+.btn-hub {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.btn-hub-sm {
+  padding: 0.5rem 0.95rem;
+  font-size: 0.825rem;
+  height: 36px;
+}
+
+.btn-hub-primary {
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  box-shadow: var(--shadow-coral);
+  border: none;
+}
+
+.btn-hub-primary:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -4px rgba(250, 102, 56, 0.45);
+}
+
+.btn-hub-secondary {
+  background: var(--white);
+  color: var(--slate-800);
+  border: 1.5px solid var(--border-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-hub-secondary:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+  background: var(--brand-50);
+  transform: translateY(-1px);
+}
+
+.btn-hub-success {
+  background: var(--emerald-bg);
+  color: var(--emerald-color);
+  border: 1.5px solid var(--emerald-border);
+}
+
+.btn-hub-success:hover {
+  background: #d1fae5;
+  color: #047857;
+  transform: translateY(-1px);
+}
+
+.btn-hub-danger-outline {
+  background: var(--rose-bg);
+  color: var(--rose-color);
+  border: 1.5px solid var(--rose-border);
+}
+
+.btn-hub-danger-outline:hover {
+  background: #ffe4e6;
+  color: #be123c;
+  transform: translateY(-1px);
+}
+
+.btn-hub-accent {
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  border: none;
+  box-shadow: var(--shadow-coral);
+}
+
+.btn-hub-accent:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-1px);
+}
+
+/* Pet Switcher Row */
+.pet-switcher-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.15rem;
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pet-switcher-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.pet-switcher-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pet-pills-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pet-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--slate-700);
+  white-space: nowrap;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.pet-nav-pill img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.pill-avatar-fallback {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.pet-nav-pill.active {
+  background: var(--brand-50);
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+}
+
+/* ==========================================================================
+   PET SUMMARY & PROGRESS BANNER
+   ========================================================================== */
+.pet-summary-banner {
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem 2rem;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pet-summary-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
+}
+
+.pet-meta-flex {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.pet-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pet-avatar-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--brand-50);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.18);
+}
+
+.pet-avatar-fallback-lg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff7a4d, #fa6638);
+  color: #fff;
+  font-size: 1.65rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--brand-50);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.22);
+}
+
+.pet-details-col h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem 0;
+  color: var(--slate-900);
+}
+
+.pet-tags-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.pet-info-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  background: var(--sand-50);
+  border: 1px solid var(--border-subtle);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  color: var(--slate-700);
+}
+
+.owner-tag {
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border-color: var(--brand-200);
+}
+
+.progress-card-box {
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: #e5e0d8;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 60%, #10b981 100%);
+  border-radius: var(--radius-pill);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.next-due-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.825rem;
+  color: var(--slate-700);
+  background: #ffffff;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ==========================================================================
+   STAT CARDS (4-COL GRID)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.4rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: var(--transition);
+}
+
+.stat-item-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-200);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-box.total { background: var(--sand-100); color: var(--slate-800); }
+.stat-icon-box.done { background: var(--emerald-bg); color: var(--emerald-color); }
+.stat-icon-box.due { background: var(--amber-bg); color: var(--amber-color); }
+.stat-icon-box.overdue { background: var(--rose-bg); color: var(--rose-color); }
+
+.stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--slate-900);
+}
+
+.stat-label {
+  font-size: 0.775rem;
+  color: var(--slate-500);
+  font-weight: 700;
+  margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   FILTER TABS & SEARCH BAR (100% RESPONSIVE PILL BAR)
+   ========================================================================== */
+.schedule-control-bar {
+  background: #ffffff;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.15rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.tab-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* CRITICAL RESPONSIVENESS FIX FOR "Due & Overdue", "Core Vaccines", ETC. */
+.tab-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.48rem 0.95rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  color: var(--slate-700);
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  white-space: nowrap !important; /* Never break text like 'Due & Overdue' into 2 lines */
+  flex-shrink: 0 !important;      /* Never crush or squeeze pill widths */
+  line-height: 1;
+}
+
+.tab-pill-btn:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+  color: var(--brand-600);
+}
+
+.tab-pill-btn.active {
+  background: var(--brand-600) !important;
+  border-color: var(--brand-600) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.3);
+}
+
+.tab-pill-btn.active i,
+.tab-pill-btn.active svg {
+  color: #ffffff !important;
+}
+
+.search-and-resync-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.search-control-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-control-wrap i,
+.search-control-wrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--slate-400);
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+}
+
+.search-control-input {
+  padding: 0.5rem 1rem 0.5rem 2.25rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  color: var(--slate-900);
+  outline: none;
+  transition: var(--transition);
+  width: 210px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.search-control-input:focus {
+  background: #ffffff;
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
+}
+
+/* ==========================================================================
+   VACCINE ITEMS TIMELINE STACK
+   ========================================================================== */
+.vaccine-list-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vaccine-item-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.65rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-xs);
+  position: relative;
+  overflow: hidden;
+}
+
+.vaccine-item-card:hover {
+  border-color: var(--brand-200);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Left Accent Stripe per status */
+.vaccine-item-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.vaccine-item-card.status-completed::before { background: var(--emerald-color); }
+.vaccine-item-card.status-due-soon::before { background: var(--amber-color); }
+.vaccine-item-card.status-overdue::before { background: var(--rose-color); }
+.vaccine-item-card.status-upcoming::before { background: var(--slate-300); }
+
+.vaccine-card-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.category-icon-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid transparent;
+}
+
+.category-icon-avatar.core { background: var(--indigo-bg); color: var(--indigo-color); border-color: var(--indigo-border); }
+.category-icon-avatar.deworming { background: var(--cyan-bg); color: var(--cyan-color); border-color: var(--cyan-border); }
+.category-icon-avatar.booster { background: #fdf4ff; color: #c026d3; border-color: #f5d0fe; }
+.category-icon-avatar.non-core { background: #fff7ed; color: #ea580c; border-color: #ffedd5; }
+.category-icon-avatar.custom { background: var(--sand-100); color: var(--slate-700); border-color: var(--border-medium); }
+
+.vaccine-meta-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.vaccine-meta-content h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem 0;
+  color: var(--slate-900);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.target-stage-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.725rem;
+  font-weight: 700;
+  background: var(--sand-100);
+  color: var(--slate-700);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.status-pill.completed { background: var(--emerald-bg); color: var(--emerald-color); border: 1px solid var(--emerald-border); }
+.status-pill.due-soon { background: var(--amber-bg); color: var(--amber-color); border: 1px solid var(--amber-border); }
+.status-pill.overdue { background: var(--rose-bg); color: var(--rose-color); border: 1px solid var(--rose-border); }
+.status-pill.upcoming { background: var(--sand-100); color: var(--slate-600); border: 1px solid var(--border-subtle); }
+
+.vaccine-notes-text {
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  margin: 0.25rem 0 0.55rem 0;
+  line-height: 1.45;
+}
+
+.details-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.detail-pill-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.775rem;
+  color: var(--slate-600);
+  background: var(--sand-50);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
+}
+
+.cert-proof-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--brand-600);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.cert-proof-btn:hover {
+  text-decoration: underline;
+}
+
+.vaccine-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+/* Empty State */
+.empty-hub-state {
+  text-align: center;
+  padding: 4.5rem 1.5rem;
+  background: #ffffff;
+  border: 2px dashed var(--brand-200);
+  border-radius: var(--radius-xl);
+}
+
+.empty-icon-circle {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  border: 1px solid var(--brand-200);
+}
+
+.empty-hub-state h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.35rem;
+  color: var(--slate-900);
+  margin-bottom: 0.5rem;
+}
+
+.empty-hub-state p {
+  color: var(--slate-500);
+  font-size: 0.95rem;
+  max-width: 480px;
+  margin: 0 auto 1.75rem;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   MODAL DIALOGS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  max-width: 520px;
+  width: 100%;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid var(--border-subtle);
+}
+
+.modal-header-row h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--slate-900);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.modal-close-btn {
+  background: var(--sand-100);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--slate-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.modal-close-btn:hover {
+  background: var(--rose-bg);
+  color: var(--rose-color);
+}
+
+.modal-form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-form-group label {
+  display: block;
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin-bottom: 0.4rem;
+}
+
+.modal-form-control {
+  width: 100%;
+  padding: 0.65rem 0.95rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--slate-900);
+  box-sizing: border-box;
+  outline: none;
+  transition: var(--transition);
+}
+
+.modal-form-control:focus {
+  background: #ffffff;
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(250, 102, 56, 0.15);
+}
+
+.modal-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.modal-actions-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  border-top: 1.5px solid var(--border-subtle);
+  padding-top: 1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (SMOOTH BUTTONS, CLEAN HORIZONTAL SWIPE)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .pet-summary-banner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .vaccine-container {
+    padding: 1.75rem 1rem 4rem 1rem;
+  }
+
+  .hero-top-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .hero-actions-bar {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hero-actions-bar .btn-hub {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 130px;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .schedule-control-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    padding: 0.85rem;
+  }
+
+  /* CRITICAL: Smooth horizontal touch swipe for filter pills so buttons never break */
+  .tab-filter-pills {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 4px;
+  }
+
+  .tab-pill-btn {
+    flex: 0 0 auto !important; /* Never crush or stretch */
+    font-size: 0.8rem;
+    padding: 0.45rem 0.85rem;
+    white-space: nowrap !important;
+  }
+
+  .search-and-resync-bar {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .search-control-wrap {
+    flex: 1;
+  }
+
+  .search-control-input {
+    width: 100% !important;
+  }
+
+  .vaccine-item-card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .vaccine-card-actions {
+    justify-content: flex-end;
+    border-top: 1.5px solid var(--sand-100);
+    padding-top: 0.75rem;
+    width: 100%;
+  }
+
+  .modal-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .stat-item-card {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .stat-icon-box {
+    width: 38px;
+    height: 38px;
+  }
+
+  .pet-meta-flex {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.85rem;
+  }
+
+  .pet-tags-row {
+    justify-content: center;
+  }
+
+  /* Filter buttons stay fully readable and un-squished */
+  .tab-pill-btn {
+    flex: 0 0 auto !important;
+    font-size: 0.78rem;
+    padding: 0.42rem 0.75rem;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

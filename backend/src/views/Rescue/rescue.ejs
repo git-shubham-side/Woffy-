@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animal Rescue NGOs & Emergency Stray Dog Helplines India | Woofy</title>
+    <meta
+      name="description"
+      content="Find verified animal rescue NGOs, stray dog emergency helplines, ambulance support, and shelters across India. Report injured animals or request shelter support 24/7."
+    />
+    <meta
+      name="keywords"
+      content="animal rescue helpline, dog rescue ngo india, stray dog ambulance, injured dog rescue, animal shelter near me, woofy rescue"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://woffy.up.railway.app/services/rescue" />
+
+    <!-- Brand Identity & Mobile Meta -->
+    <meta name="theme-color" content="#ea580c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="apple-touch-icon" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph (Facebook / WhatsApp / LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://woffy.up.railway.app/services/rescue" />
+    <meta property="og:site_name" content="Woofy" />
+    <meta property="og:title" content="Animal Rescue NGOs & Emergency Stray Dog Helplines India | Woofy" />
+    <meta property="og:description" content="Connect with verified animal rescue teams, ambulance helplines, and shelters across India." />
+    <meta property="og:image" content="https://woffy.up.railway.app/Images/Landing-Images/ecosystem-rescue.png" />
+    <meta property="og:image:alt" content="Animal Rescue NGOs and Shelters Network" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Animal Rescue NGOs & Emergency Stray Dog Helplines India | Woofy" />
+    <meta name="twitter:description" content="Connect with verified animal rescue teams, ambulance helplines, and shelters across India." />
+    <meta name="twitter:image" content="https://woffy.up.railway.app/Images/Landing-Images/ecosystem-rescue.png" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Live Animal Rescue Directory & Helplines",
+      "url": "https://woffy.up.railway.app/services/rescue",
+      "description": "Verified directory of animal rescue organizations, shelters, and 24/7 emergency stray dog helplines in India.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Woofy",
+        "url": "https://woffy.up.railway.app/",
+        "logo": "https://woffy.up.railway.app/favicon.svg"
+      }
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/Hospitals/hospitals.css" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      /* --- Responsive Rescue Grid --- */
+      .rescue-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.65rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* --- Rescue Card Container --- */
+      .rescue-card {
+        background: var(--white, #ffffff);
+        border: 1.5px solid var(--border-subtle, #f0e9df);
+        border-radius: var(--radius-xl, 22px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+        transition: var(--transition, all 0.22s ease);
+        box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));
+        position: relative;
+      }
+      .rescue-card:hover {
+        border-color: var(--brand-200, #ffd2c0);
+        box-shadow: 0 14px 32px -6px rgba(250, 102, 56, 0.14);
+        transform: translateY(-4px);
+      }
+
+      /* --- Card Media & Badges --- */
+      .rescue-img-box {
+        position: relative;
+        width: 100%;
+        height: 195px;
+        background: var(--sand-100, #f3eee7);
+        overflow: hidden;
+      }
+      .rescue-img-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.4s ease;
+      }
+      .rescue-card:hover .rescue-img-box img {
+        transform: scale(1.05);
+      }
+      .rescue-img-gradient {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, transparent 45%, rgba(15, 23, 42, 0.2) 100%);
+        pointer-events: none;
+      }
+
+      /* Left Badge: Org Type */
+      .org-type-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(5, 150, 105, 0.95);
+        color: #ffffff;
+        font-size: 0.725rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill, 9999px);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 2;
+        max-width: calc(100% - 145px);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Right Badge: 24/7 Helpline - Override hospitals.css left: 12px */
+      .rescue-card .badge-247 {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        left: auto !important;
+        background: rgba(225, 29, 72, 0.95);
+        color: #ffffff;
+        font-size: 0.725rem;
+        font-weight: 800;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill, 9999px);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(6px);
+        z-index: 2;
+        white-space: nowrap;
+      }
+
+      /* --- Card Content --- */
+      .rescue-card-content {
+        padding: 1.35rem 1.4rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        box-sizing: border-box;
+      }
+      .rescue-card-content h3 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1.35;
+        color: var(--slate-900, #181c24);
+        margin: 0 0 0.65rem 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* --- Info Lines --- */
+      .rescue-info-line {
+        font-size: 0.85rem;
+        color: var(--slate-600, #4b5563);
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 0.55rem;
+        line-height: 1.45;
+        min-width: 0;
+      }
+      .rescue-info-line i,
+      .rescue-info-line svg {
+        flex-shrink: 0;
+        width: 15px;
+        height: 15px;
+        margin-top: 3px;
+        color: var(--brand-600, #fa6638);
+      }
+      .rescue-info-text {
+        flex: 1;
+        min-width: 0;
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+      .helpline-group {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .helpline-group + .helpline-group {
+        margin-top: 0.25rem;
+      }
+      .helpline-tag {
+        font-size: 0.775rem;
+        color: var(--slate-500, #6b7280);
+        font-weight: 700;
+      }
+      .helpline-group.emergency-num .helpline-tag {
+        color: #dc2626;
+        font-weight: 800;
+      }
+      .helpline-num {
+        font-weight: 700;
+        color: var(--slate-900, #181c24);
+        text-decoration: none;
+        transition: color 0.18s ease;
+      }
+      .helpline-num:hover {
+        color: var(--brand-600, #fa6638);
+        text-decoration: underline;
+      }
+      .helpline-group.emergency-num .helpline-num {
+        color: #dc2626;
+      }
+
+      /* --- Chips --- */
+      .rescue-card .hospital-services-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1.15rem;
+      }
+      .rescue-card .service-chip {
+        font-size: 0.725rem;
+        font-weight: 700;
+        background: var(--sand-50, #faf7f2);
+        color: var(--slate-700, #374151);
+        border: 1px solid var(--border-subtle, #f0e9df);
+        padding: 3px 9px;
+        border-radius: var(--radius-pill, 9999px);
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* --- Action Buttons --- */
+      .rescue-card-actions {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1.5px solid var(--sand-100, #f3eee7);
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: 1.15fr 1fr;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .rescue-card-actions.has-website {
+        grid-template-columns: 1fr 1fr;
+      }
+      .rescue-card-actions.has-website .btn-call {
+        grid-column: 1 / -1;
+      }
+      .rescue-card-actions .btn {
+        min-width: 0;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.825rem;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        box-sizing: border-box;
+      }
+      .rescue-card-actions .btn span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .rescue-card-actions .btn i,
+      .rescue-card-actions .btn svg {
+        flex-shrink: 0;
+      }
+
+      /* --- Emergency Call Notice Banner --- */
+      .emergency-call-banner {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        border-radius: var(--radius-md, 12px);
+        padding: 0.85rem 1.15rem;
+        margin-bottom: 1.75rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        color: #065f46;
+        font-size: 0.88rem;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+      .emergency-call-banner i,
+      .emergency-call-banner svg {
+        width: 20px;
+        height: 20px;
+        color: #059669;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* --- Feature Spotlight Banner --- */
+      .ngo-feature-banner {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: var(--radius-lg, 14px);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.75rem;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+        box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.15);
+      }
+      .ngo-feature-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        flex: 1;
+        min-width: 280px;
+      }
+      .ngo-feature-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: rgba(245, 158, 11, 0.2);
+        border: 1px solid rgba(253, 230, 138, 0.3);
+        color: #f59e0b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .ngo-feature-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .ngo-feature-title-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .ngo-feature-title-row strong {
+        font-size: 1.05rem;
+        color: #ffffff;
+      }
+      .preview-badge {
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+        font-size: 0.72rem;
+        padding: 1px 8px;
+        border-radius: 9999px;
+        font-weight: 800;
+      }
+      .ngo-feature-text p {
+        margin: 0;
+        font-size: 0.88rem;
+        color: #cbd5e1;
+        line-height: 1.45;
+        word-break: break-word;
+      }
+      .ngo-feature-cta {
+        flex-shrink: 0;
+      }
+
+      /* --- Breakpoints for Tablet & Mobile --- */
+      @media (max-width: 1080px) {
+        .rescue-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.35rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .ngo-feature-banner {
+          padding: 1.15rem;
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .ngo-feature-cta {
+          width: 100%;
+        }
+        .ngo-feature-cta .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .rescue-grid {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 1.2rem;
+        }
+        .hospitals-header .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        .rescue-card-content {
+          padding: 1.15rem 1rem;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .rescue-card-actions,
+        .rescue-card-actions.has-website {
+          grid-template-columns: 1fr;
+        }
+        .rescue-card-actions .btn {
+          height: 38px;
+          font-size: 0.85rem;
+        }
+        .emergency-call-banner {
+          padding: 0.75rem 0.9rem;
+          font-size: 0.84rem;
+        }
+        .rescue-img-box {
+          height: 175px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <%- include('../partials/navbar', { activePage: 'rescue' }) %>
+
+    <main class="hospitals-page">
+      <div class="container">
+        <!-- Flash Messages -->
+        <%- include('../partials/flash-messages') %>
+
+        <div class="hospitals-header">
+          <div>
+            <span class="page-badge-pill">24/7 Emergency Stray & Animal Rescue</span>
+            <h2>Animal Rescue NGOs & <span class="sketch-highlight">Helplines</span></h2>
+            <p>Verified NGOs, animal ambulance helplines, and shelters for stray or injured animals.</p>
+          </div>
+          <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+          <a href="/admin?section=rescue" class="btn btn-primary">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>Add Rescue NGO</span>
+          </a>
+          <% } %>
+        </div>
+
+        <!-- Feature Spotlight Banner: Woffy for NGOs & Rescuers (Under Construction) -->
+        <div class="ngo-feature-banner">
+          <div class="ngo-feature-left">
+            <div class="ngo-feature-icon">
+              <i data-lucide="building-2" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div class="ngo-feature-text">
+              <div class="ngo-feature-title-row">
+                <strong>Woffy for NGOs & Rescuers</strong>
+                <span class="preview-badge">🚧 Under Construction • Alpha Preview</span>
+              </div>
+              <p>
+                Need to track <strong>100+ shelter animals or street rescues</strong> under one parent organization? We are developing an enterprise-grade shelter and rescuer hub tailored for batch health logs, kennel wards, volunteer delegation, and donor reports.
+              </p>
+            </div>
+          </div>
+          <div class="ngo-feature-cta">
+            <a href="/api/dashboard#ngo-hub" class="btn btn-primary" style="background: #2563eb; border-color: #3b82f6; white-space: nowrap;">
+              <span>View Features & Highlights</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Emergency Quick Notice -->
+        <div class="emergency-call-banner">
+          <i data-lucide="heart-handshake" style="width: 20px; height: 20px; color: #059669; flex-shrink: 0;"></i>
+          <span>For urgent animal distress, injured strays, or ambulance needs, call the direct helpline numbers below.</span>
+        </div>
+
+        <!-- Search & Filter Panel -->
+        <div class="search-filter-panel">
+          <form method="GET" action="/services/rescue">
+            <div class="search-form-row">
+              <div class="search-input-wrap">
+                <i data-lucide="search"></i>
+                <input
+                  type="text"
+                  name="search"
+                  class="search-input"
+                  placeholder="Search by NGO name, city, or service..."
+                  value="<%= searchQuery %>"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="city-select-wrap">
+                <select name="city" class="city-select" onchange="this.form.submit()">
+                  <option value="All" <%= selectedCity === 'All' ? 'selected' : '' %>>All Cities</option>
+                  <% cities.forEach(city => { %>
+                  <option value="<%= city %>" <%= selectedCity.toLowerCase() === city.toLowerCase() ? 'selected' : '' %>>
+                    <%= city %>
+                  </option>
+                  <% }) %>
+                </select>
+              </div>
+
+              <button type="submit" class="search-btn">
+                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+                <span>Search</span>
+              </button>
+            </div>
+
+            <div class="filter-controls-row">
+              <span style="font-size: 0.875rem; color: var(--text-muted);">
+                Showing <strong><%= rescueServices.length %></strong> verified rescue organization<%= rescueServices.length === 1 ? '' : 's' %>
+                <% if (selectedCity !== 'All') { %> in <strong><%= selectedCity %></strong><% } %>
+              </span>
+            </div>
+          </form>
+        </div>
+
+        <!-- Rescue Services Grid -->
+        <% if (rescueServices && rescueServices.length > 0) { %>
+        <div class="rescue-grid">
+          <% rescueServices.forEach(r => { %>
+          <div class="rescue-card">
+            <div class="rescue-img-box">
+              <img
+                src="<%= r.photo || 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= r.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=600&q=80'"
+              />
+              <div class="rescue-img-gradient"></div>
+              <span class="org-type-badge"><%= r.orgType || 'NGO Trust' %></span>
+              
+              <% if (r.is24x7) { %>
+              <div class="badge-247">
+                <i data-lucide="clock" style="width: 12px; height: 12px;"></i>
+                <span>24/7 Helpline</span>
+              </div>
+              <% } %>
+            </div>
+
+            <div class="rescue-card-content">
+              <h3><%= r.name %></h3>
+              
+              <div class="rescue-info-line">
+                <i data-lucide="map-pin"></i>
+                <div class="rescue-info-text">
+                  <span><%= r.address %>, <%= r.city %></span>
+                </div>
+              </div>
+
+              <div class="rescue-info-line">
+                <i data-lucide="phone"></i>
+                <div class="rescue-info-text">
+                  <% if (r.emergencyHelpline && r.emergencyHelpline !== r.phone) { %>
+                    <div class="helpline-group">
+                      <span class="helpline-tag">Helpline:</span>
+                      <a href="tel:<%= r.phone %>" class="helpline-num"><%= r.phone %></a>
+                    </div>
+                    <div class="helpline-group emergency-num">
+                      <span class="helpline-tag">24/7 Helpline:</span>
+                      <a href="tel:<%= r.emergencyHelpline %>" class="helpline-num"><%= r.emergencyHelpline %></a>
+                    </div>
+                  <% } else { %>
+                    <div class="helpline-group">
+                      <span class="helpline-tag">Helpline:</span>
+                      <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="helpline-num"><%= r.emergencyHelpline || r.phone %></a>
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+
+              <% if (r.services && r.services.length > 0) { %>
+              <div class="hospital-services-chips">
+                <% r.services.forEach(service => { %>
+                <span class="service-chip"><%= service %></span>
+                <% }) %>
+              </div>
+              <% } %>
+
+              <div class="rescue-card-actions <%= r.website ? 'has-website' : '' %>">
+                <a href="tel:<%= r.emergencyHelpline || r.phone %>" class="btn btn-primary btn-sm btn-call">
+                  <i data-lucide="phone-call" style="width: 14px; height: 14px;"></i>
+                  <span>Call Helpline</span>
+                </a>
+                <a
+                  href="<%= r.googleMapsUrl || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(r.name + ' ' + r.address + ' ' + r.city)) %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i data-lucide="map" style="width: 14px; height: 14px;"></i>
+                  <span>Directions</span>
+                </a>
+                <% if (r.website) { %>
+                <a href="<%= r.website %>" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" title="Visit Website">
+                  <i data-lucide="globe" style="width: 14px; height: 14px;"></i>
+                  <span>Website</span>
+                </a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div style="text-align: center; padding: 4.5rem 2rem; background: var(--white, #ffffff); border: 2px dashed var(--brand-200, #ffd2c0); border-radius: var(--radius-xl, 22px);">
+          <div style="width: 68px; height: 68px; border-radius: 50%; background: var(--brand-50, #fff5f0); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: var(--brand-600, #fa6638); border: 1px solid var(--brand-200, #ffd2c0);">
+            <i data-lucide="heart-handshake" style="width: 32px; height: 32px;"></i>
+          </div>
+          <h3 style="font-size: 1.5rem; color: var(--slate-900, #181c24); margin-bottom: 0.5rem; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <% if (selectedCity !== 'All') { %>
+              No rescue organizations listed in <%= selectedCity %> yet
+            <% } else { %>
+              No rescue organizations listed yet
+            <% } %>
+          </h3>
+          <p style="max-width: 520px; margin: 0 auto 1.75rem; color: var(--slate-500, #6b7280); font-size: 0.95rem; line-height: 1.6;">
+            We are actively onboarding verified animal rescue NGOs, shelter trusts, and stray dog ambulance teams.
+          </p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+            <% if (selectedCity !== 'All') { %>
+            <a href="/services/rescue" class="btn btn-secondary">
+              <span>View All Cities</span>
+            </a>
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </main>
+
+    <!-- Global Universal Footer Partial -->
+    <%- include('../partials/footer') %>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    </script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

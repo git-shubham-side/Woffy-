@@ -1,0 +1,416 @@
+/* ==========================================================================
+   WOFFY - SMART QR DIGITAL PET COLLAR TAG STYLESHEET
+   Mobile-First Emergency Rescue Profile & A4 Printable Tag Stencil
+   ========================================================================== */
+
+:root {
+  --primary-slate: #0f172a;
+  --royal-blue: #2563eb;
+  --royal-blue-hover: #1d4ed8;
+  --emerald-green: #10b981;
+  --rose-red: #e11d48;
+  --amber-gold: #f59e0b;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-400: #94a3b8;
+  --slate-600: #475569;
+  --slate-900: #0f172a;
+  --card-bg: #ffffff;
+  --border-radius-lg: 20px;
+  --border-radius-md: 12px;
+  --border-radius-pill: 9999px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 10px 25px -4px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 20px 40px -8px rgba(15, 23, 42, 0.16);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Setup */
+body.public-tag-body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f1f5f9;
+  color: var(--slate-900);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.public-tag-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 20px 16px 40px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ambient glow */
+.tag-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.tag-glow-blob {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.35;
+}
+
+.blob-blue {
+  top: -80px;
+  right: -80px;
+  background: #2563eb;
+}
+
+.blob-amber {
+  bottom: -80px;
+  left: -80px;
+  background: #f59e0b;
+}
+
+/* Top Brand Bar */
+.tag-brand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.tag-brand-logo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary-slate);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-brand-logo span {
+  color: var(--royal-blue);
+}
+
+.tag-collar-id-pill {
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: monospace;
+  background: #e2e8f0;
+  color: var(--slate-600);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-pill);
+  letter-spacing: 0.05em;
+}
+
+/* LOST PET EMERGENCY BANNER */
+.lost-pet-alert-banner {
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+  color: #ffffff;
+  border-radius: var(--border-radius-md);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(225, 29, 72, 0.35);
+  animation: pulse-lost 2s infinite ease-in-out;
+  text-align: center;
+}
+
+@keyframes pulse-lost {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 24px rgba(225, 29, 72, 0.35); }
+  50% { transform: scale(1.02); box-shadow: 0 12px 30px rgba(225, 29, 72, 0.55); }
+}
+
+.lost-alert-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.lost-alert-reward {
+  display: inline-block;
+  background: #ffffff;
+  color: #e11d48;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: var(--border-radius-pill);
+  margin-top: 6px;
+}
+
+/* Safe Status Banner */
+.safe-pet-banner {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  border-radius: var(--border-radius-md);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+/* Main Rescue Card */
+.rescue-card {
+  background: #ffffff;
+  border: 1px solid var(--slate-200);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+}
+
+.pet-hero-avatar-box {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.pet-hero-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffffff;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.15);
+  margin: 0 auto;
+}
+
+.pet-hero-avatar-fallback {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #fff;
+  font-size: 2.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.pet-identity-text {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.pet-identity-text h1 {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: var(--primary-slate);
+  margin: 8px 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.pet-meta-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pet-badge-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--slate-100);
+  color: var(--slate-600);
+  padding: 3px 10px;
+  border-radius: var(--border-radius-pill);
+}
+
+/* 1-TAP EMERGENCY ACTION BUTTONS */
+.emergency-actions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.btn-emergency-tap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: var(--border-radius-md);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.btn-emergency-call {
+  background: #059669;
+  color: #ffffff;
+}
+
+.btn-emergency-call:hover {
+  background: #047857;
+  transform: translateY(-1px);
+}
+
+.btn-emergency-wa {
+  background: #25d366;
+  color: #ffffff;
+}
+
+.btn-emergency-wa:hover {
+  background: #20ba5a;
+  transform: translateY(-1px);
+}
+
+.btn-emergency-location {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-emergency-location:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* Medical & Allergy Warning Box */
+.medical-alert-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.medical-alert-header {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #b45309;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.medical-alert-content {
+  font-size: 0.88rem;
+  color: #92400e;
+  line-height: 1.45;
+}
+
+/* Finder Care Instructions */
+.finder-guide-box {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  color: var(--slate-600);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.finder-guide-box strong {
+  color: var(--primary-slate);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Footer Safe Tag */
+.public-tag-footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--slate-400);
+  margin-top: 16px;
+}
+
+/* ==========================================================================
+   A4 PRINTABLE COLLAR TAG & WALLET ID STYLES
+   ========================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+.printable-page-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  font-family: "Inter", sans-serif;
+}
+
+.print-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.print-sheet-box {
+  border: 2px dashed #94a3b8;
+  border-radius: 16px;
+  padding: 28px;
+  background: #ffffff;
+}
+
+.print-tag-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.collar-tag-cutout {
+  border: 2px solid #0f172a;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  background: #ffffff;
+  position: relative;
+}
+
+.collar-ring-hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px dashed #64748b;
+  margin: 0 auto 12px auto;
+}
+
+.wallet-card-cutout {
+  border: 2px solid #0f172a;
+  border-radius: 12px;
+  padding: 20px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
+}

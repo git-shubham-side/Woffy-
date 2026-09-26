@@ -1,0 +1,708 @@
+/* ==========================================================================
+   Woofy - Digital Pet Health & Vaccination Passport Stylesheet
+   Theme: Warm Terracotta Coral (#FA6638), Soft Cream Sand (#FAF7F2),
+   Official Medical Certificate Elegance, 100% Mobile Responsive & Print-Perfect
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & CSS Variables
+   -------------------------------------------------------------------------- */
+:root {
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  --slate-950: #0f172a;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e2e8f0;
+  --white: #ffffff;
+
+  --emerald-50: #ecfdf5;
+  --emerald-600: #047857;
+  --emerald-border: #a7f3d0;
+
+  --amber-50: #fffbeb;
+  --amber-600: #b45309;
+  --amber-border: #fde68a;
+
+  --rose-50: #fff1f2;
+  --rose-600: #e11d48;
+  --rose-border: #fecdd3;
+
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 36px -8px rgba(250, 102, 56, 0.12);
+  --shadow-coral: 0 8px 24px -4px rgba(250, 102, 56, 0.35);
+
+  --transition: all 0.2s ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Body Layout
+   -------------------------------------------------------------------------- */
+@page {
+  size: A4 portrait;
+  margin: 1.2cm;
+}
+
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--sand-50);
+  color: var(--slate-900);
+  margin: 0;
+  padding: 2rem 1.25rem 4rem;
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Ambient Background Glow */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.22;
+}
+
+.glow-1 {
+  top: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.35) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
+}
+
+.glow-2 {
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.25) 0%, rgba(255, 215, 195, 0.1) 70%, transparent 100%);
+}
+
+/* --------------------------------------------------------------------------
+   3. Top Action Bar (Print & Navigation)
+   -------------------------------------------------------------------------- */
+.passport-action-bar {
+  max-width: 860px;
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.btn-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--slate-700);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.55rem 1rem;
+  background: var(--white);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-back-link:hover {
+  color: var(--brand-600);
+  border-color: var(--brand-500);
+  background: var(--brand-50);
+  transform: translateY(-1px);
+}
+
+.btn-back-link i,
+.btn-back-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.action-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-print-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--brand-600) !important;
+  color: var(--white) !important;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-coral);
+  white-space: nowrap;
+}
+
+.btn-print-cta:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -4px rgba(250, 102, 56, 0.45);
+}
+
+.btn-print-cta i,
+.btn-print-cta svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Passport Sheet Canvas
+   -------------------------------------------------------------------------- */
+.passport-sheet {
+  max-width: 860px;
+  margin: 0 auto;
+  background: var(--white);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 2.75rem 2.5rem;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  z-index: 5;
+  box-sizing: border-box;
+}
+
+.passport-sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
+}
+
+.watermark {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-28deg);
+  font-size: clamp(3rem, 6vw, 5.2rem);
+  font-weight: 900;
+  color: rgba(250, 102, 56, 0.035);
+  pointer-events: none;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------------------------
+   5. Passport Header
+   -------------------------------------------------------------------------- */
+.passport-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 1.75rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.passport-title-box {
+  flex: 1;
+  min-width: 240px;
+}
+
+.passport-title-box h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0;
+  font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--slate-900);
+}
+
+.passport-subtitle {
+  margin: 0.35rem 0 0 0;
+  font-size: 0.825rem;
+  color: var(--slate-500);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.passport-badge {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.badge-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--slate-900);
+  line-height: 1;
+}
+
+.badge-logo span {
+  color: var(--brand-600);
+}
+
+.passport-id-pill {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.775rem;
+  font-weight: 800;
+  color: var(--brand-600);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-200);
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  margin-top: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. Pet Profile Summary Grid
+   -------------------------------------------------------------------------- */
+.pet-profile-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr 1fr;
+  gap: 1.5rem;
+  background: var(--sand-50);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem;
+  margin-bottom: 2.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.pet-photo-wrap {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+.pet-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 3px solid var(--white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.pet-photo-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff7a4d, #fa6638);
+  color: var(--white);
+  border: 3px solid var(--white);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.25);
+}
+
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--slate-500);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+
+.info-value {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+/* --------------------------------------------------------------------------
+   7. Section Heading
+   -------------------------------------------------------------------------- */
+.section-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--slate-900);
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 0.65rem;
+  margin: 2rem 0 1.25rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  position: relative;
+  z-index: 1;
+}
+
+.protocol-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: none;
+  color: var(--emerald-600);
+  background: var(--emerald-50);
+  border: 1px solid var(--emerald-border);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* --------------------------------------------------------------------------
+   8. Immunization Table & Mobile Responsive Scroll Wrapper
+   -------------------------------------------------------------------------- */
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-pill);
+}
+
+table.record-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 620px; /* Prevents cell collapse on small screens while wrapper scrolls */
+}
+
+table.record-table th {
+  background: var(--slate-900);
+  color: var(--white);
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+table.record-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--slate-700);
+  vertical-align: middle;
+}
+
+table.record-table tr:last-child td {
+  border-bottom: none;
+}
+
+table.record-table tr:nth-child(even) td {
+  background-color: #fbf9f6;
+}
+
+table.record-table tr:hover td {
+  background-color: var(--brand-50);
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 0.725rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badge-status.done {
+  background: var(--emerald-50);
+  color: var(--emerald-600);
+  border: 1px solid var(--emerald-border);
+}
+
+.badge-status.due {
+  background: var(--amber-50);
+  color: var(--amber-600);
+  border: 1px solid var(--amber-border);
+}
+
+.badge-status.overdue {
+  background: var(--rose-50);
+  color: var(--rose-600);
+  border: 1px solid var(--rose-border);
+}
+
+/* --------------------------------------------------------------------------
+   9. Verification Stamp & Seal
+   -------------------------------------------------------------------------- */
+.stamp-box {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1.5px dashed var(--border-medium);
+  padding-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.stamp-verified-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.verified-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--emerald-600);
+  background: var(--emerald-50);
+  border: 1px solid var(--emerald-border);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  width: fit-content;
+}
+
+.issue-date {
+  font-size: 0.85rem;
+  color: var(--slate-700);
+  margin-top: 0.25rem;
+}
+
+.stamp-slot {
+  width: 220px;
+  text-align: center;
+  border-top: 1.5px solid var(--slate-900);
+  padding-top: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--slate-600);
+}
+
+/* --------------------------------------------------------------------------
+   10. Mobile Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  body {
+    padding: 1.25rem 0.75rem 3rem;
+  }
+
+  .passport-sheet {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .passport-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .passport-badge {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .passport-id-pill {
+    margin-top: 0;
+  }
+
+  /* Profile Grid stacks cleanly */
+  .pet-profile-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem 1rem;
+    text-align: left;
+  }
+
+  .pet-photo-wrap {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .stamp-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .stamp-slot {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .passport-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .btn-back-link,
+  .btn-print-cta {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .action-bar-right {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Print Styles (Clean A4 Paper Formatting)
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #000000 !important;
+  }
+
+  .ambient-glow-wrapper,
+  .passport-action-bar {
+    display: none !important;
+  }
+
+  .passport-sheet {
+    box-shadow: none !important;
+    border: 1.5px solid #000000 !important;
+    border-radius: 0 !important;
+    padding: 20px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .passport-sheet::before {
+    display: none !important;
+  }
+
+  .watermark {
+    color: rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .table-responsive-wrapper {
+    border: 1px solid #000000 !important;
+    overflow: visible !important;
+  }
+
+  table.record-table th {
+    background: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  table.record-table td {
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+
+  .stamp-slot {
+    border-top: 1px solid #000000 !important;
+  }
+}

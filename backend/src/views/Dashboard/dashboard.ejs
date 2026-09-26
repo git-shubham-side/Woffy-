@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Woofy | Complete Pet Care Platform</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/Dashboard/dashboard.css?v=2" />
+
+    <!-- Lucide Icons Script -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="dashboard-body">
+    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <div class="ambient-glow-wrapper" aria-hidden="true">
+      <div class="ambient-glow glow-1"></div>
+      <div class="ambient-glow glow-2"></div>
+      <div class="ambient-glow glow-3"></div>
+    </div>
+
+    <!-- Top Sticky Glassmorphism Navigation -->
+    <%- include('../partials/navbar', { activePage: 'dashboard' }) %>
+
+    <main class="dashboard-main container">
+      <!-- Flash Messages -->
+      <%- include('../partials/flash-messages') %>
+
+      <!-- SECTION 1: Welcome & Pet Profile Switcher / Add Pet -->
+      <section class="split-section">
+        <div class="split-content">
+          <div class="welcome-text">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+              <h1 style="margin: 0;">
+                Welcome back, <span class="sketch-highlight"><%= typeof userName !== 'undefined' && userName ? userName : 'Pet Parent' %></span>!
+              </h1>
+              <a href="/settings" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #2563eb; text-decoration: none; padding: 5px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; transition: all 0.2s ease;" title="Account Settings">
+                <i data-lucide="settings" style="width: 14px; height: 14px;"></i>
+                <span>Account Settings</span>
+              </a>
+            </div>
+            <p style="margin-top: 8px;">Monitor your companions' medical checkups, automated vaccination schedules, and emergency care all in one place.</p>
+          </div>
+
+          <!-- Add Pet Callout -->
+          <div class="add-pet-banner">
+            <div class="banner-content">
+              <h3><%= (typeof pets !== 'undefined' && pets && pets.length > 0) ? 'Manage your registered pets' : 'Start by creating your first pet profile' %></h3>
+              <p>
+                <%= (typeof pets !== 'undefined' && pets && pets.length > 0) ? 'View full profiles, vaccination status, weight charts, and photo galleries.' : 'Create a profile to begin tracking vaccinations, health logs, and growth records.' %>
+              </p>
+            </div>
+            <a href="/api/create-pet-profile" class="btn btn-primary">
+              <i data-lucide="plus" style="width: 18px; height: 18px;"></i>
+              <span>Add New Pet</span>
+            </a>
+          </div>
+
+          <!-- Registered Pets Quick Switcher Pills -->
+          <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
+          <div class="pets-preview-row">
+            <% pets.forEach(p => { %>
+            <a href="/api/pet-profile/<%= p._id %>" class="pet-preview-pill" title="View <%= p.petName %>'s Profile">
+              <% if (p.photo) { %>
+              <img src="<%= p.photo %>" alt="<%= p.petName %>" onerror="this.src='/uploads/pets/default-pet.png'" />
+              <% } else { %>
+              <span class="pill-avatar-fallback"><%= p.petName.charAt(0).toUpperCase() %></span>
+              <% } %>
+              <span><%= p.petName %> (<%= p.breed || p.species %>)</span>
+              <i data-lucide="chevron-right" style="width: 14px; height: 14px; color: #94a3b8;"></i>
+            </a>
+            <% }) %>
+          </div>
+          <% } %>
+        </div>
+
+        <div class="split-image square-image">
+          <img
+            src="https://www.annaroseheaton.com/uploads/4/7/0/2/47021893/anna-rose-heaton-professional-dog-photographer-east-midlands3_orig.jpg"
+            alt="Pet parent bonding with dog"
+          />
+        </div>
+      </section>
+
+      <!-- TOP SPOTLIGHT BANNER: Woffy for NGOs & Rescuers (Under Construction) -->
+      <section class="dashboard-section" style="margin-bottom: 2rem;">
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius: 16px; padding: 22px 26px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.2); border: 1px solid #334155;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(253, 230, 138, 0.35); color: #f59e0b; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="building-2" style="width: 26px; height: 26px;"></i>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 5px;">
+                <strong style="font-size: 1.2rem; color: #ffffff; letter-spacing: -0.01em;">Woffy for NGOs & Rescuers</strong>
+                <span style="background: #fffbeb; color: #b45309; border: 1px solid #fde68a; font-size: 0.74rem; padding: 2px 10px; border-radius: 9999px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">
+                  <span class="pulse-dot-amber"></span> Under Construction &bull; Alpha Preview
+                </span>
+              </div>
+              <p style="margin: 0; font-size: 0.9rem; color: #cbd5e1; max-width: 760px; line-height: 1.5;">
+                Managing <strong>100+ shelter animals or street rescues</strong> under one parent account? We are building an enterprise-grade shelter engine: bulk medical intake, ABC sterilization milestones, kennel ward triage, volunteer delegation, and donor transparency.
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="toggleNgoWaitlistModal(true)" style="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); color: #ffffff; font-weight: 700;">
+              <i data-lucide="bell" style="width: 15px; height: 15px; color: #f59e0b;"></i>
+              <span>Join Alpha Waitlist</span>
+            </button>
+            <a href="#ngo-hub" class="btn btn-primary btn-sm" style="background: #2563eb; border-color: #3b82f6; white-space: nowrap; font-weight: 700;">
+              <span>View Full NGO Hub Section</span>
+              <i data-lucide="arrow-down" style="width: 15px; height: 15px;"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- VACCINATION & DEWORMING ALERT CENTER WIDGET -->
+      <% if (typeof vaccineAlerts !== 'undefined' && (vaccineAlerts.dueSoon.length > 0 || vaccineAlerts.overdue.length > 0)) { %>
+      <section class="dashboard-section" style="margin-bottom: 2.5rem;">
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="background: #eff6ff; color: #2563eb; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #bfdbfe;">
+                <i data-lucide="syringe" style="width: 22px; height: 22px;"></i>
+              </div>
+              <div>
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                  <span>Vaccination & Deworming Alerts</span>
+                  <span style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3; font-size: 0.75rem; padding: 2px 10px; border-radius: 9999px; font-weight: 800;"><%= vaccineAlerts.totalDueCount %> Action Needed</span>
+                </h3>
+                <p style="margin: 3px 0 0 0; color: #64748b; font-size: 0.88rem;">Upcoming & overdue veterinary immunizations for your registered companions.</p>
+              </div>
+            </div>
+            <a href="/api/vaccinations" class="btn btn-primary btn-sm" style="font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
+              <span>Open Vaccine Hub</span>
+              <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;">
+            <!-- Overdue Items -->
+            <% vaccineAlerts.overdue.forEach(v => { %>
+            <div style="background: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #e11d48; border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+              <div>
+                <div style="font-size: 0.78rem; font-weight: 800; color: #e11d48; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px;">
+                  <i data-lucide="alert-triangle" style="width: 13px; height: 13px;"></i> Overdue
+                </div>
+                <strong style="display: block; color: #0f172a; font-size: 0.95rem; margin: 4px 0 2px 0;"><%= v.vaccineName %></strong>
+                <span style="font-size: 0.82rem; color: #475569;">For <strong><%= v.pet ? v.pet.petName : 'Pet' %></strong> &bull; Due: <%= new Date(v.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) %></span>
+              </div>
+              <a href="/api/vaccinations/<%= v.pet ? v.pet._id : '' %>" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.78rem; font-weight: 700; border-color: #fca5a5; color: #e11d48; background: #ffffff; flex-shrink: 0;">
+                Record Done
+              </a>
+            </div>
+            <% }) %>
+
+            <!-- Due Soon Items -->
+            <% vaccineAlerts.dueSoon.forEach(v => { %>
+            <div style="background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706; border-radius: 10px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+              <div>
+                <div style="font-size: 0.78rem; font-weight: 800; color: #d97706; text-transform: uppercase; letter-spacing: 0.04em; display: flex; align-items: center; gap: 4px;">
+                  <i data-lucide="clock" style="width: 13px; height: 13px;"></i> Due Soon
+                </div>
+                <strong style="display: block; color: #0f172a; font-size: 0.95rem; margin: 4px 0 2px 0;"><%= v.vaccineName %></strong>
+                <span style="font-size: 0.82rem; color: #475569;">For <strong><%= v.pet ? v.pet.petName : 'Pet' %></strong> &bull; Due: <%= new Date(v.dueDate).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) %></span>
+              </div>
+              <a href="/api/vaccinations/<%= v.pet ? v.pet._id : '' %>" class="btn btn-secondary btn-sm" style="padding: 6px 12px; font-size: 0.78rem; font-weight: 700; border-color: #fde68a; color: #b45309; background: #ffffff; flex-shrink: 0;">
+                View
+              </a>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+      <% } else if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
+      <!-- All Vaccinations Up to Date Quick Card -->
+      <section class="dashboard-section" style="margin-bottom: 2rem;">
+        <div style="background: #ffffff; border: 1px solid #a7f3d0; border-left: 5px solid #10b981; border-radius: 14px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.08);">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="background: #ecfdf5; color: #059669; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #a7f3d0;">
+              <i data-lucide="shield-check" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <strong style="display: block; color: #0f172a; font-size: 1.05rem; font-weight: 800; margin-bottom: 2px;">Automated Vaccination Schedule Active</strong>
+              <p style="margin: 0; color: #475569; font-size: 0.88rem;">All scheduled pet immunizations are currently tracked and up to date.</p>
+            </div>
+          </div>
+          <a href="/api/vaccinations" class="btn btn-secondary btn-sm" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 0.85rem; padding: 8px 16px; background: #ffffff;">
+            <i data-lucide="calendar" style="width: 15px; height: 15px; color: #2563eb;"></i>
+            <span>Open Vaccine Hub</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+      </section>
+      <% } %>
+
+      <!-- SECTION 2: 6-in-1 Health & Care Records Hub -->
+      <section class="split-section reverse-layout">
+        <div class="split-image tall-image">
+          <img
+            src="https://media.istockphoto.com/id/462435907/photo/puppy-and-kitten.jpg?s=612x612&w=0&k=20&c=ERmnTnx1ecWH5fEe1ngzgf5czngJFWk6m2CNDEzxOQ4="
+            alt="Veterinarian examining a dog professionally"
+          />
+        </div>
+
+        <div class="split-content">
+          <h2 class="section-title">Health & Care Loggers</h2>
+          <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Comprehensive 6-module daily tracking for proactive pet wellness.</p>
+
+          <div class="two-cols-grid">
+            <!-- 1. Weight -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #e0f2fe; color: #0284c7;">
+                <i data-lucide="scale"></i>
+              </div>
+              <h3>Weight</h3>
+              <p>Growth & Diet</p>
+            </div>
+
+            <!-- 2. Medical -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #fee2e2; color: #dc2626;">
+                <i data-lucide="stethoscope"></i>
+              </div>
+              <h3>Medical</h3>
+              <p>Surgeries & Tests</p>
+            </div>
+
+            <!-- 3. Medicine -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #dbeafe; color: #2563eb;">
+                <i data-lucide="pill"></i>
+              </div>
+              <h3>Medicine</h3>
+              <p>Dosages & Routine</p>
+            </div>
+
+            <!-- 4. Vet History -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #dcfce7; color: #16a34a;">
+                <i data-lucide="clipboard-list"></i>
+              </div>
+              <h3>Vet History</h3>
+              <p>Doctor Slips</p>
+            </div>
+
+            <!-- 5. Grooming -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #f3e8ff; color: #9333ea;">
+                <i data-lucide="scissors"></i>
+              </div>
+              <h3>Grooming</h3>
+              <p>Fur & Nail Care</p>
+            </div>
+
+            <!-- 6. Bath -->
+            <div class="dash-card">
+              <div class="card-icon" style="background: #cffafe; color: #0891b2;">
+                <i data-lucide="droplets"></i>
+              </div>
+              <h3>Bath</h3>
+              <p>Wash Schedule</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons Row -->
+          <div class="action-buttons">
+            <a href="/api/select-pet-for-tracking" class="btn btn-primary">
+              <span>Start Tracking</span>
+              <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </a>
+
+            <a href="/api/select-pet-to-show-record" class="btn btn-secondary">
+              <i data-lucide="history" style="width: 16px; height: 16px;"></i>
+              <span>View Past Records</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: City Emergency Services -->
+      <section class="split-section">
+        <div class="split-content">
+          <h2 class="section-title">Emergency City Network</h2>
+          <p style="color: var(--text-muted);">Verified local veterinary care and stray rescue helplines in your area.</p>
+
+          <div class="service-list">
+            <% if (typeof isAdminUser !== 'undefined' && isAdminUser) { %>
+            <a href="/admin" class="dash-card service-card" style="border: 1.5px solid #2563eb; background: #eff6ff;">
+              <div class="card-icon" style="background: #2563eb; color: #ffffff;">
+                <i data-lucide="shield-check"></i>
+              </div>
+              <div class="card-info">
+                <h3 style="color: #1e40af;">Company Admin Portal</h3>
+                <p style="color: #1e3a8a;">
+                  Platform management: Verify hospital applications, manage rescue NGOs, and product catalog.
+                </p>
+              </div>
+            </a>
+            <% } %>
+
+            <!-- Hospitals Service Card -->
+            <a href="/services/hospitals" class="dash-card service-card">
+              <div class="card-icon" style="background: #fff7ed; color: #ea580c;">
+                <i data-lucide="hospital"></i>
+              </div>
+              <div class="card-info">
+                <h3>Find Verified Pet Hospitals</h3>
+                <p>Auto-locate 24/7 veterinary emergency centers near you with direct phone call & map directions.</p>
+              </div>
+            </a>
+
+            <!-- Rescue Service Card -->
+            <a href="/services/rescue" class="dash-card service-card">
+              <div class="card-icon" style="background: #ecfdf5; color: #059669;">
+                <i data-lucide="heart-handshake"></i>
+              </div>
+              <div class="card-info">
+                <h3>Animal Rescue NGOs & Shelters</h3>
+                <p>Emergency rescue contacts, stray dog ambulances, and certified animal shelter teams.</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="split-image square-image">
+          <img
+            src="https://content.jdmagicbox.com/v2/comp/bangalore/p4/080pxx80.xx80.131024174625.x6p4/catalogue/charlies-animal-rescue-centre-yelahanka-bangalore-animal-welfare-organisations-1xe2c7ipd1.jpg"
+            alt="Indian Pariah rescue dog portrait"
+          />
+        </div>
+      </section>
+
+      <!-- SECTION: Woffy for NGOs & Rescuers (Alpha / Under Construction) -->
+      <section class="dashboard-section ngo-dash-section" id="ngo-hub">
+        <div class="ngo-dash-container">
+          <!-- Banner Header -->
+          <div class="ngo-dash-header">
+            <div class="ngo-dash-title-group">
+              <div class="ngo-dash-icon-box">
+                <i data-lucide="building-2"></i>
+              </div>
+              <div>
+                <div class="ngo-dash-badge-row">
+                  <h2 class="ngo-dash-heading">Woffy for NGOs & Rescuers</h2>
+                  <span class="ngo-under-construction-pill">
+                    <span class="pulse-dot-amber"></span>
+                    <span>Under Construction &bull; Alpha Preview</span>
+                  </span>
+                </div>
+                <p class="ngo-dash-subtext">
+                  A high-capacity institutional platform where one parent account manages and health-tracks <strong>100+ street rescues & shelter animals</strong>.
+                </p>
+              </div>
+            </div>
+            
+            <div class="ngo-dash-header-action">
+              <button type="button" class="btn btn-secondary btn-sm" id="ngoWaitlistBtn" onclick="toggleNgoWaitlistModal(true)">
+                <i data-lucide="bell" style="width: 15px; height: 15px; color: #d97706;"></i>
+                <span>Get Early Access Alerts</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Why it matters callout banner -->
+          <div class="ngo-dash-why-banner">
+            <div class="why-icon"><i data-lucide="info"></i></div>
+            <div class="why-text">
+              <strong>Why This Is Essential for NGOs & Shelters:</strong> Standard pet apps only support 1 or 2 pets per home. Animal welfare trusts, street feeder communities, and rescue foundations manage hundreds of animals simultaneously. Woffy NGO Suite replaces scattered paper cards with unified mass health triage.
+            </div>
+          </div>
+
+          <!-- Feature Highlights 6-Card Grid -->
+          <div class="ngo-dash-grid">
+            <!-- 1 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe;">
+                <i data-lucide="database"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>100+ Rescues Under 1 Account</h4>
+                <p>Bulk register shelter cohorts, ear-notch IDs, collar QR tags, rescue GPS coordinates, and intake trauma logs.</p>
+                <span class="ngo-card-tag">High-Volume Roster</span>
+              </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #fffbeb; color: #d97706; border: 1px solid #fde68a;">
+                <i data-lucide="syringe"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Mass Vaccination & ABC Drives</h4>
+                <p>One-click batch updates for kennel-wide Rabies and DHPP boosters. Track Animal Birth Control (spay/neuter) pipelines.</p>
+                <span class="ngo-card-tag">Drive Automation</span>
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
+                <i data-lucide="git-merge"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Ward & Triage Care Tracking</h4>
+                <p>Organize by ICU, Isolation, Post-Op ABC, and General Kennel. Digital daily treatment sheets and saline drip schedules.</p>
+                <span class="ngo-card-tag">Clinical Wards</span>
+              </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe;">
+                <i data-lucide="users"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Multi-Volunteer & Staff Roles</h4>
+                <p>Assign team roles for ambulance drivers, feeding volunteers, kennel caretakers, and consulting vet surgeons.</p>
+                <span class="ngo-card-tag">Role Delegation</span>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;">
+                <i data-lucide="heart-handshake"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Case Sponsorship & Donor Trust</h4>
+                <p>Share public recovery links for donors who sponsor critical surgical cases, with bills and photo healing logs.</p>
+                <span class="ngo-card-tag">Transparency Hub</span>
+              </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="ngo-dash-card">
+              <div class="ngo-card-icon" style="background: #ecfeff; color: #0891b2; border: 1px solid #a5f3fc;">
+                <i data-lucide="package"></i>
+              </div>
+              <div class="ngo-card-body">
+                <h4>Pharmacy & Food Ration Inventory</h4>
+                <p>Track medicine vials, antibiotics, sterile bandages, and donated dog kibble bags with low-stock warnings.</p>
+                <span class="ngo-card-tag">Stock Management</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Status Strip -->
+          <div class="ngo-dash-footer-strip">
+            <div class="strip-left">
+              <i data-lucide="wrench" style="width: 18px; height: 18px; color: #b45309;"></i>
+              <span>Engineering Status: <strong>Alpha Backend Modeling in Progress</strong>. Working modules will be rolled out to pilot partners.</span>
+            </div>
+            <div class="strip-right">
+              <button type="button" class="btn btn-primary btn-sm" onclick="toggleNgoWaitlistModal(true)">
+                <i data-lucide="check-circle-2" style="width: 14px; height: 14px;"></i>
+                <span>Register Your Shelter for Alpha</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NGO Early Access Modal (Pure Frontend Dialog) -->
+      <div id="ngoWaitlistModal" class="ngo-modal-overlay" style="display: none;" onclick="if(event.target === this) toggleNgoWaitlistModal(false)">
+        <div class="ngo-modal-content">
+          <div class="ngo-modal-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 10px; background: #fffbeb; color: #d97706; display: flex; align-items: center; justify-content: center; border: 1px solid #fde68a;">
+                <i data-lucide="building-2" style="width: 20px; height: 20px;"></i>
+              </div>
+              <div>
+                <h3 style="margin: 0; font-size: 1.15rem; color: #0f172a; font-weight: 800;">NGO & Shelter Pilot Waitlist</h3>
+                <span style="font-size: 0.78rem; color: #64748b;">Get invited to test our 100+ animal tracking workspace</span>
+              </div>
+            </div>
+            <button type="button" class="ngo-modal-close" onclick="toggleNgoWaitlistModal(false)" aria-label="Close modal">&times;</button>
+          </div>
+
+          <div class="ngo-modal-body">
+            <div id="ngoWaitlistSuccess" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 14px; color: #065f46; font-size: 0.9rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #059669;"></i>
+                <span id="ngoSuccessTitle">Registration Submitted Successfully!</span>
+              </div>
+              <p id="ngoSuccessMsg" style="margin: 4px 0 0 26px; font-size: 0.85rem;">Thank you! Your shelter registration has been routed directly to our team and is visible in the Company Admin Suite for priority pilot onboarding.</p>
+            </div>
+
+            <div id="ngoWaitlistError" style="display: none; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px; color: #991b1b; font-size: 0.9rem; margin-bottom: 1rem;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                <i data-lucide="alert-circle" style="width: 18px; height: 18px; color: #dc2626;"></i>
+                <span>Submission Error</span>
+              </div>
+              <p id="ngoErrorMsg" style="margin: 4px 0 0 26px; font-size: 0.85rem;">Failed to submit registration. Please check required fields and try again.</p>
+            </div>
+
+            <form id="ngoWaitlistForm" onsubmit="handleNgoWaitlistSubmit(event)" method="POST" action="/api/shelter-waitlist">
+              <div style="margin-bottom: 12px;">
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">NGO / Shelter / Rescuer Name *</label>
+                <input type="text" name="orgName" id="ngoOrgName" required placeholder="e.g. Stray Care Foundation, Delhi" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Contact Email *</label>
+                  <input type="email" name="email" id="ngoEmail" required placeholder="shelter@ngo.org" value="<%= typeof currentUser !== 'undefined' && currentUser && currentUser.email ? currentUser.email : '' %>" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Est. Animals Under Care</label>
+                  <select name="animalCount" id="ngoAnimalCount" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: #ffffff;">
+                    <option value="20-50">20 - 50 Animals</option>
+                    <option value="50-100" selected>50 - 100 Animals</option>
+                    <option value="100-300">100 - 300 Animals</option>
+                    <option value="300+">300+ Rescues (Large Shelter)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Phone / WhatsApp (Optional)</label>
+                  <input type="tel" name="phone" id="ngoPhone" placeholder="e.g. +91 98765 43210" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+                <div>
+                  <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">City / State (Optional)</label>
+                  <input type="text" name="city" id="ngoCity" placeholder="e.g. Pune, Maharashtra" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+                </div>
+              </div>
+              <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 0.82rem; font-weight: 700; color: #334155; margin-bottom: 4px;">Primary Feature Needed Most</label>
+                <input type="text" name="neededFeatures" id="ngoNotes" placeholder="e.g. ABC sterilization records, mass rabies booster scheduling, daily ward chart" style="width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem;" />
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleNgoWaitlistModal(false)">Close</button>
+                <button type="submit" class="btn btn-primary btn-sm" id="ngoSubmitBtn">
+                  <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+                  <span id="ngoSubmitBtnText">Submit Interest</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Recommended Pet Products (Live from MongoDB) -->
+      <section class="dashboard-section shop-section">
+        <div class="section-header-flex">
+          <div>
+            <h2 class="section-title">Recommended Pet Products</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0;">Curated food, grooming supplies, and health supplements.</p>
+          </div>
+          <a href="/shop" class="view-more-link">
+            <span>View all products</span>
+            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+
+        <% if (typeof products !== 'undefined' && products && products.length > 0) { %>
+        <div class="grid-cards three-cols">
+          <% products.forEach(product => { %>
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <img
+                src="<%= product.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>"
+                alt="<%= product.name %>"
+                onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'"
+              />
+              <% if (product.discountPercent && product.discountPercent > 0) { %>
+              <span class="discount-badge">
+                <%= product.discountPercent %>% OFF
+              </span>
+              <% } %>
+            </div>
+            <div class="product-details">
+              <span class="product-category-tag"><%= product.category %></span>
+              <h4><%= product.name %></h4>
+              
+              <div class="price-row">
+                <span class="price-current">₹<%= product.price %></span>
+                <% if (product.originalPrice) { %>
+                <span class="price-original">₹<%= product.originalPrice %></span>
+                <% } %>
+              </div>
+
+              <a
+                href="<%= product.buyUrl || '/shop' %>"
+                target="<%= product.buyUrl ? '_blank' : '_self' %>"
+                class="btn btn-secondary btn-sm btn-block"
+              >
+                <i data-lucide="shopping-cart" style="width: 14px; height: 14px;"></i>
+                <span>Buy Now</span>
+              </a>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <% } else { %>
+        <div class="empty-state-box">
+          <i data-lucide="shopping-bag" style="width: 44px; height: 44px; color: #94a3b8; margin-bottom: 0.75rem;"></i>
+          <p>No products available currently. Check back soon!</p>
+        </div>
+        <% } %>
+
+        <!-- Product Partner / "Want to Add Your Product?" Callout Banner -->
+        <div class="product-request-banner">
+          <div class="request-banner-left">
+            <div class="banner-icon-badge">
+              <i data-lucide="package-plus"></i>
+            </div>
+            <div class="banner-text-content">
+              <h3>Want to Sell or List Your Pet Product?</h3>
+              <p>Are you a pet food brand, clinic pharmacy, or pet accessory seller? Submit your product listing request to get featured across Woofy!</p>
+            </div>
+          </div>
+          <div class="request-banner-right">
+            <a href="/products/list-product" class="btn btn-primary btn-md">
+              <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+              <span>List Your Product</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- User Submitted Product Requests Tracker (If Any) -->
+        <% if (typeof userProductRequests !== 'undefined' && userProductRequests && userProductRequests.length > 0) { %>
+        <div class="user-requests-tracker">
+          <div class="tracker-header">
+            <h4><i data-lucide="clock" style="width: 16px; height: 16px; color: #2563eb;"></i> Your Product Listing Submissions (<%= userProductRequests.length %>)</h4>
+            <a href="/products/list-product" class="btn btn-secondary btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+              <i data-lucide="plus" style="width: 14px; height: 14px;"></i> List Another Product
+            </a>
+          </div>
+          <div class="requests-grid">
+            <% userProductRequests.forEach(reqItem => { %>
+            <div class="request-status-card">
+              <div class="req-card-img">
+                <img src="<%= reqItem.image || 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80' %>" alt="<%= reqItem.name %>" onerror="this.src='https://images.unsplash.com/photo-1589924691995-400dc9ecc119?auto=format&fit=crop&w=600&q=80'" />
+              </div>
+              <div class="req-card-info">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem;">
+                  <strong><%= reqItem.name %></strong>
+                  <% if (reqItem.status === 'pending') { %>
+                  <span class="req-badge req-badge-pending">⏳ Under Review</span>
+                  <% } else if (reqItem.status === 'approved') { %>
+                  <span class="req-badge req-badge-approved">✅ Live in Catalog</span>
+                  <% } else if (reqItem.status === 'rejected') { %>
+                  <span class="req-badge req-badge-rejected">❌ Rejected</span>
+                  <% } %>
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);"><%= reqItem.category %> • ₹<%= reqItem.price %></span>
+                <% if (reqItem.status === 'rejected' && reqItem.rejectionReason) { %>
+                <p style="font-size: 0.775rem; color: #b91c1c; margin-top: 0.25rem;">Note: <%= reqItem.rejectionReason %></p>
+                <% } %>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
+      </section>
+    </main>
+
+    <!-- Global Footer Partial -->
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <script src="/Dashboard/dashboard.js"></script>
+    <script>
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      function toggleNgoWaitlistModal(show) {
+        const modal = document.getElementById('ngoWaitlistModal');
+        if (modal) {
+          modal.style.display = show ? 'flex' : 'none';
+          if (show && window.lucide) {
+            lucide.createIcons();
+          }
+        }
+      }
+
+      async function handleNgoWaitlistSubmit(e) {
+        e.preventDefault();
+        const form = document.getElementById('ngoWaitlistForm');
+        const successBox = document.getElementById('ngoWaitlistSuccess');
+        const errorBox = document.getElementById('ngoWaitlistError');
+        const errorMsg = document.getElementById('ngoErrorMsg');
+        const submitBtn = document.getElementById('ngoSubmitBtn');
+        const submitBtnText = document.getElementById('ngoSubmitBtnText');
+
+        if (successBox) successBox.style.display = 'none';
+        if (errorBox) errorBox.style.display = 'none';
+
+        const orgName = document.getElementById('ngoOrgName')?.value.trim();
+        const email = document.getElementById('ngoEmail')?.value.trim();
+        const phone = document.getElementById('ngoPhone')?.value.trim();
+        const city = document.getElementById('ngoCity')?.value.trim();
+        const animalCount = document.getElementById('ngoAnimalCount')?.value;
+        const neededFeatures = document.getElementById('ngoNotes')?.value.trim();
+
+        if (!orgName || !email) {
+          if (errorBox && errorMsg) {
+            errorMsg.textContent = 'Please provide both Shelter/Organization Name and Contact Email.';
+            errorBox.style.display = 'block';
+          }
+          return;
+        }
+
+        // Loading state
+        if (submitBtn) submitBtn.disabled = true;
+        if (submitBtnText) submitBtnText.textContent = 'Submitting...';
+
+        try {
+          const response = await fetch('/api/shelter-waitlist', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+              orgName,
+              email,
+              phone,
+              city,
+              animalCount,
+              neededFeatures,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            if (successBox) {
+              successBox.style.display = 'block';
+            }
+            if (form) {
+              form.reset();
+            }
+            if (window.lucide) {
+              lucide.createIcons();
+            }
+            setTimeout(function() {
+              toggleNgoWaitlistModal(false);
+              if (successBox) successBox.style.display = 'none';
+              alert('Thank you! Your shelter registration has been successfully recorded and sent to the Company Admin Suite.');
+            }, 2000);
+          } else {
+            throw new Error(data.message || 'Server returned an error.');
+          }
+        } catch (err) {
+          console.error('Waitlist submission failed:', err);
+          if (errorBox && errorMsg) {
+            errorMsg.textContent = err.message || 'Failed to submit registration. Please try again.';
+            errorBox.style.display = 'block';
+          }
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
+          if (submitBtnText) submitBtnText.textContent = 'Submit Interest';
+          if (window.lucide) {
+            lucide.createIcons();
+          }
+        }
+      }
+    </script>
+    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
+    <script type="text/javascript">
+    var sc_project=13353492; 
+    var sc_invisible=1; 
+    var sc_security="b129a7bd"; 
+    </script>
+    <script type="text/javascript"
+    src="https://www.statcounter.com/counter/counter.js" async></script>
+    <noscript><div class="statcounter"><a title="Web Analytics"
+    href="https://statcounter.com/" target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+    <!-- End of Statcounter Code -->
+  </body>
+</html>

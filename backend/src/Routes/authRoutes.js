@@ -1,0 +1,78 @@
+const express = require("express");
+const router = express.Router();
+const authController = require("../Controllers/authController");
+const isAuthenticated = require("../Middlewares/isAuthenticated");
+
+// Signup
+router.get(["/signup", "/api/signup"], authController.getSignupPage);
+router.post(["/signup", "/api/signup"], authController.postSignup);
+
+// Login
+router.get(["/login", "/api/login"], authController.getLoginPage);
+router.post(["/login", "/api/login"], authController.postLogin);
+
+// Google OAuth 2.0 Flow
+router.get(["/auth/google", "/api/auth/google"], authController.getGoogleAuthRedirect);
+router.get(
+  ["/auth/google/callback", "/api/auth/google/callback"],
+  authController.handleGoogleCallback,
+);
+
+// Me (Get Current User)
+router.get(["/me", "/api/me", "/api/auth/me"], isAuthenticated, authController.getMe);
+
+// Logout
+router.all(["/logout", "/api/logout"], authController.logout);
+
+// User Settings & Profile
+router.get(["/settings", "/api/settings"], isAuthenticated, authController.getSettingsPage);
+router.post(
+  ["/settings/update-profile", "/api/settings/update-profile"],
+  isAuthenticated,
+  authController.postUpdateProfile,
+);
+router.post(
+  ["/settings/change-password", "/api/settings/change-password"],
+  isAuthenticated,
+  authController.postChangePassword,
+);
+router.post(
+  ["/settings/delete-account", "/api/settings/delete-account"],
+  isAuthenticated,
+  authController.postDeleteAccount,
+);
+
+// Forgot Password Request
+router.get(
+  ["/forget-pass", "/api/forget-pass", "/forgot-password", "/api/forgot-password"],
+  authController.getForgotPasswordPage,
+);
+router.post(
+  ["/forget-pass", "/api/forget-pass", "/forgot-password", "/api/forgot-password"],
+  authController.postForgotPassword,
+);
+
+// Reset Password via 1-Click Secure Token Link
+router.get(
+  ["/reset-password/:token", "/api/reset-password/:token"],
+  authController.getResetPasswordWithTokenPage,
+);
+router.post(
+  ["/reset-password/:token", "/api/reset-password/:token"],
+  authController.postResetPasswordWithToken,
+);
+
+// Verify OTP & Reset Password
+router.get(
+  ["/verify-reset-otp", "/api/verify-reset-otp"],
+  authController.getVerifyOtpPage,
+);
+router.post(
+  ["/verify-reset-otp", "/api/verify-reset-otp"],
+  authController.postVerifyOtpAndReset,
+);
+
+// Terms & Conditions
+router.get(["/terms", "/api/terms"], authController.getTermsPage);
+
+module.exports = router;

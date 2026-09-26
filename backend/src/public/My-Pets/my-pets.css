@@ -1,0 +1,790 @@
+/* ==========================================================================
+   Woofy - My Pets Directory Stylesheet (Warm & Colorful Theme)
+   Theme: Warm Terracotta Coral (#FA6638), Soft Cream Sand (#FAF7F2),
+   Rounded Pill Buttons, Smooth Responsive Cards & 100% Mobile Ready
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens & CSS Variables
+   -------------------------------------------------------------------------- */
+:root {
+  /* Warm Terracotta Coral Brand Palette */
+  --brand-500: #ff7244;
+  --brand-600: #fa6638;
+  --brand-700: #e04f21;
+  --brand-50: #fff5f0;
+  --brand-100: #ffe8dd;
+  --brand-200: #ffd2c0;
+  --brand-glow: rgba(250, 102, 56, 0.25);
+
+  /* Warm Sand & Cream Surfaces */
+  --sand-50: #faf7f2;
+  --sand-100: #f3eee7;
+  --sand-200: #e8e1d7;
+
+  --pure-white: #ffffff;
+  --slate-950: #111827;
+  --slate-900: #181c24;
+  --slate-800: #1f2937;
+  --slate-700: #374151;
+  --slate-600: #4b5563;
+  --slate-500: #6b7280;
+  --slate-400: #9ca3af;
+  --slate-300: #cbd5e1;
+  --slate-200: #e5e7eb;
+  --slate-100: #f3f4f6;
+
+  /* Status Accents */
+  --emerald-50: #ecfdf5;
+  --emerald-500: #10b981;
+  --emerald-600: #059669;
+
+  --amber-50: #fffbeb;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+
+  --rose-50: #fff1f2;
+  --rose-500: #f43f5e;
+  --rose-600: #e11d48;
+  --rose-border: #fecdd3;
+
+  /* Surfaces & Typography */
+  --bg-page: var(--sand-50);
+  --bg-card: #ffffff;
+  --border-subtle: #f0e9df;
+  --border-medium: #e2d9cd;
+  --border-focus: var(--brand-500);
+
+  --text-primary: #181c24;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --text-white: #ffffff;
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 9999px;
+
+  /* Elevations */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 16px 36px -8px rgba(0, 0, 0, 0.08);
+  --shadow-coral: 0 8px 24px -4px rgba(250, 102, 56, 0.35);
+
+  /* Transitions */
+  --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Global Base
+   -------------------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------------------
+   3. Ambient Background Lighting (Warm Coral & Amber Glows)
+   -------------------------------------------------------------------------- */
+.ambient-glow-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.glow-1 {
+  top: -100px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(255, 114, 68, 0.38) 0%, rgba(245, 158, 11, 0.15) 70%, transparent 100%);
+}
+
+.glow-2 {
+  bottom: -100px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(250, 102, 56, 0.28) 0%, rgba(255, 215, 195, 0.12) 70%, transparent 100%);
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout Containers & Typography
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--slate-900);
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+}
+
+/* Sketch Highlight Effect */
+.sketch-highlight {
+  position: relative;
+  display: inline-block;
+  color: var(--brand-600);
+}
+
+.sketch-highlight::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  bottom: -4px;
+  width: 108%;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M3 14 C 50 4, 120 18, 197 6' stroke='%23fa6638' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+/* --------------------------------------------------------------------------
+   5. Page Layout & Header
+   -------------------------------------------------------------------------- */
+.pets-page {
+  padding: 3rem 0 5.5rem;
+  flex: 1;
+}
+
+.pets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.pets-header-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.page-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.95rem;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border-radius: var(--radius-pill);
+  font-size: 0.775rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.65rem;
+  border: 1px solid var(--brand-200);
+}
+
+.pets-header p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  margin: 0.45rem 0 0;
+  max-width: 620px;
+}
+
+.pets-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Header "+ Add New Pet" Prominent Pill Button */
+.btn-add-pet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: var(--brand-600) !important;
+  color: #ffffff !important;
+  padding: 0.6rem 1.35rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(250, 102, 56, 0.3);
+  border: none;
+  transition: var(--transition);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-add-pet i,
+.btn-add-pet svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.btn-add-pet:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -2px rgba(250, 102, 56, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   6. Pets Grid & Responsive Cards Layout
+   -------------------------------------------------------------------------- */
+.pets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.pet-card {
+  background-color: #ffffff;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+
+.pet-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff7a4d 0%, #fa6638 50%, #f59e0b 100%);
+}
+
+.pet-card:hover {
+  border-color: var(--brand-200);
+  box-shadow: 0 12px 30px -8px rgba(250, 102, 56, 0.14);
+  transform: translateY(-4px);
+}
+
+/* Pet Top Header Info */
+.pet-card-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pet-avatar-img {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid var(--brand-50);
+  box-shadow: 0 3px 10px rgba(250, 102, 56, 0.15);
+  flex-shrink: 0;
+}
+
+.profile-avatar-fallback {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff7a4d, #fa6638);
+  color: #ffffff;
+  border: 2.5px solid var(--brand-50);
+  box-shadow: 0 3px 10px rgba(250, 102, 56, 0.2);
+  flex-shrink: 0;
+}
+
+.pet-header-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.pet-header-info h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--slate-900);
+}
+
+.pet-sub {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.pet-breed-tag {
+  font-weight: 700;
+  color: var(--brand-600);
+  background: var(--brand-50);
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.775rem;
+}
+
+.pet-dot-separator {
+  color: var(--slate-300);
+}
+
+.pet-gender-tag {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   7. Pet Stats Ribbon
+   -------------------------------------------------------------------------- */
+.pet-card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  padding: 0.65rem 0.5rem;
+  margin-bottom: 1.15rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--sand-50);
+  border-radius: var(--radius-md);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--slate-900);
+}
+
+.stat-vax {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-pill);
+}
+
+.stat-vax i,
+.stat-vax svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.stat-vax.vax-yes {
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.stat-vax.vax-no {
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+/* --------------------------------------------------------------------------
+   8. Pet Card Action Buttons (Compact, Sleek 2-Tier Micro-Pills)
+   -------------------------------------------------------------------------- */
+.pet-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Tier 1: Primary Actions (Profile, Vaccines, Track) */
+.actions-tier-primary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.actions-tier-primary i,
+.actions-tier-primary svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.btn-action-profile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: var(--brand-600) !important;
+  color: #ffffff !important;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(250, 102, 56, 0.22);
+  border: none;
+  transition: var(--transition);
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.btn-action-profile:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(250, 102, 56, 0.32);
+}
+
+.btn-action-vaccines {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: var(--brand-50) !important;
+  color: var(--brand-600) !important;
+  border: 1px solid var(--brand-200) !important;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: var(--transition);
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.btn-action-vaccines:hover {
+  background: var(--brand-100) !important;
+  transform: translateY(-1px);
+  color: var(--brand-700) !important;
+}
+
+.btn-action-track {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  background: var(--sand-100) !important;
+  color: var(--slate-800) !important;
+  border: 1px solid var(--border-medium) !important;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: var(--transition);
+  height: 32px;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+.btn-action-track:hover {
+  background: #ffffff !important;
+  border-color: var(--brand-500) !important;
+  color: var(--brand-600) !important;
+  transform: translateY(-1px);
+}
+
+/* Tier 2: Secondary Quick Action Tools (QR Tag, Records, Edit, Delete) */
+.actions-tier-secondary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.actions-tier-secondary i,
+.actions-tier-secondary svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.btn-action-records,
+.btn-action-edit,
+.btn-action-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.4rem;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  cursor: pointer;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+}
+
+.btn-action-records:hover,
+.btn-action-edit:hover,
+.btn-action-tag:hover {
+  border-color: var(--brand-500);
+  color: var(--brand-600);
+  background: var(--brand-50);
+  transform: translateY(-1px);
+}
+
+.btn-action-tag i, .btn-action-tag svg {
+  color: var(--brand-600);
+}
+
+.delete-form {
+  margin: 0;
+  display: flex;
+}
+
+.btn-action-delete {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.4rem;
+  background: var(--rose-50);
+  border: 1px solid var(--rose-border);
+  color: var(--rose-600);
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+}
+
+.btn-action-delete:hover {
+  background: var(--rose-500);
+  color: #ffffff;
+  border-color: var(--rose-500);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   8b. Single Action Row (Select Pet to Track / Records Pages)
+   -------------------------------------------------------------------------- */
+.card-actions-row {
+  margin-top: auto;
+  width: 100%;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  transition: var(--transition);
+  border: 1.5px solid transparent;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-block {
+  width: 100%;
+  display: flex;
+}
+
+.btn-primary,
+.pet-card-btn {
+  background: var(--brand-600) !important;
+  color: #ffffff !important;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(250, 102, 56, 0.28);
+  border: none;
+  height: 38px;
+  min-height: 38px;
+  box-sizing: border-box;
+}
+
+.btn-primary:hover,
+.pet-card-btn:hover {
+  background: var(--brand-700) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -2px rgba(250, 102, 56, 0.4);
+}
+
+.btn-secondary {
+  background: #ffffff !important;
+  color: var(--slate-800) !important;
+  border: 1.5px solid var(--border-medium) !important;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  height: 38px;
+  min-height: 38px;
+  box-sizing: border-box;
+}
+
+.btn-secondary:hover {
+  border-color: var(--brand-500) !important;
+  color: var(--brand-600) !important;
+  background: var(--brand-50) !important;
+  transform: translateY(-2px);
+}
+
+.card-actions-row .btn i,
+.card-actions-row .btn svg,
+.pet-card-btn i,
+.pet-card-btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. Empty State Box (When User Has No Registered Pets)
+   -------------------------------------------------------------------------- */
+.empty-pets-box {
+  background: #ffffff;
+  border: 2px dashed var(--brand-200);
+  border-radius: var(--radius-xl);
+  padding: 4.5rem 2rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 2rem auto;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.empty-pets-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--brand-50);
+  border: 2px solid var(--brand-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-600);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 16px rgba(250, 102, 56, 0.15);
+}
+
+.empty-pets-box h3 {
+  font-size: 1.65rem;
+  color: var(--slate-900);
+  margin-bottom: 0.65rem;
+}
+
+.empty-pets-box p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive Media Queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .pets-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .pets-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions-tier-primary {
+    grid-template-columns: 1fr;
+  }
+  .actions-tier-secondary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .btn-add-pet {
+    width: 100%;
+  }
+}

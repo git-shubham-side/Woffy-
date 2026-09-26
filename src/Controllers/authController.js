@@ -144,6 +144,7 @@ const getGoogleAuthRedirect = (req, res) => {
     }
 
     const callbackUrl = getGoogleCallbackUrl(req);
+    console.log(`[Google OAuth] Initiating redirect with callback URL: ${callbackUrl}`);
 
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
@@ -174,6 +175,7 @@ const getGoogleAuthRedirect = (req, res) => {
 const handleGoogleCallback = async (req, res) => {
   try {
     const { code, error } = req.query;
+    console.log(`[Google OAuth] Callback received: code=${code ? "present" : "missing"}, error=${error || "none"}`);
 
     if (error) {
       req.flash("error", `Google sign-in cancelled or denied (${error}).`);

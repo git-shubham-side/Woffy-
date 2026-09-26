@@ -19,9 +19,14 @@
 
 ---
 
-## 📖 About Woffy
+## 📖 About Woffy (React + Node.js Architecture)
 
-**Woffy** is a full-featured web application engineered to simplify every aspect of pet parenting and animal healthcare. From generating life-saving **QR-enabled emergency collar tags** and automating **veterinary vaccination schedules** to finding verified 24/7 animal hospitals and emergency rescue trusts, Woffy provides pet parents and veterinarians with a single unified, secure dashboard.
+**Woffy** is an enterprise-grade pet healthcare management platform engineered with a modern, decoupled architecture:
+- **Frontend (`frontend/`)**: Modern **React 19** Single Page Application (SPA) built with **Vite**, **Tailwind CSS**, **React Router v7**, **Lucide Icons**, and **Axios**.
+- **Backend (`backend/`)**: High-performance **Node.js + Express REST API** with **MongoDB (Mongoose)**, **JWT Authentication**, and Cloudinary media processing.
+- **Root Runner (`package.json`)**: Convenient monorepo management scripts powered by `concurrently` to run both services together or independently.
+
+From generating life-saving **QR-enabled emergency collar tags** and automating **veterinary vaccination schedules** to finding verified 24/7 animal hospitals, Woffy provides pet parents and veterinarians with a fast, responsive, and seamless experience across desktop and mobile.
 
 ---
 
@@ -100,84 +105,54 @@
 
 ```
 Woffy/
-├── .env.example                     # Environment variables template
-├── .gitignore                       # Git ignore rules
-├── package.json                     # NPM dependencies and scripts
-├── package-lock.json                # Locked dependency tree
-├── README.md                        # Project documentation
+├── package.json                     # Monorepo runner (concurrently scripts)
+├── README.md                        # Documentation
 │
-└── src/
-    ├── app.js                       # Express app configuration & middleware pipeline
-    ├── server.js                    # HTTP server entry point & DB connection
-    │
-    ├── Controllers/                 # Request handlers & business logic
-    │   ├── adminController.js       # Admin portal, hospital approvals, product controls
-    │   ├── authController.js        # Authentication, sessions, OTP & password resets
-    │   ├── contactController.js     # Contact inquiries & email notifications
-    │   ├── hospitalController.js    # Hospital directory, search & submissions
-    │   ├── pageController.js        # Landing page, rescue directory, shop, error handlers
-    │   ├── petController.js         # Pet CRUD, collar tag generation, profile views
-    │   ├── publicTagController.js   # Public emergency QR scan endpoint
-    │   ├── recordController.js      # Activity and daily health log management
-    │   └── vaccinationController.js # WSAVA vaccine scheduler, certificates, passports
-    │
-    ├── Database/                    # Database connection & seed scripts
-    │   ├── db.js                    # Mongoose connection logic
-    │   ├── seedAdmin.js             # Seed default administrative credentials
-    │   ├── seedHospitals.js         # Seed initial veterinary hospitals
-    │   └── seedPlatform.js          # Seed initial rescue shelters & shop products
-    │
-    ├── Middlewares/                 # Express middleware layers
-    │   ├── isAdmin.js               # Admin role verification guard
-    │   ├── isAuthenticated.js       # Session authentication guard
-    │   └── upload.js                # Multer + Cloudinary multi-file storage engine
-    │
-    ├── Models/                      # Mongoose ODM schemas
-    │   ├── ContactMessage.js        # User contact messages
-    │   ├── Hospital.js              # Veterinary hospitals and emergency clinics
-    │   ├── Pet.js                   # Pet profiles, collar tags, and emergency info
-    │   ├── Product.js               # Marketplace pet supplies & inventory
-    │   ├── Record.js                # Daily activity & medical log records
-    │   ├── RescueService.js         # Animal rescue organizations & shelter contacts
-    │   ├── User.js                  # User accounts, admin flags, OTP & reset tokens
-    │   └── Vaccination.js           # Vaccination entries, due dates & statuses
-    │
-    ├── Routes/                      # RESTful Route definitions
-    │   ├── adminRoutes.js           # Admin routes (/admin/*)
-    │   ├── authRoutes.js            # Auth routes (/login, /signup, /forgot-password)
-    │   ├── contactRoutes.js         # Contact routes (/contact)
-    │   ├── hospitalRoutes.js        # Hospital directory (/services/hospitals)
-    │   ├── pageRoutes.js            # Public pages (/, /shop, /services/rescue)
-    │   ├── petRoutes.js             # Pet management & tags (/api/pet-profile/*)
-    │   ├── recordRoutes.js          # Health tracking logs (/api/track/*)
-    │   └── vaccinationRoutes.js     # Vaccine hub & passports (/vaccinations/*)
-    │
-    ├── Utils/                       # Helper utilities & background services
-    │   ├── cloudinary.js            # Cloudinary SDK client configuration
-    │   ├── mailer.js                # Multi-engine email dispatcher (Resend, Brevo, Gmail)
-    │   ├── qrTagGenerator.js        # Unique collar ID & QR Code DataURL generator
-    │   └── vaccineScheduleGenerator.js # WSAVA Canine & Feline vaccine rules engine
-    │
-    ├── views/                       # EJS Server-side UI templates
-    │   ├── Admin/                   # Admin dashboard & management views
-    │   ├── Dashboard/               # Pet parent main dashboard
-    │   ├── Forgot-Password/         # Password recovery, OTP, and Terms pages
-    │   ├── Pet-Tag/                 # Public QR tag scan page & printable cards
-    │   ├── Profile-Creation/        # Create & edit pet profile forms
-    │   ├── Rescue/                  # 24/7 Rescue directory & helpline directory
-    │   ├── Route-Not-Found/         # Custom 404 & 500 error views
-    │   ├── Select-Pet-to-show-Record/# Pet selector for activity logs
-    │   ├── Select-pets-for-tracking/# Pet selector for tracking entries
-    │   ├── Shop/                    # Pet marketplace & product request page
-    │   ├── Signup/                  # User registration screen
-    │   ├── Track-Record-Form/       # Activity & medical log creation form
-    │   ├── Tracking-Pages-Section-1/# Health tracking section views
-    │   ├── Tracking-Pages-Section-2/# Log details view
-    │   ├── Vaccinations/            # Vaccine hub, passport print & status screens
-    │   ├── View-Record-Pet/         # History timeline of pet logs
-    │   └── partials/                # Reusable navigation bars and flash toasts
-    │
-    └── public/                      # Static client-side assets (CSS, JS, images, icons)
+├── frontend/                        # ⚡ Modern React 19 Frontend SPA (Vite + Tailwind)
+│   ├── index.html                   # HTML entry point
+│   ├── vite.config.js               # Vite config & API/Uploads proxy to backend
+│   ├── package.json                 # Frontend dependencies (React Router, Axios, Lucide)
+│   └── src/
+│       ├── main.jsx                 # React root mount
+│       ├── App.jsx                  # Main router, route definitions & auth wrapping
+│       ├── index.css                # Tailwind CSS v4 styling rules
+│       ├── components/              # Shared components (Navbar, Footer, ProtectedRoute, AdminRoute)
+│       ├── context/                 # AuthContext (JWT + Session state management)
+│       ├── services/                # Axios API client with Bearer token interceptor
+│       └── pages/                   # All 20+ Application pages
+│           ├── LandingPage.jsx      # Hero, features, guide, contact form
+│           ├── LoginPage.jsx        # Login with email/pass & Google OAuth
+│           ├── SignupPage.jsx       # Account registration
+│           ├── ForgotPasswordPage.jsx # Password reset link & OTP request
+│           ├── ResetPasswordPage.jsx  # Token or 6-digit OTP verification
+│           ├── DashboardPage.jsx    # Primary user dashboard & pet cards
+│           ├── PetProfilesPage.jsx  # Pet family gallery & lost pet badges
+│           ├── PetDetailPage.jsx    # 1-Click lost switch, QR tag, vet details
+│           ├── CreatePetPage.jsx    # Multi-step pet registration with photo upload
+│           ├── EditPetPage.jsx      # Pet profile updater
+│           ├── PrintableTagPage.jsx # Print-ready collar tags & wallet cards
+│           ├── PublicPetTagPage.jsx # Public emergency finder view (Call / WhatsApp GPS)
+│           ├── VaccinationsPage.jsx # WSAVA auto-schedule & dose management
+│           ├── VaccinePassportPage.jsx # Official printable digital vaccine passport
+│           ├── TrackingRecordsPage.jsx # Health logs, weight charts, vet records
+│           ├── RescueDirectoryPage.jsx # 24/7 NGO helplines & shelter waitlist
+│           ├── ShopPage.jsx         # Curated pet essentials marketplace
+│           ├── SettingsPage.jsx     # Profile updates, password, account deletion
+│           ├── AdminDashboardPage.jsx # Hospital approvals & marketplace moderation
+│           └── NotFoundPage.jsx     # Dog-themed 404 page
+│
+└── backend/                         # 🚀 Node.js + Express REST API Backend
+    ├── package.json                 # Backend dependencies & scripts
+    ├── .env                         # Environment variables (Mongo, Cloudinary, JWT, Email)
+    └── src/
+        ├── app.js                   # Express REST app, CORS, routes & middlewares
+        ├── server.js                # Server entry point (Default: http://localhost:5000)
+        ├── Controllers/             # JSON REST controllers (dual JSON/EJS support)
+        ├── Middlewares/             # JWT + Session authentication & Multer upload
+        ├── Models/                  # Mongoose Schemas (Pet, User, Vaccination, Record, etc.)
+        ├── Routes/                  # RESTful API route endpoints
+        ├── Utils/                   # Mailer, JWT helpers, WSAVA scheduler, QR generator
+        └── Database/                # MongoDB connection & seed scripts
 ```
 
 ---
@@ -218,56 +193,82 @@ cd Woffy
 
 ### 3. Install Dependencies
 
+You can install all dependencies across the monorepo root, backend, and frontend with a single command:
+
 ```bash
-npm install
+npm run install:all
 ```
 
-### 4. Configure Environment Variables
+Or install them individually:
+```bash
+npm install                     # Root concurrently runner
+cd backend && npm install       # Backend REST API dependencies
+cd ../frontend && npm install   # Frontend React dependencies
+```
 
-Create a `.env` file in the project root directory and configure the environment variables as shown in `.env.example`:
+### 4. Configure Backend Environment (`backend/.env`)
+
+Ensure `backend/.env` is configured with your database, Cloudinary, and session keys:
 
 ```env
-PORT=3000
+PORT=5000
 NODE_ENV=development
-BASE_URL=http://localhost:3000
+JWT_SECRET=your_jwt_secret_key_2026_super_secure
+BASE_URL=http://localhost:5000
 
 # MongoDB Database Connection URL
 DBURL=mongodb://127.0.0.1:27017/Woffy
 
-# Session Secret Key
-SESSION_SECRET=your_super_secret_session_key_here
-
 # Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 
-# Email Configuration (Nodemailer / Resend / Brevo)
-ADMIN_EMAIL=your_email@example.com
+# Session Secret Key
+SESSION_SECRET=your_session_secret_key
+
+# Admin & Email Service
+ADMIN_EMAIL=your_email@gmail.com
 EMAIL_SERVICE=gmail
-EMAIL_USER=your_email@example.com
+EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_gmail_app_password
-
-# (Optional: Resend API for instant sub-second mail delivery)
-RESEND_API_KEY=re_your_api_key_here
-
-# Google OAuth 2.0 (Social Sign-In)
-GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=GOCSPX-your_google_client_secret
-GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
 ```
 
-### 5. (Optional) Seed Sample Data
+### 5. Running the Application
+
+#### A. Run Both Frontend and Backend Concurrently (Recommended)
+From the root directory:
+```bash
+npm run dev
+```
+- **Backend API**: `http://localhost:5000`
+- **React Frontend**: `http://localhost:5173`
+
+#### B. Run Independently
+To run only the Backend API:
+```bash
+npm run dev:backend
+```
+
+To run only the React Frontend:
+```bash
+npm run dev:frontend
+```
+
+#### C. Production Build
+```bash
+npm run build
+```
+
+### 6. (Optional) Seed Sample Data
 
 Initialize default hospitals, rescue shelters, products, and admin accounts:
 
 ```bash
-node src/Database/seedPlatform.js
-node src/Database/seedHospitals.js
-node src/Database/seedAdmin.js
+node backend/src/Database/seedPlatform.js
+node backend/src/Database/seedHospitals.js
+node backend/src/Database/seedAdmin.js
 ```
-
-### 6. Start the Application
 
 - **Development Mode (with live reload):**
   ```bash
@@ -278,7 +279,9 @@ node src/Database/seedAdmin.js
   npm start
   ```
 
-Open your browser and visit: `http://localhost:3000`
+Open your browser and visit:
+- **Frontend App**: `http://localhost:5173`
+- **Backend API**: `http://localhost:5000`
 
 ---
 
