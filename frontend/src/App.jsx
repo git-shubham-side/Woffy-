@@ -34,7 +34,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="flex flex-col min-h-screen bg-gray-50/50 text-gray-800">
+        <div className="flex flex-col min-h-screen bg-white text-slate-800">
           <header className="print:hidden sticky top-0 z-40">
             <Navbar />
           </header>

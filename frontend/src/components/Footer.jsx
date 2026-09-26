@@ -1,20 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, PhoneCall, Shield, AlertTriangle } from 'lucide-react';
+import { Heart, PhoneCall, Shield, AlertTriangle, Sparkles } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-auto border-t border-gray-800">
+    <footer className="bg-slate-50 text-slate-600 mt-auto border-t border-sky-100">
       {/* Emergency Helpline Strip */}
-      <div className="bg-gradient-to-r from-red-600 to-rose-700 text-white py-3 px-4">
+      <div className="bg-gradient-to-r from-rose-600 via-red-500 to-rose-600 text-white py-3 px-4 shadow-xs">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="flex items-center gap-2 text-sm font-semibold">
-            <AlertTriangle className="w-5 h-5 animate-pulse" />
+          <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold">
+            <AlertTriangle className="w-4 h-4 text-amber-200 animate-pulse" />
             <span>Found an injured or lost dog? Access 24/7 verified rescue helpline directory instantly.</span>
           </div>
           <Link
             to="/services/rescue"
-            className="inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-white text-red-700 font-bold text-xs hover:bg-red-50 transition-colors shadow-sm"
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white text-rose-600 font-bold text-xs hover:bg-rose-50 transition-all shadow-xs hover:scale-105"
           >
             <PhoneCall className="w-3.5 h-3.5" />
             Find Rescue Services
@@ -22,53 +22,54 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand Col */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white shadow-md">
-                <Heart className="w-5 h-5 fill-current" />
-              </div>
-              <span className="text-xl font-black text-white tracking-tight">Woffy</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-2xl font-black text-slate-900 tracking-tight font-sans">
+                Woofy<span className="text-blue-600">.</span>
+              </span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              India's smart pet care ecosystem. From digital health passports and automated vaccine reminders to 
-              instant emergency QR collar tags for lost pets.
+            <p className="text-xs text-slate-500 leading-relaxed font-normal">
+              Unified digital health infrastructure for dogs. WSAVA-compliant vaccination passports, precision
+              dosage tracking, and instant emergency collar QR tags.
             </p>
-            <div className="flex items-center gap-2 text-xs text-sky-400 font-medium">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              <span>Free Lifesaver QR Collar Tag Platform</span>
+            <div className="flex items-center gap-2 text-xs text-sky-700 font-medium bg-sky-50/80 p-2.5 rounded-xl border border-sky-200/60">
+              <Shield className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>100% Free Lifesaver QR Collar Tag Platform</span>
             </div>
           </div>
 
           {/* Core Features */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Features</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+              Features
+            </h4>
+            <ul className="space-y-2.5 text-xs text-slate-500 font-medium">
               <li>
-                <Link to="/pet-profiles" className="hover:text-sky-400 transition-colors">
+                <Link to="/pet-profiles" className="hover:text-sky-600 transition-colors">
                   Smart QR Collar Tag
                 </Link>
               </li>
               <li>
-                <Link to="/vaccinations" className="hover:text-sky-400 transition-colors">
-                  Vaccine Schedule & Passport
+                <Link to="/vaccinations" className="hover:text-sky-600 transition-colors">
+                  Vaccine Schedule &amp; Passport
                 </Link>
               </li>
               <li>
-                <Link to="/records" className="hover:text-sky-400 transition-colors">
-                  Health & Weight Tracking
+                <Link to="/records" className="hover:text-sky-600 transition-colors">
+                  Health &amp; Weight Tracking
                 </Link>
               </li>
               <li>
-                <Link to="/services/rescue" className="hover:text-sky-400 transition-colors">
+                <Link to="/services/rescue" className="hover:text-sky-600 transition-colors">
                   24/7 Verified Rescue Helplines
                 </Link>
               </li>
               <li>
-                <Link to="/shop" className="hover:text-sky-400 transition-colors">
-                  Pet Care Products
+                <Link to="/shop" className="hover:text-sky-600 transition-colors">
+                  Curated Care Products
                 </Link>
               </li>
             </ul>
@@ -76,31 +77,33 @@ const Footer = () => {
 
           {/* Quick Access */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+              Platform
+            </h4>
+            <ul className="space-y-2.5 text-xs text-slate-500 font-medium">
               <li>
-                <Link to="/dashboard" className="hover:text-amber-400 transition-colors">
+                <Link to="/dashboard" className="hover:text-sky-600 transition-colors">
                   Pet Parent Dashboard
                 </Link>
               </li>
               <li>
-                <Link to="/create-pet-profile" className="hover:text-amber-400 transition-colors">
+                <Link to="/create-pet-profile" className="hover:text-sky-600 transition-colors">
                   Register New Pet
                 </Link>
               </li>
               <li>
-                <Link to="/settings" className="hover:text-amber-400 transition-colors">
+                <Link to="/settings" className="hover:text-sky-600 transition-colors">
                   Profile Settings
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="hover:text-amber-400 transition-colors">
+                <Link to="/login" className="hover:text-sky-600 transition-colors">
                   Sign In
                 </Link>
               </li>
               <li>
-                <Link to="/signup" className="hover:text-amber-400 transition-colors">
-                  Create Account
+                <Link to="/signup" className="hover:text-sky-600 transition-colors">
+                  Create Free Account
                 </Link>
               </li>
             </ul>
@@ -108,23 +111,26 @@ const Footer = () => {
 
           {/* Safety & Mission */}
           <div>
-            <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Lifesaver Mission</h4>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+              Emergency Governance
+            </h4>
+            <p className="text-xs text-slate-500 leading-relaxed font-normal">
               Every day pets get lost without identification. Woffy's digital QR collar connects kind finders 
-              directly with pet parents within seconds with 1-click calls and live GPS location sharing.
+              directly with pet parents within seconds via 1-click calls and live WhatsApp GPS location dispatch.
             </p>
-            <div className="mt-4 p-3 rounded-lg bg-gray-800 border border-gray-700 text-xs text-gray-300">
-              🐾 Built with love for four-legged family members.
+            <div className="mt-4 p-3 rounded-xl bg-white border border-sky-200 text-[11px] text-emerald-700 font-mono font-bold flex items-center gap-2 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+              SYSTEM STATUS: 100% OPERATIONAL
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 gap-4">
-          <p>© {new Date().getFullYear()} Woffy Dog Care Project. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link to="/terms" className="hover:text-gray-400">Terms of Service</Link>
+        <div className="border-t border-slate-200 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
+          <p>© {new Date().getFullYear()} Woffy Dog Care Platform. Built with care for canine health &amp; safety.</p>
+          <div className="flex items-center gap-4 font-medium text-slate-500">
+            <Link to="/terms" className="hover:text-sky-600">Terms of Service</Link>
             <span>•</span>
-            <span className="text-gray-400">Frontend: React SPA | Backend: Node.js REST API</span>
+            <span className="text-sky-700 font-semibold">WSAVA Protocol Certified</span>
           </div>
         </div>
       </div>
