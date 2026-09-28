@@ -52,7 +52,7 @@ const Navbar = () => {
           
           {/* Brand Logo - Woofy. */}
           <Link to="/" className="flex items-center gap-1 group">
-            <span className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 group-hover:opacity-95 transition-opacity font-sans">
+            <span className="text-2xl sm:text-3xl font-medium tracking-tight text-slate-900 group-hover:opacity-95 transition-opacity font-sans">
               Woofy<span className="text-blue-600">.</span>
             </span>
           </Link>
@@ -191,13 +191,13 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-colors"
+                  className="px-4 py-2 rounded-lg border border-slate-200 text-slate-700 font-normal text-sm hover:bg-slate-50 transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-all hover:shadow-md active:scale-98"
+                  className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm shadow-sm transition-all hover:shadow-md active:scale-98"
                 >
                   Sign Up Free
                 </Link>
@@ -287,14 +287,14 @@ const Navbar = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50"
+                  className="text-center px-4 py-2.5 rounded-lg border border-slate-200 text-slate-700 font-normal text-sm hover:bg-slate-50"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-semibold text-sm shadow-sm"
+                  className="text-center px-4 py-2.5 rounded-lg bg-blue-600 text-white font-medium text-sm shadow-sm"
                 >
                   Sign Up Free
                 </Link>

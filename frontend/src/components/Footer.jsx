@@ -27,7 +27,7 @@ const Footer = () => {
           {/* Brand Col */}
           <div className="space-y-4">
             <div className="flex items-center gap-1.5">
-              <span className="text-2xl font-black text-slate-900 tracking-tight font-sans">
+              <span className="text-2xl font-medium text-slate-900 tracking-tight font-sans">
                 Woofy<span className="text-blue-600">.</span>
               </span>
             </div>
@@ -43,10 +43,10 @@ const Footer = () => {
 
           {/* Core Features */}
           <div>
-            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+            <h4 className="text-slate-800 font-medium mb-4 text-xs uppercase font-mono tracking-wider">
               Features
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-500 font-medium">
+            <ul className="space-y-2.5 text-xs text-slate-500 font-normal">
               <li>
                 <Link to="/pet-profiles" className="hover:text-sky-600 transition-colors">
                   Smart QR Collar Tag
@@ -77,10 +77,10 @@ const Footer = () => {
 
           {/* Quick Access */}
           <div>
-            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+            <h4 className="text-slate-800 font-medium mb-4 text-xs uppercase font-mono tracking-wider">
               Platform
             </h4>
-            <ul className="space-y-2.5 text-xs text-slate-500 font-medium">
+            <ul className="space-y-2.5 text-xs text-slate-500 font-normal">
               <li>
                 <Link to="/dashboard" className="hover:text-sky-600 transition-colors">
                   Pet Parent Dashboard
@@ -111,26 +111,21 @@ const Footer = () => {
 
           {/* Safety & Mission */}
           <div>
-            <h4 className="text-slate-900 font-bold mb-4 text-xs uppercase font-mono tracking-wider text-sky-800">
+            <h4 className="text-slate-800 font-medium mb-4 text-xs uppercase font-mono tracking-wider">
               Emergency Governance
             </h4>
-            <p className="text-xs text-slate-500 leading-relaxed font-normal">
+            <p className="text-xs text-slate-500 leading-relaxed font-light">
               Every day pets get lost without identification. Woffy's digital QR collar connects kind finders 
               directly with pet parents within seconds via 1-click calls and live WhatsApp GPS location dispatch.
             </p>
-            <div className="mt-4 p-3 rounded-xl bg-white border border-sky-200 text-[11px] text-emerald-700 font-mono font-bold flex items-center gap-2 shadow-2xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              SYSTEM STATUS: 100% OPERATIONAL
-            </div>
           </div>
         </div>
 
-        <div className="border-t border-slate-200 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Woffy Dog Care Platform. Built with care for canine health &amp; safety.</p>
-          <div className="flex items-center gap-4 font-medium text-slate-500">
-            <Link to="/terms" className="hover:text-sky-600">Terms of Service</Link>
+        <div className="border-t border-slate-200 mt-12 pt-6 flex justify-center items-center text-xs text-slate-400">
+          <div className="flex items-center gap-4 font-normal text-slate-400">
+            <Link to="/terms" className="hover:text-sky-600 transition-colors">Terms of Service</Link>
             <span>•</span>
-            <span className="text-sky-700 font-semibold">WSAVA Protocol Certified</span>
+            <span className="text-sky-700 font-medium">WSAVA Protocol Certified</span>
           </div>
         </div>
       </div>
