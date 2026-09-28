@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Pets | Woofy | Pet Health & Management Platform</title>
 
-    <!-- Google Fonts -->
+    <!-- Brand Identity & Mobile Meta -->
+    <meta name="theme-color" content="#ea580c" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" type="image/png" href="/Images/Brand-Logo/brand.logo.png" />
+    <link rel="apple-touch-icon" href="/Images/Brand-Logo/brand.logo.png" />
+
+    <!-- Google Fonts: Inter & Plus Jakarta Sans (matching Landing Page) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/My-Pets/my-pets.css" />
+    <link rel="stylesheet" href="/My-Pets/my-pets.css?v=3" />
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <!-- Ambient Background Lighting Mesh (Contained) -->
+    <!-- Ambient Background Lighting Mesh -->
     <div class="ambient-glow-wrapper" aria-hidden="true">
       <div class="ambient-glow glow-1"></div>
       <div class="ambient-glow glow-2"></div>
@@ -32,38 +40,127 @@
         <!-- Flash Messages -->
         <%- include('../partials/flash-messages') %>
 
-        <div class="pets-header">
-          <div class="pets-header-text">
-            <span class="page-badge-pill">Pet Parent Workspace</span>
+        <%
+          const petList = (typeof pets !== 'undefined' && pets) ? pets : [];
+          const safeCount = petList.filter(p => !p.isLost).length;
+          const tagCount = petList.filter(p => p.collarId).length;
+          const vaxCount = petList.filter(p => (p.vaccinated || '').toLowerCase() === 'yes').length;
+        %>
+
+        <!-- Page Hero Banner (Landing Page Theme) -->
+        <div class="pets-hero-banner">
+          <div class="pets-hero-content">
+            <div class="hero-kicker-pill">
+              <i data-lucide="sparkles"></i>
+              <span>Smart Pet Health &amp; Identity Console</span>
+            </div>
             <h2>My Registered <span class="sketch-highlight">Pets</span></h2>
-            <p>Manage individual pet profiles, growth charts, automated vaccination schedules, and medical tracking logs.</p>
+            <p>Manage digital medical records, generate printable QR collar tags, track vaccinations, and monitor daily health logs in one unified workspace.</p>
           </div>
-          <div class="pets-header-actions">
-            <a href="/api/create-pet-profile" class="btn btn-add-pet">
-              <i data-lucide="plus-circle" style="width: 18px; height: 18px;"></i>
+          <div class="pets-hero-actions">
+            <a href="/api/create-pet-profile" class="btn-pill btn-pill-coral">
+              <i data-lucide="plus-circle"></i>
               <span>Add New Pet</span>
             </a>
           </div>
         </div>
 
-        <% if (typeof pets !== 'undefined' && pets && pets.length > 0) { %>
+        <% if (petList.length > 0) { %>
+          <!-- Summary Metrics Cards Grid -->
+          <div class="summary-metrics-grid">
+            <div class="metric-tile">
+              <div class="metric-tile-header">
+                <span class="metric-title">Registered Pets</span>
+                <div class="metric-icon-wrap icon-blue">
+                  <i data-lucide="paw-print"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-number"><%= petList.length %></span>
+                <span class="metric-unit"><%= petList.length === 1 ? 'Profile' : 'Profiles' %> Active</span>
+              </div>
+              <div class="metric-tile-footer">
+                <span class="metric-sub-green">
+                  <span class="pulse-dot-green"></span>
+                  <%= safeCount %> Safe at Home
+                </span>
+              </div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-header">
+                <span class="metric-title">Home Safety</span>
+                <div class="metric-icon-wrap icon-emerald">
+                  <i data-lucide="shield-check"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-number"><%= safeCount %></span>
+                <span class="metric-unit">Companions Safe</span>
+              </div>
+              <div class="metric-tile-footer">
+                <span class="metric-sub-slate">Emergency GPS Ready</span>
+              </div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-header">
+                <span class="metric-title">Collar QR Tags</span>
+                <div class="metric-icon-wrap icon-blue">
+                  <i data-lucide="qr-code"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-number"><%= tagCount %></span>
+                <span class="metric-unit">/<%= petList.length %> Issued</span>
+              </div>
+              <div class="metric-tile-footer">
+                <span class="metric-sub-slate">Print-ready sheets</span>
+              </div>
+            </div>
+
+            <div class="metric-tile">
+              <div class="metric-tile-header">
+                <span class="metric-title">Vaccine Coverage</span>
+                <div class="metric-icon-wrap icon-emerald">
+                  <i data-lucide="syringe"></i>
+                </div>
+              </div>
+              <div class="metric-value-row">
+                <span class="metric-number"><%= vaxCount %></span>
+                <span class="metric-unit">/<%= petList.length %> Up to Date</span>
+              </div>
+              <div class="metric-tile-footer">
+                <a href="/api/vaccinations" class="metric-link">WSAVA Protocol &rarr;</a>
+              </div>
+            </div>
+          </div>
+
           <div class="pets-grid">
-            <% pets.forEach(function(pet) { %>
+            <% petList.forEach(function(pet) { %>
               <div class="pet-card">
                 <div class="pet-card-top">
-                  <% if (pet.photo) { %>
-                    <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
-                  <% } else if (pet.photoUrl) { %>
-                    <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
-                  <% } else { %>
-                    <div class="profile-avatar-fallback">
-                      <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
-                    </div>
-                  <% } %>
+                  <div class="pet-avatar-wrapper">
+                    <% if (pet.photo) { %>
+                      <img src="<%= pet.photo %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
+                    <% } else if (pet.photoUrl) { %>
+                      <img src="<%= pet.photoUrl %>" alt="<%= pet.petName %>" class="pet-avatar-img" onerror="this.src='/uploads/pets/default-pet.png'" />
+                    <% } else { %>
+                      <div class="profile-avatar-fallback">
+                        <%= pet.petName ? pet.petName.charAt(0).toUpperCase() : 'P' %>
+                      </div>
+                    <% } %>
+                  </div>
                   <div class="pet-header-info">
-                    <h3><%= pet.petName %></h3>
+                    <div class="pet-name-row">
+                      <h3><%= pet.petName %></h3>
+                      <span class="pet-status-pill <%= pet.isLost ? 'status-lost' : 'status-safe' %>">
+                        <span class="status-dot"></span>
+                        <%= pet.isLost ? 'Lost Alert' : 'Safe at Home' %>
+                      </span>
+                    </div>
                     <p class="pet-sub">
-                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Pet' %></span>
+                      <span class="pet-breed-tag"><%= pet.breed || pet.species || 'Companion' %></span>
                       <span class="pet-dot-separator">•</span>
                       <span class="pet-gender-tag"><%= pet.gender || 'Companion' %></span>
                     </p>
@@ -82,46 +179,49 @@
                   <div class="stat">
                     <span class="stat-label">Vaccinated</span>
                     <span class="stat-value stat-vax <%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'vax-yes' : 'vax-no' %>">
-                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle' : 'alert-circle' %>" style="width: 13px; height: 13px;"></i>
+                      <i data-lucide="<%= (pet.vaccinated === 'Yes' || pet.vaccinated === 'yes') ? 'check-circle-2' : 'alert-circle' %>"></i>
                       <span><%= pet.vaccinated || 'Pending' %></span>
                     </span>
                   </div>
                 </div>
 
-                <!-- Structured Clear Action Buttons -->
+                <!-- QR Collar Tag Strip Box -->
+                <div class="pet-collar-tag-box">
+                  <div class="collar-info-left">
+                    <i data-lucide="qr-code"></i>
+                    <div>
+                      <span class="collar-label">Collar Tag ID</span>
+                      <span class="collar-code"><%= pet.collarId || 'WF-TAG' %></span>
+                    </div>
+                  </div>
+                  <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="btn-print-tag" title="Print Smart QR Tag">
+                    <i data-lucide="printer"></i>
+                    <span>Print Sheet</span>
+                  </a>
+                </div>
+
+                <!-- Action Buttons -->
                 <div class="pet-card-actions">
-                  <!-- Tier 1: Main Highlight Actions -->
-                  <div class="actions-tier-primary">
-                    <a href="/api/pet-profile/<%= pet._id %>" class="btn btn-action-profile" title="View <%= pet.petName %>'s Full Profile">
-                      <i data-lucide="eye"></i>
-                      <span>Profile</span>
-                    </a>
-                    <a href="/api/vaccinations/<%= pet._id %>" class="btn btn-action-vaccines" title="View <%= pet.petName %>'s Automated Vaccination Schedule">
-                      <i data-lucide="syringe"></i>
+                  <a href="/api/pet-profile/<%= pet._id %>" class="btn-pill btn-pill-coral btn-block" title="View Full Profile">
+                    <span>View Health Passport &amp; Profile</span>
+                    <i data-lucide="arrow-right"></i>
+                  </a>
+
+                  <div class="actions-tier-secondary">
+                    <a href="/api/vaccinations/<%= pet._id %>" class="btn-tool-pill" title="Vaccinations">
+                      <i data-lucide="syringe" style="color: #2563eb;"></i>
                       <span>Vaccines</span>
                     </a>
-                    <a href="/api/track/<%= pet._id %>" class="btn btn-action-track" title="Track <%= pet.petName %>'s Daily Health & Activity">
-                      <i data-lucide="activity"></i>
-                      <span>Track</span>
+                    <a href="/api/track/<%= pet._id %>" class="btn-tool-pill" title="Daily Tracking Logs">
+                      <i data-lucide="activity" style="color: #10b981;"></i>
+                      <span>Logs</span>
                     </a>
-                  </div>
-
-                  <!-- Tier 2: Quick Management Tools -->
-                  <div class="actions-tier-secondary">
-                    <a href="/api/pet-profile/<%= pet._id %>/print-tag" target="_blank" class="btn btn-action-tag" title="Print Smart QR Collar Tag">
-                      <i data-lucide="qr-code"></i>
-                      <span>QR Tag</span>
-                    </a>
-                    <a href="/api/show-records/<%= pet._id %>" class="btn btn-action-records" title="View Medical & Activity History">
-                      <i data-lucide="clipboard-list"></i>
-                      <span>Records</span>
-                    </a>
-                    <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn btn-action-edit" title="Edit <%= pet.petName %>'s Profile">
+                    <a href="/api/pet-profile/edit/<%= pet._id %>" class="btn-tool-pill" title="Edit Profile">
                       <i data-lucide="edit-3"></i>
                       <span>Edit</span>
                     </a>
-                    <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile? This action will remove all recorded logs.');">
-                      <button type="submit" class="btn btn-action-delete" title="Delete <%= pet.petName %>">
+                    <form action="/api/pet-profile/delete/<%= pet._id %>" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete <%= pet.petName %>\'s profile? All associated health records will be permanently removed.');">
+                      <button type="submit" class="btn-tool-pill btn-delete-tool" title="Delete Pet">
                         <i data-lucide="trash-2"></i>
                         <span>Delete</span>
                       </button>
@@ -137,8 +237,8 @@
               <i data-lucide="paw-print"></i>
             </div>
             <h3>No Pets Registered Yet</h3>
-            <p>Add your first furry companion to start tracking their growth, automated vaccination schedules, daily activities, and medical prescriptions.</p>
-            <a href="/api/create-pet-profile" class="btn btn-add-pet">
+            <p>Add your first furry companion to start tracking their growth, automated vaccination schedules, daily activities, and printable emergency QR tags.</p>
+            <a href="/api/create-pet-profile" class="btn-pill btn-pill-coral">
               <i data-lucide="plus-circle"></i>
               <span>Add Your First Furry Companion</span>
             </a>
@@ -157,18 +257,5 @@
         lucide.createIcons();
       }
     </script>
-    <!-- Default Statcounter code for Woffy https://woffy.up.railway.app/ -->
-    <script type="text/javascript">
-    var sc_project=13353492; 
-    var sc_invisible=1; 
-    var sc_security="b129a7bd"; 
-    </script>
-    <script type="text/javascript"
-    src="https://www.statcounter.com/counter/counter.js" async></script>
-    <noscript><div class="statcounter"><a title="Web Analytics"
-    href="https://statcounter.com/" target="_blank"><img class="statcounter"
-    src="https://c.statcounter.com/13353492/0/b129a7bd/1/" alt="Web Analytics"
-    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
-    <!-- End of Statcounter Code -->
   </body>
 </html>
