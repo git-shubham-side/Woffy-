@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Pet = require("../Models/Pet");
 const Record = require("../Models/Record");
 
@@ -39,10 +40,10 @@ const getSelectPetForTracking = async (req, res) => {
 const getTrackPage = async (req, res) => {
   try {
     const userId = getUserId(req);
-    let petId = req.params.petId;
+    let petId = req.params.petId || req.query.petId;
     let pet = null;
 
-    if (petId && petId !== "petId") {
+    if (petId && petId !== "petId" && petId !== "all" && petId !== "records" && mongoose.isValidObjectId(petId)) {
       pet = await Pet.findOne({ _id: petId, user: userId });
     }
 
@@ -63,7 +64,7 @@ const getTrackPage = async (req, res) => {
       user: userId,
     })
       .sort({ date: -1, createdAt: -1 })
-      .limit(20);
+      .limit(200);
 
     if (isApiRequest(req)) {
       return res.status(200).json({ success: true, pet, records: records || [] });
@@ -92,7 +93,7 @@ const postCreateRecord = async (req, res) => {
     const finalNotes = notes || details || "";
 
     let pet = null;
-    if (petId) {
+    if (petId && mongoose.isValidObjectId(petId)) {
       pet = await Pet.findOne({ _id: petId, user: userId });
     }
     if (!pet) {
@@ -227,7 +228,13 @@ const deleteRecord = async (req, res) => {
   try {
     const userId = getUserId(req);
     const { recordId } = req.params;
-    const { petId } = req.body;
+    const petId = req.body?.petId || req.query?.petId;
+
+    if (!recordId || !mongoose.isValidObjectId(recordId)) {
+      if (isApiRequest(req)) return res.status(400).json({ success: false, message: "Invalid record ID." });
+      req.flash("error", "Invalid record ID.");
+      return res.redirect("/api/select-pet-to-show-record");
+    }
 
     await Record.findOneAndDelete({
       _id: recordId,

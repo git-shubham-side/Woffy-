@@ -1,17 +1,35 @@
+const mongoose = require("mongoose");
 const Pet = require("../Models/Pet");
 const Record = require("../Models/Record");
+
+const isApiRequest = (req) => {
+  return (
+    req.xhr ||
+    (req.headers.accept && req.headers.accept.includes("application/json")) ||
+    (req.headers["content-type"] && req.headers["content-type"].includes("application/json")) ||
+    Boolean(req.headers.authorization) ||
+    req.originalUrl.includes("/api/")
+  );
+};
+
+const getUserId = (req) => req.userId || (req.session && req.session.userId);
 
 /**
  * GET: Select Pet For Activity Tracking
  */
 const getSelectPetForTracking = async (req, res) => {
   try {
-    const pets = await Pet.find({ user: req.session.userId }).sort({
-      createdAt: -1,
-    });
+    const userId = getUserId(req);
+    const pets = await Pet.find({ user: userId }).sort({ createdAt: -1 });
+
+    if (isApiRequest(req)) {
+      return res.status(200).json({ success: true, pets: pets || [] });
+    }
+
     res.render("Select-pets-for-tracking/pet-tracking", { pets: pets || [] });
   } catch (err) {
     console.error("Select pet tracking error:", err);
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Error loading pets." });
     res.render("Select-pets-for-tracking/pet-tracking", { pets: [] });
   }
 };
@@ -21,33 +39,36 @@ const getSelectPetForTracking = async (req, res) => {
  */
 const getTrackPage = async (req, res) => {
   try {
-    let petId = req.params.petId;
+    const userId = getUserId(req);
+    let petId = req.params.petId || req.query.petId;
     let pet = null;
 
-    if (petId && petId !== "petId") {
-      pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+    if (petId && petId !== "petId" && petId !== "all" && petId !== "records" && mongoose.isValidObjectId(petId)) {
+      pet = await Pet.findOne({ _id: petId, user: userId });
     }
 
     if (!pet) {
-      pet = await Pet.findOne({ user: req.session.userId }).sort({
-        createdAt: -1,
-      });
+      pet = await Pet.findOne({ user: userId }).sort({ createdAt: -1 });
     }
 
     if (!pet) {
-      req.flash(
-        "error",
-        "Please create a pet profile first to begin tracking activities.",
-      );
+      if (isApiRequest(req)) {
+        return res.status(200).json({ success: true, pet: null, records: [] });
+      }
+      req.flash("error", "Please create a pet profile first to begin tracking activities.");
       return res.redirect("/api/create-pet-profile");
     }
 
     const records = await Record.find({
       pet: pet._id,
-      user: req.session.userId,
+      user: userId,
     })
       .sort({ date: -1, createdAt: -1 })
-      .limit(10);
+      .limit(200);
+
+    if (isApiRequest(req)) {
+      return res.status(200).json({ success: true, pet, records: records || [] });
+    }
 
     res.render("Track-Record-Form/track-record-form", {
       pet,
@@ -55,37 +76,38 @@ const getTrackPage = async (req, res) => {
     });
   } catch (err) {
     console.error("Track activity page error:", err);
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Error loading track page." });
     req.flash("error", "Error loading tracking page.");
     res.redirect("/api/select-pet-for-tracking");
   }
 };
 
 /**
- * POST: Create Activity / Care Log (with optional photo / prescription attachment)
+ * POST: Create Activity / Care Log
  */
 const postCreateRecord = async (req, res) => {
   try {
-    const { petId, activityType, category, title, date, notes, details } =
-      req.body;
+    const userId = getUserId(req);
+    const { petId, activityType, category, title, date, notes, details } = req.body;
     const finalType = activityType || category;
     const finalNotes = notes || details || "";
 
     let pet = null;
-    if (petId) {
-      pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+    if (petId && mongoose.isValidObjectId(petId)) {
+      pet = await Pet.findOne({ _id: petId, user: userId });
     }
     if (!pet) {
-      pet = await Pet.findOne({ user: req.session.userId }).sort({
-        createdAt: -1,
-      });
+      pet = await Pet.findOne({ user: userId }).sort({ createdAt: -1 });
     }
 
     if (!pet) {
+      if (isApiRequest(req)) return res.status(404).json({ success: false, message: "Please select a valid pet." });
       req.flash("error", "Please select a valid pet before creating a log.");
       return res.redirect("/api/pet-profiles");
     }
 
     if (!title || !finalType) {
+      if (isApiRequest(req)) return res.status(400).json({ success: false, message: "Activity type and title are required." });
       req.flash("error", "Activity type and title are required.");
       return res.redirect(`/api/track/${pet._id}`);
     }
@@ -98,9 +120,9 @@ const postCreateRecord = async (req, res) => {
           : "/uploads/records/" + req.file.filename;
     }
 
-    await Record.create({
+    const newRecord = await Record.create({
       pet: pet._id,
-      user: req.session.userId,
+      user: userId,
       activityType: finalType,
       title: title.trim(),
       date: date ? new Date(date) : new Date(),
@@ -117,10 +139,20 @@ const postCreateRecord = async (req, res) => {
       }
     }
 
+    if (isApiRequest(req)) {
+      return res.status(201).json({
+        success: true,
+        message: "Activity log saved successfully!",
+        record: newRecord,
+        pet,
+      });
+    }
+
     req.flash("success", "Activity log saved successfully!");
     res.redirect(`/api/track/${pet._id}`);
   } catch (err) {
     console.error("Create tracking record error:", err);
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Failed to save tracking log: " + (err.message || "") });
     req.flash("error", "Failed to save tracking log. " + (err.message || ""));
     res.redirect("/api/select-pet-for-tracking");
   }
@@ -131,17 +163,15 @@ const postCreateRecord = async (req, res) => {
  */
 const getSelectPetForRecords = async (req, res) => {
   try {
-    const pets = await Pet.find({ user: req.session.userId }).sort({
-      createdAt: -1,
-    });
-    res.render("Select-Pet-to-show-Record/select-pet-to-show-record", {
-      pets: pets || [],
-    });
+    const userId = getUserId(req);
+    const pets = await Pet.find({ user: userId }).sort({ createdAt: -1 });
+
+    if (isApiRequest(req)) return res.status(200).json({ success: true, pets: pets || [] });
+    res.render("Select-Pet-to-show-Record/select-pet-to-show-record", { pets: pets || [] });
   } catch (err) {
     console.error("Select pet show record error:", err);
-    res.render("Select-Pet-to-show-Record/select-pet-to-show-record", {
-      pets: [],
-    });
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Error loading pets." });
+    res.render("Select-Pet-to-show-Record/select-pet-to-show-record", { pets: [] });
   }
 };
 
@@ -150,31 +180,34 @@ const getSelectPetForRecords = async (req, res) => {
  */
 const getViewRecordsPage = async (req, res) => {
   try {
+    const userId = getUserId(req);
     let petId = req.params.petId;
     let pet = null;
 
     if (petId && petId !== "petID") {
-      pet = await Pet.findOne({ _id: petId, user: req.session.userId });
+      pet = await Pet.findOne({ _id: petId, user: userId });
     }
 
     if (!pet) {
-      pet = await Pet.findOne({ user: req.session.userId }).sort({
-        createdAt: -1,
-      });
+      pet = await Pet.findOne({ user: userId }).sort({ createdAt: -1 });
     }
 
     if (!pet) {
-      req.flash(
-        "error",
-        "Please add a pet first to view care and health records.",
-      );
+      if (isApiRequest(req)) {
+        return res.status(200).json({ success: true, pet: null, records: [] });
+      }
+      req.flash("error", "Please add a pet first to view care and health records.");
       return res.redirect("/api/create-pet-profile");
     }
 
     const records = await Record.find({
       pet: pet._id,
-      user: req.session.userId,
+      user: userId,
     }).sort({ date: -1, createdAt: -1 });
+
+    if (isApiRequest(req)) {
+      return res.status(200).json({ success: true, pet, records: records || [] });
+    }
 
     res.render("View-Record-Pet/view-record", {
       pet,
@@ -182,31 +215,44 @@ const getViewRecordsPage = async (req, res) => {
     });
   } catch (err) {
     console.error("Show records error:", err);
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Error loading pet records." });
     req.flash("error", "Error loading pet records.");
     res.redirect("/api/select-pet-to-show-record");
   }
 };
 
 /**
- * POST: Delete a Single Record
+ * POST / DELETE: Delete a Single Record
  */
 const deleteRecord = async (req, res) => {
   try {
+    const userId = getUserId(req);
     const { recordId } = req.params;
-    const { petId } = req.body;
+    const petId = req.body?.petId || req.query?.petId;
+
+    if (!recordId || !mongoose.isValidObjectId(recordId)) {
+      if (isApiRequest(req)) return res.status(400).json({ success: false, message: "Invalid record ID." });
+      req.flash("error", "Invalid record ID.");
+      return res.redirect("/api/select-pet-to-show-record");
+    }
 
     await Record.findOneAndDelete({
       _id: recordId,
-      user: req.session.userId,
+      user: userId,
     });
-    req.flash("success", "Activity log deleted successfully.");
 
+    if (isApiRequest(req)) {
+      return res.status(200).json({ success: true, message: "Activity log deleted successfully." });
+    }
+
+    req.flash("success", "Activity log deleted successfully.");
     if (petId) {
       return res.redirect(`/api/show-records/${petId}`);
     }
     res.redirect("/api/select-pet-to-show-record");
   } catch (err) {
     console.error("Delete record error:", err);
+    if (isApiRequest(req)) return res.status(500).json({ success: false, message: "Failed to delete record." });
     req.flash("error", "Failed to delete record.");
     res.redirect("/api/select-pet-to-show-record");
   }

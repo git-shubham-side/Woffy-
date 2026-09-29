@@ -6,21 +6,44 @@ const upload = require("../Middlewares/upload");
 
 // Select Pet For Tracking
 router.get(
-  "/api/select-pet-for-tracking",
+  ["/api/select-pet-for-tracking", "/select-pet-for-tracking"],
   isAuthenticated,
   recordController.getSelectPetForTracking,
 );
 
-// Track Activity Page (Form & Recent Logs)
+// Track Activity Page / API records endpoint (GET)
 router.get(
-  ["/api/track/:petId", "/api/petId"],
+  [
+    "/",
+    "/api/records",
+    "/api/records/:petId",
+    "/api/track",
+    "/api/track/:petId",
+    "/api/petId",
+    "/records",
+    "/records/:petId",
+    "/track",
+    "/track/:petId",
+    "/:petId",
+  ],
   isAuthenticated,
   recordController.getTrackPage,
 );
 
-// Create Tracking Log
+// Create Tracking Log (POST)
 router.post(
-  ["/api/track/create", "/api/records/create"],
+  [
+    "/",
+    "/create",
+    "/api/records",
+    "/api/records/create",
+    "/api/track",
+    "/api/track/create",
+    "/records",
+    "/records/create",
+    "/track",
+    "/track/create",
+  ],
   isAuthenticated,
   upload.single("recordImage"),
   recordController.postCreateRecord,
@@ -28,21 +51,42 @@ router.post(
 
 // Select Pet to Show Complete Records
 router.get(
-  "/api/select-pet-to-show-record",
+  ["/api/select-pet-to-show-record", "/select-pet-to-show-record"],
   isAuthenticated,
   recordController.getSelectPetForRecords,
 );
 
 // View Complete History for Pet
 router.get(
-  ["/api/show-records/:petId", "/api/show-records/petID"],
+  [
+    "/api/show-records/:petId",
+    "/api/show-records/petID",
+    "/show-records/:petId",
+  ],
   isAuthenticated,
   recordController.getViewRecordsPage,
 );
 
-// Delete Record Log
+// Delete Record Log (POST & DELETE)
 router.post(
-  "/api/records/delete/:recordId",
+  [
+    "/delete/:recordId",
+    "/:recordId/delete",
+    "/api/records/delete/:recordId",
+    "/api/records/:recordId/delete",
+    "/records/delete/:recordId",
+    "/records/:recordId/delete",
+  ],
+  isAuthenticated,
+  recordController.deleteRecord,
+);
+
+router.delete(
+  [
+    "/:recordId",
+    "/api/records/:recordId",
+    "/records/:recordId",
+  ],
   isAuthenticated,
   recordController.deleteRecord,
 );

@@ -8,16 +8,16 @@
    1. Design Tokens & CSS Variables
    -------------------------------------------------------------------------- */
 :root {
-  --brand-500: #ff7244;
-  --brand-600: #fa6638;
-  --brand-700: #e04f21;
-  --brand-50: #fff5f0;
-  --brand-100: #ffe8dd;
-  --brand-200: #ffd2c0;
+  --brand-500: #3b82f6;
+  --brand-600: #2563eb;
+  --brand-700: #1d4ed8;
+  --brand-50: #eff6ff;
+  --brand-100: #dbeafe;
+  --brand-200: #bfdbfe;
 
-  --sand-50: #faf7f2;
-  --sand-100: #f3eee7;
-  --sand-200: #e8e1d7;
+  --sand-50: #f8fafc;
+  --sand-100: #f1f5f9;
+  --sand-200: #e2e8f0;
 
   --slate-950: #0f172a;
   --slate-900: #181c24;
