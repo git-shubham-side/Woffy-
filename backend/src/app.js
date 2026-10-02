@@ -16,6 +16,7 @@ const vaccinationRoutes = require("./Routes/vaccinationRoutes");
 const contactRoutes = require("./Routes/contactRoutes");
 const hospitalRoutes = require("./Routes/hospitalRoutes");
 const adminRoutes = require("./Routes/adminRoutes");
+const chatbotRoutes = require("./Routes/chatbotRoutes");
 const {
   notFoundHandler,
   globalErrorHandler,
@@ -155,6 +156,8 @@ app.use("/api/vaccinations", vaccinationRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/hospitals", hospitalRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/chat", chatbotRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 // Root Routes
 app.use("/", pageRoutes);

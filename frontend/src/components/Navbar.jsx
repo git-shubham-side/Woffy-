@@ -98,6 +98,17 @@ const Navbar = () => {
 
           {/* Right Action Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Ask Jimmy AI Chatbot Button */}
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-jimmy-chat'))}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200/80 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              title="Chat with Jimmy AI"
+            >
+              <span className="text-sm">🐶</span>
+              <span>Ask Jimmy</span>
+            </button>
+
             {isAuthenticated ? (
               <>
                 <Link
@@ -207,6 +218,14 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle Button */}
           <div className="flex md:hidden items-center gap-2">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-jimmy-chat'))}
+              className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+              title="Chat with Jimmy AI"
+            >
+              <span className="text-base">🐶</span>
+            </button>
             {isAuthenticated && (
               <Link
                 to="/create-pet-profile"
@@ -229,6 +248,20 @@ const Navbar = () => {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-100 px-4 pt-2 pb-5 space-y-1 bg-white shadow-xl">
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              window.dispatchEvent(new CustomEvent('open-jimmy-chat'));
+            }}
+            className="w-full mb-2 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 text-white font-semibold text-xs shadow-sm cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <span className="text-base">🐶</span>
+              <span>Ask Jimmy (Pet Care AI)</span>
+            </span>
+            <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-medium">Online</span>
+          </button>
           <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className={mobileNavLinkClass}>
             Home
           </NavLink>

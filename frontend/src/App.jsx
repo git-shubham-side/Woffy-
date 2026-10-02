@@ -6,6 +6,7 @@ import AdminRoute from './components/AdminRoute';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import JimmyChatbot from './components/JimmyChatbot';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -176,6 +177,9 @@ function App() {
           <footer className="print:hidden">
             <Footer />
           </footer>
+
+          {/* Jimmy - Pet Care AI Assistant */}
+          <JimmyChatbot />
         </div>
       </BrowserRouter>
     </AuthProvider>
